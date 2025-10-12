@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ValQMS Tools - Excel & LIMS Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --bg-dark: #0a0f1f;
+      --accent:#06b6d4;
+      --accent-glow: rgba(6,182,212,0.4);
+      --text-primary:#f1f5f9;
+      --text-secondary:#94a3b8;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: rgba(255,255,255,0.08);
+    }
+    
+    *{box-sizing:border-box;margin:0;padding:0}
+    
+    body{
+      background: linear-gradient(135deg, #0a0f1f 0%, #1a1f3a 50%, #0f1629 100%);
+      color:var(--text-primary);
+      font-family:'Inter',sans-serif;
+      min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
+    }
+    
+    /* Animated gradient background orbs */
+    body::before, body::after{
+      content:'';
+      position:fixed;
+      border-radius:50%;
+      filter:blur(120px);
+      opacity:0.15;
+      pointer-events:none;
+      animation:float 20s ease-in-out infinite;
+    }
+    body::before{
+      width:600px;
+      height:600px;
+      background:linear-gradient(135deg,#06b6d4,#3b82f6);
+      top:-200px;
+      right:-200px;
+      animation-delay:-10s;
+    }
+    body::after{
+      width:500px;
+      height:500px;
+      background:linear-gradient(135deg,#8b5cf6,#ec4899);
+      bottom:-150px;
+      left:-150px;
+    }
+    
+    @keyframes float{
+      0%,100%{transform:translate(0,0) scale(1)}
+      33%{transform:translate(50px,-50px) scale(1.1)}
+      66%{transform:translate(-50px,50px) scale(0.9)}
+    }
+    
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 24px;
+      position:relative;
+      z-index:1;
+    }
+    
+    /* Header */
+    header{
+      padding:32px 0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:20px;
+      font-weight:700;
+      color:var(--text-primary);
+      text-decoration:none;
+    }
+    
+    .logo-icon{
+      width:40px;
+      height:40px;
+      background:linear-gradient(135deg,var(--accent),#3b82f6);
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      box-shadow:0 4px 20px var(--accent-glow);
+    }
+    
+    nav{
+      display:flex;
+      gap:32px;
+      align-items:center;
+    }
+    
+    nav a{
+      color:var(--text-secondary);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:500;
+      transition:color 0.2s;
+    }
+    
+    nav a:hover{
+      color:var(--text-primary);
+    }
+    
+    /* Hero Section */
+    .hero{
+      text-align:center;
+      padding:100px 0 120px;
+    }
+    
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 16px;
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:999px;
+      font-size:13px;
+      color:var(--text-secondary);
+      margin-bottom:24px;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    
+    .badge-dot{
+      width:8px;
+      height:8px;
+      background:var(--accent);
+      border-radius:50%;
+      animation:pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse{
+      0%,100%{opacity:1;transform:scale(1)}
+      50%{opacity:0.5;transform:scale(0.8)}
+    }
+    
+    h1{
+      font-size:72px;
+      font-weight:700;
+      line-height:1.1;
+      margin-bottom:24px;
+      background:linear-gradient(135deg,#f1f5f9 0%,#94a3b8 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    
+    .hero-desc{
+      font-size:20px;
+      color:var(--text-secondary);
+      max-width:600px;
+      margin:0 auto 40px;
+      line-height:1.6;
+    }
+    
+    .cta-group{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      align-items:center;
+    }
+    
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:14px 28px;
+      border-radius:12px;
+      font-size:15px;
+      font-weight:600;
+      text-decoration:none;
+      transition:all 0.3s;
+      border:none;
+      cursor:pointer;
+    }
+    
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),#3b82f6);
+      color:#0a0f1f;
+      box-shadow:0 4px 20px var(--accent-glow);
+    }
+    
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 30px var(--accent-glow);
+    }
+    
+    .btn-secondary{
+      background:var(--card-bg);
+      color:var(--text-primary);
+      border:1px solid var(--card-border);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    
+    .btn-secondary:hover{
+      background:rgba(255,255,255,0.06);
+      border-color:rgba(255,255,255,0.15);
+    }
+    
+    /* Tools Grid - Glassmorphism Cards */
+    .tools-section{
+      padding:60px 0;
+    }
+    
+    .section-header{
+      text-align:center;
+      margin-bottom:48px;
+    }
+    
+    .section-header h2{
+      font-size:36px;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+    
+    .section-header p{
+      color:var(--text-secondary);
+      font-size:16px;
+    }
+    
+    .tools-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+      gap:24px;
+    }
+    
+    .tool-card{
+      position:relative;
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:24px;
+      padding:40px;
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+      text-decoration:none;
+      color:inherit;
+      display:block;
+      overflow:hidden;
+    }
+    
+    .tool-card::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background:linear-gradient(135deg,rgba(6,182,212,0.1),rgba(59,130,246,0.1));
+      opacity:0;
+      transition:opacity 0.4s;
+    }
+    
+    .tool-card:hover{
+      transform:translateY(-8px);
+      border-color:rgba(6,182,212,0.3);
+      box-shadow:0 20px 60px rgba(6,182,212,0.2);
+    }
+    
+    .tool-card:hover::before{
+      opacity:1;
+    }
+    
+    .tool-header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:20px;
+      position:relative;
+    }
+    
+    .tool-icon{
+      width:64px;
+      height:64px;
+      background:linear-gradient(135deg,var(--accent),#3b82f6);
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      box-shadow:0 8px 24px var(--accent-glow);
+    }
+    
+    .tool-title{
+      font-size:24px;
+      font-weight:700;
+      position:relative;
+    }
+    
+    .tool-desc{
+      color:var(--text-secondary);
+      font-size:15px;
+      line-height:1.7;
+      margin-bottom:24px;
+      position:relative;
+    }
+    
+    .tool-features{
+      list-style:none;
+      margin-bottom:28px;
+      position:relative;
+    }
+    
+    .tool-features li{
+      padding:10px 0;
+      padding-left:28px;
+      position:relative;
+      color:var(--text-secondary);
+      font-size:14px;
+    }
+    
+    .tool-features li::before{
+      content:'✓';
+      position:absolute;
+      left:0;
+      color:var(--accent);
+      font-weight:bold;
+      font-size:16px;
+    }
+    
+    .tool-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--accent);
+      font-weight:600;
+      font-size:15px;
+      position:relative;
+    }
+    
+    .tool-link::after{
+      content:'→';
+      transition:transform 0.3s;
+    }
+    
+    .tool-card:hover .tool-link::after{
+      transform:translateX(4px);
+    }
+    
+    /* Features Section */
+    .features{
+      padding:80px 0;
+      text-align:center;
+    }
+    
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:32px;
+      margin-top:48px;
+    }
+    
+    .feature-item{
+      padding:32px 24px;
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      transition:all 0.3s;
+    }
+    
+    .feature-item:hover{
+      transform:translateY(-4px);
+      border-color:rgba(6,182,212,0.3);
+    }
+    
+    .feature-icon{
+      font-size:32px;
+      margin-bottom:16px;
+    }
+    
+    .feature-item h3{
+      font-size:18px;
+      margin-bottom:8px;
+    }
+    
+    .feature-item p{
+      color:var(--text-secondary);
+      font-size:14px;
+      line-height:1.6;
+    }
+    
+    /* Footer */
+    footer{
+      padding:60px 0 40px;
+      border-top:1px solid var(--card-border);
+      margin-top:80px;
+    }
+    
+    .footer-content{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    
+    .footer-links{
+      display:flex;
+      gap:24px;
+    }
+    
+    .footer-links a{
+      color:var(--text-secondary);
+      text-decoration:none;
+      font-size:14px;
+      transition:color 0.2s;
+    }
+    
+    .footer-links a:hover{
+      color:var(--text-primary);
+    }
+    
+    .copyright{
+      color:var(--text-secondary);
+      font-size:14px;
+    }
+    
+    /* Responsive */
+    @media(max-width:768px){
+      h1{font-size:48px}
+      .hero{padding:60px 0 80px}
+      .tools-grid{grid-template-columns:1fr}
+      .features-grid{grid-template-columns:1fr}
+      .cta-group{flex-direction:column;width:100%}
+      .btn{width:100%;justify-content:center}
+      .footer-content{flex-direction:column;gap:24px;text-align:center}
+      nav{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Header -->
+    <header>
+      <a href="#" class="logo">
+        <div class="logo-icon">🧪</div>
+        <span>ValQMS</span>
+      </a>
+      <nav>
+        <a href="#tools">Tools</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>Trusted by biotech professionals</span>
+      </div>
+      <h1>Automate Your<br>Excel & LIMS Workflows</h1>
+      <p class="hero-desc">Professional-grade tools for Excel comparison and LIMS master data structuring. Built for regulated biotech environments with 12+ years of industry experience.</p>
+      <div class="cta-group">
+        <a href="#tools" class="btn btn-primary">
+          <span>Explore Tools</span>
+          <span>→</span>
+        </a>
+        <a href="#features" class="btn btn-secondary">
+          <span>Learn More</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="tools-section">
+      <div class="section-header">
+        <h2>Production-Ready Tools</h2>
+        <p>Zero installation. Privacy-first. Enterprise-grade automation.</p>
+      </div>
+      
+      <div class="tools-grid">
+        
+        <!-- Excel Comparison Tool -->
+        <a href="ComparisionTool.html" class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">📊</div>
+            <h3 class="tool-title">ComparisionTool</h3>
+          </div>
+          <p class="tool-desc">Advanced fuzzy matching with multi-column composite keys, custom column mapping, and colorized diff exports with detailed cell-level comments.</p>
+          <ul class="tool-features">
+            <li>Composite key matching (multi-column support)</li>
+            <li>Fuzzy matching with configurable threshold</li>
+            <li>Smart column mapping & ignore options</li>
+            <li>Numbered comments with A1 cell references</li>
+            <li>Color-coded Excel export (green/red/yellow)</li>
+          </ul>
+          <span class="tool-link">Open Tool</span>
+        </a>
+
+        <!-- LIMS Master Data Tool -->
+        <a href="MasterDataTool.html" class="tool-card">
+          <div class="tool-header">
+            <div class="tool-icon">🧬</div>
+            <h3 class="tool-title">MasterDataTool</h3>
+          </div>
+          <p class="tool-desc">Automatic master data structuring with smart multi-line product detection, intelligent field mapping, and auto-truncation for LIMS field templates.</p>
+          <ul class="tool-features">
+            <li>Smart multi-line detection for product names</li>
+            <li>Auto-map user data columns to LIMS fields</li>
+            <li>PDF, Excel, CSV support with parsing</li>
+            <li>Auto-truncate exceeding MAX_LENGTH limits</li>
+            <li>One-click structured Excel download</li>
+          </ul>
+          <span class="tool-link">Open Tool</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+      <div class="section-header">
+        <h2>Why Choose ValQMS Tools?</h2>
+        <p>Built for biotech professionals who need reliable, fast, and secure automation</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <h3>Lightning Fast</h3>
+          <p>Process thousands of rows in seconds with browser-native performance</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">🔒</div>
+          <h3>Privacy First</h3>
+          <p>All processing happens locally. Your data never leaves your device</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">🎯</div>
+          <h3>Zero Installation</h3>
+          <p>No software to install. Works instantly in any modern browser</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">🏢</div>
+          <h3>Enterprise Ready</h3>
+          <p>Built for regulated biotech with 12+ years industry experience</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="logo">
+          <div class="logo-icon">🧪</div>
+          <span>ValQMS Tools</span>
+        </div>
+        <div class="footer-links">
+          <a href="#tools">Tools</a>
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="mailto:contact@valqms.com">Contact</a>
+        </div>
+        <div class="copyright">
+          © 2025 ValQMS. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
