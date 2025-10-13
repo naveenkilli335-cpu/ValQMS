@@ -3,16 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ValQMS Tools - Excel & LIMS Automation</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>ValQMS - Validation & Quality Management System Tools & Training</title>
+  <meta name="description" content="Professional validation tools, QMS training courses, and regulatory compliance materials for biotech professionals">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=3">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
     :root{
       --bg-dark: #0a0f1f;
       --accent:#06b6d4;
+      --accent-secondary:#3b82f6;
       --accent-glow: rgba(6,182,212,0.4);
       --text-primary:#f1f5f9;
       --text-secondary:#94a3b8;
@@ -21,6 +23,8 @@
     }
     
     *{box-sizing:border-box;margin:0;padding:0}
+    
+    html{scroll-behavior:smooth}
     
     body{
       background: linear-gradient(135deg, #0a0f1f 0%, #1a1f3a 50%, #0f1629 100%);
@@ -40,6 +44,7 @@
       opacity:0.15;
       pointer-events:none;
       animation:float 20s ease-in-out infinite;
+      z-index:0;
     }
     body::before{
       width:600px;
@@ -79,6 +84,11 @@
       align-items:center;
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(10,15,31,0.8);
+      border-bottom:1px solid var(--card-border);
     }
     
     .logo{
@@ -169,7 +179,7 @@
     .hero-desc{
       font-size:20px;
       color:var(--text-secondary);
-      max-width:600px;
+      max-width:650px;
       margin:0 auto 40px;
       line-height:1.6;
     }
@@ -219,9 +229,9 @@
       border-color:rgba(255,255,255,0.15);
     }
     
-    /* Tools Grid - Glassmorphism Cards */
-    .tools-section{
-      padding:60px 0;
+    /* Section Styling */
+    .section{
+      padding:80px 0;
     }
     
     .section-header{
@@ -230,16 +240,19 @@
     }
     
     .section-header h2{
-      font-size:36px;
+      font-size:42px;
       font-weight:700;
       margin-bottom:12px;
     }
     
     .section-header p{
       color:var(--text-secondary);
-      font-size:16px;
+      font-size:18px;
+      max-width:600px;
+      margin:0 auto;
     }
     
+    /* Tools Grid */
     .tools-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
@@ -359,12 +372,163 @@
       transform:translateX(4px);
     }
     
-    /* Features Section */
-    .features{
-      padding:80px 0;
-      text-align:center;
+    /* Courses Grid */
+    .courses-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+      gap:24px;
     }
     
+    .course-card{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:20px;
+      overflow:hidden;
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      transition:all 0.3s;
+      text-decoration:none;
+      color:inherit;
+      display:block;
+    }
+    
+    .course-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(6,182,212,0.3);
+      box-shadow:0 16px 48px rgba(6,182,212,0.15);
+    }
+    
+    .course-image{
+      width:100%;
+      height:180px;
+      background:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:48px;
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .course-image::after{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background:linear-gradient(135deg,rgba(59,130,246,0.8),rgba(139,92,246,0.8));
+    }
+    
+    .course-image span{
+      position:relative;
+      z-index:1;
+    }
+    
+    .course-content{
+      padding:28px;
+    }
+    
+    .course-tag{
+      display:inline-block;
+      padding:4px 12px;
+      background:rgba(6,182,212,0.15);
+      color:var(--accent);
+      border-radius:20px;
+      font-size:12px;
+      font-weight:600;
+      margin-bottom:12px;
+    }
+    
+    .course-title{
+      font-size:20px;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+    
+    .course-desc{
+      color:var(--text-secondary);
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:20px;
+    }
+    
+    .course-meta{
+      display:flex;
+      gap:20px;
+      font-size:13px;
+      color:var(--text-secondary);
+      padding-top:16px;
+      border-top:1px solid var(--card-border);
+    }
+    
+    .course-meta span{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    
+    /* Resources Grid */
+    .resources-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:20px;
+    }
+    
+    .resource-card{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      padding:24px;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      transition:all 0.3s;
+      text-decoration:none;
+      color:inherit;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    
+    .resource-card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(6,182,212,0.3);
+      background:rgba(255,255,255,0.05);
+    }
+    
+    .resource-icon{
+      width:48px;
+      height:48px;
+      background:linear-gradient(135deg,var(--accent),#3b82f6);
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+    }
+    
+    .resource-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    
+    .resource-desc{
+      font-size:14px;
+      color:var(--text-secondary);
+      line-height:1.6;
+      flex-grow:1;
+    }
+    
+    .resource-link{
+      color:var(--accent);
+      font-size:14px;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    
+    /* Features */
     .features-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -380,6 +544,7 @@
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
       transition:all 0.3s;
+      text-align:center;
     }
     
     .feature-item:hover{
@@ -414,11 +579,13 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
+      gap:24px;
     }
     
     .footer-links{
       display:flex;
       gap:24px;
+      flex-wrap:wrap;
     }
     
     .footer-links a{
@@ -441,12 +608,13 @@
     @media(max-width:768px){
       h1{font-size:48px}
       .hero{padding:60px 0 80px}
-      .tools-grid{grid-template-columns:1fr}
-      .features-grid{grid-template-columns:1fr}
+      .tools-grid,.courses-grid{grid-template-columns:1fr}
+      .features-grid,.resources-grid{grid-template-columns:1fr}
       .cta-group{flex-direction:column;width:100%}
       .btn{width:100%;justify-content:center}
-      .footer-content{flex-direction:column;gap:24px;text-align:center}
+      .footer-content{flex-direction:column;text-align:center}
       nav{display:none}
+      .section-header h2{font-size:32px}
     }
   </style>
 </head>
@@ -461,69 +629,68 @@
       </a>
       <nav>
         <a href="#tools">Tools</a>
-        <a href="#features">Features</a>
+        <a href="#courses">Courses</a>
+        <a href="#resources">Resources</a>
         <a href="#about">About</a>
       </nav>
     </header>
+
 
     <!-- Hero Section -->
     <section class="hero">
       <div class="badge">
         <span class="badge-dot"></span>
-        <span>Trusted by biotech professionals</span>
+        <span>Trusted by biotech & pharma professionals</span>
       </div>
-      <h1>Automate Your<br>Excel & LIMS Workflows</h1>
-      <p class="hero-desc">Professional-grade tools for Excel comparison and LIMS master data structuring. Built for regulated biotech environments with 12+ years of industry experience.</p>
+      <h1>Validation & QMS<br>Tools & Training</h1>
+      <p class="hero-desc">Professional automation tools, comprehensive validation courses, and regulatory compliance materials. Built by industry experts with 12+ years experience in regulated biotech environments.</p>
       <div class="cta-group">
         <a href="#tools" class="btn btn-primary">
           <span>Explore Tools</span>
           <span>→</span>
         </a>
-        <a href="#features" class="btn btn-secondary">
-          <span>Learn More</span>
+        <a href="#courses" class="btn btn-secondary">
+          <span>Browse Courses</span>
         </a>
       </div>
     </section>
 
+
     <!-- Tools Section -->
-    <section id="tools" class="tools-section">
+    <section id="tools" class="section">
       <div class="section-header">
-        <h2>Production-Ready Tools</h2>
-        <p>Zero installation. Privacy-first. Enterprise-grade automation.</p>
+        <h2>Automation Tools</h2>
+        <p>Production-ready tools for Excel comparison and LIMS automation</p>
       </div>
       
       <div class="tools-grid">
         
-        <!-- Excel Comparison Tool -->
         <a href="ComparisionTool.html" class="tool-card">
           <div class="tool-header">
             <div class="tool-icon">📊</div>
-            <h3 class="tool-title">ComparisionTool</h3>
+            <h3 class="tool-title">Excel Comparison Tool</h3>
           </div>
           <p class="tool-desc">Advanced fuzzy matching with multi-column composite keys, custom column mapping, and colorized diff exports with detailed cell-level comments.</p>
           <ul class="tool-features">
             <li>Composite key matching (multi-column support)</li>
             <li>Fuzzy matching with configurable threshold</li>
             <li>Smart column mapping & ignore options</li>
-            <li>Numbered comments with A1 cell references</li>
-            <li>Color-coded Excel export (green/red/yellow)</li>
+            <li>Color-coded Excel export with comments</li>
           </ul>
           <span class="tool-link">Open Tool</span>
         </a>
 
-        <!-- LIMS Master Data Tool -->
         <a href="MasterDataTool.html" class="tool-card">
           <div class="tool-header">
             <div class="tool-icon">🧬</div>
-            <h3 class="tool-title">MasterDataTool</h3>
+            <h3 class="tool-title">LIMS Master Data Tool</h3>
           </div>
-          <p class="tool-desc">Automatic master data structuring with smart multi-line product detection, intelligent field mapping, and auto-truncation for LIMS field templates.</p>
+          <p class="tool-desc">Automatic master data structuring with smart multi-line product detection, intelligent field mapping, and auto-truncation for LIMS templates.</p>
           <ul class="tool-features">
-            <li>Smart multi-line detection for product names</li>
-            <li>Auto-map user data columns to LIMS fields</li>
+            <li>Smart multi-line detection for products</li>
+            <li>Auto-map data columns to LIMS fields</li>
             <li>PDF, Excel, CSV support with parsing</li>
-            <li>Auto-truncate exceeding MAX_LENGTH limits</li>
-            <li>One-click structured Excel download</li>
+            <li>Auto-truncate exceeding MAX_LENGTH</li>
           </ul>
           <span class="tool-link">Open Tool</span>
         </a>
@@ -531,11 +698,114 @@
       </div>
     </section>
 
-    <!-- Features -->
-    <section id="features" class="features">
+
+    <!-- Courses Section -->
+    <section id="courses" class="section">
       <div class="section-header">
-        <h2>Why Choose ValQMS Tools?</h2>
-        <p>Built for biotech professionals who need reliable, fast, and secure automation</p>
+        <h2>Validation & QMS Courses</h2>
+        <p>Comprehensive training programs for regulated environments</p>
+      </div>
+      
+      <div class="courses-grid">
+        
+        <a href="#" class="course-card">
+          <div class="course-image">
+            <span>📋</span>
+          </div>
+          <div class="course-content">
+            <div class="course-tag">CSV / Validation</div>
+            <h3 class="course-title">Computer System Validation (CSV) Fundamentals</h3>
+            <p class="course-desc">Master the fundamentals of CSV for pharmaceutical and biotech industries. Learn GAMP 5, risk-based validation, and regulatory requirements.</p>
+            <div class="course-meta">
+              <span>⏱️ 12 hours</span>
+              <span>📚 8 modules</span>
+              <span>🎓 Certificate</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="course-card">
+          <div class="course-image">
+            <span>🧪</span>
+          </div>
+          <div class="course-content">
+            <div class="course-tag">LIMS</div>
+            <h3 class="course-title">LabWare LIMS 8 Administration</h3>
+            <p class="course-desc">Complete guide to LabWare LIMS 8 setup, configuration, and administration. Includes Visual Basic scripting and report generation.</p>
+            <div class="course-meta">
+              <span>⏱️ 20 hours</span>
+              <span>📚 12 modules</span>
+              <span>🎓 Certificate</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="course-card">
+          <div class="course-image">
+            <span>📊</span>
+          </div>
+          <div class="course-content">
+            <div class="course-tag">QMS</div>
+            <h3 class="course-title">Quality Management System (QMS) Essentials</h3>
+            <p class="course-desc">Comprehensive training on ISO 13485, 21 CFR Part 820, and quality systems for medical device and pharmaceutical companies.</p>
+            <div class="course-meta">
+              <span>⏱️ 15 hours</span>
+              <span>📚 10 modules</span>
+              <span>🎓 Certificate</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- Resources Section -->
+    <section id="resources" class="section">
+      <div class="section-header">
+        <h2>QMS Resources & Materials</h2>
+        <p>Templates, guides, and reference materials for validation professionals</p>
+      </div>
+      
+      <div class="resources-grid">
+        
+        <a href="#" class="resource-card">
+          <div class="resource-icon">📄</div>
+          <h4 class="resource-title">Validation Templates</h4>
+          <p class="resource-desc">Ready-to-use validation protocols, test scripts, and documentation templates compliant with FDA and EMA guidelines.</p>
+          <span class="resource-link">Browse Templates →</span>
+        </a>
+
+        <a href="#" class="resource-card">
+          <div class="resource-icon">📖</div>
+          <h4 class="resource-title">Regulatory Guides</h4>
+          <p class="resource-desc">Comprehensive guides covering 21 CFR Part 11, GAMP 5, Annex 11, and other regulatory requirements.</p>
+          <span class="resource-link">View Guides →</span>
+        </a>
+
+        <a href="#" class="resource-card">
+          <div class="resource-icon">✅</div>
+          <h4 class="resource-title">QMS Checklists</h4>
+          <p class="resource-desc">Audit checklists, compliance matrices, and quality system assessment tools for GxP environments.</p>
+          <span class="resource-link">Get Checklists →</span>
+        </a>
+
+        <a href="#" class="resource-card">
+          <div class="resource-icon">🎯</div>
+          <h4 class="resource-title">Best Practices</h4>
+          <p class="resource-desc">Industry best practices, case studies, and lessons learned from 12+ years in regulated biotech.</p>
+          <span class="resource-link">Read More →</span>
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- Features Section -->
+    <section id="about" class="section">
+      <div class="section-header">
+        <h2>Why Choose ValQMS?</h2>
+        <p>Built for professionals who demand reliability, security, and expertise</p>
       </div>
       
       <div class="features-grid">
@@ -559,22 +829,24 @@
         
         <div class="feature-item">
           <div class="feature-icon">🏢</div>
-          <h3>Enterprise Ready</h3>
-          <p>Built for regulated biotech with 12+ years industry experience</p>
+          <h3>Industry Expertise</h3>
+          <p>Built with 12+ years experience in regulated biotech and pharma</p>
         </div>
       </div>
     </section>
+
 
     <!-- Footer -->
     <footer>
       <div class="footer-content">
         <div class="logo">
           <div class="logo-icon">🧪</div>
-          <span>ValQMS Tools</span>
+          <span>ValQMS</span>
         </div>
         <div class="footer-links">
           <a href="#tools">Tools</a>
-          <a href="#features">Features</a>
+          <a href="#courses">Courses</a>
+          <a href="#resources">Resources</a>
           <a href="#about">About</a>
           <a href="mailto:contact@valqms.com">Contact</a>
         </div>
