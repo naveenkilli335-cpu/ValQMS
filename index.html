@@ -524,7 +524,6 @@
   (function checkAuth() {
     const user = localStorage.getItem('valqmsUser');
     
-    // If no user, redirect to login
     if (!user) {
       window.location.href = 'login.html';
       return;
@@ -533,13 +532,11 @@
     try {
       const userData = JSON.parse(user);
       
-      // Check if logged in
       if (!userData.loggedIn) {
         window.location.href = 'login.html';
         return;
       }
       
-      // Check session expiry (24 hours)
       const sessionDuration = 24 * 60 * 60 * 1000;
       const now = Date.now();
       
@@ -554,7 +551,7 @@
       localStorage.removeItem('valqmsUser');
       window.location.href = 'login.html';
     }
-  })();
+  })(); // ✅ This () calls the function immediately!
 
   // Initialize theme/background
   (function init(){
@@ -622,15 +619,12 @@
   function updateUserUI(){
     const user=getSession();
     if(user){
-      // Hide login button, show user menu
       if(loginLink) loginLink.style.display='none';
       userMenu.style.display='inline-block';
       
-      // Set user initials
       const displayName = user.name || user.email.split('@')[0];
       userBadge.textContent=getInitials(displayName);
     }else{
-      // Show login button, hide user menu
       userMenu.style.display='none';
       if(loginLink) loginLink.style.display='inline-block';
     }
@@ -641,19 +635,17 @@
     e.stopPropagation();
     const isOpen=userDropdown.style.display==='block';
     userDropdown.style.display=isOpen?'none':'block';
-    // Close other dropdowns
     themeDropdown.classList.remove('active');
     bgDropdown.classList.remove('active');
   });
 
-  // Close dropdown when clicking outside
   document.addEventListener('click',e=>{
     if(!userMenu.contains(e.target)){
       userDropdown.style.display='none';
     }
   });
 
-  // Logout functionality
+  // Logout
   logoutBtn.addEventListener('click',()=>{
     if(confirm('Are you sure you want to logout?')){
       localStorage.removeItem('valqmsUser');

@@ -29,16 +29,8 @@
     [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.15);--accent-glow:rgba(132,204,22,0.4)}
     [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.15);--accent-glow:rgba(124,58,237,0.4)}
 
-    :root{
-      --text:#ffffff;
-      --text-dim:#94a3b8;
-      --surface:rgba(255,255,255,0.05);
-      --surface-hover:rgba(255,255,255,0.08);
-      --border:rgba(255,255,255,0.1);
-      --glass:rgba(255,255,255,0.03);
-    }
+    :root{--text:#ffffff;--text-dim:#94a3b8;--surface:rgba(255,255,255,0.05);--surface-hover:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.1);--glass:rgba(255,255,255,0.03)}
 
-    /* ANIMATED BACKGROUNDS */
     [data-bg="mesh"] body{background:#0f172a;position:relative}
     [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%),radial-gradient(circle at 40% 80%, rgba(236,72,153,0.1) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
     [data-bg="gradient"] body{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);position:relative}
@@ -91,7 +83,7 @@
     .form-row{display:flex;justify-content:space-between;align-items:center;margin:16px 0 24px}
     .checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dim);cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400}
     .checkbox-label input{width:auto;cursor:pointer}
-    .link{color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s}
+    .link{color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;cursor:pointer}
     .link:hover{color:var(--accent-bright)}
 
     .error{color:#f87171;font-size:13px;min-height:18px;margin-bottom:20px;font-weight:500}
@@ -176,7 +168,7 @@
           <input id="showPassword" type="checkbox">
           <span>Show password</span>
         </label>
-        <a href="index.html" class="link">Cancel</a>
+        <a class="link" id="forgotPasswordLink">Forgot password?</a>
       </div>
 
       <div id="error" class="error"></div>
@@ -201,10 +193,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script type="module">
-    // ===== REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS =====
-    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
-    // ================================================================
+    // ===== REPLACE WITH YOUR ACTUAL SUPABASE CREDENTIALS =====
+    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';  // Your actual URL
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';  // Your actual key
+    // ==========================================================
     
     const { createClient } = supabase;
     const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -237,6 +229,7 @@
     // UI state
     let isSignUpMode = false;
     const errorDiv = document.getElementById('error');
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
 
     // Toggle Sign In/Up
     document.getElementById('toggleMode').addEventListener('click', (e) => {
@@ -265,6 +258,7 @@
         els.googleText.textContent = 'Sign up with Google';
         els.nameGroup.classList.remove('hidden');
         els.confirmGroup.classList.remove('hidden');
+        forgotPasswordLink.style.display = 'none';
       } else {
         els.title.textContent = 'Sign in';
         els.subtitle.textContent = 'Enter your credentials to access your account';
@@ -275,10 +269,38 @@
         els.googleText.textContent = 'Continue with Google';
         els.nameGroup.classList.add('hidden');
         els.confirmGroup.classList.add('hidden');
+        forgotPasswordLink.style.display = 'inline';
       }
       
       document.getElementById('authForm').reset();
       errorDiv.textContent = '';
+    });
+
+    // Forgot Password
+    forgotPasswordLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      
+      if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        errorDiv.textContent = '⚠️ Please enter your email address first';
+        errorDiv.className = 'error';
+        document.getElementById('email').focus();
+        return;
+      }
+
+      try {
+        const { error } = await sb.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/reset-password.html'
+        });
+
+        if (error) throw error;
+
+        errorDiv.textContent = '✓ Password reset email sent! Check your inbox.';
+        errorDiv.className = 'success';
+      } catch (error) {
+        errorDiv.textContent = '⚠️ ' + error.message;
+        errorDiv.className = 'error';
+      }
     });
 
     // Show password
@@ -386,14 +408,28 @@
 
     // Google Sign-In
     document.getElementById('googleSignIn').addEventListener('click', async () => {
+      errorDiv.textContent = '';
+      
       try {
-        const { error } = await sb.auth.signInWithOAuth({
+        const { data, error } = await sb.auth.signInWithOAuth({
           provider: 'google',
-          options: { redirectTo: window.location.origin + '/index.html' }
+          options: {
+            redirectTo: window.location.origin + '/index.html',
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+            }
+          }
         });
+        
         if (error) throw error;
+        
+        // OAuth redirects automatically, no need for further action
+        
       } catch (error) {
-        alert('Google Sign-In not configured yet. Use email/password.');
+        console.error('Google OAuth Error:', error);
+        errorDiv.textContent = '⚠️ Google Sign-In not fully configured. Please use email/password or complete OAuth setup in Supabase dashboard.';
+        errorDiv.className = 'error';
       }
     });
 
