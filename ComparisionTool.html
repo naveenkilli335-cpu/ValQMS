@@ -1,96 +1,520 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Advanced Excel Comparison Tool — Themed & Fuzzy</title>
-
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-  <!-- SheetJS for Excel parsing -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Excel Comparison Tool — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- SheetJS & Fuse.js -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <!-- Fuse.js for fuzzy matching -->
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
 
   <style>
-    :root{
-      --bg-light: #f7fafc; --card-light:#ffffff; --text-light:#0f1724; --accent:#06b6d4;
-      --bg-dark: #071024; --card-dark: rgba(255,255,255,0.02); --text-dark:#e6eef6;
-      --muted-dark: #9aa4b2;
-      --ok: #10b981; --warn:#fbbf24; --err:#ef4444;
-    }
-    html[data-theme="dark"]{ --bg:var(--bg-dark); --card:var(--card-dark); --text:var(--text-dark); --muted:var(--muted-dark); }
-    html[data-theme="light"]{ --bg:var(--bg-light); --card:var(--card-light); --text:var(--text-light); --muted:#475569; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    
+    /* === ALL 15 COLOR THEMES === */
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
 
-    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
-    body{margin:0;background:var(--bg);color:var(--text);padding:28px;transition:background .3s,color .3s}
-    .container{max-width:1200px;margin:0 auto}
-    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-    .brand{display:flex;gap:12px;align-items:center}
-    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.15);border:1px solid rgba(255,255,255,0.03)}
-    h1{margin:0;font-size:18px}
-    .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:12px}
-    .file-input{display:flex;flex-direction:column;gap:8px}
-    input[type=file]{padding:8px;background:transparent;color:var(--muted)}
-    label.small{font-size:12px;color:var(--muted)}
-    .options{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .btn{background:var(--accent);color:#022;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
-    .btn.secondary{background:transparent;border:1px solid rgba(0,0,0,0.08);color:var(--muted)}
-    .layout{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-    .pane{min-height:300px;overflow:auto}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th,td{padding:6px 8px;border-bottom:1px solid rgba(0,0,0,0.06);text-align:left}
-    th{position:sticky;top:0;background:rgba(255,255,255,0.01);z-index:2}
-    td.diff-cell{background:rgba(251,191,36,0.12)} /* yellow */
-    td.added{background:rgba(16,185,129,0.10)} /* green */
-    td.removed{background:rgba(239,68,68,0.08)} /* red */
-    .legend{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-    .legend span{display:inline-flex;gap:6px;align-items:center;padding:6px 8px;border-radius:8px;font-size:13px;background:rgba(255,255,255,0.01);color:var(--muted)}
-    .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
-    .dot.diff{background:var(--warn)}.dot.add{background:var(--ok)}.dot.rem{background:var(--err)}
-    .footer{margin-top:12px;display:flex;gap:8px;align-items:center}
-    .select{padding:8px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted)}
-    .small{font-size:12px;color:var(--muted)}
-    .summary{margin-top:12px;color:var(--muted);font-size:13px}
-    .theme-toggle{cursor:pointer;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)}
-    .mapping-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:6px}
-    .key-checkboxes{display:flex;flex-direction:column;gap:4px;max-height:150px;overflow-y:auto;padding:4px;border:1px solid rgba(255,255,255,0.05);border-radius:6px}
-    @media(max-width:880px){ .layout{grid-template-columns:1fr} .controls{grid-template-columns:1fr} }
+    :root{
+      --bg:#0a0e1a;
+      --surface:#1a1f2e;
+      --border:rgba(255,255,255,0.08);
+      --text:#f8fafc;
+      --text-dim:#94a3b8;
+      --ok:#10b981;
+      --warn:#fbbf24;
+      --err:#ef4444;
+    }
+    
+    html{scroll-behavior:smooth}
+    
+    body{
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      padding:24px;
+      transition:background 0.3s,color 0.3s;
+    }
+
+    /* Header */
+    .topbar{
+      max-width:1400px;
+      margin:0 auto 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 24px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      backdrop-filter:blur(12px);
+    }
+
+    .brand{display:flex;gap:16px;align-items:center}
+
+    .logo-container{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--text);
+    }
+
+    .logo-mark{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:40px;
+      height:40px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 4px 16px var(--accent-dim);
+      transition:all 0.3s;
+    }
+
+    .logo-mark img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      padding:5px;
+    }
+
+    .brand-text h1{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-0.5px;
+      margin:0;
+    }
+
+    .brand-text .subtitle{
+      font-size:13px;
+      color:var(--text-dim);
+      font-weight:500;
+    }
+
+    .header-actions{display:flex;gap:12px;align-items:center}
+
+    .btn-home{
+      padding:8px 16px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--text-dim);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      transition:all 0.2s;
+    }
+
+    .btn-home:hover{
+      background:var(--accent-dim);
+      color:var(--text);
+      border-color:var(--accent);
+    }
+
+    /* Container */
+    .container{max-width:1400px;margin:0 auto}
+
+    .card{
+      background:var(--surface);
+      padding:24px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      margin-bottom:16px;
+      transition:all 0.3s;
+    }
+
+    .card h3{
+      font-size:16px;
+      font-weight:700;
+      margin:0 0 12px 0;
+      letter-spacing:-0.3px;
+    }
+
+    /* How to Use with Toggle */
+    .how-to-use{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px 24px;
+      margin-bottom:24px;
+      transition:all 0.3s;
+    }
+
+    .how-to-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .how-to-header h3{
+      font-size:16px;
+      font-weight:700;
+      margin:0;
+      color:var(--accent);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition:color 0.3s;
+    }
+
+    .toggle-icon{
+      font-size:14px;
+      transition:transform 0.3s;
+    }
+
+    .toggle-icon.collapsed{
+      transform:rotate(-90deg);
+    }
+
+    .how-to-content{
+      overflow:hidden;
+      transition:max-height 0.3s ease-out, opacity 0.3s;
+      max-height:500px;
+      opacity:1;
+    }
+
+    .how-to-content.hidden{
+      max-height:0;
+      opacity:0;
+      margin-top:0;
+    }
+
+    .how-to-content ul{
+      margin:12px 0 0 20px;
+      color:var(--text-dim);
+      font-size:13px;
+      line-height:1.8;
+    }
+
+    .how-to-content li{margin-bottom:6px}
+
+    /* Controls */
+    .controls{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .file-input{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    label.small{
+      font-size:13px;
+      color:var(--text-dim);
+      font-weight:600;
+    }
+
+    input[type=file]{
+      padding:10px;
+      background:var(--accent-dim);
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--text-dim);
+      font-size:13px;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+
+    input[type=file]:hover{
+      border-color:var(--accent);
+      background:var(--accent-dim);
+      filter:brightness(1.2);
+    }
+
+    .select{
+      padding:10px;
+      border-radius:10px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text);
+      font-size:13px;
+      font-weight:500;
+      transition:all 0.2s;
+    }
+
+    .select:hover{border-color:var(--accent)}
+
+    .options{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .options label{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+    }
+
+    /* Buttons */
+    .btn{
+      padding:10px 20px;
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+
+    .btn:hover{
+      background:var(--accent-bright);
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px var(--accent-dim);
+    }
+
+    .btn.secondary{
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text-dim);
+    }
+
+    .btn.secondary:hover{
+      background:var(--accent-dim);
+      border-color:var(--accent);
+      color:var(--text);
+    }
+
+    /* Layout */
+    .layout{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+
+    .pane{
+      min-height:400px;
+      max-height:600px;
+      overflow:auto;
+    }
+
+    .pane-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .pane-header h3{
+      font-size:15px;
+      font-weight:700;
+      margin:0;
+    }
+
+    /* Table */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+
+    th,td{
+      padding:10px 12px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+    }
+
+    th{
+      position:sticky;
+      top:0;
+      background:var(--surface);
+      z-index:2;
+      font-weight:700;
+      color:var(--text);
+    }
+
+    td.diff-cell{background:rgba(251,191,36,0.15)}
+    td.added{background:rgba(16,185,129,0.12)}
+    td.removed{background:rgba(239,68,68,0.10)}
+
+    /* Legend */
+    .legend{
+      display:flex;
+      gap:12px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    .legend span{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:10px;
+      font-size:13px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text-dim);
+      font-weight:500;
+    }
+
+    .dot{
+      width:12px;
+      height:12px;
+      border-radius:4px;
+      display:inline-block;
+    }
+
+    .dot.diff{background:var(--warn)}
+    .dot.add{background:var(--ok)}
+    .dot.rem{background:var(--err)}
+
+    /* Summary */
+    .summary{
+      margin-top:16px;
+      padding:16px;
+      background:var(--accent-dim);
+      border:1px solid var(--accent);
+      border-radius:10px;
+      font-size:14px;
+      color:var(--text);
+      font-weight:600;
+      transition:all 0.3s;
+    }
+
+    /* Key checkboxes */
+    .key-checkboxes{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      max-height:180px;
+      overflow-y:auto;
+      padding:8px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:var(--accent-dim);
+    }
+
+    .key-checkboxes label{
+      display:flex;
+      gap:8px;
+      cursor:pointer;
+      padding:6px;
+      border-radius:6px;
+      transition:background 0.2s;
+    }
+
+    .key-checkboxes label:hover{
+      background:rgba(255,255,255,0.05);
+    }
+
+    /* Mapping */
+    .mapping-row{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      gap:12px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .mapping-row span{
+      text-align:center;
+      color:var(--accent);
+      font-weight:700;
+      transition:color 0.3s;
+    }
+
+    /* Responsive */
+    @media(max-width:768px){
+      .layout{grid-template-columns:1fr}
+      .controls{grid-template-columns:1fr}
+      .topbar{flex-direction:column;gap:16px;text-align:center}
+      .header-actions{width:100%;justify-content:center}
+    }
   </style>
 </head>
 <body>
+  
+  <!-- Header -->
+  <div class="topbar">
+    <div class="brand">
+      <a href="index.html" class="logo-container">
+        <div class="logo-mark">
+          <img src="favicon.jpg" alt="ValQMS Logo">
+        </div>
+        <div class="brand-text">
+          <h1>ValQMS Tools</h1>
+          <div class="subtitle">Excel Comparison Tool</div>
+        </div>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-home">← Home</a>
+    </div>
+  </div>
+
   <div class="container">
-    <div class="topbar">
-      <div class="brand">
-        <div class="card" style="padding:10px 12px;display:flex;align-items:center;gap:10px">
-          <img src="https://21st.dev/assets/21st-dev-logo-a8a8.svg" alt="21st" style="width:28px;opacity:.95">
-        </div>
-        <div>
-          <h1>Advanced Excel Comparison</h1>
-          <div class="small">Fuzzy keys, multi-column composite keys, custom column mapping & colorized export</div>
-        </div>
+    
+    <!-- How to Use with Toggle -->
+    <div class="how-to-use">
+      <div class="how-to-header" id="howToToggle">
+        <h3>📖 How to Use</h3>
+        <span class="toggle-icon" id="toggleIcon">▼</span>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button id="themeBtn" class="theme-toggle">🌙 Dark</button>
+      <div class="how-to-content" id="howToContent">
+        <ul>
+          <li>Step-1:Upload both Excel/CSV files and select sheets from dropdowns</li>
+          <li>Step-2:Select one or more key columns to create a composite unique identifier</li>
+          <li>Step-3:Use Column Mapping to compare columns with different names</li>
+          <li>Step-4:Select <strong>(ignore)</strong> for columns you don't want to compare</li>
+          <li>Step-5:Click Compare to highlight differences in both files</li>
+          <li>Step-6:Export creates an Excel file with Status & Comments columns</li>
+        </ul>
       </div>
     </div>
 
+    <!-- Controls -->
     <section class="card">
       <div class="controls">
         <div class="file-input">
-          <label class="small">Left file (base)</label>
-          <input id="fileA" type="file" accept=".xlsx,.xls,.csv" />
+          <label class="small">Base File (Left)</label>
+          <input id="fileA" type="file" accept=".xlsx,.xls,.csv">
           <select id="sheetA" class="select"></select>
         </div>
 
         <div class="file-input">
-          <label class="small">Right file (compare)</label>
-          <input id="fileB" type="file" accept=".xlsx,.xls,.csv" />
+          <label class="small">Compare File (Right)</label>
+          <input id="fileB" type="file" accept=".xlsx,.xls,.csv">
           <select id="sheetB" class="select"></select>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:8px">
-          <label class="small">Match settings</label>
+          <label class="small">Match Settings</label>
           <div class="options">
             <select id="fuzzyLevel" class="select">
               <option value="0">Exact match</option>
@@ -98,7 +522,9 @@
               <option value="0.5" selected>Medium fuzziness</option>
               <option value="0.8">High fuzziness</option>
             </select>
-            <label class="small"><input id="ignoreOrder" type="checkbox"> Ignore row order</label>
+          </div>
+          <div class="options">
+            <label class="small"><input id="ignoreOrder" type="checkbox"> Ignore order</label>
             <label class="small"><input id="trimSpaces" type="checkbox" checked> Trim spaces</label>
           </div>
         </div>
@@ -107,86 +533,103 @@
           <label class="small">Actions</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button id="compareBtn" class="btn">Compare</button>
-            <button id="autoMapBtn" class="btn secondary">Auto-map columns</button>
-            <button id="exportDiff" class="btn">Export Excel (with Comments)</button>
+            <button id="exportDiff" class="btn">Export Excel</button>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button id="autoMapBtn" class="btn secondary">Auto-map</button>
             <button id="resetBtn" class="btn secondary">Reset</button>
           </div>
         </div>
       </div>
-
-      <!-- Multi-column key selection -->
-      <div class="card" style="margin-top:12px">
-        <h3 style="margin:0 0 8px 0">Composite Key Columns (select multiple)</h3>
-        <div class="small" style="margin-bottom:8px">Check one or more columns to form a composite key for row matching. If no columns selected, auto-detect will be used.</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div>
-            <div class="small" style="margin-bottom:4px">Base Key Columns:</div>
-            <div id="leftKeyCheckboxes" class="key-checkboxes"></div>
-          </div>
-          <div>
-            <div class="small" style="margin-bottom:4px">Compare Key Columns:</div>
-            <div id="rightKeyCheckboxes" class="key-checkboxes"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Column Mapping Section with (ignore) option -->
-      <div class="card" style="margin-top:12px">
-        <h3 style="margin:0 0 8px 0">Column Mapping (Optional)</h3>
-        <div class="small" style="margin-bottom:8px">Map Base columns to Compare columns. Select <strong>(ignore)</strong> to skip columns during comparison.</div>
-        <div id="mappingContainer"></div>
-        <button id="applyMappingBtn" class="btn secondary" style="margin-top:8px">Apply Mapping</button>
-      </div>
-
-      <div class="layout">
-        <div class="pane card">
-          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
-            <h3 style="margin:0">Left: <span id="leftName" class="small">—</span></h3>
-          </div>
-          <div id="leftPreview"></div>
-        </div>
-
-        <div class="pane card">
-          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
-            <h3 style="margin:0">Right: <span id="rightName" class="small">—</span></h3>
-          </div>
-          <div id="rightPreview"></div>
-        </div>
-      </div>
-
-      <div class="legend">
-        <span><i class="dot diff"></i> Cell difference</span>
-        <span><i class="dot add"></i> Added</span>
-        <span><i class="dot rem"></i> Removed</span>
-      </div>
-
-      <div class="footer">
-        <div class="small">Summary:</div>
-        <div id="summary" class="summary">No comparison yet.</div>
-      </div>
-
-      <details style="margin-top:12px"><summary>Notes</summary>
-        <ul>
-          <li>Choose sheets from dropdowns after upload.</li>
-          <li>Select one or more key columns to create a composite unique identifier for row matching.</li>
-          <li>Use Column Mapping to compare Base column "A" with Compare column "B" if they have different names.</li>
-          <li>Select <strong>(ignore)</strong> for columns you don't want to compare.</li>
-          <li>Export creates a Comparison sheet with Status & Comments columns and attempts to style rows.</li>
-        </ul>
-      </details>
     </section>
+
+    <!-- Composite Keys -->
+    <section class="card">
+      <h3>Composite Key Columns</h3>
+      <div class="small" style="margin-bottom:12px;color:var(--text-dim)">Select one or more columns to form a composite key for row matching</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div class="small" style="margin-bottom:8px">Base Key Columns:</div>
+          <div id="leftKeyCheckboxes" class="key-checkboxes"></div>
+        </div>
+        <div>
+          <div class="small" style="margin-bottom:8px">Compare Key Columns:</div>
+          <div id="rightKeyCheckboxes" class="key-checkboxes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Column Mapping -->
+    <section class="card">
+      <h3>Column Mapping</h3>
+      <div class="small" style="margin-bottom:12px;color:var(--text-dim)">Map Base columns to Compare columns. Select <strong>(ignore)</strong> to skip columns</div>
+      <div id="mappingContainer"></div>
+      <button id="applyMappingBtn" class="btn secondary" style="margin-top:12px">Apply Mapping</button>
+    </section>
+
+    <!-- Preview -->
+    <div class="layout">
+      <div class="pane card">
+        <div class="pane-header">
+          <h3>Base File</h3>
+          <span id="leftName" class="small">—</span>
+        </div>
+        <div id="leftPreview"></div>
+      </div>
+
+      <div class="pane card">
+        <div class="pane-header">
+          <h3>Compare File</h3>
+          <span id="rightName" class="small">—</span>
+        </div>
+        <div id="rightPreview"></div>
+      </div>
+    </div>
+
+    <!-- Legend & Summary -->
+    <div class="legend">
+      <span><i class="dot diff"></i> Cell difference</span>
+      <span><i class="dot add"></i> Added row</span>
+      <span><i class="dot rem"></i> Removed row</span>
+    </div>
+
+    <div id="summary" class="summary">No comparison yet. Upload files and click Compare.</div>
+
   </div>
 
 <script>
-/* ---------------------
-  State & helpers
-----------------------*/
+/* === HOW TO USE TOGGLE === */
+const howToToggle = document.getElementById('howToToggle');
+const howToContent = document.getElementById('howToContent');
+const toggleIcon = document.getElementById('toggleIcon');
+
+// Load toggle state
+const howToVisible = localStorage.getItem('howToVisible') !== 'false';
+if(!howToVisible){
+  howToContent.classList.add('hidden');
+  toggleIcon.classList.add('collapsed');
+}
+
+howToToggle.addEventListener('click', () => {
+  const isHidden = howToContent.classList.toggle('hidden');
+  toggleIcon.classList.toggle('collapsed');
+  localStorage.setItem('howToVisible', !isHidden);
+});
+
+/* === THEME SYNC (Shared with index.html) === */
+function initTheme(){
+  const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+}
+initTheme();
+
+/* === REST OF YOUR EXISTING CODE === */
 const el = id => document.getElementById(id);
 let workbookA = null, workbookB = null;
 let leftSheetName = '', rightSheetName = '';
 let dataA = [], dataB = [];
 let windowReport = null;
-let columnMap = {}; // stores Base → Compare column mappings (or '__IGNORE__')
+let columnMap = {};
 
 function showEmpty(v){
   return (v === '' || v === null || v === undefined) ? 'empty' : String(v);
@@ -226,7 +669,7 @@ function autoDetectKey(headers){
   const lower = headers.map(h=>h.toLowerCase());
   for(let c of candidates){
     const idx = lower.findIndex(x=>x.includes(c));
-    if(idx>=0) return [headers[idx]]; // return array
+    if(idx>=0) return [headers[idx]];
   }
   return headers[0] ? [headers[0]] : [];
 }
@@ -256,9 +699,7 @@ function renderTableWithHighlights(container, rows, highlights){
   table.appendChild(tbody); container.appendChild(table);
 }
 
-/* ---------------------
-  File load & sheet selection
-----------------------*/
+/* File load */
 el('fileA').addEventListener('change', e=>{
   const f = e.target.files[0]; if(!f) return;
   readAsWorkbook(f,(err,wb)=>{
@@ -307,9 +748,7 @@ el('sheetB').addEventListener('change', e=>{
   renderTableWithHighlights(el('rightPreview'), dataB, {});
 });
 
-/* ---------------------
-  Populate key checkboxes for multi-column composite keys
-----------------------*/
+/* Key checkboxes */
 function populateKeyCheckboxes(){
   const headersA = getHeaders(dataA);
   const headersB = getHeaders(dataB);
@@ -326,16 +765,12 @@ function populateKeyCheckboxes(){
     return;
   }
 
-  // Auto-detect and pre-check first key column
   const autoA = autoDetectKey(headersA);
   const autoB = autoDetectKey(headersB);
   
   headersA.forEach(h=>{
     const label = document.createElement('label');
     label.className = 'small';
-    label.style.display = 'flex';
-    label.style.gap = '6px';
-    label.style.cursor = 'pointer';
     const cb = document.createElement('input');
     cb.type = 'checkbox';
     cb.value = h;
@@ -349,9 +784,6 @@ function populateKeyCheckboxes(){
   headersB.forEach(h=>{
     const label = document.createElement('label');
     label.className = 'small';
-    label.style.display = 'flex';
-    label.style.gap = '6px';
-    label.style.cursor = 'pointer';
     const cb = document.createElement('input');
     cb.type = 'checkbox';
     cb.value = h;
@@ -363,9 +795,7 @@ function populateKeyCheckboxes(){
   });
 }
 
-/* ---------------------
-  Build column mapping UI with (ignore) option
-----------------------*/
+/* Column mapping */
 function buildColumnMappingUI(){
   const container = el('mappingContainer');
   container.innerHTML = '';
@@ -387,7 +817,6 @@ function buildColumnMappingUI(){
 
     const arrow = document.createElement('span');
     arrow.textContent = '→';
-    arrow.className = 'small';
 
     const selB = document.createElement('select');
     selB.className = 'select';
@@ -403,9 +832,6 @@ function buildColumnMappingUI(){
   });
 }
 
-/* ---------------------
-  Apply mapping button
-----------------------*/
 el('applyMappingBtn').addEventListener('click', ()=>{
   const selects = el('mappingContainer').querySelectorAll('select[data-base-col]');
   columnMap = {};
@@ -414,13 +840,9 @@ el('applyMappingBtn').addEventListener('click', ()=>{
     const compare = sel.value || base;
     columnMap[base] = compare;
   });
-  alert('Column mapping applied. Click Compare to use it.');
-  console.log('Column map:', columnMap);
+  alert('Column mapping applied!');
 });
 
-/* ---------------------
-  Auto-map columns (simple header fuzzy)
-----------------------*/
 el('autoMapBtn').addEventListener('click', ()=>{
   const headersA = getHeaders(dataA), headersB = getHeaders(dataB);
   if(!headersA.length || !headersB.length) return alert('Load both sheets first');
@@ -431,8 +853,7 @@ el('autoMapBtn').addEventListener('click', ()=>{
     map[h] = res.length ? res[0].item : h;
   });
   columnMap = map;
-  alert('Auto-mapping complete (console). Check column mapping UI and adjust if needed, then Apply Mapping.');
-  console.log('Auto column map', map);
+  alert('Auto-mapping complete!');
   
   const selects = el('mappingContainer').querySelectorAll('select[data-base-col]');
   selects.forEach(sel=>{
@@ -441,11 +862,9 @@ el('autoMapBtn').addEventListener('click', ()=>{
   });
 });
 
-/* ---------------------
-  Compare logic with multi-column composite keys
-----------------------*/
+/* Compare - [YOUR EXISTING COMPARE CODE HERE - keeping it exactly as is] */
 el('compareBtn').addEventListener('click', ()=>{
-  if(!dataA.length || !dataB.length) return alert('Load both sheets and select the sheets');
+  if(!dataA.length || !dataB.length) return alert('Load both sheets');
 
   const trim = el('trimSpaces').checked;
   const fuzzyLevel = parseFloat(el('fuzzyLevel').value);
@@ -458,22 +877,19 @@ el('compareBtn').addEventListener('click', ()=>{
     b = b.map(r=>{ Object.keys(r).forEach(k=>{ if(typeof r[k]==='string') r[k]=r[k].trim(); }); return r; });
   }
 
-  // Tag original indices
   a.forEach((r, idx) => { r.__idx = idx; });
   b.forEach((r, idx) => { r.__idx = idx; });
 
   const headersA = getHeaders(a), headersB = getHeaders(b);
   
-  // Get checked key columns
   const leftKeys = Array.from(el('leftKeyCheckboxes').querySelectorAll('input:checked')).map(cb=>cb.value);
   const rightKeys = Array.from(el('rightKeyCheckboxes').querySelectorAll('input:checked')).map(cb=>cb.value);
   
   let keysA = leftKeys.length ? leftKeys : autoDetectKey(headersA);
   let keysB = rightKeys.length ? rightKeys : autoDetectKey(headersB);
   
-  if(!keysA.length || !keysB.length) return alert('Could not determine key columns — please check at least one.');
+  if(!keysA.length || !keysB.length) return alert('Select at least one key column');
 
-  // Build composite key maps
   const mapB = new Map(); 
   b.forEach((r, idx) => {
     const compositeKey = keysB.map(k => String(r[k] ?? '')).join('|');
@@ -485,19 +901,16 @@ el('compareBtn').addEventListener('click', ()=>{
     fuseKeys = new Fuse(Array.from(mapB.keys()), {threshold: fuzzyLevel});
   }
 
-  // Use column map if set, else default 1:1
   const finalMap = Object.keys(columnMap).length ? columnMap : {};
   if(!Object.keys(finalMap).length){
     headersA.forEach(h=>{ finalMap[h] = h; });
   }
 
-  const allCols = Array.from(new Set([...headersA, ...Object.values(finalMap).filter(v => v !== '__IGNORE__')]));
   const highlightsA = {}, highlightsB = {};
   const report = { matched:0, changed:0, added:0, removed:0, rows: [], leftSheet: leftSheetName, rightSheet: rightSheetName };
 
   const matchedBKeys = new Set();
 
-  // Iterate A
   for(let i=0;i<a.length;i++){
     const ra = a[i];
     const rawKey = keysA.map(k => String(ra[k] ?? '')).join('|');
@@ -520,7 +933,6 @@ el('compareBtn').addEventListener('click', ()=>{
     const rowDiffs = {};
     let rowChanged = false;
 
-    // Compare using column map, skip __idx and __IGNORE__
     headersA.forEach(colA=>{
       if(colA === '__idx') return;
       const colB = finalMap[colA] || colA;
@@ -550,7 +962,6 @@ el('compareBtn').addEventListener('click', ()=>{
     }
   }
 
-  // Added rows in B
   for(let j=0;j<b.length;j++){
     const rb = b[j]; 
     const k = keysB.map(col => String(rb[col] ?? '')).join('|');
@@ -564,13 +975,11 @@ el('compareBtn').addEventListener('click', ()=>{
   renderTableWithHighlights(el('leftPreview'), dataA, highlightsA);
   renderTableWithHighlights(el('rightPreview'), dataB, highlightsB);
 
-  el('summary').textContent = `${report.matched} matched • ${report.changed} changed • ${report.added} added • ${report.removed} removed`;
+  el('summary').textContent = `✓ ${report.matched} matched  •  ⚠ ${report.changed} changed  •  + ${report.added} added  •  − ${report.removed} removed`;
   windowReport = report;
 });
 
-/* ---------------------
-  Export Excel with numbered Comments
-----------------------*/
+/* Export - [YOUR EXISTING EXPORT CODE HERE] */
 el('exportDiff').addEventListener('click', ()=> {
   if(!windowReport) return alert('Run a comparison first');
 
@@ -639,31 +1048,11 @@ el('exportDiff').addEventListener('click', ()=> {
 
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Comparison');
-  XLSX.writeFile(wb, 'Excel_Comparison_with_Comments.xlsx');
+  XLSX.writeFile(wb, 'ValQMS_Excel_Comparison.xlsx');
 });
 
-/* ---------------------
-  Reset
-----------------------*/
+/* Reset */
 el('resetBtn').addEventListener('click', ()=>{ location.reload(); });
-
-/* ---------------------
- Theme toggle
-----------------------*/
-const themeBtn = el('themeBtn');
-function initTheme(){
-  const saved = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  themeBtn.textContent = saved === 'dark' ? '🌙 Dark' : '🌞 Light';
-}
-themeBtn.addEventListener('click', ()=>{
-  const current = document.documentElement.getAttribute('data-theme') || 'dark';
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-  themeBtn.textContent = next === 'dark' ? '🌙 Dark' : '🌞 Light';
-});
-initTheme();
 </script>
 </body>
 </html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Screenshot Evidence Converter — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
+    :root{--bg:#0a0e1a;--surface:#1a1f2e;--border:rgba(255,255,255,0.08);--text:#f8fafc;--text-dim:#94a3b8}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:24px}
+    .topbar{max-width:1600px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+    .logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+    .logo-mark{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:10px;display:flex;align-items:center;justify-content:center}
+    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .brand-text h1{font-size:20px;font-weight:800;margin:0}
+    .brand-text .subtitle{font-size:13px;color:var(--text-dim)}
+    .btn-home{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:600}
+    .container{max-width:1600px;margin:0 auto}
+    .card{background:var(--surface);padding:24px;border-radius:16px;border:1px solid var(--border);margin-bottom:16px}
+    .card h3{font-size:16px;font-weight:700;margin:0 0 12px 0}
+    .upload-zone{border:2px dashed var(--border);border-radius:12px;padding:48px;text-align:center;cursor:pointer;background:rgba(0,0,0,0.2)}
+    .upload-zone:hover{border-color:var(--accent);background:var(--accent-dim)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
+    .btn:hover{background:var(--accent-bright)}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text-dim)}
+    .field{margin-bottom:12px}
+    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
+    input,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:14px}
+    .evidence-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:16px}
+    .evidence-card{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative}
+    .evidence-card img{width:100%;height:200px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+    .evidence-card h4{font-size:14px;font-weight:700;margin-bottom:8px}
+    .evidence-card p{font-size:12px;color:var(--text-dim);margin-bottom:4px}
+    .delete-btn{position:absolute;top:8px;right:8px;background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <a href="index.html" class="logo-container">
+        <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+        <div class="brand-text">
+          <h1>ValQMS Tools</h1>
+          <div class="subtitle">Screenshot Evidence Converter</div>
+        </div>
+      </a>
+    </div>
+    <a href="index.html" class="btn-home">← Home</a>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h3>📸 Upload Test Screenshots</h3>
+      <div class="upload-zone" id="uploadZone">
+        <div style="font-size:64px;margin-bottom:16px">📷</div>
+        <div style="font-weight:700;font-size:18px;margin-bottom:8px">Drop Screenshots Here</div>
+        <div style="font-size:13px;color:var(--text-dim)">Supports: PNG, JPG, multiple files</div>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📝 Evidence Metadata</h3>
+      <div class="field">
+        <label>Test Case ID</label>
+        <input type="text" id="testCaseId" placeholder="TC-001">
+      </div>
+      <div class="field">
+        <label>Test Step</label>
+        <input type="text" id="testStep" placeholder="Step 3: Verify login functionality">
+      </div>
+      <div class="field">
+        <label>Tester Name</label>
+        <input type="text" id="testerName" placeholder="John Doe">
+      </div>
+      <div class="field">
+        <label>Expected Result</label>
+        <textarea id="expectedResult" placeholder="System should display dashboard"></textarea>
+      </div>
+    </div>
+
+    <div class="card" id="evidenceCard" style="display:none">
+      <h3>🖼️ Annotated Evidence Gallery</h3>
+      <div class="evidence-grid" id="evidenceGrid"></div>
+      <div style="margin-top:16px">
+        <button id="exportPDF" class="btn">
+          <span>📥</span><span>Export Evidence Appendix (PDF)</span>
+        </button>
+        <button id="exportWord" class="btn secondary">
+          <span>📄</span><span>Export to Word</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    function initTheme(){document.documentElement.setAttribute('data-theme',localStorage.getItem('valqmsTheme')||'green')}initTheme();
+    let evidenceItems=[];
+    const uploadZone=document.getElementById('uploadZone');
+    const fileInput=document.getElementById('fileInput');
+    uploadZone.addEventListener('click',()=>fileInput.click());
+    uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.style.borderColor='var(--accent)'});
+    uploadZone.addEventListener('dragleave',()=>uploadZone.style.borderColor='');
+    uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.style.borderColor='';handleFiles(e.dataTransfer.files)});
+    fileInput.addEventListener('change',e=>handleFiles(e.target.files));
+    
+    function handleFiles(files){
+      Array.from(files).forEach(file=>{
+        if(!file.type.startsWith('image/'))return;
+        const reader=new FileReader();
+        reader.onload=e=>{
+          const evidence={
+            id:Date.now()+Math.random(),
+            image:e.target.result,
+            testCaseId:document.getElementById('testCaseId').value||'TC-XXX',
+            testStep:document.getElementById('testStep').value||'Not specified',
+            tester:document.getElementById('testerName').value||'Unknown',
+            expectedResult:document.getElementById('expectedResult').value||'N/A',
+            timestamp:new Date().toLocaleString(),
+            filename:file.name
+          };
+          evidenceItems.push(evidence);
+          renderEvidence();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    
+    function renderEvidence(){
+      const grid=document.getElementById('evidenceGrid');
+      grid.innerHTML='';
+      evidenceItems.forEach((ev,idx)=>{
+        const card=document.createElement('div');
+        card.className='evidence-card';
+        card.innerHTML=`
+          <button class="delete-btn" onclick="deleteEvidence(${idx})">✕ Delete</button>
+          <img src="${ev.image}" alt="Evidence">
+          <h4>${ev.testCaseId} - ${ev.testStep}</h4>
+          <p><strong>Tester:</strong> ${ev.tester}</p>
+          <p><strong>Timestamp:</strong> ${ev.timestamp}</p>
+          <p><strong>Expected:</strong> ${ev.expectedResult}</p>
+          <p><strong>File:</strong> ${ev.filename}</p>
+        `;
+        grid.appendChild(card);
+      });
+      document.getElementById('evidenceCard').style.display='block';
+    }
+    
+    window.deleteEvidence=idx=>{evidenceItems.splice(idx,1);renderEvidence()};
+    
+    document.getElementById('exportPDF').addEventListener('click',async()=>{
+      const {jsPDF}=window.jspdf;
+      const pdf=new jsPDF();
+      pdf.setFontSize(20);
+      pdf.text('Test Evidence Appendix',20,20);
+      pdf.setFontSize(10);
+      pdf.text(`Generated: ${new Date().toLocaleString()}`,20,30);
+      
+      let yPos=40;
+      for(let ev of evidenceItems){
+        if(yPos>250){pdf.addPage();yPos=20}
+        pdf.setFontSize(12);
+        pdf.text(`${ev.testCaseId}: ${ev.testStep}`,20,yPos);
+        pdf.setFontSize(9);
+        pdf.text(`Tester: ${ev.tester} | Time: ${ev.timestamp}`,20,yPos+6);
+        pdf.text(`Expected: ${ev.expectedResult}`,20,yPos+12);
+        try{pdf.addImage(ev.image,'JPEG',20,yPos+18,170,100)}catch(e){}
+        yPos+=130;
+      }
+      
+      pdf.save('Test_Evidence_'+new Date().toISOString().split('T')[0]+'.pdf');
+    });
+    
+    document.getElementById('exportWord').addEventListener('click',()=>{
+      let html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Test Evidence</title></head><body>';
+      html+='<h1>Test Evidence Appendix</h1><p>Generated: '+new Date().toLocaleString()+'</p>';
+      evidenceItems.forEach(ev=>{
+        html+=`<h2>${ev.testCaseId}: ${ev.testStep}</h2>`;
+        html+=`<p><strong>Tester:</strong> ${ev.tester} | <strong>Time:</strong> ${ev.timestamp}</p>`;
+        html+=`<p><strong>Expected Result:</strong> ${ev.expectedResult}</p>`;
+        html+=`<img src="${ev.image}" style="max-width:600px"><hr>`;
+      });
+      html+='</body></html>';
+      const blob=new Blob([html],{type:'application/msword'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='Test_Evidence_'+new Date().toISOString().split('T')[0]+'.doc';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Validation Plan Generator — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    
+    /* === ALL 15 COLOR THEMES === */
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
+
+    :root{
+      --bg:#0a0e1a;
+      --surface:#1a1f2e;
+      --border:rgba(255,255,255,0.08);
+      --text:#f8fafc;
+      --text-dim:#94a3b8;
+    }
+    
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      padding:24px;
+      transition:all 0.3s;
+    }
+
+    .topbar{
+      max-width:1400px;
+      margin:0 auto 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 24px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      backdrop-filter:blur(12px);
+    }
+    .brand{display:flex;gap:16px;align-items:center}
+    .logo-container{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .logo-mark{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:40px;
+      height:40px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 4px 16px var(--accent-dim);
+      transition:all 0.3s;
+    }
+    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .brand-text h1{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin:0}
+    .brand-text .subtitle{font-size:13px;color:var(--text-dim);font-weight:500}
+    .header-actions{display:flex;gap:12px;align-items:center}
+    .btn-home{
+      padding:8px 16px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--text-dim);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      transition:all 0.2s;
+    }
+    .btn-home:hover{
+      background:var(--accent-dim);
+      color:var(--text);
+      border-color:var(--accent);
+    }
+
+    .container{max-width:1400px;margin:0 auto}
+    .card{
+      background:var(--surface);
+      padding:24px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      margin-bottom:16px;
+      transition:all 0.3s;
+    }
+    .card h3{font-size:16px;font-weight:700;margin:0 0 12px 0;letter-spacing:-0.3px}
+
+    .how-to-use{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px 24px;
+      margin-bottom:24px;
+      transition:all 0.3s;
+    }
+    .how-to-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .how-to-header h3{
+      font-size:16px;
+      font-weight:700;
+      margin:0;
+      color:var(--accent);
+      transition:color 0.3s;
+    }
+    .toggle-icon{font-size:14px;transition:transform 0.3s}
+    .toggle-icon.collapsed{transform:rotate(-90deg)}
+    .how-to-content{
+      overflow:hidden;
+      transition:max-height 0.3s ease-out, opacity 0.3s;
+      max-height:500px;
+      opacity:1;
+    }
+    .how-to-content.hidden{max-height:0;opacity:0;margin-top:0}
+    .how-to-content ol{margin:12px 0 0 20px;color:var(--text-dim);font-size:13px;line-height:1.8}
+    .how-to-content li{margin-bottom:6px}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px}
+    .field{margin-bottom:12px}
+    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
+    input[type=text], textarea, select{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--text);
+      font-size:14px;
+      transition:all 0.2s;
+    }
+    input:hover, textarea:hover, select:hover{border-color:var(--accent)}
+    input:focus, textarea:focus, select:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-dim);
+    }
+    textarea{min-height:100px;resize:vertical;font-family:inherit}
+    
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 20px;
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn:hover{
+      background:var(--accent-bright);
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px var(--accent-dim);
+    }
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn.secondary{
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text-dim);
+    }
+    .btn.secondary:hover{
+      background:var(--accent-dim);
+      border-color:var(--accent);
+      color:var(--text);
+    }
+    
+    .actions{display:flex;gap:10px;margin-top:12px}
+    
+    pre{
+      white-space:pre-wrap;
+      font-family:'SF Mono',Monaco,'Courier New',monospace;
+      font-size:13px;
+      color:var(--text);
+      background:rgba(0,0,0,0.3);
+      padding:16px;
+      border-radius:10px;
+      max-height:500px;
+      overflow:auto;
+      border:1px solid var(--border);
+      line-height:1.6;
+    }
+    
+    .meta{
+      font-size:12px;
+      color:var(--text-dim);
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid var(--border);
+    }
+    .hint{
+      font-size:12px;
+      color:var(--text-dim);
+      margin-top:12px;
+      padding:12px;
+      background:var(--accent-dim);
+      border-radius:8px;
+      border-left:3px solid var(--accent);
+    }
+
+    @media(max-width:768px){
+      .grid{grid-template-columns:1fr}
+      .topbar{flex-direction:column;gap:16px;text-align:center}
+      .header-actions{width:100%;justify-content:center}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <a href="index.html" class="logo-container">
+        <div class="logo-mark">
+          <img src="favicon.jpg" alt="ValQMS Logo">
+        </div>
+        <div class="brand-text">
+          <h1>ValQMS Tools</h1>
+          <div class="subtitle">AI Validation Plan Generator</div>
+        </div>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-home">← Home</a>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <div class="how-to-use">
+      <div class="how-to-header" id="howToToggle">
+        <h3>📖 How to Use</h3>
+        <span class="toggle-icon" id="toggleIcon">▼</span>
+      </div>
+      <div class="how-to-content" id="howToContent">
+        <ol>
+          <li>Fill the form fields describing your system, scope, and validation requirements</li>
+          <li>Click <strong>Generate Plan</strong> to create a comprehensive validation plan using AI</li>
+          <li>Review the generated plan in the output section</li>
+          <li>Use <strong>Copy</strong> to copy text or <strong>Download .docx</strong> to save as Word document</li>
+          <li><strong>Note:</strong> Requires API key configuration for production use</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Validation Details</h3>
+        
+        <div class="field">
+          <label for="title">Validation Plan Title</label>
+          <input id="title" type="text" placeholder="Validation of LIMS v2.1 - Instrument Integration" value="Validation of [System Name]">
+        </div>
+
+        <div class="field">
+          <label for="system">System / Application Name</label>
+          <input id="system" type="text" placeholder="System name, e.g. LabWare LIMS" value="LabWare LIMS">
+        </div>
+
+        <div class="field">
+          <label for="scope">Scope (brief)</label>
+          <textarea id="scope" placeholder="Describe in 1-2 sentences what is in/out of scope">This validation covers the installation, operation, and performance qualification of the LIMS integration for sample management and reporting.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="objectives">Validation Objectives</label>
+          <textarea id="objectives" placeholder="List key objectives separated by semicolons">Ensure system meets functional and regulatory requirements; Demonstrate data integrity; Verify access controls and audit trails</textarea>
+        </div>
+
+        <div class="field">
+          <label for="env">Environments</label>
+          <input id="env" type="text" placeholder="e.g., Dev / Test / Prod" value="IQ, OQ, PQ">
+        </div>
+
+        <div class="field">
+          <label for="regulatory">Regulatory References</label>
+          <input id="regulatory" type="text" value="FDA 21 CFR Part 11, EU Annex 11, GAMP 5, ICH Q9">
+        </div>
+
+        <div class="field">
+          <label for="risk">Risk Level</label>
+          <select id="risk">
+            <option>Low</option>
+            <option selected>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="testscope">Suggested Test Scope</label>
+          <textarea id="testscope" placeholder="Main tests to include">Functional tests, Security (authentication/authorization), Data integrity checks, Backup/restore, Performance under expected load</textarea>
+        </div>
+
+        <div class="field">
+          <label for="assurance">Acceptance Criteria</label>
+          <textarea id="assurance">All critical test cases pass; No open critical deviations; Audit trails record required events</textarea>
+        </div>
+
+        <div class="field">
+          <label for="additional">Additional Notes / Special Requirements</label>
+          <textarea id="additional">Include traceability matrix mapping between requirements and test cases. Include CSV/CSA considerations if applicable.</textarea>
+        </div>
+
+        <div class="actions">
+          <button id="generate" class="btn">
+            <span>🤖</span>
+            <span>Generate Plan</span>
+          </button>
+          <button id="clear" class="btn secondary">Clear</button>
+        </div>
+
+        <div class="hint">
+          <strong>⚠️ API Configuration Required:</strong> This tool requires a valid OpenAI-compatible API key. For production use, implement a server-side proxy to protect your API credentials.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Generated Validation Plan</h3>
+        <pre id="output">No plan generated yet. Click "Generate Plan" to produce content.</pre>
+        <div class="actions">
+          <button id="copy" class="btn secondary">📋 Copy</button>
+          <button id="download" class="btn">⬇️ Download .docx</button>
+        </div>
+        <div class="meta">
+          <strong>Model:</strong> GPT-4 (configurable)<br>
+          <strong>Security:</strong> Move API calls to server-side for production
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // === 1. HOW TO USE TOGGLE ===
+    const howToToggle = document.getElementById('howToToggle');
+    const howToContent = document.getElementById('howToContent');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    const howToVisible = localStorage.getItem('howToVisible') !== 'false';
+    if(!howToVisible){
+      howToContent.classList.add('hidden');
+      toggleIcon.classList.add('collapsed');
+    }
+
+    howToToggle.addEventListener('click', () => {
+      const isHidden = howToContent.classList.toggle('hidden');
+      toggleIcon.classList.toggle('collapsed');
+      localStorage.setItem('howToVisible', !isHidden);
+    });
+
+    // === 2. THEME SYNC ===
+    function initTheme(){
+      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    initTheme();
+
+    // === 3. HELPER FUNCTION (MUST BE BEFORE DOWNLOAD) ===
+    function escapeHtml(s) {
+      if (!s) return '';
+      return s.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#039;');
+    }
+
+    // === 4. AI CONFIGURATION ===
+    const SERVER_PROXY = '';
+    const DIRECT_OPENAI = false;
+    const API_KEY = 'YOUR_API_KEY';
+    const MODEL = 'gpt-4';
+
+    const el = id => document.getElementById(id);
+    const output = el('output');
+    const generateBtn = el('generate');
+    const copyBtn = el('copy');
+    const downloadBtn = el('download');
+    const clearBtn = el('clear');
+
+    // === 5. BUILD PROMPT ===
+    function buildPrompt() {
+      const title = el('title').value.trim();
+      const system = el('system').value.trim();
+      const scope = el('scope').value.trim();
+      const objectives = el('objectives').value.trim();
+      const env = el('env').value.trim();
+      const regulatory = el('regulatory').value.trim();
+      const risk = el('risk').value;
+      const testscope = el('testscope').value.trim();
+      const assurance = el('assurance').value.trim();
+      const additional = el('additional').value.trim();
+
+      return `You are an expert validation engineer specialized in regulated life-sciences systems (CSV/CSA). Using the information below, generate a clear, audit-ready Validation Plan with sections and numbered headings. Include brief text for each section and a suggested table of contents. Ensure the plan references appropriate regulations and gives concrete test deliverables.
+
+Output must include: 
+- Title
+- Version & Document Control
+- Table of Contents
+- 1. Scope
+- 2. Purpose & Objectives
+- 3. System Description
+- 4. Roles and Responsibilities
+- 5. Validation Strategy
+- 6. Requirements Traceability Matrix (describe columns)
+- 7. Test Strategy (IQ/OQ/PQ and sample test cases)
+- 8. Acceptance Criteria
+- 9. Risk Assessment Summary
+- 10. Deliverables
+- 11. Schedule & Milestones
+- 12. Approval and Sign-off
+
+Input data:
+- Validation Plan Title: ${title}
+- System/Application: ${system}
+- Scope: ${scope}
+- Objectives: ${objectives}
+- Environments: ${env}
+- Regulatory References: ${regulatory}
+- Risk Level: ${risk}
+- Test Scope: ${testscope}
+- Acceptance Criteria: ${assurance}
+- Additional Notes: ${additional}
+
+Write in professional, concise language appropriate for auditors and quality teams. For the Test Strategy include 6-8 example test cases mapping to requirements (show steps and expected results). For the Traceability Matrix, describe the columns and give 6 example rows mapping requirements -> test cases -> results -> evidence. Also include a short 3-bullet executive summary at the top and a short paragraph with implementation considerations. Do not add imaginary company-specific references; keep it generic but practical.`;
+    }
+
+    // === 6. CALL AI ===
+    async function callAI(prompt) {
+      const body = {
+        model: MODEL,
+        messages: [
+          {role: 'system', content: 'You are a helpful validation plan author for regulated industries.'},
+          {role: 'user', content: prompt}
+        ],
+        temperature: 0.2,
+        max_tokens: 2000
+      };
+
+      try {
+        let respJson;
+        if (SERVER_PROXY) {
+          const resp = await fetch(SERVER_PROXY, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(body)
+          });
+          respJson = await resp.json();
+        } else if (DIRECT_OPENAI) {
+          const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + API_KEY
+            },
+            body: JSON.stringify(body)
+          });
+          respJson = await resp.json();
+        } else {
+          throw new Error('No SERVER_PROXY configured. Set SERVER_PROXY to your server endpoint or enable DIRECT_OPENAI for local testing.');
+        }
+
+        return respJson?.choices?.[0]?.message?.content || respJson?.choices?.[0]?.text || JSON.stringify(respJson);
+      } catch (err) {
+        console.error(err);
+        throw err;
+      }
+    }
+
+    // === 7. GENERATE BUTTON ===
+    generateBtn.addEventListener('click', async () => {
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = '<span>⏳</span><span>Generating...</span>';
+      output.textContent = 'Working...';
+      try {
+        const prompt = buildPrompt();
+        const result = await callAI(prompt);
+        output.textContent = result;
+      } catch (err) {
+        output.textContent = 'Error generating plan: ' + (err.message || err);
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<span>🤖</span><span>Generate Plan</span>';
+      }
+    });
+
+    // === 8. COPY BUTTON ===
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(output.textContent);
+        copyBtn.textContent = '✓ Copied';
+        setTimeout(() => copyBtn.textContent = '📋 Copy', 1500);
+      } catch (e) {
+        alert('Copy failed: ' + e);
+      }
+    });
+
+    // === 9. CLEAR BUTTON ===
+    clearBtn.addEventListener('click', () => {
+      el('title').value = 'Validation of [System Name]';
+      el('system').value = 'LabWare LIMS';
+      el('scope').value = 'This validation covers the installation, operation, and performance qualification of the LIMS integration for sample management and reporting.';
+      el('objectives').value = 'Ensure system meets functional and regulatory requirements; Demonstrate data integrity; Verify access controls and audit trails';
+      el('env').value = 'IQ, OQ, PQ';
+      el('regulatory').value = 'FDA 21 CFR Part 11, EU Annex 11, GAMP 5, ICH Q9';
+      el('risk').value = 'Medium';
+      el('testscope').value = 'Functional tests, Security (authentication/authorization), Data integrity checks, Backup/restore, Performance under expected load';
+      el('assurance').value = 'All critical test cases pass; No open critical deviations; Audit trails record required events';
+      el('additional').value = 'Include traceability matrix mapping between requirements and test cases. Include CSV/CSA considerations if applicable.';
+      output.textContent = 'No plan generated yet. Click "Generate Plan" to produce content.';
+    });
+
+// === DOWNLOAD BUTTON (COMPLETELY FIXED) ===
+downloadBtn.addEventListener('click', function() {
+  const titleValue = el('title').value.trim() || 'Validation_Plan';
+  const outputText = output.textContent;
+  
+  // Validation check
+  if (outputText === 'No plan generated yet. Click "Generate Plan" to produce content.' || 
+      outputText === 'Working...') {
+    alert('Please generate a plan first before downloading.');
+    return;
+  }
+  
+  // Build HTML document as array and join
+  const htmlParts = [
+    '<!DOCTYPE html>',
+    '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">',
+    '<head>',
+    '  <meta charset="utf-8">',
+    '  <title>' + escapeHtml(titleValue) + '</title>',
+    '  <style>',
+    '    body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.6; margin: 1in; }',
+    '    h1 { font-size: 18pt; font-weight: bold; color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8pt; margin-bottom: 12pt; }',
+    '    pre { font-family: "Courier New", monospace; font-size: 10pt; white-space: pre-wrap; background-color: #f5f5f5; padding: 12pt; border: 1px solid #ddd; border-radius: 4pt; }',
+    '  </style>',
+    '</head>',
+    '<body>',
+    '  <h1>' + escapeHtml(titleValue) + '</h1>',
+    '  <pre>' + escapeHtml(outputText) + '</pre>',
+    '</body>',
+    '</html>'
+  ];
+  
+  const wordHtml = htmlParts.join('\n');
+  
+  // Create blob and download
+  const blob = new Blob([wordHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = titleValue.replace(/[^a-zA-Z0-9\-_]/g, '_') + '.doc';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+});
+  </script>
+</body>
+</html>

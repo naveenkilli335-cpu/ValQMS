@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>User Access Matrix Builder — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
+
+    :root{
+      --bg:#0a0e1a;
+      --surface:#1a1f2e;
+      --border:rgba(255,255,255,0.08);
+      --text:#f8fafc;
+      --text-dim:#94a3b8;
+    }
+    
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      padding:24px;
+    }
+
+    .topbar{
+      max-width:1800px;
+      margin:0 auto 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 24px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+    }
+    .logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+    .logo-mark{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:40px;
+      height:40px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+      border-radius:10px;
+      overflow:hidden;
+    }
+    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .brand-text h1{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin:0}
+    .brand-text .subtitle{font-size:13px;color:var(--text-dim);font-weight:500}
+    .btn-home{
+      padding:8px 16px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--text-dim);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+      transition:all 0.2s;
+    }
+    .btn-home:hover{background:var(--accent-dim);color:var(--text);border-color:var(--accent)}
+
+    .container{max-width:1800px;margin:0 auto}
+    .card{
+      background:var(--surface);
+      padding:24px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      margin-bottom:16px;
+    }
+    .card h3{font-size:16px;font-weight:700;margin:0 0 12px 0}
+
+    .how-to-use{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px 24px;
+      margin-bottom:24px;
+    }
+    .how-to-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .how-to-header h3{font-size:16px;font-weight:700;margin:0;color:var(--accent)}
+    .toggle-icon{font-size:14px;transition:transform 0.3s}
+    .toggle-icon.collapsed{transform:rotate(-90deg)}
+    .how-to-content{
+      overflow:hidden;
+      transition:max-height 0.3s ease-out,opacity 0.3s;
+      max-height:500px;
+      opacity:1;
+    }
+    .how-to-content.hidden{max-height:0;opacity:0;margin-top:0}
+    .how-to-content ol{margin:12px 0 0 20px;color:var(--text-dim);font-size:13px;line-height:1.8}
+
+    .field{margin-bottom:12px}
+    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
+    input[type=text],textarea{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--text);
+      font-size:14px;
+      transition:all 0.2s;
+    }
+    input:focus,textarea:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-dim);
+    }
+    
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 20px;
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn:hover{background:var(--accent-bright);transform:translateY(-1px)}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text-dim)}
+    .btn.secondary:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--text)}
+    .btn.danger{background:#ef4444;color:#fff}
+    .btn.danger:hover{background:#f87171}
+    
+    .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    
+    .role-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+    .role-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 16px;
+      background:var(--accent-dim);
+      border:1px solid var(--accent);
+      border-radius:8px;
+      font-size:13px;
+      font-weight:600;
+      color:var(--accent);
+    }
+    .role-badge button{
+      background:none;
+      border:none;
+      color:var(--accent);
+      cursor:pointer;
+      font-size:16px;
+      padding:0;
+      line-height:1;
+    }
+    
+    .matrix-container{
+      overflow-x:auto;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      margin-top:16px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    th{
+      background:rgba(0,0,0,0.3);
+      padding:12px;
+      text-align:left;
+      font-weight:700;
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    td{
+      padding:12px;
+      border-bottom:1px solid var(--border);
+    }
+    tr:hover{background:rgba(255,255,255,0.02)}
+    
+    .checkbox-cell{text-align:center}
+    .checkbox-cell input[type=checkbox]{
+      width:20px;
+      height:20px;
+      cursor:pointer;
+      accent-color:var(--accent);
+    }
+    .checkbox-cell input[type=checkbox]:checked{
+      background:var(--accent);
+    }
+    
+    .conflict-badge{
+      display:inline-block;
+      padding:4px 12px;
+      background:rgba(239,68,68,0.2);
+      color:#f87171;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      text-transform:uppercase;
+    }
+    
+    .conflict-alert{
+      background:rgba(239,68,68,0.1);
+      border:1px solid #ef4444;
+      border-radius:12px;
+      padding:16px;
+      margin-bottom:16px;
+    }
+    .conflict-alert h4{
+      color:#f87171;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .conflict-alert ul{
+      margin:0 0 0 20px;
+      color:var(--text-dim);
+      font-size:13px;
+    }
+    
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:16px;
+      margin-bottom:24px;
+    }
+    .stat-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:20px;
+    }
+    .stat-label{font-size:12px;color:var(--text-dim);font-weight:600;text-transform:uppercase;margin-bottom:8px}
+    .stat-value{font-size:32px;font-weight:900;color:var(--accent)}
+
+    @media(max-width:768px){
+      .stats{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <a href="index.html" class="logo-container">
+        <div class="logo-mark">
+          <img src="favicon.jpg" alt="ValQMS">
+        </div>
+        <div class="brand-text">
+          <h1>ValQMS Tools</h1>
+          <div class="subtitle">User Access Matrix Builder</div>
+        </div>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-home">← Home</a>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <div class="how-to-use">
+      <div class="how-to-header" id="howToToggle">
+        <h3>📖 How to Use Access Matrix Builder</h3>
+        <span class="toggle-icon" id="toggleIcon">▼</span>
+      </div>
+      <div class="how-to-content" id="howToContent">
+        <ol>
+          <li><strong>Define Roles:</strong> Add user roles (e.g., Analyst, QA Manager, System Admin)</li>
+          <li><strong>Define Permissions:</strong> Add system permissions (e.g., Create Sample, Approve Result, Delete Record)</li>
+          <li><strong>Build Matrix:</strong> Check permissions for each role in the interactive table</li>
+          <li><strong>AI SoD Check:</strong> System detects segregation of duties conflicts automatically</li>
+          <li><strong>Review Conflicts:</strong> Critical conflicts flagged (e.g., Create + Approve by same role)</li>
+          <li><strong>Export Matrix:</strong> Download color-coded Excel with conflict highlights</li>
+          <li><strong>GxP Compliant:</strong> Audit-ready documentation for FDA/EMA inspections</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="stats" id="statsContainer" style="display:none">
+      <div class="stat-card">
+        <div class="stat-label">Total Roles</div>
+        <div class="stat-value" id="statRoles">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Permissions</div>
+        <div class="stat-value" id="statPermissions">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SoD Conflicts</div>
+        <div class="stat-value" id="statConflicts" style="color:#ef4444">0</div>
+      </div>
+    </div>
+
+    <div id="conflictAlert" class="conflict-alert" style="display:none">
+      <h4>⚠️ Segregation of Duties Conflicts Detected</h4>
+      <ul id="conflictList"></ul>
+    </div>
+
+    <div class="card">
+      <h3>👥 Step 1: Define User Roles</h3>
+      <div class="field">
+        <label>Role Name (e.g., QA Manager, Lab Analyst, System Admin)</label>
+        <input type="text" id="roleInput" placeholder="Enter role name">
+      </div>
+      <button class="btn" id="addRoleBtn">
+        <span>➕</span>
+        <span>Add Role</span>
+      </button>
+      <div class="role-list" id="roleList"></div>
+    </div>
+
+    <div class="card">
+      <h3>🔐 Step 2: Define System Permissions</h3>
+      <div class="field">
+        <label>Permission Name (e.g., Create Sample, Approve Result, Delete Record)</label>
+        <input type="text" id="permissionInput" placeholder="Enter permission name">
+      </div>
+      <button class="btn" id="addPermissionBtn">
+        <span>➕</span>
+        <span>Add Permission</span>
+      </button>
+      <div class="role-list" id="permissionList"></div>
+    </div>
+
+    <div class="card">
+      <div class="actions">
+        <button id="generateMatrix" class="btn" disabled>
+          <span>📊</span>
+          <span>Generate Access Matrix</span>
+        </button>
+        <button id="checkSoD" class="btn secondary" disabled>
+          <span>🔍</span>
+          <span>Check SoD Conflicts</span>
+        </button>
+        <button id="exportMatrix" class="btn secondary" disabled>
+          <span>📥</span>
+          <span>Export to Excel</span>
+        </button>
+        <button id="resetMatrix" class="btn danger" disabled>
+          <span>🔄</span>
+          <span>Reset Matrix</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="card" id="matrixCard" style="display:none">
+      <h3>📋 User Access Control Matrix</h3>
+      <div class="matrix-container">
+        <table id="accessMatrix">
+          <thead id="matrixHead"></thead>
+          <tbody id="matrixBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // Theme sync
+    function initTheme(){
+      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    initTheme();
+
+    // Toggle
+    document.getElementById('howToToggle').addEventListener('click', () => {
+      const content = document.getElementById('howToContent');
+      const icon = document.getElementById('toggleIcon');
+      content.classList.toggle('hidden');
+      icon.classList.toggle('collapsed');
+    });
+
+    let roles = [];
+    let permissions = [];
+    let accessMatrix = {};
+    let conflicts = [];
+
+    // Add role
+    document.getElementById('addRoleBtn').addEventListener('click', () => {
+      const input = document.getElementById('roleInput');
+      const role = input.value.trim();
+      if (role && !roles.includes(role)) {
+        roles.push(role);
+        accessMatrix[role] = {};
+        renderRoles();
+        input.value = '';
+        checkReadyToGenerate();
+      }
+    });
+
+    // Add permission
+    document.getElementById('addPermissionBtn').addEventListener('click', () => {
+      const input = document.getElementById('permissionInput');
+      const permission = input.value.trim();
+      if (permission && !permissions.includes(permission)) {
+        permissions.push(permission);
+        renderPermissions();
+        input.value = '';
+        checkReadyToGenerate();
+      }
+    });
+
+    function renderRoles() {
+      const container = document.getElementById('roleList');
+      container.innerHTML = '';
+      roles.forEach(role => {
+        const badge = document.createElement('div');
+        badge.className = 'role-badge';
+        badge.innerHTML = `
+          ${role}
+          <button onclick="removeRole('${role}')">✕</button>
+        `;
+        container.appendChild(badge);
+      });
+    }
+
+    function renderPermissions() {
+      const container = document.getElementById('permissionList');
+      container.innerHTML = '';
+      permissions.forEach(perm => {
+        const badge = document.createElement('div');
+        badge.className = 'role-badge';
+        badge.innerHTML = `
+          ${perm}
+          <button onclick="removePermission('${perm}')">✕</button>
+        `;
+        container.appendChild(badge);
+      });
+    }
+
+    window.removeRole = (role) => {
+      roles = roles.filter(r => r !== role);
+      delete accessMatrix[role];
+      renderRoles();
+      checkReadyToGenerate();
+    };
+
+    window.removePermission = (perm) => {
+      permissions = permissions.filter(p => p !== perm);
+      renderPermissions();
+      checkReadyToGenerate();
+    };
+
+    function checkReadyToGenerate() {
+      const ready = roles.length > 0 && permissions.length > 0;
+      document.getElementById('generateMatrix').disabled = !ready;
+    }
+
+    // Generate matrix
+    document.getElementById('generateMatrix').addEventListener('click', generateMatrix);
+
+    function generateMatrix() {
+      const thead = document.getElementById('matrixHead');
+      const tbody = document.getElementById('matrixBody');
+      
+      // Build header
+      let headerHTML = '<tr><th>Role / Permission</th>';
+      permissions.forEach(perm => {
+        headerHTML += `<th>${perm}</th>`;
+      });
+      headerHTML += '</tr>';
+      thead.innerHTML = headerHTML;
+      
+      // Build body
+      tbody.innerHTML = '';
+      roles.forEach(role => {
+        const row = document.createElement('tr');
+        let rowHTML = `<td style="font-weight:700;color:var(--accent)">${role}</td>`;
+        
+        permissions.forEach(perm => {
+          const checked = accessMatrix[role][perm] || false;
+          rowHTML += `<td class="checkbox-cell">
+            <input type="checkbox" data-role="${role}" data-permission="${perm}" ${checked ? 'checked' : ''}>
+          </td>`;
+        });
+        
+        row.innerHTML = rowHTML;
+        tbody.appendChild(row);
+      });
+      
+      // Add event listeners
+      document.querySelectorAll('#accessMatrix input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const role = e.target.dataset.role;
+          const permission = e.target.dataset.permission;
+          accessMatrix[role][permission] = e.target.checked;
+        });
+      });
+      
+      document.getElementById('matrixCard').style.display = 'block';
+      document.getElementById('checkSoD').disabled = false;
+      document.getElementById('exportMatrix').disabled = false;
+      document.getElementById('resetMatrix').disabled = false;
+      
+      updateStatistics();
+    }
+
+    // Check SoD conflicts
+    document.getElementById('checkSoD').addEventListener('click', checkSoDConflicts);
+
+    function checkSoDConflicts() {
+      conflicts = [];
+      
+      // Define critical SoD rules
+      const sodRules = [
+        {conflict: ['Create', 'Approve'], desc: 'Cannot create AND approve'},
+        {conflict: ['Create', 'Delete'], desc: 'Cannot create AND delete'},
+        {conflict: ['Approve', 'Delete'], desc: 'High risk: Approve AND delete'},
+        {conflict: ['Execute', 'Validate'], desc: 'Cannot execute AND validate'},
+        {conflict: ['Submit', 'Approve'], desc: 'Cannot submit AND approve'}
+      ];
+      
+      roles.forEach(role => {
+        const rolePerms = permissions.filter(p => accessMatrix[role][p]);
+        
+        sodRules.forEach(rule => {
+          const hasConflict = rule.conflict.every(keyword => 
+            rolePerms.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+          );
+          
+          if (hasConflict) {
+            conflicts.push({
+              role,
+              permissions: rule.conflict,
+              description: rule.desc
+            });
+          }
+        });
+      });
+      
+      displayConflicts();
+      updateStatistics();
+    }
+
+    function displayConflicts() {
+      if (conflicts.length === 0) {
+        document.getElementById('conflictAlert').style.display = 'none';
+        alert('✅ No Segregation of Duties conflicts detected! Access matrix is compliant.');
+        return;
+      }
+      
+      const list = document.getElementById('conflictList');
+      list.innerHTML = '';
+      
+      conflicts.forEach(c => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${c.role}:</strong> ${c.description} (${c.permissions.join(' + ')})`;
+        list.appendChild(li);
+      });
+      
+      document.getElementById('conflictAlert').style.display = 'block';
+    }
+
+    function updateStatistics() {
+      document.getElementById('statRoles').textContent = roles.length;
+      document.getElementById('statPermissions').textContent = permissions.length;
+      document.getElementById('statConflicts').textContent = conflicts.length;
+      document.getElementById('statsContainer').style.display = 'grid';
+    }
+
+    // Export to Excel
+    document.getElementById('exportMatrix').addEventListener('click', exportToExcel);
+
+    function exportToExcel() {
+      const ws_data = [['Role / Permission', ...permissions]];
+      
+      roles.forEach(role => {
+        const row = [role];
+        permissions.forEach(perm => {
+          row.push(accessMatrix[role][perm] ? 'X' : '');
+        });
+        ws_data.push(row);
+      });
+      
+      // Add conflicts sheet
+      ws_data.push([]);
+      ws_data.push(['SEGREGATION OF DUTIES CONFLICTS']);
+      conflicts.forEach(c => {
+        ws_data.push([c.role, c.description, c.permissions.join(' + ')]);
+      });
+      
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Access Matrix');
+      
+      XLSX.writeFile(wb, 'User_Access_Matrix_' + new Date().toISOString().split('T')[0] + '.xlsx');
+    }
+
+    // Reset
+    document.getElementById('resetMatrix').addEventListener('click', () => {
+      if (confirm('Are you sure you want to reset the entire matrix?')) {
+        roles = [];
+        permissions = [];
+        accessMatrix = {};
+        conflicts = [];
+        
+        document.getElementById('roleList').innerHTML = '';
+        document.getElementById('permissionList').innerHTML = '';
+        document.getElementById('matrixCard').style.display = 'none';
+        document.getElementById('conflictAlert').style.display = 'none';
+        document.getElementById('statsContainer').style.display = 'none';
+        
+        checkReadyToGenerate();
+      }
+    });
+
+    // Pre-populate example data
+    window.addEventListener('load', () => {
+      // Example roles
+      ['QA Manager', 'Lab Analyst', 'System Admin', 'Quality Reviewer'].forEach(role => {
+        roles.push(role);
+        accessMatrix[role] = {};
+      });
+      
+      // Example permissions
+      ['Create Sample', 'Execute Test', 'Review Result', 'Approve Result', 'Delete Record', 'Manage Users'].forEach(perm => {
+        permissions.push(perm);
+      });
+      
+      renderRoles();
+      renderPermissions();
+      checkReadyToGenerate();
+    });
+  </script>
+</body>
+</html>

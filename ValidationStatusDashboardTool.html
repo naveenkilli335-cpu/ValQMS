@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Validation Status Dashboard — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
+    :root{--bg:#0a0e1a;--surface:#1a1f2e;--border:rgba(255,255,255,0.08);--text:#f8fafc;--text-dim:#94a3b8}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;padding:24px}
+    .topbar{max-width:1800px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+    .logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+    .logo-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:10px;overflow:hidden}
+    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .brand-text h1{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin:0}
+    .brand-text .subtitle{font-size:13px;color:var(--text-dim);font-weight:500}
+    .btn-home{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:600;transition:all 0.2s}
+    .btn-home:hover{background:var(--accent-dim);color:var(--text);border-color:var(--accent)}
+    .container{max-width:1800px;margin:0 auto}
+    .card{background:var(--surface);padding:24px;border-radius:16px;border:1px solid var(--border);margin-bottom:16px}
+    .card h3{font-size:16px;font-weight:700;margin:0 0 12px 0}
+    .upload-zone{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(0,0,0,0.2)}
+    .upload-zone:hover{border-color:var(--accent);background:var(--accent-dim)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
+    .btn:hover{background:var(--accent-bright);transform:translateY(-1px)}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text-dim)}
+    .btn.secondary:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--text)}
+    .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;transition:all 0.3s;position:relative;overflow:hidden}
+    .stat-card::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:var(--accent-dim);border-radius:0 0 0 100%;opacity:0.5}
+    .stat-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+    .stat-label{font-size:12px;color:var(--text-dim);font-weight:600;text-transform:uppercase;margin-bottom:8px}
+    .stat-value{font-size:36px;font-weight:900;color:var(--accent);margin-bottom:4px}
+    .stat-sublabel{font-size:12px;color:var(--text-dim)}
+    .system-card{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;transition:all 0.3s}
+    .system-card:hover{background:rgba(0,0,0,0.5);border-color:var(--accent)}
+    .system-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .system-name{font-size:16px;font-weight:700;color:var(--text)}
+    .status-badge{padding:6px 16px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase}
+    .status-validated{background:rgba(52,211,153,0.2);color:#34d399}
+    .status-inprogress{background:rgba(250,204,21,0.2);color:#facc15}
+    .status-overdue{background:rgba(239,68,68,0.2);color:#f87171}
+    .status-planned{background:rgba(100,116,139,0.2);color:#94a3b8}
+    .progress-bar{width:100%;height:8px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-top:8px}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));border-radius:999px;transition:width 0.5s ease}
+    .system-details{font-size:13px;color:var(--text-dim);line-height:1.8}
+    .chart-container{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:24px;height:300px;display:flex;align-items:flex-end;gap:8px}
+    .chart-bar{flex:1;background:var(--accent);border-radius:8px 8px 0 0;transition:all 0.3s;position:relative;cursor:pointer}
+    .chart-bar:hover{background:var(--accent-bright);transform:scaleY(1.05)}
+    .chart-label{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);white-space:nowrap}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <a href="index.html" class="logo-container">
+        <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+        <div class="brand-text">
+          <h1>ValQMS Tools</h1>
+          <div class="subtitle">Validation Status Dashboard</div>
+        </div>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-home">← Home</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h3>📊 Upload System Inventory</h3>
+      <div class="upload-zone" id="uploadZone">
+        <div style="font-size:48px;margin-bottom:12px">📁</div>
+        <div style="font-weight:700;margin-bottom:8px">Drop System Inventory Excel</div>
+        <div style="font-size:13px;color:var(--text-dim)">Columns: System_Name, Status, IQ_Date, OQ_Date, PQ_Date, Next_Revalidation, Owner</div>
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" style="display:none">
+      </div>
+      <div id="uploadStatus" style="margin-top:12px;font-size:13px;color:var(--text-dim)"></div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid" style="display:none">
+      <div class="stat-card">
+        <div class="stat-label">Total Systems</div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-sublabel">Under validation</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Validated</div>
+        <div class="stat-value" id="statValidated" style="color:#34d399">0</div>
+        <div class="stat-sublabel">Fully qualified</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">In Progress</div>
+        <div class="stat-value" id="statInProgress" style="color:#facc15">0</div>
+        <div class="stat-sublabel">Active validation</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Overdue</div>
+        <div class="stat-value" id="statOverdue" style="color:#ef4444">0</div>
+        <div class="stat-sublabel">Requires attention</div>
+      </div>
+    </div>
+
+    <div class="card" id="chartCard" style="display:none">
+      <h3>📈 Validation Progress Overview</h3>
+      <div class="chart-container" id="chartContainer"></div>
+    </div>
+
+    <div class="card" id="systemsCard" style="display:none">
+      <h3>🖥️ System Validation Status</h3>
+      <div id="systemsList"></div>
+    </div>
+
+    <div class="card" id="actionsCard" style="display:none">
+      <div class="actions">
+        <button id="exportDashboard" class="btn">
+          <span>📥</span><span>Export Dashboard Report</span>
+        </button>
+        <button id="filterOverdue" class="btn secondary">
+          <span>⚠️</span><span>Show Only Overdue</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    function initTheme(){const t=localStorage.getItem('valqmsTheme')||'green';document.documentElement.setAttribute('data-theme',t)}initTheme();
+    let systems=[];
+    const uploadZone=document.getElementById('uploadZone');
+    const fileInput=document.getElementById('fileInput');
+    uploadZone.addEventListener('click',()=>fileInput.click());
+    fileInput.addEventListener('change',e=>handleFileUpload(e.target.files[0]));
+    
+    function handleFileUpload(file){
+      if(!file)return;
+      const reader=new FileReader();
+      reader.onload=e=>{
+        try{
+          const data=new Uint8Array(e.target.result);
+          const workbook=XLSX.read(data,{type:'array'});
+          const sheet=workbook.Sheets[workbook.SheetNames[0]];
+          systems=XLSX.utils.sheet_to_json(sheet);
+          document.getElementById('uploadStatus').innerHTML=`✅ Loaded ${systems.length} systems`;
+          document.getElementById('uploadStatus').style.color='var(--accent)';
+          processData();
+        }catch(err){alert('Error: '+err.message)}
+      };
+      reader.readAsArrayBuffer(file);
+    }
+    
+    function processData(){
+      let validated=0,inProgress=0,overdue=0;
+      const today=new Date();
+      
+      systems.forEach(sys=>{
+        const status=(sys.Status||'').toLowerCase();
+        const revalDate=sys.Next_Revalidation?new Date(sys.Next_Revalidation):null;
+        
+        if(status.includes('validated')||status.includes('complete'))validated++;
+        else if(status.includes('progress')||status.includes('active'))inProgress++;
+        
+        if(revalDate&&revalDate<today)overdue++;
+      });
+      
+      document.getElementById('statTotal').textContent=systems.length;
+      document.getElementById('statValidated').textContent=validated;
+      document.getElementById('statInProgress').textContent=inProgress;
+      document.getElementById('statOverdue').textContent=overdue;
+      
+      document.getElementById('statsGrid').style.display='grid';
+      renderChart();
+      renderSystems();
+      document.getElementById('actionsCard').style.display='block';
+    }
+    
+    function renderChart(){
+      const container=document.getElementById('chartContainer');
+      container.innerHTML='';
+      const statuses={Validated:0,InProgress:0,Planned:0,Overdue:0};
+      
+      systems.forEach(s=>{
+        const st=(s.Status||'').toLowerCase();
+        if(st.includes('validated')||st.includes('complete'))statuses.Validated++;
+        else if(st.includes('progress'))statuses.InProgress++;
+        else if(st.includes('planned'))statuses.Planned++;
+        else if(st.includes('overdue'))statuses.Overdue++;
+      });
+      
+      const max=Math.max(...Object.values(statuses));
+      Object.entries(statuses).forEach(([name,count])=>{
+        const bar=document.createElement('div');
+        bar.className='chart-bar';
+        bar.style.height=(count/max*100)+'%';
+        bar.innerHTML=`<div class="chart-label">${name}<br>${count}</div>`;
+        bar.title=`${name}: ${count} systems`;
+        container.appendChild(bar);
+      });
+      
+      document.getElementById('chartCard').style.display='block';
+    }
+    
+    function renderSystems(){
+      const list=document.getElementById('systemsList');
+      list.innerHTML='';
+      
+      systems.forEach(sys=>{
+        const status=(sys.Status||'Planned').toLowerCase();
+        let statusClass='status-planned';
+        if(status.includes('validated')||status.includes('complete'))statusClass='status-validated';
+        else if(status.includes('progress'))statusClass='status-inprogress';
+        else if(status.includes('overdue'))statusClass='status-overdue';
+        
+        const iqProg=sys.IQ_Date?100:0;
+        const oqProg=sys.OQ_Date?100:0;
+        const pqProg=sys.PQ_Date?100:0;
+        const totalProg=Math.round((iqProg+oqProg+pqProg)/3);
+        
+        const card=document.createElement('div');
+        card.className='system-card';
+        card.innerHTML=`
+          <div class="system-header">
+            <div class="system-name">${sys.System_Name||'Unknown System'}</div>
+            <span class="status-badge ${statusClass}">${sys.Status||'Planned'}</span>
+          </div>
+          <div class="system-details">
+            <div>Owner: ${sys.Owner||'Not assigned'}</div>
+            <div>IQ: ${sys.IQ_Date||'Pending'} | OQ: ${sys.OQ_Date||'Pending'} | PQ: ${sys.PQ_Date||'Pending'}</div>
+            <div>Next Revalidation: ${sys.Next_Revalidation||'Not scheduled'}</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${totalProg}%"></div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+      
+      document.getElementById('systemsCard').style.display='block';
+    }
+    
+    document.getElementById('exportDashboard').addEventListener('click',()=>{
+      const report=`VALIDATION STATUS DASHBOARD REPORT\nGenerated: ${new Date().toLocaleString()}\n\n`+
+        `SUMMARY\nTotal Systems: ${systems.length}\nValidated: ${document.getElementById('statValidated').textContent}\n`+
+        `In Progress: ${document.getElementById('statInProgress').textContent}\nOverdue: ${document.getElementById('statOverdue').textContent}\n\n`+
+        `SYSTEM DETAILS\n\n`+systems.map(s=>`${s.System_Name} - ${s.Status}\nOwner: ${s.Owner}\nIQ: ${s.IQ_Date||'N/A'}, OQ: ${s.OQ_Date||'N/A'}, PQ: ${s.PQ_Date||'N/A'}\n`).join('\n');
+      const blob=new Blob([report],{type:'text/plain'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='Validation_Dashboard_'+new Date().toISOString().split('T')[0]+'.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

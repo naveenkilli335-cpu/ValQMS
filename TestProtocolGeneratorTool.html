@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Test Protocol Generator — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
+    :root{--bg:#0a0e1a;--surface:#1a1f2e;--border:rgba(255,255,255,0.08);--text:#f8fafc;--text-dim:#94a3b8}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:24px}
+    .container{max-width:1400px;margin:0 auto}
+    .topbar{max-width:1400px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+    .logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+    .logo-mark{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:10px;display:flex;align-items:center;justify-content:center}
+    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+    .brand-text h1{font-size:20px;font-weight:800;margin:0}
+    .brand-text .subtitle{font-size:13px;color:var(--text-dim)}
+    .btn-home{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:600}
+    .card{background:var(--surface);padding:24px;border-radius:16px;border:1px solid var(--border);margin-bottom:16px}
+    .card h3{font-size:16px;font-weight:700;margin:0 0 12px 0}
+    .field{margin-bottom:12px}
+    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
+    input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:14px}
+    textarea{min-height:80px;resize:vertical}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s}
+    .btn:hover{background:var(--accent-bright)}
+    .btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text-dim)}
+    .actions{display:flex;gap:10px;margin-top:12px}
+    pre{background:rgba(0,0,0,0.3);padding:16px;border-radius:10px;max-height:500px;overflow:auto;font-size:13px;line-height:1.6;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <a href="index.html" class="logo-container">
+        <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+        <div class="brand-text">
+          <h1>ValQMS Tools</h1>
+          <div class="subtitle">Test Protocol Generator</div>
+        </div>
+      </a>
+    </div>
+    <a href="index.html" class="btn-home">← Home</a>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h3>🔧 Protocol Configuration</h3>
+      <div class="field">
+        <label>Protocol Type</label>
+        <select id="protocolType">
+          <option value="IQ">Installation Qualification (IQ)</option>
+          <option value="OQ">Operational Qualification (OQ)</option>
+          <option value="PQ">Performance Qualification (PQ)</option>
+          <option value="UAT">User Acceptance Testing (UAT)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>System Name</label>
+        <input id="systemName" placeholder="LabWare LIMS v8.0">
+      </div>
+      <div class="field">
+        <label>Protocol Number</label>
+        <input id="protocolNumber" placeholder="VP-LIMS-IQ-001">
+      </div>
+      <div class="field">
+        <label>Risk Level</label>
+        <select id="riskLevel">
+          <option>Low</option>
+          <option selected>Medium</option>
+          <option>High</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Regulatory Requirements</label>
+        <textarea id="regulatory">FDA 21 CFR Part 11, EU Annex 11, GAMP 5</textarea>
+      </div>
+      <div class="actions">
+        <button id="generateProtocol" class="btn">
+          <span>📋</span><span>Generate Protocol</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="card" id="outputCard" style="display:none">
+      <h3>📄 Generated Protocol</h3>
+      <pre id="output"></pre>
+      <div class="actions">
+        <button id="download" class="btn">
+          <span>📥</span><span>Download .docx</span>
+        </button>
+        <button id="copy" class="btn secondary">
+          <span>📋</span><span>Copy to Clipboard</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function initTheme(){
+      const saved = localStorage.getItem('valqmsTheme') || 'green';
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+    initTheme();
+    
+    document.getElementById('generateProtocol').addEventListener('click', function(){
+      const type = document.getElementById('protocolType').value;
+      const system = document.getElementById('systemName').value || 'System';
+      const protNum = document.getElementById('protocolNumber').value || 'VP-XXX-001';
+      const risk = document.getElementById('riskLevel').value;
+      const reg = document.getElementById('regulatory').value;
+      
+      const protocol = `
+${type} PROTOCOL
+${system}
+Protocol Number: ${protNum}
+Version: 1.0
+Date: ${new Date().toLocaleDateString()}
+
+═══════════════════════════════════════════════════════════════
+
+TABLE OF CONTENTS
+1. Purpose and Scope
+2. System Description
+3. Prerequisites
+4. Test Environment
+5. Test Cases
+6. Acceptance Criteria
+7. Roles and Responsibilities
+8. Approval and Sign-off
+
+═══════════════════════════════════════════════════════════════
+
+1. PURPOSE AND SCOPE
+This ${type} protocol defines the test activities required to verify that ${system} has been ${type==='IQ'?'installed':'operated'} according to requirements and operates within acceptable parameters.
+
+Risk Level: ${risk}
+Regulatory Requirements: ${reg}
+
+2. SYSTEM DESCRIPTION
+System: ${system}
+Protocol ID: ${protNum}
+Environment: ${type} Testing
+
+3. PREREQUISITES
+□ System installed and configured
+□ Test environment prepared
+□ Test data available
+□ Testers trained
+
+4. TEST ENVIRONMENT
+Environment: ${type} Test Environment
+Access Level: Controlled
+Documentation: All test activities recorded
+
+5. TEST CASES
+
+${generateTestCases(type, system)}
+
+6. ACCEPTANCE CRITERIA
+✓ All critical test cases pass (100%)
+✓ All major test cases pass (95% minimum)
+✓ No open critical defects
+✓ All documentation complete and approved
+
+7. ROLES AND RESPONSIBILITIES
+Protocol Author: [Name]
+Tester: [Name]
+Reviewer: [Name]
+Approver: [Name]
+
+8. APPROVAL AND SIGN-OFF
+
+Prepared by: _________________ Date: _______
+Reviewed by: _________________ Date: _______
+Approved by: _________________ Date: _______
+
+═══════════════════════════════════════════════════════════════
+END OF PROTOCOL
+      `.trim();
+      
+      document.getElementById('output').textContent = protocol;
+      document.getElementById('outputCard').style.display = 'block';
+    });
+    
+    function generateTestCases(type, system){
+      const cases = {
+        IQ: [
+          'TC-IQ-001: Verify hardware specifications match requirements',
+          'TC-IQ-002: Verify software version and license',
+          'TC-IQ-003: Verify network connectivity',
+          'TC-IQ-004: Verify database installation',
+          'TC-IQ-005: Verify backup/restore functionality'
+        ],
+        OQ: [
+          'TC-OQ-001: Verify user authentication',
+          'TC-OQ-002: Verify data entry and validation',
+          'TC-OQ-003: Verify calculations and algorithms',
+          'TC-OQ-004: Verify reporting functionality',
+          'TC-OQ-005: Verify audit trail generation'
+        ],
+        PQ: [
+          'TC-PQ-001: Execute end-to-end business process',
+          'TC-PQ-002: Verify system performance under load',
+          'TC-PQ-003: Verify data integrity over time',
+          'TC-PQ-004: Verify system stability (72h test)',
+          'TC-PQ-005: Verify user procedures and SOPs'
+        ],
+        UAT: [
+          'TC-UAT-001: User workflow validation',
+          'TC-UAT-002: Usability and interface testing',
+          'TC-UAT-003: Business rule verification',
+          'TC-UAT-004: Integration testing',
+          'TC-UAT-005: User acceptance sign-off'
+        ]
+      };
+      
+      return cases[type].map((tc, i) => `
+Test Case ${i+1}: ${tc}
+Steps: [Define test steps]
+Expected Result: [Define expected outcome]
+Actual Result: _______________
+Pass/Fail: _______________
+Tester: _______________
+Date: _______________
+      `).join('\n');
+    }
+    
+    document.getElementById('download').addEventListener('click', function(){
+      const content = document.getElementById('output').textContent;
+      const htmlContent = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Protocol</title></head><body><pre>' + content + '</pre></body></html>';
+      const blob = new Blob([htmlContent], {type: 'application/msword'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const dateStr = new Date().toISOString().substring(0, 10);
+      a.download = 'Test_Protocol_' + dateStr + '.doc';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+    
+    document.getElementById('copy').addEventListener('click', async function(){
+      const text = document.getElementById('output').textContent;
+      await navigator.clipboard.writeText(text);
+      alert('Protocol copied to clipboard!');
+    });
+  </script>
+</body>
+</html>
