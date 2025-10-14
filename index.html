@@ -1,805 +1,753 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green">
+<html lang="en" data-theme="green" data-bg="mesh">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ValQMS — Simplify Validation. Strengthen Quality. Accelerate Compliance.</title>
-  <meta name="description" content="AI-driven validation tools and QMS platform for Life Sciences organizations. GAMP 5 compliant, FDA 21 CFR Part 11 ready.">
+  <title>Login — ValQMS</title>
   <link rel="icon" href="favicon.jpg?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     
-    /* === ALL 15 COLOR THEMES === */
-    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
-    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
-    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
-    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
-    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
-    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
-    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
-    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
-    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
-    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
-    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
-    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
-    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
-    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
-    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
-    
+    /* Theme Colors */
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.15);--accent-glow:rgba(16,185,129,0.4)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.15);--accent-glow:rgba(6,182,212,0.4)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.15);--accent-glow:rgba(139,92,246,0.4)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.15);--accent-glow:rgba(249,115,22,0.4)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.15);--accent-glow:rgba(59,130,246,0.4)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.15);--accent-glow:rgba(239,68,68,0.4)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.15);--accent-glow:rgba(236,72,153,0.4)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.15);--accent-glow:rgba(20,184,166,0.4)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.15);--accent-glow:rgba(99,102,241,0.4)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.15);--accent-glow:rgba(234,179,8,0.4)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.15);--accent-glow:rgba(217,70,239,0.4)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.15);--accent-glow:rgba(5,150,105,0.4)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.15);--accent-glow:rgba(217,119,6,0.4)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.15);--accent-glow:rgba(132,204,22,0.4)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.15);--accent-glow:rgba(124,58,237,0.4)}
+
     :root{
-      --bg:#0a0e1a;
-      --surface:#1a1f2e;
-      --border:rgba(255,255,255,0.08);
-      --text:#f8fafc;
+      --text:#ffffff;
       --text-dim:#94a3b8;
+      --surface:rgba(255,255,255,0.05);
+      --surface-hover:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.1);
+      --glass:rgba(255,255,255,0.03);
     }
+
+    /* ANIMATED BACKGROUNDS */
+    [data-bg="mesh"] body{background:#0f172a;position:relative}
+    [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%),radial-gradient(circle at 40% 80%, rgba(236,72,153,0.1) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
+
+    [data-bg="gradient"] body{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);position:relative}
+    [data-bg="gradient"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 100%);z-index:-1}
+
+    [data-bg="dots"] body{background:#0a0e27;position:relative}
+    [data-bg="dots"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);background-size:30px 30px;z-index:-1}
+
+    [data-bg="waves"] body{background:#0f172a;position:relative}
+    [data-bg="waves"] body::before{content:'';position:fixed;bottom:0;left:0;width:100%;height:400px;background:linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.1) 100%);animation:waveMove 8s ease-in-out infinite;z-index:-1}
+
+    [data-bg="dark"] body{background:#0a0e1a;position:relative}
+    [data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
+
+    @keyframes meshMove{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(5deg)}}
+    @keyframes waveMove{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
     
     html{scroll-behavior:smooth}
     body{
       font-family:'Inter',system-ui,-apple-system,sans-serif;
-      background:var(--bg);
       color:var(--text);
       line-height:1.6;
       -webkit-font-smoothing:antialiased;
-      transition:background 0.3s,color 0.3s;
+      transition:background 0.5s ease;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      position:relative;
     }
-    .container{max-width:1280px;margin:0 auto;padding:0 24px}
-    
-    /* Header */
-    header{
-      position:sticky;
-      top:0;
-      z-index:50;
-      backdrop-filter:blur(12px) saturate(180%);
-      border-bottom:1px solid var(--border);
-      background:rgba(10,14,26,0.8);
-    }
-    header .container{
+
+    /* Theme Controls */
+    .theme-controls{
+      position:fixed;
+      top:20px;
+      right:20px;
       display:flex;
-      justify-content:space-between;
-      align-items:center;
-      height:72px;
+      gap:12px;
+      z-index:1000;
     }
-    .logo{
+    .theme-btn,.bg-btn{
+      padding:10px 18px;
+      background:rgba(255,255,255,0.05);
+      backdrop-filter:blur(20px);
+      border:1px solid var(--border);
+      border-radius:12px;
+      color:var(--text-dim);
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition:all 0.3s;
+    }
+    .theme-btn:hover,.bg-btn:hover{
+      background:var(--surface-hover);
+      border-color:var(--accent);
+      color:var(--text);
+      transform:translateY(-2px);
+    }
+
+    /* Login Card */
+    .login-card{
+      width:100%;
+      max-width:460px;
+      background:rgba(255,255,255,0.03);
+      backdrop-filter:blur(20px) saturate(180%);
+      -webkit-backdrop-filter:blur(20px) saturate(180%);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:20px;
+      padding:40px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
+      transition:all 0.3s;
+      position:relative;
+      z-index:1;
+    }
+    .login-card:hover{
+      border-color:var(--accent);
+      box-shadow:0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .logo-container{
       display:flex;
       align-items:center;
       gap:12px;
+      margin-bottom:24px;
       text-decoration:none;
       color:var(--text);
-      font-weight:800;
-      font-size:20px;
-      letter-spacing:-0.5px;
+      transition:all 0.3s;
     }
+    .logo-container:hover{transform:translateX(4px)}
     .logo-mark{
       display:flex;
       align-items:center;
       justify-content:center;
-      width:36px;
-      height:36px;
+      width:48px;
+      height:48px;
       background:linear-gradient(135deg,var(--accent),var(--accent-bright));
-      border-radius:8px;
-      overflow:hidden;
-      box-shadow:0 4px 16px var(--accent-dim);
-      transition:all 0.3s;
-    }
-    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:4px}
-    
-    nav{display:flex;gap:32px;align-items:center}
-    nav a{
-      color:var(--text-dim);
-      text-decoration:none;
-      font-size:15px;
-      font-weight:500;
-      transition:color 0.2s;
-    }
-    nav a:hover{color:var(--text)}
-    
-    /* Theme Selector */
-    .theme-selector{position:relative}
-    .theme-btn{
-      padding:8px 16px;
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:10px;
-      color:var(--text-dim);
-      font-size:14px;
-      font-weight:600;
-      cursor:pointer;
-      transition:all 0.2s;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .theme-btn:hover{background:rgba(255,255,255,0.05);border-color:var(--accent)}
-    .theme-dropdown{
-      position:absolute;
-      top:calc(100% + 8px);
-      right:0;
-      background:var(--surface);
-      border:1px solid var(--border);
       border-radius:12px;
-      padding:8px;
-      display:none;
-      min-width:180px;
-      max-height:400px;
-      overflow-y:auto;
-      box-shadow:0 10px 40px rgba(0,0,0,0.3);
-      z-index:100;
-    }
-    .theme-dropdown.active{display:block}
-    .theme-option{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:10px 12px;
-      border-radius:8px;
-      cursor:pointer;
-      transition:all 0.2s;
-      font-size:14px;
-      font-weight:500;
-    }
-    .theme-option:hover{background:rgba(255,255,255,0.05)}
-    .theme-color{
-      width:24px;
-      height:24px;
-      border-radius:6px;
-      border:2px solid rgba(255,255,255,0.2);
-    }
-    .theme-color.green{background:linear-gradient(135deg,#10b981,#34d399)}
-    .theme-color.cyan{background:linear-gradient(135deg,#06b6d4,#22d3ee)}
-    .theme-color.purple{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
-    .theme-color.orange{background:linear-gradient(135deg,#f97316,#fb923c)}
-    .theme-color.blue{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
-    .theme-color.red{background:linear-gradient(135deg,#ef4444,#f87171)}
-    .theme-color.pink{background:linear-gradient(135deg,#ec4899,#f472b6)}
-    .theme-color.teal{background:linear-gradient(135deg,#14b8a6,#2dd4bf)}
-    .theme-color.indigo{background:linear-gradient(135deg,#6366f1,#818cf8)}
-    .theme-color.yellow{background:linear-gradient(135deg,#eab308,#facc15)}
-    .theme-color.magenta{background:linear-gradient(135deg,#d946ef,#e879f9)}
-    .theme-color.emerald{background:linear-gradient(135deg,#059669,#10b981)}
-    .theme-color.amber{background:linear-gradient(135deg,#d97706,#f59e0b)}
-    .theme-color.lime{background:linear-gradient(135deg,#84cc16,#a3e635)}
-    .theme-color.violet{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
-    
-    /* Hero */
-    .hero{
-      padding:120px 0 100px;
-      text-align:center;
+      box-shadow:0 4px 20px var(--accent-glow);
       position:relative;
     }
-    .hero::before{
+    .logo-mark::after{
       content:'';
       position:absolute;
-      top:-20%;
-      left:50%;
-      transform:translateX(-50%);
-      width:800px;
-      height:800px;
-      background:radial-gradient(circle,var(--accent-dim),transparent 70%);
-      pointer-events:none;
-      transition:background 0.3s;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 14px;
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:999px;
-      font-size:13px;
-      color:var(--text-dim);
-      margin-bottom:32px;
-    }
-    .pill-dot{
-      width:6px;
-      height:6px;
-      background:var(--accent);
-      border-radius:50%;
-      animation:pulse 2s infinite;
-    }
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-    
-    h1{
-      font-size:clamp(48px,8vw,72px);
-      font-weight:900;
-      letter-spacing:-2px;
-      line-height:1.1;
-      margin-bottom:24px;
-      background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
-    .lead{
-      font-size:20px;
-      color:var(--text-dim);
-      max-width:680px;
-      margin:0 auto 40px;
-      line-height:1.7;
-    }
-    .cta-group{
-      display:flex;
-      gap:16px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-    .cta{
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      padding:14px 32px;
-      background:var(--accent);
-      color:#fff;
-      text-decoration:none;
-      border-radius:12px;
-      font-weight:700;
-      font-size:16px;
-      transition:all 0.2s;
-    }
-    .cta:hover{
-      background:var(--accent-bright);
-      box-shadow:0 0 0 4px var(--accent-dim);
-      transform:translateY(-1px);
-    }
-    .cta-secondary{
-      background:var(--surface);
-      border:1px solid var(--border);
-      color:var(--text);
-    }
-    .cta-secondary:hover{
-      background:var(--accent-dim);
-      border-color:var(--accent);
-    }
-    
-    /* Sections */
-    section{padding:80px 0}
-    .section-head{text-align:center;margin-bottom:48px}
-    .section-head h2{
-      font-size:clamp(32px,5vw,48px);
-      font-weight:800;
-      letter-spacing:-1px;
-      margin-bottom:12px;
-    }
-    .section-head p{
-      font-size:18px;
-      color:var(--text-dim);
-      max-width:700px;
-      margin:0 auto;
-      line-height:1.7;
-    }
-    
-    /* HORIZONTAL LIST FOR TOOLS */
-    .tools-list{
-      max-width:1100px;
-      margin:0 auto;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .tool-item{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      background:var(--surface);
-      border:1px solid var(--border);
+      inset:-2px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
       border-radius:14px;
-      padding:16px 20px;
-      text-decoration:none;
-      color:inherit;
-      transition:all 0.3s;
-      position:relative;
-      overflow:hidden;
+      z-index:-1;
+      opacity:0;
+      filter:blur(10px);
+      transition:opacity 0.3s;
     }
-    .tool-item::before{
-      content:'';
-      position:absolute;
-      left:0;
-      top:0;
-      bottom:0;
-      width:4px;
-      background:var(--accent);
-      transform:scaleY(0);
-      transition:transform 0.3s;
+    .logo-mark:hover::after{opacity:0.7}
+    .logo-mark img{
+      width:80%;
+      height:80%;
+      object-fit:contain;
     }
-    .tool-item:hover{
-      background:rgba(26,31,46,0.9);
-      border-color:var(--accent);
-      transform:translateX(4px);
-      box-shadow:0 8px 32px rgba(0,0,0,0.3);
-    }
-    .tool-item:hover::before{transform:scaleY(1)}
-    .tool-icon{
-      width:48px;
-      height:48px;
-      background:var(--accent);
-      border-radius:10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .logo-text{
       font-size:24px;
-      flex-shrink:0;
-      transition:transform 0.3s;
+      font-weight:800;
+      letter-spacing:-0.5px;
     }
-    .tool-item:hover .tool-icon{transform:scale(1.05)}
-    .tool-content{flex:1;min-width:0}
-    .tool-content h3{
-      font-size:17px;
-      font-weight:700;
-      margin-bottom:4px;
+
+    h1{
+      font-size:28px;
+      font-weight:800;
+      margin:0 0 8px 0;
+      letter-spacing:-0.7px;
       color:var(--text);
-      letter-spacing:-0.3px;
     }
-    .tool-content p{
-      color:var(--text-dim);
-      font-size:13px;
-      line-height:1.5;
-    }
-    .tool-arrow{
-      font-size:24px;
-      color:var(--accent);
-      transition:transform 0.3s;
-      flex-shrink:0;
-    }
-    .tool-item:hover .tool-arrow{transform:translateX(8px)}
-    
-    /* QMS Modules */
-    .qms-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:20px;
-    }
-    .module-card{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:28px;
-      transition:all 0.3s;
-    }
-    .module-card:hover{
-      transform:translateY(-4px);
-      border-color:var(--accent);
-      box-shadow:0 12px 24px rgba(0,0,0,0.2);
-    }
-    .module-card h4{
-      font-size:18px;
-      font-weight:700;
-      margin-bottom:10px;
-      color:var(--accent);
-    }
-    .module-card p{
+    .subtitle{
       font-size:14px;
       color:var(--text-dim);
-      line-height:1.6;
+      margin-bottom:32px;
+      font-weight:300;
     }
-    
-    /* Resources Grid */
-    .resources-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-      gap:20px;
-    }
-    .resource-card{
-      background:var(--surface);
+
+    /* Google Sign-In Button */
+    .google-btn{
+      width:100%;
+      padding:12px 24px;
+      background:#ffffff;
       border:1px solid var(--border);
-      border-radius:16px;
-      padding:28px;
-      transition:all 0.3s;
-    }
-    .resource-card:hover{
-      border-color:var(--accent);
-      box-shadow:0 8px 24px rgba(0,0,0,0.2);
-    }
-    .resource-icon{
-      width:48px;
-      height:48px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
       border-radius:12px;
+      color:#1f2937;
+      font-size:14px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all 0.3s;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:24px;
-      margin-bottom:16px;
+      gap:12px;
+      margin-bottom:24px;
     }
-    .resource-card h3{
-      font-size:18px;
-      font-weight:700;
-      margin-bottom:12px;
+    .google-btn:hover{
+      background:#f9fafb;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      transform:translateY(-2px);
     }
-    .resource-card ul{
-      list-style:none;
-      padding:0;
+    .google-icon{
+      width:20px;
+      height:20px;
+    }
+
+    /* Divider */
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin:24px 0;
+      color:var(--text-dim);
       font-size:13px;
-      line-height:2;
+      font-weight:500;
     }
-    .resource-card a{
-      color:var(--accent);
-      text-decoration:none;
+    .divider::before,
+    .divider::after{
+      content:'';
+      flex:1;
+      height:1px;
+      background:var(--border);
+    }
+
+    .form-group{
+      margin-bottom:20px;
+    }
+    label{
+      display:block;
+      font-size:13px;
+      color:var(--text-dim);
+      margin-bottom:8px;
       font-weight:600;
-      transition:color 0.2s;
-    }
-    .resource-card a:hover{color:var(--accent-bright)}
-    
-    /* Compact Footer */
-    footer{
-      padding:40px 0 32px;
-      border-top:1px solid var(--border);
-      margin-top:80px;
-    }
-    footer .container{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-      gap:32px;
-      margin-bottom:32px;
-    }
-    .footer-col h5{
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:12px;
       text-transform:uppercase;
       letter-spacing:0.5px;
-      color:var(--accent);
     }
-    .footer-col ul{list-style:none}
-    .footer-col li{margin-bottom:8px}
-    .footer-col a{
+    input[type="email"],
+    input[type="password"],
+    input[type="text"]{
+      width:100%;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:#ffffff;
+      font-size:14px;
+      transition:all 0.3s;
+      font-family:inherit;
+    }
+    input:hover{border-color:var(--accent)}
+    input:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-dim);
+    }
+    input::placeholder{color:var(--text-dim)}
+
+    .form-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:16px 0 24px;
+    }
+    .checkbox-label{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
       color:var(--text-dim);
+      cursor:pointer;
+      text-transform:none;
+      letter-spacing:0;
+      font-weight:400;
+    }
+    .checkbox-label input{
+      width:auto;
+      cursor:pointer;
+    }
+    .link{
+      color:var(--accent);
       text-decoration:none;
       font-size:13px;
-      transition:color 0.2s;
+      font-weight:600;
+      transition:all 0.3s;
     }
-    .footer-col a:hover{color:var(--accent)}
-    .footer-bottom{
-      padding-top:24px;
-      border-top:1px solid var(--border);
-      text-align:center;
-      color:var(--text-dim);
+    .link:hover{color:var(--accent-bright)}
+
+    .error{
+      color:#f87171;
       font-size:13px;
+      min-height:18px;
+      margin-bottom:20px;
+      font-weight:500;
     }
-    
-    @media(max-width:768px){
-      nav{display:none}
-      .tools-list{padding:0 16px}
-      .tool-item{flex-direction:column;text-align:center;gap:16px}
-      .qms-grid,.resources-grid{grid-template-columns:1fr}
-      footer .container{grid-template-columns:repeat(2,1fr);gap:24px}
+    .success{
+      color:#10b981;
+      font-size:13px;
+      min-height:18px;
+      margin-bottom:20px;
+      font-weight:500;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 24px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+      color:#000;
+      border:none;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+      box-shadow:0 4px 16px var(--accent-glow);
+      text-decoration:none;
+      width:100%;
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px var(--accent-glow);
+    }
+    .btn.secondary{
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text);
+      box-shadow:none;
+      margin-top:12px;
+    }
+    .btn.secondary:hover{
+      background:var(--surface-hover);
+      border-color:var(--accent);
+    }
+
+    .toggle-text{
+      text-align:center;
+      margin-top:24px;
+      font-size:13px;
+      color:var(--text-dim);
+    }
+    .toggle-link{
+      color:var(--accent);
+      font-weight:600;
+      cursor:pointer;
+      text-decoration:none;
+      transition:all 0.3s;
+    }
+    .toggle-link:hover{color:var(--accent-bright)}
+
+    .hidden{display:none}
+
+    @media(max-width:600px){
+      .login-card{padding:28px;max-width:100%}
+      h1{font-size:24px}
+      .theme-controls{top:12px;right:12px;gap:8px}
+      .theme-btn,.bg-btn{padding:8px 12px;font-size:0}
+      .theme-btn span,.bg-btn span{display:none}
+      .theme-btn::before{content:'🎨'}
+      .bg-btn::before{content:'🌈'}
     }
   </style>
 </head>
 <body>
-  
-  <header>
-    <div class="container">
-      <a href="index.html" class="logo">
-        <div class="logo-mark">
-          <img src="favicon.jpg" alt="ValQMS">
-        </div>
-        <span>ValQMS</span>
+
+  <div class="theme-controls">
+    <button class="bg-btn" id="bgBtn"><span>Background</span></button>
+    <button class="theme-btn" id="themeBtn"><span>Theme</span></button>
+  </div>
+
+  <div class="login-card">
+    <a href="index.html" class="logo-container">
+      <div class="logo-mark">
+        <img src="favicon.jpg" alt="ValQMS">
+      </div>
+      <span class="logo-text">ValQMS</span>
+    </a>
+
+    <h1 id="pageTitle">Sign in</h1>
+    <p class="subtitle" id="pageSubtitle">Enter your credentials to access your account</p>
+
+    <!-- Google Sign-In Button -->
+    <button class="google-btn" id="googleSignIn">
+      <svg class="google-icon" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      <span id="googleBtnText">Continue with Google</span>
+    </button>
+
+    <div class="divider">
+      <span>or</span>
+    </div>
+
+    <form id="authForm" novalidate>
+      <!-- Name field (only for signup) -->
+      <div class="form-group hidden" id="nameGroup">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" placeholder="John Doe" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input id="email" type="email" placeholder="you@company.com" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+      </div>
+
+      <!-- Confirm password (only for signup) -->
+      <div class="form-group hidden" id="confirmPasswordGroup">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" placeholder="••••••••" minlength="6">
+      </div>
+
+      <div class="form-row">
+        <label class="checkbox-label">
+          <input id="showPassword" type="checkbox">
+          <span>Show password</span>
+        </label>
+        <a href="index.html" class="link">Cancel</a>
+      </div>
+
+      <div id="message" class="error"></div>
+
+      <button class="btn" type="submit" id="submitBtn">
+        <span id="submitIcon">🔐</span>
+        <span id="submitText">Sign In</span>
+      </button>
+
+      <a href="index.html" class="btn secondary">
+        <span>←</span>
+        <span>Back to Home</span>
       </a>
-      <nav>
-        <a href="#tools">Tools</a>
-        <a href="#qms">QMS Modules</a>
-        <a href="#resources">Resources</a>
-        <a href="#about">About</a>
-        <div class="theme-selector">
-          <button class="theme-btn" id="themeBtn">
-            <span>🎨</span><span>Theme</span>
-          </button>
-          <div class="theme-dropdown" id="themeDropdown">
-            <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
-            <div class="theme-option" data-theme="cyan"><div class="theme-color cyan"></div><span>Cyan</span></div>
-            <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
-            <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
-            <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
-            <div class="theme-option" data-theme="red"><div class="theme-color red"></div><span>Red</span></div>
-            <div class="theme-option" data-theme="pink"><div class="theme-color pink"></div><span>Pink</span></div>
-            <div class="theme-option" data-theme="teal"><div class="theme-color teal"></div><span>Teal</span></div>
-            <div class="theme-option" data-theme="indigo"><div class="theme-color indigo"></div><span>Indigo</span></div>
-            <div class="theme-option" data-theme="yellow"><div class="theme-color yellow"></div><span>Yellow</span></div>
-            <div class="theme-option" data-theme="magenta"><div class="theme-color magenta"></div><span>Magenta</span></div>
-            <div class="theme-option" data-theme="emerald"><div class="theme-color emerald"></div><span>Emerald</span></div>
-            <div class="theme-option" data-theme="amber"><div class="theme-color amber"></div><span>Amber</span></div>
-            <div class="theme-option" data-theme="lime"><div class="theme-color lime"></div><span>Lime</span></div>
-            <div class="theme-option" data-theme="violet"><div class="theme-color violet"></div><span>Violet</span></div>
-          </div>
-        </div>
-      </nav>
+    </form>
+
+    <div class="toggle-text">
+      <span id="toggleQuestion">Don't have an account?</span>
+      <a class="toggle-link" id="toggleMode">Sign up</a>
     </div>
-  </header>
+  </div>
 
-
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="pill">
-          <span class="pill-dot"></span>
-          <span>Empowering Life Sciences with AI-Driven Compliance</span>
-        </div>
-        <h1>Simplify Validation.<br>Strengthen Quality.<br>Accelerate Compliance.</h1>
-        <p class="lead">ValQMS empowers Life Sciences organizations with AI-driven tools for validation, automation, and regulatory compliance.</p>
-        <div class="cta-group">
-          <a href="#tools" class="cta">
-            <span>Explore Tools</span>
-            <span>→</span>
-          </a>
-          <a href="#resources" class="cta cta-secondary">
-            <span>Regulatory Updates</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Automation Tools - HORIZONTAL LIST -->
-    <section id="tools">
-      <div class="container">
-        <div class="section-head">
-          <h2>Automation Tools</h2>
-          <p>Smart, compliant, and production-ready tools for validation documentation</p>
-        </div>
-        <div class="tools-list">
-          <a href="ComparisionTool.html" class="tool-item">
-            <div class="tool-icon">📊</div>
-            <div class="tool-content">
-              <h3>Excel Comparison Tool</h3>
-              <p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="MasterDataTool.html" class="tool-item">
-            <div class="tool-icon">🧬</div>
-            <div class="tool-content">
-              <h3>LIMS Master Data Tool</h3>
-              <p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="ValidationPlanGeneratorTool.html" class="tool-item">
-            <div class="tool-icon">🤖</div>
-            <div class="tool-content">
-              <h3>AI Validation Plan Generator</h3>
-              <p>Generate complete, compliant validation plans for any GxP or SaaS system within minutes using AI.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="RTMBuilderTool.html" class="tool-item">
-            <div class="tool-icon">🔗</div>
-            <div class="tool-content">
-              <h3>Requirements Traceability Matrix</h3>
-              <p>Intelligent auto-linking of requirements to test cases with bi-directional traceability and coverage analysis.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="SOPComparisionTool.html" class="tool-item">
-            <div class="tool-icon">📝</div>
-            <div class="tool-content">
-              <h3>SOP Version Comparator</h3>
-              <p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="DataIntegrityCheckerTool.html" class="tool-item">
-            <div class="tool-icon">🔬</div>
-            <div class="tool-content">
-              <h3>Data Integrity Checker</h3>
-              <p>SHA-256 cryptographic validation, ALCOA+ compliance scoring, and 12 comprehensive integrity checks.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="AdvancedUserAcessMatrixTool.html" class="tool-item">
-            <div class="tool-icon">🔐</div>
-            <div class="tool-content">
-              <h3>User Access Matrix Builder</h3>
-              <p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="ValidationStatusDashboardTool.html" class="tool-item">
-            <div class="tool-icon">📈</div>
-            <div class="tool-content">
-              <h3>Validation Status Dashboard</h3>
-              <p>Real-time validation lifecycle tracking with IQ/OQ/PQ status, revalidation alerts, and executive reports.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item">
-            <div class="tool-icon">📸</div>
-            <div class="tool-content">
-              <h3>Screenshot Evidence Converter</h3>
-              <p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="TestProtocolGeneratorTool.html" class="tool-item">
-            <div class="tool-icon">📋</div>
-            <div class="tool-content">
-              <h3>Test Protocol Generator</h3>
-              <p>Auto-generate IQ/OQ/PQ/UAT protocols with pre-built test cases, GAMP 5 templates, and Word export.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-          <a href="AIPoweredRiskAssessmentTool.html" class="tool-item">
-            <div class="tool-icon">🎯</div>
-            <div class="tool-content">
-              <h3>AI Risk Assessment Tool</h3>
-              <p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p>
-            </div>
-            <div class="tool-arrow">→</div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- QMS Modules -->
-    <section id="qms">
-      <div class="container">
-        <div class="section-head">
-          <h2>Integrated QMS Modules</h2>
-          <p>Complete quality management system for regulated environments</p>
-        </div>
-        <div class="qms-grid">
-          <div class="module-card">
-            <h4>Change Control</h4>
-            <p>Manage controlled changes with risk evaluation, approvals, and full traceability</p>
-          </div>
-          <div class="module-card">
-            <h4>Deviation Management</h4>
-            <p>Record, analyze, and close deviations efficiently with root cause analysis</p>
-          </div>
-          <div class="module-card">
-            <h4>CAPA Management</h4>
-            <p>Plan, execute, and track corrective and preventive actions systematically</p>
-          </div>
-          <div class="module-card">
-            <h4>Risk Management</h4>
-            <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
-          </div>
-          <div class="module-card">
-            <h4>Audit & Inspection</h4>
-            <p>Digital audit trails and inspection readiness with full documentation</p>
-          </div>
-          <div class="module-card">
-            <h4>Training Management</h4>
-            <p>Ensure training effectiveness tied to system and process changes</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- Resources -->
-    <section id="resources">
-      <div class="container">
-        <div class="section-head">
-          <h2>Regulatory Resources</h2>
-          <p>Stay compliant with latest guidelines and regulatory updates</p>
-        </div>
-        <div class="resources-grid">
-          <div class="resource-card">
-            <div class="resource-icon">📚</div>
-            <h3>Key Guidelines</h3>
-            <ul>
-              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/computer-software-assurance-production-and-quality-system-software-0" target="_blank">FDA CSA Guidance (2025)</a></li>
-              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application" target="_blank">FDA 21 CFR Part 11</a></li>
-              <li>📄 <a href="https://health.ec.europa.eu/system/files/2016-11/annex11_01-2011_en_0.pdf" target="_blank">EU Annex 11 (PDF)</a></li>
-              <li>📄 <a href="https://database.ich.org/sites/default/files/Q9_Guideline.pdf" target="_blank">ICH Q9(R1) Risk Management</a></li>
-              <li>📄 <a href="https://ispe.org/publications/guidance-documents/gamp-5-guide-2nd-edition" target="_blank">GAMP 5 (2nd Edition)</a></li>
-            </ul>
-          </div>
-          <div class="resource-card">
-            <div class="resource-icon">📰</div>
-            <h3>Regulatory Updates</h3>
-            <ul>
-              <li>🌐 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents" target="_blank">FDA Guidance Documents</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/news-events" target="_blank">EMA News & Events</a></li>
-              <li>🌐 <a href="https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency" target="_blank">MHRA Updates</a></li>
-              <li>🌐 <a href="https://www.who.int/health-topics/quality-assurance-of-medicines" target="_blank">WHO Quality Assurance</a></li>
-            </ul>
-          </div>
-          <div class="resource-card">
-            <div class="resource-icon">📁</div>
-            <h3>Download Templates</h3>
-            <p style="color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:16px">Validation plans, IQ/OQ/PQ protocols, change control forms</p>
-            <a href="#" style="color:var(--accent);font-weight:700;font-size:14px">Coming Soon →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- About -->
-    <section id="about">
-      <div class="container">
-        <div class="section-head">
-          <h2>Why ValQMS?</h2>
-          <p>Built by validation experts for validation experts</p>
-        </div>
-        <div class="qms-grid">
-          <div class="module-card">
-            <h4>⚡ Lightning Fast</h4>
-            <p>Process thousands of validation records instantly with browser-native performance</p>
-          </div>
-          <div class="module-card">
-            <h4>🔒 Privacy First</h4>
-            <p>All processing happens locally. Your validation data never leaves your device</p>
-          </div>
-          <div class="module-card">
-            <h4>🎯 Zero Installation</h4>
-            <p>No software to install. Works instantly in any browser</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-
-  <footer>
-    <div class="container">
-      <div class="footer-col">
-        <h5>Product</h5>
-        <ul>
-          <li><a href="#tools">Tools</a></li>
-          <li><a href="#qms">QMS</a></li>
-          <li><a href="#resources">Resources</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Resources</h5>
-        <ul>
-          <li><a href="#">Knowledge Center</a></li>
-          <li><a href="#">Updates</a></li>
-          <li><a href="#">Guidelines</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="mailto:support@valqms.com">Contact</a></li>
-          <li><a href="#">Privacy</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Regulatory</h5>
-        <ul>
-          <li><a href="https://www.fda.gov" target="_blank">FDA</a></li>
-          <li><a href="https://www.ema.europa.eu" target="_blank">EMA</a></li>
-          <li><a href="https://www.who.int" target="_blank">WHO</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 ValQMS. Built with ❤️ by validation experts- Empowering Compliane through innovation</p>
-    </div>
-  </footer>
-
+  <!-- Google Sign-In SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <script>
-    const themeBtn=document.getElementById('themeBtn');
-    const themeDropdown=document.getElementById('themeDropdown');
-    const themeOptions=document.querySelectorAll('.theme-option');
-    themeBtn.addEventListener('click',e=>{e.stopPropagation();themeDropdown.classList.toggle('active')});
-    document.addEventListener('click',()=>themeDropdown.classList.remove('active'));
-    themeDropdown.addEventListener('click',e=>e.stopPropagation());
-    themeOptions.forEach(opt=>{
-      opt.addEventListener('click',()=>{
-        const theme=opt.dataset.theme;
-        document.documentElement.setAttribute('data-theme',theme);
-        localStorage.setItem('valqmsTheme',theme);
-        themeDropdown.classList.remove('active');
-      });
-    });
-    function initTheme(){
-      const saved=localStorage.getItem('valqmsTheme')||'green';
-      document.documentElement.setAttribute('data-theme',saved);
+    // Simple password hashing (for demo - use bcrypt in production)
+    function simpleHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return hash.toString(36);
     }
-    initTheme();
+
+    // Get all registered users
+    function getRegisteredUsers() {
+      const users = localStorage.getItem('valqmsRegisteredUsers');
+      return users ? JSON.parse(users) : [];
+    }
+
+    // Save registered users
+    function saveRegisteredUsers(users) {
+      localStorage.setItem('valqmsRegisteredUsers', JSON.stringify(users));
+    }
+
+    // Check if user exists
+    function userExists(email) {
+      const users = getRegisteredUsers();
+      return users.some(user => user.email.toLowerCase() === email.toLowerCase());
+    }
+
+    // Register new user
+    function registerUser(email, password, name) {
+      const users = getRegisteredUsers();
+      users.push({
+        email: email.toLowerCase(),
+        password: simpleHash(password),
+        name: name,
+        registeredAt: Date.now()
+      });
+      saveRegisteredUsers(users);
+    }
+
+    // Verify user credentials
+    function verifyCredentials(email, password) {
+      const users = getRegisteredUsers();
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      
+      if (!user) return { success: false, message: 'User not found. Please sign up first.' };
+      
+      if (user.password !== simpleHash(password)) {
+        return { success: false, message: 'Incorrect password. Please try again.' };
+      }
+      
+      return { success: true, user };
+    }
+
+    // Initialize theme and background
+    (function initTheme(){
+      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+      const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.setAttribute('data-bg', savedBg);
+    })();
+
+    // Theme toggle
+    const themeBtn = document.getElementById('themeBtn');
+    const themes = ['green','cyan','purple','orange','blue','red','pink','teal','indigo','yellow','magenta','emerald','amber','lime','violet'];
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'green';
+      const currentIndex = themes.indexOf(current);
+      const nextIndex = (currentIndex + 1) % themes.length;
+      const nextTheme = themes[nextIndex];
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('valqmsTheme', nextTheme);
+    });
+
+    // Background toggle
+    const bgBtn = document.getElementById('bgBtn');
+    const backgrounds = ['mesh','gradient','dots','waves','dark'];
+    bgBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-bg') || 'mesh';
+      const currentIndex = backgrounds.indexOf(current);
+      const nextIndex = (currentIndex + 1) % backgrounds.length;
+      const nextBg = backgrounds[nextIndex];
+      document.documentElement.setAttribute('data-bg', nextBg);
+      localStorage.setItem('valqmsBg', nextBg);
+    });
+
+    // Mode toggle (Sign In / Sign Up)
+    let isSignUpMode = false;
+
+    const toggleModeBtn = document.getElementById('toggleMode');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageSubtitle = document.getElementById('pageSubtitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitIcon = document.getElementById('submitIcon');
+    const submitText = document.getElementById('submitText');
+    const toggleQuestion = document.getElementById('toggleQuestion');
+    const googleBtnText = document.getElementById('googleBtnText');
+    const nameGroup = document.getElementById('nameGroup');
+    const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+
+    toggleModeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      isSignUpMode = !isSignUpMode;
+      
+      if (isSignUpMode) {
+        pageTitle.textContent = 'Sign up';
+        pageSubtitle.textContent = 'Create a new account to get started';
+        submitIcon.textContent = '✨';
+        submitText.textContent = 'Create Account';
+        toggleQuestion.textContent = 'Already have an account?';
+        toggleModeBtn.textContent = 'Sign in';
+        googleBtnText.textContent = 'Sign up with Google';
+        nameGroup.classList.remove('hidden');
+        confirmPasswordGroup.classList.remove('hidden');
+      } else {
+        pageTitle.textContent = 'Sign in';
+        pageSubtitle.textContent = 'Enter your credentials to access your account';
+        submitIcon.textContent = '🔐';
+        submitText.textContent = 'Sign In';
+        toggleQuestion.textContent = "Don't have an account?";
+        toggleModeBtn.textContent = 'Sign up';
+        googleBtnText.textContent = 'Continue with Google';
+        nameGroup.classList.add('hidden');
+        confirmPasswordGroup.classList.add('hidden');
+      }
+      
+      document.getElementById('authForm').reset();
+      document.getElementById('message').textContent = '';
+    });
+
+    // Show password toggle
+    const showPasswordCheckbox = document.getElementById('showPassword');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    showPasswordCheckbox.addEventListener('change', () => {
+      const type = showPasswordCheckbox.checked ? 'text' : 'password';
+      passwordInput.type = type;
+      confirmPasswordInput.type = type;
+    });
+
+    // Google Sign-In Configuration
+    const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+
+    function initializeGoogleSignIn() {
+      if (typeof google !== 'undefined') {
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleSignIn
+        });
+      }
+    }
+
+    function handleGoogleSignIn(response) {
+      const userObject = parseJwt(response.credential);
+      
+      localStorage.setItem('valqmsUser', JSON.stringify({
+        email: userObject.email,
+        name: userObject.name,
+        picture: userObject.picture,
+        loggedIn: true,
+        provider: 'google',
+        timestamp: Date.now()
+      }));
+
+      const btn = document.getElementById('googleSignIn');
+      btn.innerHTML = '<span>✓</span><span>Success! Redirecting...</span>';
+      btn.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+      btn.style.color = '#000';
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 800);
+    }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    document.getElementById('googleSignIn').addEventListener('click', () => {
+      if (typeof google !== 'undefined') {
+        google.accounts.id.prompt();
+      } else {
+        alert('⚠️ Google Sign-In is not configured. Please add your Google Client ID.');
+      }
+    });
+
+    window.addEventListener('load', initializeGoogleSignIn);
+
+    // Form submission
+    const form = document.getElementById('authForm');
+    const messageDiv = document.getElementById('message');
+    const emailInput = document.getElementById('email');
+    const nameInput = document.getElementById('name');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      messageDiv.textContent = '';
+      messageDiv.className = 'error';
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const name = nameInput.value.trim();
+      const confirmPassword = confirmPasswordInput.value;
+
+      // Validation
+      if (isSignUpMode && (!name || name.length < 2)) {
+        messageDiv.textContent = '⚠️ Please enter your full name (minimum 2 characters)';
+        nameInput.focus();
+        return;
+      }
+
+      if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        messageDiv.textContent = '⚠️ Please enter a valid email address';
+        emailInput.focus();
+        return;
+      }
+
+      if (!password || password.length < 6) {
+        messageDiv.textContent = '⚠️ Password must be at least 6 characters';
+        passwordInput.focus();
+        return;
+      }
+
+      if (isSignUpMode && password !== confirmPassword) {
+        messageDiv.textContent = '⚠️ Passwords do not match';
+        confirmPasswordInput.focus();
+        return;
+      }
+
+      // Sign Up
+      if (isSignUpMode) {
+        if (userExists(email)) {
+          messageDiv.textContent = '⚠️ This email is already registered. Please sign in instead.';
+          emailInput.focus();
+          return;
+        }
+
+        registerUser(email, password, name);
+        
+        messageDiv.textContent = '✓ Account created successfully! Logging you in...';
+        messageDiv.className = 'success';
+
+        setTimeout(() => {
+          const userData = {
+            email,
+            name,
+            loggedIn: true,
+            provider: 'email',
+            timestamp: Date.now()
+          };
+          localStorage.setItem('valqmsUser', JSON.stringify(userData));
+          
+          submitIcon.textContent = '✓';
+          submitText.textContent = 'Success! Redirecting...';
+          submitBtn.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+          
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 500);
+        }, 1000);
+        return;
+      }
+
+      // Sign In
+      const verification = verifyCredentials(email, password);
+      
+      if (!verification.success) {
+        messageDiv.textContent = '⚠️ ' + verification.message;
+        return;
+      }
+
+      // Login successful
+      const userData = {
+        email: verification.user.email,
+        name: verification.user.name,
+        loggedIn: true,
+        provider: 'email',
+        timestamp: Date.now()
+      };
+
+      localStorage.setItem('valqmsUser', JSON.stringify(userData));
+      
+      submitIcon.textContent = '✓';
+      submitText.textContent = 'Success! Redirecting...';
+      submitBtn.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+      
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 800);
+    });
   </script>
 </body>
 </html>

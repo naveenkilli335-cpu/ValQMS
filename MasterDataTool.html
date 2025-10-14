@@ -1,787 +1,2647 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green">
+<html lang="en" data-theme="green" data-bg="mesh">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LIMS Master Data Tool — ValQMS</title>
-  <link rel="icon" href="favicon.jpg?v=5">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- SheetJS & PDF.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script>
-    if (typeof pdfjsLib !== "undefined") {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.jpg?v=5">
+    <title>LIMS- Master Data Structuring Tool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    
-    /* === ALL 15 COLOR THEMES === */
-    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
-    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.1)}
-    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.1)}
-    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.1)}
-    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.1)}
-    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.1)}
-    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.1)}
-    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.1)}
-    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.1)}
-    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.1)}
-    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.1)}
-    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.1)}
-    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.1)}
-    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.1)}
-    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.1)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    :root{
-      --bg:#0a0e1a;
-      --surface:#1a1f2e;
-      --border:rgba(255,255,255,0.08);
-      --text:#f8fafc;
-      --text-dim:#94a3b8;
-      --ok:#10b981;
-      --warn:#fbbf24;
-      --err:#ef4444;
-    }
-    
-    html{scroll-behavior:smooth}
-    
-    body{
-      font-family:'Inter',system-ui,-apple-system,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.6;
-      -webkit-font-smoothing:antialiased;
-      padding:24px;
-      transition:background 0.3s,color 0.3s;
-    }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --shadow: rgba(0,0,0,0.08);
+            --glow: rgba(99, 102, 241, 0.4);
+        }
 
-    /* Header */
-    .topbar{
-      max-width:1400px;
-      margin:0 auto 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:16px 24px;
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:16px;
-      backdrop-filter:blur(12px);
-    }
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --secondary: #a78bfa;
+            --accent: #f472b6;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --dark: #f1f5f9;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --border: #334155;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --shadow: rgba(0,0,0,0.4);
+            --glow: rgba(129, 140, 248, 0.3);
+        }
 
-    .brand{display:flex;gap:16px;align-items:center}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
 
-    .logo-container{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:var(--text);
-    }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.15), transparent 40%),
+                        radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.15), transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.1), transparent 30%);
+            animation: gradientRotate 20s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    .logo-mark{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:40px;
-      height:40px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:0 4px 16px var(--accent-dim);
-      transition:all 0.3s;
-    }
+        [data-theme="dark"] body::before {
+            background: radial-gradient(circle at 30% 40%, rgba(129, 140, 248, 0.2), transparent 40%),
+                        radial-gradient(circle at 70% 60%, rgba(167, 139, 250, 0.2), transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(244, 114, 182, 0.15), transparent 30%);
+        }
 
-    .logo-mark img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      padding:5px;
-    }
+        @keyframes gradientRotate {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
 
-    .brand-text h1{
-      font-size:20px;
-      font-weight:800;
-      letter-spacing:-0.5px;
-      margin:0;
-    }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px var(--shadow), 0 0 0 1px rgba(255,255,255,0.3);
+            padding: 3rem;
+            position: relative;
+            z-index: 1;
+            animation: containerFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-    .brand-text .subtitle{
-      font-size:13px;
-      color:var(--text-dim);
-      font-weight:500;
-    }
+        [data-theme="dark"] .container {
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 20px 60px var(--shadow), 0 0 0 1px rgba(255,255,255,0.05);
+        }
 
-    .header-actions{display:flex;gap:12px;align-items:center}
+        @keyframes containerFadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-    .btn-home{
-      padding:8px 16px;
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:10px;
-      color:var(--text-dim);
-      text-decoration:none;
-      font-size:14px;
-      font-weight:600;
-      transition:all 0.2s;
-    }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
 
-    .btn-home:hover{
-      background:var(--accent-dim);
-      color:var(--text);
-      border-color:var(--accent);
-    }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 140px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 2px;
+            animation: gradientSlide 3s ease infinite;
+        }
 
-    /* Container */
-    .container{max-width:1400px;margin:0 auto}
+        @keyframes gradientSlide {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
 
-    .card{
-      background:var(--surface);
-      padding:24px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      margin-bottom:16px;
-      transition:all 0.3s;
-    }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
 
-    .card h3{
-      font-size:16px;
-      font-weight:700;
-      margin:0 0 12px 0;
-      letter-spacing:-0.3px;
-    }
+        .header-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 12px 32px var(--glow), 0 0 0 1px rgba(255,255,255,0.1) inset;
+            animation: iconFloat 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* How to Use with Toggle */
-    .how-to-use{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:20px 24px;
-      margin-bottom:24px;
-      transition:all 0.3s;
-    }
+        .header-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
 
-    .how-to-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      cursor:pointer;
-      user-select:none;
-    }
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
 
-    .how-to-header h3{
-      font-size:16px;
-      font-weight:700;
-      margin:0;
-      color:var(--accent);
-      display:flex;
-      align-items:center;
-      gap:8px;
-      transition:color 0.3s;
-    }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
 
-    .toggle-icon{
-      font-size:14px;
-      transition:transform 0.3s;
-    }
+        h1 {
+            color: var(--text);
+            font-size: 2.25rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--text), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .toggle-icon.collapsed{
-      transform:rotate(-90deg);
-    }
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
 
-    .how-to-content{
-      overflow:hidden;
-      transition:max-height 0.3s ease-out, opacity 0.3s;
-      max-height:500px;
-      opacity:1;
-    }
+        .theme-switcher {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--card);
+            padding: 0.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
 
-    .how-to-content.hidden{
-      max-height:0;
-      opacity:0;
-      margin-top:0;
-    }
+        .theme-btn {
+            padding: 0.65rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .how-to-content ul{
-      margin:12px 0 0 20px;
-      color:var(--text-dim);
-      font-size:13px;
-      line-height:1.8;
-    }
+        .theme-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
 
-    .how-to-content li{margin-bottom:6px}
+        .theme-btn:hover {
+            color: var(--text);
+            transform: translateY(-2px);
+        }
 
-/* File Upload */
-.upload-area{
-  border:2px dashed var(--border);
-  border-radius:16px;
-  padding:40px 20px;
-  text-align:center;
-  cursor:pointer;
-  transition:all 0.3s;
-  background:var(--accent-dim);
+        .theme-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 16px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn.active::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(139, 92, 246, 0.06));
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-left: 4px solid var(--primary);
+            padding: 1.75rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            animation: slideUp 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            animation: infoShine 3s infinite;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes infoShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .info-box h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .info-box p {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            letter-spacing: -0.01em;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            background: var(--card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.08), transparent);
+            transition: left 0.6s;
+        }
+
+        .upload-area:hover::before {
+            left: 100%;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(139, 92, 246, 0.03));
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px var(--shadow), 0 0 0 1px var(--primary);
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: iconBounce 2.5s ease infinite;
+            filter: drop-shadow(0 4px 8px var(--shadow));
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.05); }
+        }
+
+        .upload-text {
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-subtext {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .mapping-section {
+            background: var(--card);
+            padding: 2.5rem;
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .mapping-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+                /* NEW: Table-based mapping layout */
+        .mapping-table-container {
+            max-height: 500px;
+            overflow: auto;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--bg);
+            margin-top: 1rem;
+        }
+
+        .mapping-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .mapping-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .mapping-table th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .mapping-table tbody tr {
+            transition: all 0.2s;
+            animation: rowSlideIn 0.5s ease backwards;
+        }
+
+        .mapping-table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(139, 92, 246, 0.04));
+        }
+
+        .mapping-table tbody tr:nth-child(odd) {
+            background: rgba(0,0,0,0.02);
+        }
+
+        [data-theme="dark"] .mapping-table tbody tr:nth-child(odd) {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .mapping-table td {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .mapping-table td.field-name {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .mapping-table td.field-name.required {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(251, 191, 36, 0.08));
+            border-left: 3px solid var(--warning);
+        }
+
+        .mapping-table td.field-type {
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .mapping-table td.field-info {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Highlight unmapped fields with warning color */
+.mapping-table td.field-mapping select option[value=""] {
+    color: var(--danger);
+    font-weight: 700;
 }
 
-.upload-area:hover{
-  border-color:var(--accent);
-  background:var(--accent-dim);
-  filter:brightness(1.2);
-  transform:translateY(-2px);
+.mapping-table td.field-mapping select.unmapped {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(251, 191, 36, 0.15));
+    border: 2px solid var(--warning);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
-.upload-icon{
-  font-size:48px;
-  margin-bottom:12px;
+.mapping-table td.field-mapping select.mapped {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.08));
+    border: 2px solid rgba(16, 185, 129, 0.3);
 }
 
-.upload-text{
-  font-size:16px;
-  font-weight:700;
-  color:var(--text);
-  margin-bottom:6px;
+
+
+                 .mapping-table td.field-mapping select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .mapping-table td.field-mapping select:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+        }
+
+        .mapping-table td.field-mapping select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .mapping-table td.field-mapping select.unmapped {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+            border-color: #f59e0b;
+            color: var(--text);
+        }
+
+        .mapping-table td.field-mapping select.mapped {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border-color: #10b981;
+            color: var(--text);
+        }
+
+
+        /* Fix dropdown options visibility */
+        .mapping-table td.field-mapping select option {
+            background: var(--card);
+            color: var(--text);
+            padding: 0.5rem;
+            font-weight: 500;
+        }
+
+        .mapping-table td.field-mapping select option:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Special styling for specific options */
+        .mapping-table td.field-mapping select option[value=""] {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .mapping-table td.field-mapping select option[value="__AUTO_GENERATE__"] {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .mapping-table td.field-mapping select option[value="__NA__"] {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .mapping-table td.field-mapping select option[value="__DEFAULT__"] {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .length-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(248, 113, 113, 0.1));
+            color: var(--danger);
+            margin-left: 0.5rem;
+        }
+
+        .round-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            color: var(--success);
+            margin-left: 0.5rem;
+        }
+
+        @keyframes rowSlideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+
+        .btn {
+            width: 100%;
+            padding: 1.5rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            background-size: 200% 200%;
+            color: white;
+            box-shadow: 0 12px 32px var(--glow);
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px var(--glow);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 40px var(--shadow);
+        }
+
+        .stat-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .preview-section {
+    background: var(--card);
+    padding: 2.5rem;
+    border-radius: 24px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px var(--shadow);
+    overflow-x: auto; /* Add horizontal scroll */
 }
 
-.upload-subtext{
-  font-size:13px;
-  color:var(--text-dim);
+
+        .preview-table {
+    max-height: 450px;
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg);
+    width: 100%;
 }
 
-.file-input{display:none}
-
-/* Two Column Layout */
-.two-column{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  margin-bottom:16px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    min-width: 100%;
 }
 
-/* Buttons */
-.btn{
-  width:100%;
-  padding:14px 24px;
-  border:none;
-  border-radius:12px;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-  transition:all 0.3s;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
+thead {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 10;
 }
 
-.btn-primary{
-  background:var(--accent);
-  color:#fff;
+th {
+    padding: 1.25rem 0.75rem;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    position: relative;
+    user-select: none;
+    min-width: 120px;
+    cursor: default;
 }
 
-.btn-primary:hover{
-  background:var(--accent-bright);
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px var(--accent-dim);
+/* Resize handle */
+th .resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    user-select: none;
+    background: transparent;
+    z-index: 100;
 }
 
-.btn-success{
-  background:var(--ok);
-  color:#fff;
+th .resizer:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-right: 3px solid rgba(255, 255, 255, 0.9);
 }
 
-.btn-success:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(16,185,129,0.3);
+th.resizing {
+    user-select: none;
 }
 
-/* Stats */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:12px;
-  margin-bottom:20px;
+th.resizing .resizer {
+    background: rgba(255, 255, 255, 0.6);
+    border-right: 3px solid white;
 }
 
-.stat-card{
-  padding:20px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  text-align:center;
-  transition:all 0.3s;
+td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+    color: var(--text);
+    white-space: normal; /* CHANGED: Allow text to wrap */
+    word-wrap: break-word; /* ADDED: Break long words */
+    overflow-wrap: break-word; /* ADDED: Modern word breaking */
+    max-width: 200px; /* ADDED: Maximum width for wrapping */
+    vertical-align: top; /* CHANGED: Align to top when wrapped */
+    line-height: 1.5; /* ADDED: Better line spacing */
 }
 
-.stat-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 8px 20px rgba(0,0,0,0.1);
-  border-color:var(--accent);
+
+tr:hover td {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(139, 92, 246, 0.04));
 }
 
-.stat-number{
-  font-size:32px;
-  font-weight:900;
-  color:var(--accent);
-  margin-bottom:6px;
-  transition:color 0.3s;
+td.truncated {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(248, 113, 113, 0.08));
+    border-left: 3px solid var(--danger);
 }
 
-.stat-label{
-  font-size:12px;
-  font-weight:600;
-  color:var(--text-dim);
-  text-transform:uppercase;
-  letter-spacing:0.5px;
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.06), rgba(248, 113, 113, 0.06));
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-left: 4px solid var(--danger);
+            padding: 1.75rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .warning-box h4 {
+            color: var(--danger);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .pdf-notice {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(251, 191, 36, 0.08));
+            border-left: 4px solid var(--warning);
+            padding: 1.25rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .pdf-preview {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .pdf-preview h5 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .pdf-preview pre {
+            background: var(--bg);
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .truncation-log {
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            margin-top: 1rem;
+        }
+
+        .truncation-log div {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .dependency-info {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(16, 185, 129, 0.08));
+            border-left: 4px solid var(--success);
+            padding: 1.25rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .dependency-info h5 {
+            color: var(--success);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .dependency-info p {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .two-column, .stats, .export-options {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .theme-switcher {
+                width: 100%;
+            }
+
+            .mapping-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+		
+		/* Prevent text selection during column resize */
+body.resizing {
+    cursor: col-resize !important;
+    user-select: none !important;
 }
 
-/* Table */
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:13px;
+/* Better scrollbar for the preview table */
+.preview-table::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
 }
 
-th,td{
-  padding:12px;
-  border-bottom:1px solid var(--border);
-  text-align:left;
+.preview-table::-webkit-scrollbar-track {
+    background: var(--bg);
+    border-radius: 10px;
 }
 
-th{
-  position:sticky;
-  top:0;
-  background:var(--surface);
-  z-index:2;
-  font-weight:700;
-  color:var(--text);
+.preview-table::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 10px;
 }
 
-td.truncated{
-  background:rgba(251,191,36,0.15);
-  border-left:3px solid var(--warn);
+.preview-table::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
 }
 
-/* Info boxes */
-.info-box{
-  background:var(--accent-dim);
-  border:1px solid var(--accent);
-  border-left:4px solid var(--accent);
-  padding:16px 20px;
-  border-radius:12px;
-  margin-bottom:16px;
-  transition:all 0.3s;
+.preview-table::-webkit-scrollbar-corner {
+    background: var(--bg);
 }
 
-.info-box h4{
-  color:var(--accent);
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:8px;
-  transition:color 0.3s;
-}
-
-.info-box p{
-  font-size:13px;
-  color:var(--text-dim);
-  line-height:1.7;
-}
-
-.warning-box{
-  background:rgba(251,191,36,0.08);
-  border:1px solid rgba(251,191,36,0.2);
-  border-left:4px solid var(--warn);
-  padding:16px 20px;
-  border-radius:12px;
-  margin-bottom:16px;
-}
-
-.warning-box h4{
-  color:var(--warn);
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:8px;
-}
-
-.pdf-notice{
-  background:rgba(251,191,36,0.08);
-  border:1px solid rgba(251,191,36,0.2);
-  border-left:4px solid var(--warn);
-  padding:16px 20px;
-  border-radius:12px;
-  margin-bottom:16px;
-  color:var(--text);
-}
-
-.pdf-preview{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:16px;
-  margin-bottom:16px;
-  max-height:300px;
-  overflow-y:auto;
-}
-
-.pdf-preview h5{
-  color:var(--text);
-  font-size:14px;
-  font-weight:700;
-  margin-bottom:12px;
-}
-
-.pdf-preview pre{
-  background:var(--accent-dim);
-  padding:12px;
-  border-radius:8px;
-  font-size:12px;
-  color:var(--text);
-  border:1px solid var(--border);
-}
-
-/* Mapping Table */
-.mapping-table-container{
-  max-height:500px;
-  overflow:auto;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:var(--surface);
-  margin-top:12px;
-}
-
-.mapping-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-.mapping-table thead{
-  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
-  position:sticky;
-  top:0;
-  z-index:10;
-  transition:background 0.3s;
-}
-
-.mapping-table th{
-  padding:14px 12px;
-  text-align:left;
-  font-size:12px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  color:#fff;
-}
-
-.mapping-table tbody tr:hover{
-  background:var(--accent-dim);
-}
-
-.mapping-table td{
-  padding:10px 12px;
-  font-size:13px;
-  border-bottom:1px solid var(--border);
-  color:var(--text);
-}
-
-.mapping-table td.field-name{
-  font-weight:700;
-}
-
-.mapping-table td.field-name.required{
-  background:rgba(251,191,36,0.08);
-  border-left:3px solid var(--warn);
-}
-
-.mapping-select{
-  width:100%;
-  padding:8px 12px;
-  border:2px solid var(--border);
-  border-radius:8px;
-  font-size:13px;
-  font-weight:600;
-  background:var(--surface);
-  color:var(--text);
-  cursor:pointer;
-  transition:all 0.2s;
-}
-
-.mapping-select:hover{
-  border-color:var(--accent);
-}
-
-.mapping-select:focus{
-  outline:none;
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px var(--accent-dim);
-}
-
-.mapping-select.unmapped{
-  background:rgba(251,191,36,0.1);
-  border-color:var(--warn);
-}
-
-.mapping-select.mapped{
-  background:rgba(16,185,129,0.1);
-  border-color:var(--ok);
-}
-
-/* Utility */
-.hidden{display:none}
-
-.length-badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:6px;
-  font-size:11px;
-  font-weight:700;
-  background:rgba(239,68,68,0.1);
-  color:var(--err);
-  margin-left:6px;
-}
-
-.round-badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:6px;
-  font-size:11px;
-  font-weight:700;
-  background:rgba(16,185,129,0.1);
-  color:var(--ok);
-  margin-left:6px;
-}
-
-.export-options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.preview-section{
-  background:var(--surface);
-  padding:24px;
-  border-radius:16px;
-  margin-bottom:16px;
-  border:1px solid var(--border);
-  overflow-x:auto;
-}
-
-.preview-table{
-  max-height:450px;
-  overflow:auto;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:var(--surface);
-}
-
-.truncation-log{
-  max-height:220px;
-  overflow-y:auto;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:12px;
-  font-size:12px;
-  font-family:'SF Mono','Monaco','Courier New',monospace;
-  margin-top:12px;
-}
-
-.truncation-log div{
-  padding:6px;
-  border-bottom:1px solid var(--border);
-  color:var(--text);
-}
-
-/* Responsive */
-@media(max-width:768px){
-  .two-column,.stats,.export-options{grid-template-columns:1fr}
-  .topbar{flex-direction:column;gap:16px;text-align:center}
-  .header-actions{width:100%;justify-content:center}
-}
-
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:var(--bg);border-radius:10px}
-::-webkit-scrollbar-thumb{background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:10px;transition:background 0.3s}
-  </style>
+    </style>
 </head>
 <body>
-  
-  <!-- Header -->
-  <div class="topbar">
-    <div class="brand">
-      <a href="index.html" class="logo-container">
-        <div class="logo-mark">
-          <img src="favicon.jpg" alt="ValQMS Logo">
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="header-icon">🧪</div>
+                <div>
+                    <h1>LIMS</h1>
+                    <div class="subtitle">Automatic Master Data Structuring Tool</div>
+                </div>
+            </div>
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="light" onclick="setTheme('light')">
+                    ☀️ Light
+                </button>
+                <button class="theme-btn active" data-theme="auto" onclick="setTheme('auto')">
+                    🌓 Auto
+                </button>
+                <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">
+                    🌙 Dark
+                </button>
+            </div>
         </div>
-        <div class="brand-text">
-          <h1>ValQMS Tools</h1>
-          <div class="subtitle">LIMS Master Data Tool</div>
-        </div>
-      </a>
-    </div>
-    <div class="header-actions">
-      <a href="index.html" class="btn-home">← Home</a>
-    </div>
-  </div>
 
-  <div class="container">
+        <div class="info-box">
+            <h4>📌 How This Tool Works</h4>
+            <p>Step-1: Upload your LIMS field excel file template<br>
+            Step-2: Upload your end user structured/unstructured data file (Excel, CSV, or PDF)<br>
+            Step-3: For PDF: Tool uses smart multi-line detection for product names<br>
+            Step-4: Map user data columns with LIMS column and let the tool auto-transform based on LIMS rules<br>
+            Step-5: Tool will auto-truncate fields exceeding MAX_LENGTH limits</p>
+        </div>
+
+        <div id="statusBox" class="info-box hidden" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(5, 150, 105, 0.06)); border-left-color: var(--success);">
+            <h4>✓ Status</h4>
+            <p id="statusText">Waiting for files...</p>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label>Upload LIMS Field Template</label>
+                <div class="upload-area" onclick="document.getElementById('templateInput').click()">
+                    <div class="upload-icon">📋</div>
+                    <div class="upload-text" id="templateText">Upload Template</div>
+                    <div class="upload-subtext">Excel: LIMS TEMPLATE WITH FIELDS</div>
+                </div>
+                <input type="file" id="templateInput" class="file-input" accept=".xlsx,.xls">
+            </div>
+
+            <div class="form-group">
+                <label>Upload User Data (Unstructured)</label>
+                <div class="upload-area" onclick="document.getElementById('dataInput').click()">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text" id="dataText">Upload Data</div>
+                    <div class="upload-subtext">Excel, CSV, or PDF accepted</div>
+                </div>
+                <input type="file" id="dataInput" class="file-input" accept=".xlsx,.xls,.csv,.pdf">
+            </div>
+        </div>
+
+        <div id="pdfNotice" class="pdf-notice hidden">
+            <strong>⚠️ PDF File Detected:</strong> Using smart multi-line product name detection. Review extracted data carefully.
+        </div>
+
+        <div id="pdfPreview" class="pdf-preview hidden">
+            <h5>📄 Detected Columns & Sample Data:</h5>
+            <pre id="pdfPreviewText"></pre>
+        </div>
+
+        <div id="dependencyInfo" class="dependency-info hidden">
+            <h5>⚠️ Dependency Order Detected</h5>
+            <p id="dependencyText"></p>
+        </div>
+
+        <div id="mappingSection" class="mapping-section hidden">
+            <div class="mapping-title">📋 Map Your Columns to LIMS Fields</div>
+            <div id="mappingRows"></div>
+        </div>
+
+        <div id="processSection" class="hidden">
+            <button class="btn btn-primary" onclick="processData()">
+                <span>⚙️</span> Process & Transform Data
+            </button>
+            <p style="text-align: center; color: var(--text-light); font-size: 0.9rem; margin-top: 1rem;">
+                💡 Tip: Fields exceeding MAX_LENGTH will be automatically truncated
+            </p>
+        </div>
+
+        <div id="truncationWarning" class="warning-box hidden">
+            <h4>⚠️ Length Truncations Detected</h4>
+            <p id="truncationSummary" style="margin-bottom: 0.75rem; color: var(--text);"></p>
+            <div id="truncationLog" class="truncation-log"></div>
+        </div>
+
+        <div id="resultsSection" class="hidden">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalStat">0</div>
+                    <div class="stat-label">Total Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="cleanedStat">0</div>
+                    <div class="stat-label">Valid Records</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="transformedStat">0</div>
+                    <div class="stat-label">Transformations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="issuesStat">0</div>
+                    <div class="stat-label">Auto-Fixed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="truncatedStat">0</div>
+                    <div class="stat-label">Truncated</div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="mapping-title">👀 Preview LIMS-Ready Data</div>
+                <div class="preview-table">
+                    <table>
+                        <thead id="previewHeader"></thead>
+                        <tbody id="previewBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="export-options">
+                <button class="btn btn-success" onclick="exportMainData()">
+                    <span>⬇️</span> Download Main Table
+                </button>
+                <button class="btn btn-success" onclick="exportAllTables()" id="exportAllBtn" style="display:none;">
+                    <span>📦</span> Download All Tables (Ordered)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management
+        var currentThemePreference = 'auto';
+        
+        function setTheme(theme) {
+            currentThemePreference = theme;
+            applyTheme();
+            document.querySelectorAll('.theme-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-theme="' + theme + '"]').classList.add('active');
+        }
+
+        function applyTheme() {
+            var theme = currentThemePreference;
+            if (theme === 'auto') {
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                theme = prefersDark ? 'dark' : 'light';
+            }
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+            if (currentThemePreference === 'auto') {
+                applyTheme();
+            }
+        });
+
+        applyTheme();
+
+        var templateFields = [];
+        var userData = [];
+        var userColumns = [];
+        var structuredData = [];
+        var columnMapping = {};
+        var transformationCount = 0;
+        var truncationLog = [];
+        var truncationCount = 0;
+		
+		// ADD THIS NEW ARRAY - List of fields that are auto-generated
+		var autoGeneratedFields = ['ROUND', 'RULE', 'RULE_TYPE', 'SPEC_VALUE', 'SPEC_CLASS', 'SAP_CODE'];
+
+
+		// Function to calculate rounding based on min/max values
+		function calculateRounding(minVal, maxVal) {
+		var values = [];
+			if (minVal !== null && minVal !== '') values.push(parseFloat(minVal));
+			if (maxVal !== null && maxVal !== '') values.push(parseFloat(maxVal));
     
-    <!-- How to Use with Toggle -->
-    <div class="how-to-use">
-      <div class="how-to-header" id="howToToggle">
-        <h3>📖 How to Use</h3>
-        <span class="toggle-icon" id="toggleIcon">▼</span>
-      </div>
-      <div class="how-to-content" id="howToContent">
-        <ul>
-          <li><strong>Step 1:</strong> Upload your LIMS field template (Excel with field definitions)</li>
-          <li><strong>Step 2:</strong> Upload your user data file (Excel, CSV, or PDF)</li>
-          <li><strong>Step 3:</strong> For PDF: Tool uses smart multi-line detection for product names</li>
-          <li><strong>Step 4:</strong> Map user data columns to LIMS fields</li>
-          <li><strong>Step 5:</strong> Tool will auto-transform and truncate fields based on LIMS rules</li>
-        </ul>
-      </div>
-    </div>
-
-    <div id="statusBox" class="info-box hidden">
-      <h4>✓ Status</h4>
-      <p id="statusText">Waiting for files...</p>
-    </div>
-
-    <div class="two-column">
-      <div>
-        <label style="display:block;font-weight:700;margin-bottom:12px">Upload LIMS Template</label>
-        <div class="upload-area" onclick="document.getElementById('templateInput').click()">
-          <div class="upload-icon">📋</div>
-          <div class="upload-text" id="templateText">Upload Template</div>
-          <div class="upload-subtext">Excel: LIMS TEMPLATE WITH FIELDS</div>
-        </div>
-        <input type="file" id="templateInput" class="file-input" accept=".xlsx,.xls">
-      </div>
-
-      <div>
-        <label style="display:block;font-weight:700;margin-bottom:12px">Upload User Data</label>
-        <div class="upload-area" onclick="document.getElementById('dataInput').click()">
-          <div class="upload-icon">📁</div>
-          <div class="upload-text" id="dataText">Upload Data</div>
-          <div class="upload-subtext">Excel, CSV, or PDF accepted</div>
-        </div>
-        <input type="file" id="dataInput" class="file-input" accept=".xlsx,.xls,.csv,.pdf">
-      </div>
-    </div>
-
-    <div id="pdfNotice" class="pdf-notice hidden">
-      <strong>⚠️ PDF File Detected:</strong> Using smart multi-line product name detection. Review extracted data carefully.
-    </div>
-
-    <div id="pdfPreview" class="pdf-preview hidden">
-      <h5>📄 Detected Columns & Sample Data:</h5>
-      <pre id="pdfPreviewText"></pre>
-    </div>
-
-    <div id="dependencyInfo" class="info-box hidden" style="background:rgba(16,185,129,0.08);border-left-color:var(--ok)">
-      <h5 style="color:var(--ok)">⚠️ Dependency Order Detected</h5>
-      <p id="dependencyText"></p>
-    </div>
-
-    <div id="mappingSection" class="card hidden">
-      <h3>📋 Map Your Columns to LIMS Fields</h3>
-      <div id="mappingRows"></div>
-    </div>
-
-    <div id="processSection" class="hidden">
-      <button class="btn btn-primary" onclick="processData()">
-        <span>⚙️</span> Process & Transform Data
-      </button>
-      <p style="text-align:center;color:var(--text-dim);font-size:13px;margin-top:12px">
-        💡 Tip: Fields exceeding MAX_LENGTH will be automatically truncated
-      </p>
-    </div>
-
-    <div id="truncationWarning" class="warning-box hidden">
-      <h4>⚠️ Length Truncations Detected</h4>
-      <p id="truncationSummary" style="margin-bottom:8px;color:var(--text)"></p>
-      <div id="truncationLog" class="truncation-log"></div>
-    </div>
-
-    <div id="resultsSection" class="hidden">
-      <div class="stats">
-        <div class="stat-card">
-          <div class="stat-number" id="totalStat">0</div>
-          <div class="stat-label">Total Records</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="cleanedStat">0</div>
-          <div class="stat-label">Valid Records</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="transformedStat">0</div>
-          <div class="stat-label">Transformations</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="issuesStat">0</div>
-          <div class="stat-label">Auto-Fixed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="truncatedStat">0</div>
-          <div class="stat-label">Truncated</div>
-        </div>
-      </div>
-
-      <div class="preview-section">
-        <h3>👀 Preview LIMS-Ready Data</h3>
-        <div class="preview-table">
-          <table>
-            <thead id="previewHeader"></thead>
-            <tbody id="previewBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="export-options">
-        <button class="btn btn-success" onclick="exportMainData()">
-          <span>⬇️</span> Download Main Table
-        </button>
-        <button class="btn btn-success" onclick="exportAllTables()" id="exportAllBtn" style="display:none">
-          <span>📦</span> Download All Tables (Ordered)
-        </button>
-      </div>
-    </div>
-
-  </div>
-
-<script>
-/* === HOW TO USE TOGGLE === */
-const howToToggle = document.getElementById('howToToggle');
-const howToContent = document.getElementById('howToContent');
-const toggleIcon = document.getElementById('toggleIcon');
-
-// Load toggle state
-const howToVisible = localStorage.getItem('howToVisible') !== 'false';
-if(!howToVisible){
-  howToContent.classList.add('hidden');
-  toggleIcon.classList.add('collapsed');
+			if (values.length === 0) return null;
+    
+		var maxDecimals = 0;
+		values.forEach(function(val) {
+			if (isNaN(val)) return;
+        var str = val.toString();
+			if (str.indexOf('.') !== -1) {
+            var decimals = str.split('.')[1].length;
+            maxDecimals = Math.max(maxDecimals, decimals);
+        }
+    });
+    
+		return maxDecimals;
 }
 
-howToToggle.addEventListener('click', () => {
-  const isHidden = howToContent.classList.toggle('hidden');
-  toggleIcon.classList.toggle('collapsed');
-  localStorage.setItem('howToVisible', !isHidden);
+		// Function to round a number to specified decimal places
+		function roundToDecimalPlaces(value, decimals) {
+    if (decimals === null || decimals === 0) return Math.round(value);
+    var multiplier = Math.pow(10, decimals);
+    return Math.round(value * multiplier) / multiplier;
+}
+
+        // *** UPDATED: Added ANALYSIS data type ***
+       var dataTypeRules = {
+			'ID': { pattern: /^[A-Z0-9_]+$/, transform: function(val) { return val.toUpperCase().replace(/[^A-Z0-9]/g, '_'); } },
+			'CODE': { pattern: /^[A-Z0-9_]+$/, transform: function(val) { return val.toUpperCase().replace(/[^A-Z0-9]/g, '_'); } },
+			'NUMBER': { pattern: /^[A-Z0-9_-]+$/, transform: function(val) { return val.toUpperCase().replace(/[^A-Z0-9_-]/g, '_'); } },
+			'ANALYSIS': { pattern: /^[A-Z\s]+$/, transform: function(val) { return val.toUpperCase().trim(); } },
+			'NAME': { pattern: /^[A-Z][a-z0-9 ]*$/, transform: function(val) { 
+        return val.trim().split(' ').map(function(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        }).join(' ');
+    }},
+			'TEXT': { pattern: null, transform: function(val) { return val.trim(); }},
+			'DESCRIPTION': { pattern: null, transform: function(val) { return val.trim(); }},
+			'EMAIL': { pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i, transform: function(val) { return val.toLowerCase().trim(); }},
+			'DATE': { pattern: /^\d{4}-\d{2}-\d{2}$/, transform: function(val) {
+        if (val instanceof Date) {
+            return val.toISOString().split('T')[0];
+        }
+        return val;
+    }},
+			'STATUS': { pattern: /^[A-Z]+$/, transform: function(val) { return val.toUpperCase(); }},
+			'VERSION': { pattern: /^\d+(\.\d+)?$/, transform: function(val) { return val.toString(); }}
+};
+
+
+        // *** UPDATED: Corrected table dependencies ***
+       var tableDependencies = {
+    'LIST': { order: 1, depends: [] },
+    'T_PH_STAGE': { order: 2, depends: [] },
+    'ANALYSIS': { order: 3, depends: [] },
+    'T_PH_SPEC_TYPE': { order: 4, depends: [] },
+    'LOCATION': { order: 5, depends: [] },
+    'USER': { order: 6, depends: [] },
+    'PRODUCT': { order: 10, depends: ['LIST', 'T_PH_STAGE', 'ANALYSIS', 'T_PH_SPEC_TYPE'] },
+    'INSTRUMENT': { order: 11, depends: ['LOCATION'] },
+    'METHOD': { order: 12, depends: [] },
+    'TEST': { order: 13, depends: ['METHOD'] },
+    'SAMPLE': { order: 14, depends: ['PRODUCT', 'LOCATION'] }
+};
+
+
+        document.getElementById('templateInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('templateText').textContent = '🔄 Loading ' + file.name + '...';
+            templateFields = [];
+            document.getElementById('mappingSection').classList.add('hidden');
+            document.getElementById('processSection').classList.add('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('truncationWarning').classList.add('hidden');
+
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    var data = new Uint8Array(evt.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[sheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                    if (jsonData.length === 0) {
+                        alert('Error: Template file is empty.');
+                        document.getElementById('templateText').textContent = '❌ Error';
+                        e.target.value = '';
+                        return;
+                    }
+
+                    templateFields = jsonData.map(function(row) {
+    var minVal = row.MIN_VALUE || row.min_value || null;
+    var maxVal = row.MAX_VALUE || row.max_value || null;
+    var roundTo = null;
+    
+    // Calculate rounding based on min/max values
+    if (minVal !== null || maxVal !== null) {
+        roundTo = calculateRounding(minVal, maxVal);
+    }
+    
+    return {
+        fieldName: row.FIELD_NAME || row.field_name || '',
+        dataType: row.DATA_TYPE || row.data_type || 'TEXT',
+        required: (row.REQUIRED || 'N').toString().toUpperCase() === 'Y',
+        defaultValue: row.DEFAULT_VALUE || row.default_value || '',
+        dependency: row.DEPENDENCY || row.dependency || '',
+        tableName: row.TABLE_NAME || row.table_name || 'MAIN',
+        maxLength: parseInt(row.MAX_LENGTH || row.max_length || 0) || null,
+        minValue: minVal,
+        maxValue: maxVal,
+        roundTo: roundTo
+    };
+}).filter(function(field) {
+    return field.fieldName !== '';
 });
 
-/* === THEME SYNC (Shared with index.html) === */
-function initTheme(){
-  const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-  document.documentElement.setAttribute('data-theme', savedTheme);
+                    if (templateFields.length === 0) {
+                        alert('⚠️ No fields found!');
+                        document.getElementById('templateText').textContent = '❌ No fields';
+                        e.target.value = '';
+                        return;
+                    }
+
+                    var fieldsWithLength = templateFields.filter(function(f) { return f.maxLength > 0; }).length;
+var fieldsWithRounding = templateFields.filter(function(f) { return f.roundTo !== null; }).length;
+var statusMsg = file.name + ' (' + templateFields.length + ' fields';
+if (fieldsWithLength > 0) statusMsg += ', ' + fieldsWithLength + ' with limits';
+if (fieldsWithRounding > 0) statusMsg += ', ' + fieldsWithRounding + ' with rounding';
+statusMsg += ')';
+
+document.getElementById('templateText').textContent = '✓ ' + statusMsg;
+                    document.getElementById('statusBox').classList.remove('hidden');
+                    document.getElementById('statusText').textContent = '✓ LIMS Template loaded. Waiting for end user data to upload...';
+                    checkBothFilesLoaded();
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                    document.getElementById('templateText').textContent = '❌ Error';
+                    e.target.value = '';
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById('dataInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('dataText').textContent = '🔄 Loading ' + file.name + '...';
+            document.getElementById('pdfNotice').classList.add('hidden');
+            document.getElementById('pdfPreview').classList.add('hidden');
+
+            userData = [];
+            userColumns = [];
+            structuredData = [];
+            truncationLog = [];
+            truncationCount = 0;
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('truncationWarning').classList.add('hidden');
+
+            var fileName = file.name.toLowerCase();
+
+            if (fileName.endsWith('.pdf')) {
+                document.getElementById('pdfNotice').classList.remove('hidden');
+                handlePDFFile(file, e);
+            } else if (fileName.endsWith('.csv')) {
+                handleCSVFile(file, e);
+            } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+                handleExcelFile(file, e);
+            } else {
+                alert('⚠️ Unsupported format');
+                document.getElementById('dataText').textContent = '❌ Unsupported';
+                e.target.value = '';
+            }
+        });
+
+        function handleExcelFile(file, event) {
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    var data = new Uint8Array(evt.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[sheetName];
+                    userData = XLSX.utils.sheet_to_json(worksheet, { defval: '', raw: false });
+
+                    if (userData.length === 0) {
+                        alert('⚠️ Excel file is empty');
+                        document.getElementById('dataText').textContent = '❌ Empty';
+                        event.target.value = '';
+                        return;
+                    }
+
+                    userColumns = Object.keys(userData[0]);
+                    document.getElementById('dataText').textContent = '✓ ' + file.name + ' (' + userData.length + ' rows)';
+                    document.getElementById('statusBox').classList.remove('hidden');
+                    document.getElementById('statusText').textContent = '✓ Both loaded! Ready to map.';
+                    checkBothFilesLoaded();
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                    document.getElementById('dataText').textContent = '❌ Error';
+                    event.target.value = '';
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function handleCSVFile(file, event) {
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    var csvText = evt.target.result;
+                    var delimiter = ',';
+                    var firstLine = csvText.split('\n')[0];
+                    if ((firstLine.match(/;/g) || []).length > (firstLine.match(/,/g) || []).length) delimiter = ';';
+                    else if ((firstLine.match(/\t/g) || []).length > 1) delimiter = '\t';
+
+                    var lines = csvText.split('\n').filter(function(l) { return l.trim(); });
+                    if (lines.length === 0) {
+                        alert('Empty CSV');
+                        document.getElementById('dataText').textContent = '❌ Empty';
+                        event.target.value = '';
+                        return;
+                    }
+
+                    function parseCSVLine(line, delim) {
+                        var result = [], current = '', inQuotes = false;
+                        for (var i = 0; i < line.length; i++) {
+                            var char = line[i];
+                            if (char === '"') {
+                                if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+                                else inQuotes = !inQuotes;
+                            } else if (char === delim && !inQuotes) {
+                                result.push(current.trim());
+                                current = '';
+                            } else {
+                                current += char;
+                            }
+                        }
+                        result.push(current.trim());
+                        return result;
+                    }
+
+                    var headers = parseCSVLine(lines[0], delimiter);
+                    userData = [];
+                    for (var i = 1; i < lines.length; i++) {
+                        var values = parseCSVLine(lines[i], delimiter);
+                        var rowObj = {};
+                        headers.forEach(function(h, idx) { rowObj[h] = values[idx] || ''; });
+                        userData.push(rowObj);
+                    }
+
+                    if (userData.length === 0) {
+                        alert('⚠️ No data rows');
+                        document.getElementById('dataText').textContent = '❌ No data';
+                        event.target.value = '';
+                        return;
+                    }
+
+                    userColumns = headers;
+                    document.getElementById('dataText').textContent = '✓ ' + file.name + ' (' + userData.length + ' rows)';
+                    document.getElementById('statusBox').classList.remove('hidden');
+                    document.getElementById('statusText').textContent = '✓ Both loaded! Ready.';
+                    checkBothFilesLoaded();
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                    document.getElementById('dataText').textContent = '❌ Error';
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function handlePDFFile(file, event) {
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                var pdfData = new Uint8Array(evt.target.result);
+
+                pdfjsLib.getDocument(pdfData).promise.then(function(pdf) {
+                    console.log('PDF loaded:', pdf.numPages, 'pages');
+
+                    var pagePromises = [];
+                    var maxPages = Math.min(pdf.numPages, 5);
+
+                    for (var i = 1; i <= maxPages; i++) {
+                        pagePromises.push(extractTableFromPage(pdf, i));
+                    }
+
+                    Promise.all(pagePromises).then(function(pagesData) {
+                        console.log('Pages extracted:', pagesData);
+
+                        var allItems = [];
+                        pagesData.forEach(function(pageItems) {
+                            if (pageItems && pageItems.length > 0) {
+                                allItems = allItems.concat(pageItems);
+                            }
+                        });
+
+                        if (allItems.length === 0) {
+                            alert('⚠️ Could not extract table from PDF.\n\nTry converting to Excel first.');
+                            document.getElementById('dataText').textContent = '❌ No table found';
+                            event.target.value = '';
+                            return;
+                        }
+
+                        console.log('All PDF items:', allItems);
+
+                        var parsedTable = parseItemsToTable(allItems);
+
+                        if (parsedTable.length === 0) {
+                            alert('⚠️ Could not parse PDF table structure.');
+                            document.getElementById('dataText').textContent = '❌ Parse failed';
+                            event.target.value = '';
+                            return;
+                        }
+
+                        userData = parsedTable;
+                        userColumns = Object.keys(userData[0]);
+
+                        var previewText = 'Columns: ' + userColumns.join(', ') + '\n\n';
+                        previewText += 'First 3 rows:\n' + JSON.stringify(userData.slice(0, 3), null, 2);
+                        document.getElementById('pdfPreviewText').textContent = previewText;
+                        document.getElementById('pdfPreview').classList.remove('hidden');
+
+                        document.getElementById('dataText').textContent = '✓ ' + file.name + ' (' + userData.length + ' rows from PDF)';
+                        document.getElementById('statusBox').classList.remove('hidden');
+                        document.getElementById('statusText').textContent = '✓ PDF parsed! ' + userData.length + ' rows. Verify mapping.';
+                        checkBothFilesLoaded();
+                    });
+                }).catch(function(error) {
+                    console.error('PDF error:', error);
+                    alert('Error reading PDF: ' + error.message);
+                    document.getElementById('dataText').textContent = '❌ PDF error';
+                    event.target.value = '';
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function extractTableFromPage(pdf, pageNum) {
+            return pdf.getPage(pageNum).then(function(page) {
+                return page.getTextContent().then(function(textContent) {
+                    var items = textContent.items.map(function(item) {
+                        return {
+                            text: item.str,
+                            x: Math.round(item.transform[4]),
+                            y: Math.round(item.transform[5]),
+                            width: item.width,
+                            height: item.height
+                        };
+                    }).filter(function(item) {
+                        return item.text.trim() !== '';
+                    });
+
+                    console.log('Page', pageNum, '- Items:', items.length);
+                    return items;
+                });
+            });
+        }
+
+        function parseItemsToTable(items) {
+            if (items.length === 0) return [];
+
+            var rowTolerance = 5;
+            var rows = [];
+            var currentRow = [];
+            var currentY = items[0].y;
+
+            items.forEach(function(item) {
+                if (Math.abs(item.y - currentY) > rowTolerance) {
+                    if (currentRow.length > 0) {
+                        rows.push(currentRow.sort(function(a, b) { return a.x - b.x; }));
+                    }
+                    currentRow = [item];
+                    currentY = item.y;
+                } else {
+                    currentRow.push(item);
+                }
+            });
+            if (currentRow.length > 0) {
+                rows.push(currentRow.sort(function(a, b) { return a.x - b.x; }));
+            }
+
+            console.log('Visual rows detected:', rows.length);
+            if (rows.length < 2) return [];
+
+            var headerRow = rows[0];
+            var headers = headerRow.map(function(item) { 
+                return item.text.trim().toLowerCase().replace(/\s+/g, '_'); 
+            });
+
+            console.log('Headers:', headers);
+
+            var columnBounds = headerRow.map(function(item, idx) {
+                var xStart = item.x - 10;
+                var xEnd = (idx < headerRow.length - 1) ? 
+                    headerRow[idx + 1].x - 10 : 
+                    item.x + 300;
+                
+                return {
+                    name: headers[idx],
+                    xStart: xStart,
+                    xEnd: xEnd,
+                    xCenter: (xStart + xEnd) / 2
+                };
+            });
+
+            console.log('Column bounds:', columnBounds);
+
+            var keyColumnIdx = -1;
+            for (var i = 0; i < headers.length; i++) {
+                if (headers[i].includes('product') && (headers[i].includes('id') || headers[i].includes('code'))) {
+                    keyColumnIdx = i;
+                    break;
+                }
+            }
+            
+            if (keyColumnIdx === -1) keyColumnIdx = 0;
+            var keyColumn = columnBounds[keyColumnIdx];
+
+            console.log('Key column:', keyColumn.name, 'at index', keyColumnIdx);
+
+            var tableData = [];
+            var i = 1;
+
+            while (i < rows.length) {
+                var row = rows[i];
+                var rowObj = {};
+
+                headers.forEach(function(h) {
+                    rowObj[h] = '';
+                });
+
+                var hasKeyValue = row.some(function(item) {
+                    return item.x >= keyColumn.xStart && item.x <= keyColumn.xEnd;
+                });
+
+                console.log('Row', i, '- Has key value:', hasKeyValue, 'Items:', row.length);
+
+                row.forEach(function(item) {
+                    var itemCenter = item.x + (item.width / 2);
+                    var closestCol = null;
+                    var minDist = Infinity;
+
+                    columnBounds.forEach(function(col) {
+                        if (itemCenter >= col.xStart && itemCenter <= col.xEnd) {
+                            closestCol = col.name;
+                            minDist = 0;
+                        } else {
+                            var dist = Math.abs(col.xCenter - itemCenter);
+                            if (dist < minDist) {
+                                minDist = dist;
+                                closestCol = col.name;
+                            }
+                        }
+                    });
+
+                    if (closestCol) {
+                        if (rowObj[closestCol]) {
+                            rowObj[closestCol] += ' ' + item.text.trim();
+                        } else {
+                            rowObj[closestCol] = item.text.trim();
+                        }
+                    }
+                });
+
+                if (hasKeyValue) {
+                    var j = i + 1;
+                    
+                    while (j < rows.length) {
+                        var nextRow = rows[j];
+                        
+                        var nextHasKey = nextRow.some(function(item) {
+                            return item.x >= keyColumn.xStart && item.x <= keyColumn.xEnd;
+                        });
+                        
+                        if (nextHasKey) {
+                            break;
+                        }
+                        
+                        console.log('  Merging continuation row', j, 'into row', i);
+                        
+                        nextRow.forEach(function(item) {
+                            var itemCenter = item.x + (item.width / 2);
+                            var closestCol = null;
+                            var minDist = Infinity;
+
+                            columnBounds.forEach(function(col) {
+                                if (itemCenter >= col.xStart && itemCenter <= col.xEnd) {
+                                    closestCol = col.name;
+                                    minDist = 0;
+                                } else {
+                                    var dist = Math.abs(col.xCenter - itemCenter);
+                                    if (dist < minDist) {
+                                        minDist = dist;
+                                        closestCol = col.name;
+                                    }
+                                }
+                            });
+
+                            if (closestCol) {
+                                if (rowObj[closestCol]) {
+                                    rowObj[closestCol] += ' ' + item.text.trim();
+                                } else {
+                                    rowObj[closestCol] = item.text.trim();
+                                }
+                            }
+                        });
+                        
+                        j++;
+                    }
+                    
+                    var hasData = Object.values(rowObj).some(function(val) { 
+                        return val && val.trim() !== ''; 
+                    });
+                    
+                    if (hasData) {
+                        Object.keys(rowObj).forEach(function(key) {
+                            if (rowObj[key]) {
+                                rowObj[key] = rowObj[key].trim().replace(/\s+/g, ' ');
+                            }
+                        });
+                        
+                        tableData.push(rowObj);
+                        console.log('  Added merged row:', rowObj);
+                    }
+                    
+                    i = j;
+                } else {
+                    console.log('  Skipping orphan row', i);
+                    i++;
+                }
+            }
+
+            console.log('Final parsed data:', tableData.length, 'rows');
+            console.log('Sample:', tableData.slice(0, 3));
+            
+            return tableData;
+        }
+		
+		
+
+// Save mapping to browser localStorage
+function saveMappingToStorage() {
+    if (!columnMapping || Object.keys(columnMapping).length === 0) return;
+    
+    var mappingData = {
+        columnMapping: columnMapping,
+        timestamp: new Date().toISOString(),
+        templateFields: templateFields.map(function(f) {
+            return f.fieldName;
+        })
+    };
+    
+    try {
+        localStorage.setItem('limsColumnMapping', JSON.stringify(mappingData));
+        console.log('Mapping saved successfully');
+    } catch (e) {
+        console.error('Failed to save mapping:', e);
+    }
 }
-initTheme();
 
-/* === YOUR EXISTING JAVASCRIPT CODE GOES HERE === */
-// [Insert all your existing Master Data Tool JavaScript code here]
-// All the data processing logic, PDF parsing, Excel handling, etc.
-</script>
+saveMappingToStorage();
 
+// EXPAND USER DATA WITH INSPECTION PLANS
+var dataToProcess = userData;
+var inspectionLotField = columnMapping['INSPECTION_LOT'];
+var productIdField = columnMapping['PRODUCT_ID'];
+
+if (inspectionLotField && productIdField) {
+    dataToProcess = expandDataWithInspectionPlans(userData, inspectionLotField, productIdField);
+    console.log('✓ Expanded: ' + userData.length + ' → ' + dataToProcess.length);
+}
+
+
+
+// Load mapping from browser localStorage
+function loadMappingFromStorage() {
+    try {
+        var saved = localStorage.getItem('limsColumnMapping');
+        if (!saved) return null;
+        
+        var mappingData = JSON.parse(saved);
+        console.log('Loaded mapping from:', mappingData.timestamp);
+        return mappingData.columnMapping;
+    } catch (e) {
+        console.error('Failed to load mapping:', e);
+        return null;
+    }
+}
+
+// Clear saved mapping
+function clearSavedMapping() {
+    localStorage.removeItem('limsColumnMapping');
+    alert('Saved mapping cleared!');
+    location.reload();
+}
+
+
+        function checkBothFilesLoaded() {
+            if (templateFields.length > 0 && userData.length > 0) {
+                showDependencyInfo();
+                showMappingSection();
+                setTimeout(function() {
+                    document.getElementById('mappingSection').scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+            }
+        }
+
+        function showDependencyInfo() {
+            var tables = {};
+            templateFields.forEach(function(f) { if (!tables[f.tableName]) tables[f.tableName] = true; });
+            var tableNames = Object.keys(tables);
+            if (tableNames.length > 1) {
+                var ordered = tableNames.sort(function(a, b) {
+                    return (tableDependencies[a] ? tableDependencies[a].order : 999) - (tableDependencies[b] ? tableDependencies[b].order : 999);
+                });
+                document.getElementById('dependencyText').textContent = 'Export order: ' + ordered.join(' → ');
+                document.getElementById('dependencyInfo').classList.remove('hidden');
+                document.getElementById('exportAllBtn').style.display = 'flex';
+            }
+        }
+
+function showMappingSection() {
+    var mappingRows = document.getElementById('mappingRows');
+    mappingRows.innerHTML = '';
+    
+    // Try to load saved mapping
+    var savedMapping = loadMappingFromStorage();
+    
+    // Create table HTML
+    var tableHTML = '<div class="mapping-table-container">';
+    tableHTML += '<table class="mapping-table">';
+    
+    // Table Header
+    tableHTML += '<thead><tr>';
+    tableHTML += '<th style="width: 25%">LIMS Field</th>';
+    tableHTML += '<th style="width: 15%">Type</th>';
+    tableHTML += '<th style="width: 25%">Info</th>';
+    tableHTML += '<th style="width: 35%">Map to User data</th>';
+    tableHTML += '</tr></thead>';
+    
+    // Table Body
+    tableHTML += '<tbody>';
+    templateFields.forEach(function(field) {
+        var requiredClass = field.required ? 'required' : '';
+        
+        // Row
+        tableHTML += '<tr>';
+        
+        // Column 1: Field Name
+        tableHTML += '<td class="field-name ' + requiredClass + '">';
+        tableHTML += field.fieldName;
+        if (field.required) tableHTML += ' <span style="color: var(--danger)">*</span>';
+        tableHTML += '</td>';
+        
+        // Column 2: Data Type
+        tableHTML += '<td class="field-type">' + field.dataType + '</td>';
+        
+        // Column 3: Info
+        tableHTML += '<td class="field-info">';
+        if (field.maxLength) tableHTML += '<span class="length-badge">Max: ' + field.maxLength + '</span>';
+        if (field.roundTo !== null) tableHTML += '<span class="round-badge">Round: ' + field.roundTo + '</span>';
+        if (field.dependency) tableHTML += '<br><small>Depends: ' + field.dependency + '</small>';
+        tableHTML += '</td>';
+        
+       // Column 4: Select Dropdown
+tableHTML += '<td class="field-mapping">';
+
+// Check if this field is auto-generated
+if (autoGeneratedFields.indexOf(field.fieldName) !== -1 || field.fieldName === 'STAGE') {
+    // For auto-generated fields, show disabled dropdown with "Auto-Generated" selected
+    tableHTML += '<select id="map_' + field.fieldName + '" class="mapping-select mapped" disabled style="opacity:0.7; cursor:not-allowed">';
+    tableHTML += '<option value="__AUTO_GENERATE__" selected>✓ Auto-Generated</option>';
+    tableHTML += '</select>';
+} else {
+    // For normal fields, show regular dropdown
+    tableHTML += '<select id="map_' + field.fieldName + '" class="mapping-select unmapped" onchange="updateDropdownStyle(this); saveMappingToStorage();">';
+    tableHTML += '<option value="">-- Select Column --</option>';
+    tableHTML += '<option value="__AUTO_GENERATE__">🔄 Auto-Create</option>';
+    tableHTML += '<option value="__NA__">❌ NA (Not Applicable)</option>';
+    
+    if (field.defaultValue) {
+        tableHTML += '<option value="__DEFAULT__">✓ Default (' + field.defaultValue + ')</option>';
+    }
+    
+    // Add user columns
+    userColumns.forEach(function(col) {
+        // Check if saved mapping exists for this field
+        var selected = '';
+        if (savedMapping && savedMapping[field.fieldName] === col) {
+            selected = 'selected';
+        }
+        // Otherwise, try smart matching
+        else if (!savedMapping) {
+            if (col.toUpperCase().indexOf(field.fieldName.toUpperCase()) !== -1 || 
+                field.fieldName.toUpperCase().indexOf(col.toUpperCase()) !== -1) {
+                selected = 'selected';
+            }
+        }
+        tableHTML += '<option value="' + col + '" ' + selected + '>' + col + '</option>';
+    });
+    
+    tableHTML += '</select>';
+}
+
+tableHTML += '</td>';
+
+      
+        tableHTML += '</tr>';
+    });
+    tableHTML += '</tbody>';
+    tableHTML += '</table>';
+    tableHTML += '</div>';
+    
+    // Add Clear Mapping button
+    tableHTML += '<div style="text-align: center; margin-top: 1rem;">';
+    tableHTML += '<button onclick="clearSavedMapping()" style="padding: 0.5rem 1rem; background: var(--danger); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🗑️ Clear Saved Mapping</button>';
+    tableHTML += '</div>';
+    
+    mappingRows.innerHTML = tableHTML;
+    
+    // Update styles for pre-selected dropdowns
+    setTimeout(function() {
+        templateFields.forEach(function(field) {
+            var selectEl = document.getElementById('map_' + field.fieldName);
+            if (selectEl) {
+                updateDropdownStyle(selectEl);
+                
+                // If we loaded from saved mapping, update the columnMapping object
+                if (savedMapping && savedMapping[field.fieldName]) {
+                    if (!columnMapping) columnMapping = {};
+                    columnMapping[field.fieldName] = savedMapping[field.fieldName];
+                }
+            }
+        });
+        
+        // Show notification if mapping was loaded
+        if (savedMapping) {
+            var statusBox = document.getElementById('statusBox');
+            var statusText = document.getElementById('statusText');
+            statusText.innerHTML = '✓ Previous mapping loaded! Review and click Process.';
+            statusBox.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1))';
+        }
+    }, 100);
+    
+    document.getElementById('mappingSection').classList.remove('hidden');
+    document.getElementById('processSection').classList.remove('hidden');
+}
+
+		function updateDropdownStyle(selectElement) {
+    if (selectElement.value === '' || selectElement.value === null) {
+        selectElement.classList.remove('mapped');
+        selectElement.classList.add('unmapped');
+    } else {
+        selectElement.classList.remove('unmapped');
+        selectElement.classList.add('mapped');
+    }
+}
+
+// Expand rows based on inspection lot values
+function expandDataWithInspectionPlans(data, inspectionLotFieldName, productIdFieldName) {
+    var expandedData = [];
+    
+    data.forEach(function(row) {
+        var inspectionLotValue = row[inspectionLotFieldName];
+        
+        // If no inspection lot value, keep row as-is
+        if (!inspectionLotValue || inspectionLotValue.toString().trim() === '') {
+            expandedData.push(row);
+            return;
+        }
+        
+        // Split by comma
+        var inspectionPlans = inspectionLotValue.toString().split(',').map(function(plan) {
+            return plan.trim();
+        }).filter(function(plan) {
+            return plan !== '';
+        });
+        
+        // If no valid plans, keep original row
+        if (inspectionPlans.length === 0) {
+            expandedData.push(row);
+            return;
+        }
+        
+        // Create a new row for each inspection plan
+        inspectionPlans.forEach(function(plan) {
+            var newRow = {};
+            Object.keys(row).forEach(function(key) {
+                newRow[key] = row[key];
+            });
+            newRow[inspectionLotFieldName] = plan;
+            expandedData.push(newRow);
+        });
+    });
+    
+    console.log('✓ Expanded: ' + data.length + ' → ' + expandedData.length + ' rows');
+    return expandedData;
+}
+
+// Expand rows based on STAGE values (0010,0020,0030)
+function expandDataWithStages(data, stageFieldName) {
+    var expandedData = [];
+    
+    data.forEach(function(row) {
+        var stageValue = row[stageFieldName];
+        
+        // If no stage value, keep row as-is
+        if (!stageValue || stageValue.toString().trim() === '') {
+            expandedData.push(row);
+            return;
+        }
+        
+        // Split by comma
+        var stages = stageValue.toString().split(',').map(function(stage) {
+            return stage.trim();
+        }).filter(function(stage) {
+            return stage !== '';
+        });
+        
+        // If no valid stages, keep original row
+        if (stages.length === 0) {
+            expandedData.push(row);
+            return;
+        }
+        
+        // Create a new row for each stage
+        stages.forEach(function(stage) {
+            var newRow = {};
+            Object.keys(row).forEach(function(key) {
+                newRow[key] = row[key];
+            });
+            newRow[stageFieldName] = stage;
+            expandedData.push(newRow);
+        });
+    });
+    
+    console.log('✓ Stage Expanded: ' + data.length + ' → ' + expandedData.length + ' rows');
+    return expandedData;
+}
+
+
+
+        function processData() {
+            if (templateFields.length === 0 || userData.length === 0) {
+                alert('Upload both files');
+                return;
+            }
+
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('truncationWarning').classList.add('hidden');
+
+            columnMapping = {};
+templateFields.forEach(function(f) {
+    // Check if field is auto-generated
+if (autoGeneratedFields.indexOf(f.fieldName) !== -1 || f.fieldName === 'STAGE') {
+    // Auto-generated fields always use '__AUTO_GENERATE__' (including STAGE as special case)
+    columnMapping[f.fieldName] = '__AUTO_GENERATE__';
+    } else {
+        var val = document.getElementById('map_' + f.fieldName).value;
+        if (val) columnMapping[f.fieldName] = val;
+    }
+});
+
+			 // Save the mapping for future use
+    saveMappingToStorage();
+
+            var missingReq = templateFields.filter(function(f) { return f.required && !columnMapping[f.fieldName]; });
+            if (missingReq.length > 0) {
+                alert('Map required: ' + missingReq.map(function(f) { return f.fieldName; }).join(', '));
+                return;
+            }
+
+            structuredData = [];
+            var issuesCount = 0;
+            transformationCount = 0;
+            truncationLog = [];
+            truncationCount = 0;
+			
+			
+            var autoCounters = {};
+            var fieldTruncs = {};
+
+// Use dataToProcess (expanded data with inspection plans)
+var dataToUse = userData;
+var inspectionLotField = columnMapping['INSPECTION_LOT'];
+
+if (inspectionLotField) {
+    var inspectionLotData = [];
+    userData.forEach(function(row) {
+        var inspectionLots = row[inspectionLotField];
+        if (inspectionLots && inspectionLots.toString().indexOf(',') !== -1) {
+            var lots = inspectionLots.toString().split(',');
+            lots.forEach(function(lot) {
+                var newRow = {};
+                Object.keys(row).forEach(function(key) {
+                    newRow[key] = row[key];
+                });
+                newRow[inspectionLotField] = lot.trim();
+                inspectionLotData.push(newRow);
+            });
+        } else {
+            inspectionLotData.push(row);
+        }
+    });
+    dataToUse = inspectionLotData;
+    console.log('INSPECTION_LOT Expanded: ' + userData.length + ' → ' + dataToUse.length + ' rows');
+}
+
+// NOW EXPAND BY STAGE - Detect STAGE column directly from user data
+var stageFieldName = null;
+if (dataToUse.length > 0) {
+    Object.keys(dataToUse[0]).forEach(function(key) {
+        if (key.toUpperCase().trim() === 'STAGE') {
+            stageFieldName = key;
+        }
+    });
+}
+
+if (stageFieldName) {
+    console.log('✓ Found STAGE column:', stageFieldName);
+    var beforeStageExpansion = dataToUse.length;
+    dataToUse = expandDataWithStages(dataToUse, stageFieldName);
+    console.log('✓ Stage Expanded: ' + beforeStageExpansion + ' → ' + dataToUse.length);
+}
+
+
+
+dataToUse.forEach(function(row, idx) {
+                var cleanRow = {};
+
+         // Step 1: First pass - collect MIN_VALUE and MAX_VALUE from this row
+        var minValue = null;
+        var maxValue = null;
+
+        templateFields.forEach(function(field) {
+            if (field.fieldName === 'MIN_VALUE' && columnMapping[field.fieldName]) {
+                var val = row[columnMapping[field.fieldName]];
+                if (val && !isNaN(parseFloat(val))) {
+                    minValue = parseFloat(val);
+                }
+            }
+            if (field.fieldName === 'MAX_VALUE' && columnMapping[field.fieldName]) {
+                var val = row[columnMapping[field.fieldName]];
+                if (val && !isNaN(parseFloat(val))) {
+                    maxValue = parseFloat(val);
+                }
+            }
+        });
+
+        // Calculate ROUND value for this row
+        var rowRoundValue = calculateRounding(minValue, maxValue);
+		// Calculate RULE value for this row
+var ruleValue = '';
+var minValueRaw = row[columnMapping['MIN_VALUE']] || '';
+var maxValueRaw = row[columnMapping['MAX_VALUE']] || '';
+
+// Check if either has content
+if (minValueRaw || maxValueRaw) {
+    // Check if either is numeric
+    if (!isNaN(parseFloat(minValueRaw)) || !isNaN(parseFloat(maxValueRaw))) {
+        ruleValue = 'N';
+    } else {
+        ruleValue = 'T';
+    }
+}
+
+// Calculate RULE_TYPE value for this row
+var ruleType = '';
+var minValueRaw = row[columnMapping['MIN_VALUE']] || '';
+var maxValueRaw = row[columnMapping['MAX_VALUE']] || '';
+
+// Convert to string and trim
+var minStr = minValueRaw.toString().trim().toUpperCase();
+var maxStr = maxValueRaw.toString().trim().toUpperCase();
+
+// Check if both are NA
+if (minStr === 'NA' && maxStr === 'NA') {
+    ruleType = 'Equal To';
+} else {
+    // Parse numeric values
+    var minNum = parseFloat(minValueRaw);
+    var maxNum = parseFloat(maxValueRaw);
+    
+    // Check if MIN has numeric value (not 0, not NA)
+    var hasMinValue = !isNaN(minNum) && minNum !== 0;
+    // Check if MAX has numeric value (not 0, not NA)
+    var hasMaxValue = !isNaN(maxNum) && maxNum !== 0;
+    
+    if (hasMinValue && hasMaxValue) {
+        // Both MIN and MAX have non-zero numeric values
+        ruleType = 'MIN ≤ Result ≤ MAX';
+    } else if (minNum === 0 && hasMaxValue) {
+        // MIN is 0, MAX has value
+        ruleType = 'Result ≤ MAX';
+    } else if (hasMinValue && maxNum === 0) {
+        // MIN has value, MAX is 0
+        ruleType = 'Result ≤ MIN';
+    } else {
+        // Default case - leave blank
+        ruleType = '';
+    }
+}
+
+
+// Calculate SPEC_VALUE: Set to "OK" if MIN or MAX is "NA"
+var specValue = '';
+if (minValueRaw.toUpperCase() === 'NA' || maxValueRaw.toUpperCase() === 'NA') {
+    specValue = 'OK';
+}
+
+
+// ADD THIS: Calculate SPEC_CLASS - always 'A' for all rows
+var specClass = 'A';
+
+
+        // Step 2: Second pass - process all fields
+        templateFields.forEach(function(field) {
+            var value = '';
+            var wasTrunc = false;
+			 // SPECIAL HANDLING FOR STAGE - Read from expanded row data
+    if (field.fieldName === 'STAGE') {
+        // Try to find STAGE value from the row (case-insensitive)
+        var stageValue = '';
+        Object.keys(row).forEach(function(key) {
+            if (key.toUpperCase().trim() === 'STAGE') {
+                stageValue = row[key] || '';
+            }
+        });
+        cleanRow['STAGE'] = stageValue;
+        return; // Skip normal processing for STAGE
+    }
+			
+			
+			
+            if (columnMapping[field.fieldName] === '__AUTO_GENERATE__') {
+			if (!autoCounters[field.fieldName]) autoCounters[field.fieldName] = 1;
+			value = field.fieldName.replace(/_/g, '').toUpperCase() + '_' + String(autoCounters[field.fieldName]).padStart(5, '0');
+			autoCounters[field.fieldName]++;
+			transformationCount++;
+} else if (columnMapping[field.fieldName] === '__DEFAULT__') {
+    value = field.defaultValue;
+    issuesCount++;
+} else if (columnMapping[field.fieldName] === '__NA__') {
+    value = 'NA';
+            } else if (columnMapping[field.fieldName]) {
+                value = row[columnMapping[field.fieldName]];
+                if (!value || value === '') {
+                    if (field.defaultValue) { value = field.defaultValue; issuesCount++; }
+                    else value = '';
+                } else {
+                    value = value.toString();
+                    var orig = value;
+                   // Skip transformation for MIN_VALUE and MAX_VALUE fields to preserve decimals
+        if (field.fieldName !== 'MIN_VALUE' && field.fieldName !== 'MAX_VALUE') {
+            value = transformByDataType(value, field.dataType, field.fieldName);
+            if (value !== orig) transformationCount++;
+                }
+				}
+            } else if (field.defaultValue) {
+                value = field.defaultValue;
+            }
+
+            // Only apply maxLength truncation if field is NOT auto-generated
+if (field.maxLength && value.toString().length > field.maxLength && autoGeneratedFields.indexOf(field.fieldName) === -1) {
+    var origLen = value.toString().length;
+    value = value.toString().substring(0, field.maxLength);
+    wasTrunc = true;
+    truncationCount++;
+    
+    if (!fieldTruncs[field.fieldName]) fieldTruncs[field.fieldName] = 0;
+    fieldTruncs[field.fieldName]++;
+    truncationLog.push({
+        row: idx + 2,
+        field: field.fieldName,
+        originalLength: origLen,
+        maxLength: field.maxLength
+    });
+}
+
+
+            cleanRow[field.fieldName] = value;
+            cleanRow['__truncated_' + field.fieldName] = wasTrunc;
+        });
+
+// Step 3: Add the calculated ROUND and RULE values to this row
+if (minValue !== null || maxValue !== null) {
+    // If either MIN or MAX has a numeric value, set ROUND
+    if (minValue !== null || maxValue !== null) {
+    // If we have numeric values, always set ROUND (even if it's 0)
+    cleanRow['ROUND'] = (rowRoundValue !== null && rowRoundValue !== undefined) ? rowRoundValue.toString() : '0';
+    } else {
+        cleanRow['ROUND'] = '0';  // Show 0 if numeric but no decimals
+    }
+} else {
+    cleanRow['ROUND'] = '';  // Leave blank if no numeric values
+}
+cleanRow['RULE'] = ruleValue;  // Existing line
+cleanRow['RULE_TYPE'] = ruleType;  // Add this new line
+cleanRow['SPEC_VALUE'] = specValue;  // Add this new line
+cleanRow['SPEC_CLASS'] = specClass;  // ADD THIS NEW LINE
+// Calculate SAP_CODE from PRODUCT_ID + "_" + INSPECTION_LOT
+var sapCodeValue = '';
+if (cleanRow['PRODUCT_ID'] && cleanRow['INSPECTION_LOT']) {
+    sapCodeValue = cleanRow['PRODUCT_ID'].toString() + '_' + cleanRow['INSPECTION_LOT'].toString();
+}
+cleanRow['SAP_CODE'] = sapCodeValue;
+
+                structuredData.push(cleanRow);
+            });
+
+            displayResults(issuesCount);
+            if (truncationCount > 0) displayTruncationWarning(fieldTruncs);
+            document.getElementById('statusText').textContent = '✓ Completed! ' + structuredData.length + ' records.';
+        }
+
+        function displayTruncationWarning(fieldTruncs) {
+            var summary = document.getElementById('truncationSummary');
+            var log = document.getElementById('truncationLog');
+            var txt = truncationCount + ' truncated:<br>';
+            Object.keys(fieldTruncs).forEach(function(f) { txt += '<strong>' + f + '</strong>: ' + fieldTruncs[f] + '<br>'; });
+            summary.innerHTML = txt;
+            log.innerHTML = '';
+            var lim = Math.min(20, truncationLog.length);
+            for (var i = 0; i < lim; i++) {
+                var e = truncationLog[i];
+                var d = document.createElement('div');
+                d.textContent = 'Row ' + e.row + ' | ' + e.field + ': ' + e.originalLength + ' → ' + e.maxLength;
+                log.appendChild(d);
+            }
+            document.getElementById('truncationWarning').classList.remove('hidden');
+        }
+
+        function transformByDataType(value, dataType, fieldName) {
+    value = value.trim().replace(/\s+/g, ' ');
+    
+    // Special case: Force uppercase for ANALYSIS field
+    if (fieldName && fieldName.toUpperCase() === 'ANALYSIS') {
+        return value.toUpperCase();
+    }
+    
+    // Apply standard data type transformations
+    for (var type in dataTypeRules) {
+        if (dataType.toUpperCase().indexOf(type) !== -1) {
+            return dataTypeRules[type].transform(value);
+        }
+    }
+    return value;
+}
+
+// Make table columns resizable
+function makeTableResizable(table) {
+    const cols = table.querySelectorAll('th');
+    
+    cols.forEach(function(col) {
+        // Add a resizer element to the column
+        const resizer = document.createElement('div');
+        resizer.classList.add('resizer');
+        col.appendChild(resizer);
+        
+        createResizableColumn(col, resizer, table);
+    });
+}
+
+function createResizableColumn(col, resizer, table) {
+    let x = 0;
+    let w = 0;
+    
+    const mouseDownHandler = function(e) {
+        e.preventDefault();
+        x = e.clientX;
+        
+        const styles = window.getComputedStyle(col);
+        w = parseInt(styles.width, 10);
+        
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
+        
+        col.classList.add('resizing');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    };
+    
+    const mouseMoveHandler = function(e) {
+        e.preventDefault();
+        const dx = e.clientX - x;
+        const newWidth = w + dx;
+        
+        // Set minimum width of 80px
+        if (newWidth >= 80) {
+            col.style.width = newWidth + 'px';
+            col.style.minWidth = newWidth + 'px';
+            
+            // Update all cells in this column
+            const colIndex = Array.from(col.parentElement.children).indexOf(col);
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(function(row) {
+                const cell = row.children[colIndex];
+                if (cell) {
+                    cell.style.width = newWidth + 'px';
+                    cell.style.maxWidth = newWidth + 'px';
+                }
+            });
+        }
+    };
+    
+    const mouseUpHandler = function() {
+        col.classList.remove('resizing');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+    };
+    
+    resizer.addEventListener('mousedown', mouseDownHandler);
+}
+
+
+
+        function displayResults(issuesCount) {
+            document.getElementById('totalStat').textContent = structuredData.length;
+            document.getElementById('cleanedStat').textContent = structuredData.length;
+            document.getElementById('transformedStat').textContent = transformationCount;
+            document.getElementById('issuesStat').textContent = issuesCount;
+            document.getElementById('truncatedStat').textContent = truncationCount;
+
+         var fieldNames = [];
+templateFields.forEach(function(f) {
+    fieldNames.push(f.fieldName);
+});
+// Only add ROUND if it's not already in template
+if (!fieldNames.includes('ROUND')) {
+    fieldNames.push('ROUND');
+}
+// Add RULE column
+if (!fieldNames.includes('RULE')) {
+    fieldNames.push('RULE');
+}
+
+// Add RULE_TYPE column
+if (!fieldNames.includes('RULE_TYPE')) {
+    fieldNames.push('RULE_TYPE');
+}
+
+// Add SPEC_VALUE column
+if (!fieldNames.includes('SPEC_VALUE')) {
+    fieldNames.push('SPEC_VALUE');
+}
+// ADD THIS: Add SPEC_CLASS column
+if (!fieldNames.includes('SPEC_CLASS')) {
+    fieldNames.push('SPEC_CLASS');
+}
+
+
+            var headerRow = document.getElementById('previewHeader');
+headerRow.innerHTML = '<tr>' + fieldNames.map(function(f) { 
+    return '<th>' + f + '<div class="resizer"></div></th>'; 
+}).join('') + '</tr>';
+
+
+            var previewBody = document.getElementById('previewBody');
+            previewBody.innerHTML = '';
+            var lim = Math.min(100000, structuredData.length);
+
+            for (var i = 0; i < lim; i++) {
+                var row = structuredData[i];
+                var tr = document.createElement('tr');
+               tr.innerHTML = fieldNames.map(function(f) {
+    return '<td' + (row['__truncated_' + f] ? ' class="truncated"' : '') + '>' + (row[f] || '') + '</td>';
+}).join('');
+
+                previewBody.appendChild(tr);
+            }
+
+    // Make columns resizable after rendering
+    setTimeout(function() {
+        var table = document.querySelector('.preview-table table');
+        if (table) {
+            makeTableResizable(table);
+        }
+    }, 100);
+            document.getElementById('resultsSection').classList.remove('hidden');
+        }
+
+// Check for empty cells in non-auto-generated required fields
+// Check for empty cells in non-auto-generated fields (excludes fields mapped to NA)
+function checkEmptyCells() {
+    var emptyCellsReport = {};
+    var totalEmptyCells = 0;
+    
+    // Check each row for empty cells
+    structuredData.forEach(function(row, rowIdx) {
+        templateFields.forEach(function(field) {
+            // Skip auto-generated fields
+            if (autoGeneratedFields.indexOf(field.fieldName) !== -1) {
+                return;
+            }
+            
+            // Skip if field was mapped to __NA__ (user intentionally chose NA)
+            if (columnMapping[field.fieldName] === '__NA__') {
+                return;
+            }
+            
+            // Check if cell is truly empty or blank
+            var cellValue = row[field.fieldName];
+            if (!cellValue || cellValue === '') {
+                if (!emptyCellsReport[field.fieldName]) {
+                    emptyCellsReport[field.fieldName] = {
+                        count: 0,
+                        required: field.required,
+                        rows: []
+                    };
+                }
+                emptyCellsReport[field.fieldName].count++;
+                if (emptyCellsReport[field.fieldName].rows.length < 5) {
+                    emptyCellsReport[field.fieldName].rows.push(rowIdx + 1);
+                }
+                totalEmptyCells++;
+            }
+        });
+    });
+    
+    return {
+        hasEmptyCells: totalEmptyCells > 0,
+        totalEmptyCells: totalEmptyCells,
+        report: emptyCellsReport
+    };
+}
+
+
+// Show empty cells warning dialog
+function showEmptyCellsWarning(emptyReport) {
+    var message = '⚠️ EMPTY CELLS DETECTED\n\n';
+    message += 'Total empty cells: ' + emptyReport.totalEmptyCells + '\n\n';
+    message += 'Columns with empty values:\n';
+    
+    var fieldNames = Object.keys(emptyReport.report);
+    fieldNames.forEach(function(fieldName) {
+        var info = emptyReport.report[fieldName];
+        message += '\n• ' + fieldName + ': ' + info.count + ' empty';
+        if (info.required) {
+            message += ' (REQUIRED FIELD)';
+        }
+        message += '\n  Sample rows: ' + info.rows.join(', ');
+        if (info.count > 5) {
+            message += ' ...and ' + (info.count - 5) + ' more';
+        }
+    });
+    
+    message += '\n\n⚠️ Empty cells will be exported as blank.\n';
+    message += 'Do you want to continue with the download?';
+    
+    return confirm(message);
+}
+
+
+        function exportMainData() {
+    if (structuredData.length === 0) { alert('No data'); return; }
+	
+	// Check for empty cells
+    var emptyReport = checkEmptyCells();
+    
+    // If there are empty cells, show warning and ask for confirmation
+    if (emptyReport.hasEmptyCells) {
+        var proceed = showEmptyCellsWarning(emptyReport);
+        if (!proceed) {
+            return; // User cancelled the export
+        }
+    }
+		
+    var exportData = structuredData.map(function(row) {
+        var clean = {};
+        templateFields.forEach(function(f) { 
+            clean[f.fieldName] = row[f.fieldName];
+        });
+       // Add ROUND column if it exists in the row
+if (row['ROUND'] !== undefined) {
+    clean['ROUND'] = row['ROUND'];
+}
+// Add RULE column if it exists in the row
+if (row['RULE'] !== undefined) {
+    clean['RULE'] = row['RULE'];
+}
+// Add SPEC_VALUE column
+if (row['SPEC_VALUE'] !== undefined) {
+    clean['SPEC_VALUE'] = row['SPEC_VALUE'];
+}
+
+// ADD THIS: Add SPEC_CLASS column
+if (row['SPEC_CLASS'] !== undefined) {
+    clean['SPEC_CLASS'] = row['SPEC_CLASS'];
+}
+
+return clean;
+
+    });
+
+            var ws = XLSX.utils.json_to_sheet(exportData);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'LIMS_Data');
+            XLSX.writeFile(wb, 'LIMS_Ready_' + new Date().toISOString().split('T')[0] + '.xlsx');
+            alert('✓ Exported ' + structuredData.length + ' records!');
+        }
+
+function exportAllTables() {
+    if (structuredData.length === 0) {
+        return;
+    }
+    
+    // Check for empty cells
+    var emptyReport = checkEmptyCells();
+    
+    // If there are empty cells, show warning and ask for confirmation
+    if (emptyReport.hasEmptyCells) {
+        var proceed = showEmptyCellsWarning(emptyReport);
+        if (!proceed) {
+            return; // User cancelled the export
+        }
+    }
+            var tableData = {};
+            templateFields.forEach(function(f) { if (!tableData[f.tableName]) tableData[f.tableName] = []; });
+            structuredData.forEach(function(row) {
+                var tables = {};
+                templateFields.forEach(function(f) {
+                    if (!tables[f.tableName]) tables[f.tableName] = {};
+                    tables[f.tableName][f.fieldName] = row[f.fieldName];
+                });
+                Object.keys(tables).forEach(function(t) { tableData[t].push(tables[t]); });
+            });
+            var wb = XLSX.utils.book_new();
+            var tNames = Object.keys(tableData).sort(function(a, b) {
+                return (tableDependencies[a] ? tableDependencies[a].order : 999) - (tableDependencies[b] ? tableDependencies[b].order : 999);
+            });
+            tNames.forEach(function(t) {
+                var ws = XLSX.utils.json_to_sheet(tableData[t]);
+                XLSX.utils.book_append_sheet(wb, ws, t);
+            });
+            XLSX.writeFile(wb, 'LIMS_All_Tables_' + new Date().toISOString().split('T')[0] + '.xlsx');
+            alert('✓ Exported ' + tNames.length + ' tables!');
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green" data-bg="mesh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login — ValQMS</title>
+  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    
+    /* Theme Colors */
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.15);--accent-glow:rgba(16,185,129,0.4)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.15);--accent-glow:rgba(6,182,212,0.4)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.15);--accent-glow:rgba(139,92,246,0.4)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.15);--accent-glow:rgba(249,115,22,0.4)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.15);--accent-glow:rgba(59,130,246,0.4)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.15);--accent-glow:rgba(239,68,68,0.4)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.15);--accent-glow:rgba(236,72,153,0.4)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.15);--accent-glow:rgba(20,184,166,0.4)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.15);--accent-glow:rgba(99,102,241,0.4)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.15);--accent-glow:rgba(234,179,8,0.4)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.15);--accent-glow:rgba(217,70,239,0.4)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.15);--accent-glow:rgba(5,150,105,0.4)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.15);--accent-glow:rgba(217,119,6,0.4)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.15);--accent-glow:rgba(132,204,22,0.4)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.15);--accent-glow:rgba(124,58,237,0.4)}
+
+    :root{
+      --text:#ffffff;
+      --text-dim:#94a3b8;
+      --surface:rgba(255,255,255,0.05);
+      --surface-hover:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.1);
+      --glass:rgba(255,255,255,0.03);
+    }
+
+    /* ANIMATED BACKGROUNDS */
+    [data-bg="mesh"] body{background:#0f172a;position:relative}
+    [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%),radial-gradient(circle at 40% 80%, rgba(236,72,153,0.1) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
+    [data-bg="gradient"] body{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);position:relative}
+    [data-bg="gradient"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 100%);z-index:-1}
+    [data-bg="dots"] body{background:#0a0e27;position:relative}
+    [data-bg="dots"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);background-size:30px 30px;z-index:-1}
+    [data-bg="waves"] body{background:#0f172a;position:relative}
+    [data-bg="waves"] body::before{content:'';position:fixed;bottom:0;left:0;width:100%;height:400px;background:linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.1) 100%);animation:waveMove 8s ease-in-out infinite;z-index:-1}
+    [data-bg="dark"] body{background:#0a0e1a;position:relative}
+    [data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
+
+    @keyframes meshMove{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(5deg)}}
+    @keyframes waveMove{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+    
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background 0.5s ease;min-height:100vh;display:grid;place-items:center;padding:24px;position:relative}
+
+    .theme-controls{position:fixed;top:20px;right:20px;display:flex;gap:12px;z-index:1000}
+    .theme-btn,.bg-btn{padding:10px 18px;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
+    .theme-btn:hover,.bg-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text);transform:translateY(-2px)}
+
+    .login-card{width:100%;max-width:460px;background:rgba(255,255,255,0.03);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);transition:all 0.3s;position:relative;z-index:1}
+    .login-card:hover{border-color:var(--accent);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+
+    .logo-container{display:flex;align-items:center;gap:12px;margin-bottom:24px;text-decoration:none;color:var(--text);transition:all 0.3s}
+    .logo-container:hover{transform:translateX(4px)}
+    .logo-mark{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;box-shadow:0 4px 20px var(--accent-glow);position:relative}
+    .logo-mark::after{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;z-index:-1;opacity:0;filter:blur(10px);transition:opacity 0.3s}
+    .logo-mark:hover::after{opacity:0.7}
+    .logo-mark img{width:80%;height:80%;object-fit:contain}
+    .logo-text{font-size:24px;font-weight:800;letter-spacing:-0.5px}
+
+    h1{font-size:28px;font-weight:800;margin:0 0 8px 0;letter-spacing:-0.7px;color:var(--text)}
+    .subtitle{font-size:14px;color:var(--text-dim);margin-bottom:32px;font-weight:300}
+
+    .google-btn{width:100%;padding:12px 24px;background:#ffffff;border:1px solid var(--border);border-radius:12px;color:#1f2937;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
+    .google-btn:hover{background:#f9fafb;box-shadow:0 4px 12px rgba(0,0,0,0.1);transform:translateY(-2px)}
+    .google-icon{width:20px;height:20px}
+
+    .divider{display:flex;align-items:center;gap:16px;margin:24px 0;color:var(--text-dim);font-size:13px;font-weight:500}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+    .form-group{margin-bottom:20px}
+    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+    input[type="email"],input[type="password"],input[type="text"]{width:100%;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:#ffffff;font-size:14px;transition:all 0.3s;font-family:inherit}
+    input:hover{border-color:var(--accent)}
+    input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+    input::placeholder{color:var(--text-dim)}
+
+    .form-row{display:flex;justify-content:space-between;align-items:center;margin:16px 0 24px}
+    .checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dim);cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400}
+    .checkbox-label input{width:auto;cursor:pointer}
+    .link{color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s}
+    .link:hover{color:var(--accent-bright)}
+
+    .error{color:#f87171;font-size:13px;min-height:18px;margin-bottom:20px;font-weight:500}
+    .success{color:#10b981;font-size:13px;min-height:18px;margin-bottom:20px;font-weight:500}
+
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 16px var(--accent-glow);text-decoration:none;width:100%}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+    .btn.secondary{background:var(--surface);border:1px solid var(--border);color:var(--text);box-shadow:none;margin-top:12px}
+    .btn.secondary:hover{background:var(--surface-hover);border-color:var(--accent)}
+
+    .toggle-text{text-align:center;margin-top:24px;font-size:13px;color:var(--text-dim)}
+    .toggle-link{color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.3s}
+    .toggle-link:hover{color:var(--accent-bright)}
+
+    .hidden{display:none}
+
+    @media(max-width:600px){
+      .login-card{padding:28px;max-width:100%}
+      h1{font-size:24px}
+      .theme-controls{top:12px;right:12px;gap:8px}
+      .theme-btn,.bg-btn{padding:8px 12px;font-size:0}
+      .theme-btn span,.bg-btn span{display:none}
+      .theme-btn::before{content:'🎨'}
+      .bg-btn::before{content:'🌈'}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="theme-controls">
+    <button class="bg-btn" id="bgBtn"><span>Background</span></button>
+    <button class="theme-btn" id="themeBtn"><span>Theme</span></button>
+  </div>
+
+  <div class="login-card">
+    <a href="index.html" class="logo-container">
+      <div class="logo-mark">
+        <img src="favicon.jpg" alt="ValQMS">
+      </div>
+      <span class="logo-text">ValQMS</span>
+    </a>
+
+    <h1 id="pageTitle">Sign in</h1>
+    <p class="subtitle" id="pageSubtitle">Enter your credentials to access your account</p>
+
+    <!-- Google Sign-In Button -->
+    <button class="google-btn" id="googleSignIn">
+      <svg class="google-icon" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      <span id="googleBtnText">Continue with Google</span>
+    </button>
+
+    <div class="divider"><span>or</span></div>
+
+    <form id="authForm" novalidate>
+      <div class="form-group hidden" id="nameGroup">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" placeholder="John Doe" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input id="email" type="email" placeholder="you@company.com" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+      </div>
+
+      <div class="form-group hidden" id="confirmPasswordGroup">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" placeholder="••••••••" minlength="6">
+      </div>
+
+      <div class="form-row">
+        <label class="checkbox-label">
+          <input id="showPassword" type="checkbox">
+          <span>Show password</span>
+        </label>
+        <a href="index.html" class="link">Cancel</a>
+      </div>
+
+      <div id="error" class="error"></div>
+
+      <button class="btn" type="submit" id="submitBtn">
+        <span id="submitIcon">🔐</span>
+        <span id="submitText">Sign In</span>
+      </button>
+
+      <a href="index.html" class="btn secondary">
+        <span>←</span>
+        <span>Back to Home</span>
+      </a>
+    </form>
+
+    <div class="toggle-text">
+      <span id="toggleQuestion">Don't have an account?</span>
+      <a class="toggle-link" id="toggleMode">Sign up</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module">
+    // ===== REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS =====
+    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+    // ================================================================
+    
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Initialize theme
+    (function initTheme(){
+      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+      const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.setAttribute('data-bg', savedBg);
+    })();
+
+    // Theme & BG toggles
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const themes = ['green','cyan','purple','orange','blue','red','pink','teal','indigo','yellow','magenta','emerald','amber','lime','violet'];
+      const cur = document.documentElement.getAttribute('data-theme') || 'green';
+      const next = themes[(themes.indexOf(cur) + 1) % themes.length];
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('valqmsTheme', next);
+    });
+
+    document.getElementById('bgBtn').addEventListener('click', () => {
+      const bgs = ['mesh','gradient','dots','waves','dark'];
+      const cur = document.documentElement.getAttribute('data-bg') || 'mesh';
+      const next = bgs[(bgs.indexOf(cur) + 1) % bgs.length];
+      document.documentElement.setAttribute('data-bg', next);
+      localStorage.setItem('valqmsBg', next);
+    });
+
+    // UI state
+    let isSignUpMode = false;
+    const errorDiv = document.getElementById('error');
+
+    // Toggle Sign In/Up
+    document.getElementById('toggleMode').addEventListener('click', (e) => {
+      e.preventDefault();
+      isSignUpMode = !isSignUpMode;
+      
+      const els = {
+        title: document.getElementById('pageTitle'),
+        subtitle: document.getElementById('pageSubtitle'),
+        icon: document.getElementById('submitIcon'),
+        text: document.getElementById('submitText'),
+        question: document.getElementById('toggleQuestion'),
+        toggle: document.getElementById('toggleMode'),
+        googleText: document.getElementById('googleBtnText'),
+        nameGroup: document.getElementById('nameGroup'),
+        confirmGroup: document.getElementById('confirmPasswordGroup')
+      };
+
+      if (isSignUpMode) {
+        els.title.textContent = 'Sign up';
+        els.subtitle.textContent = 'Create a new account to get started';
+        els.icon.textContent = '✨';
+        els.text.textContent = 'Create Account';
+        els.question.textContent = 'Already have an account?';
+        els.toggle.textContent = 'Sign in';
+        els.googleText.textContent = 'Sign up with Google';
+        els.nameGroup.classList.remove('hidden');
+        els.confirmGroup.classList.remove('hidden');
+      } else {
+        els.title.textContent = 'Sign in';
+        els.subtitle.textContent = 'Enter your credentials to access your account';
+        els.icon.textContent = '🔐';
+        els.text.textContent = 'Sign In';
+        els.question.textContent = "Don't have an account?";
+        els.toggle.textContent = 'Sign up';
+        els.googleText.textContent = 'Continue with Google';
+        els.nameGroup.classList.add('hidden');
+        els.confirmGroup.classList.add('hidden');
+      }
+      
+      document.getElementById('authForm').reset();
+      errorDiv.textContent = '';
+    });
+
+    // Show password
+    document.getElementById('showPassword').addEventListener('change', (e) => {
+      const type = e.target.checked ? 'text' : 'password';
+      document.getElementById('password').type = type;
+      document.getElementById('confirmPassword').type = type;
+    });
+
+    // Form submit
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorDiv.textContent = '';
+      errorDiv.className = 'error';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // Validation
+      if (isSignUpMode && (!name || name.length < 2)) {
+        errorDiv.textContent = '⚠️ Please enter your full name';
+        return;
+      }
+
+      if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        errorDiv.textContent = '⚠️ Please enter a valid email address';
+        return;
+      }
+
+      if (!password || password.length < 6) {
+        errorDiv.textContent = '⚠️ Password must be at least 6 characters';
+        return;
+      }
+
+      if (isSignUpMode && password !== confirmPassword) {
+        errorDiv.textContent = '⚠️ Passwords do not match';
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      const submitIcon = document.getElementById('submitIcon');
+      const submitText = document.getElementById('submitText');
+      
+      submitBtn.disabled = true;
+      submitIcon.textContent = '⏳';
+      submitText.textContent = isSignUpMode ? 'Creating...' : 'Signing in...';
+
+      try {
+        if (isSignUpMode) {
+          const { data, error } = await sb.auth.signUp({
+            email,
+            password,
+            options: { data: { full_name: name } }
+          });
+
+          if (error) throw error;
+
+          errorDiv.textContent = '✓ Account created!';
+          errorDiv.className = 'success';
+
+          localStorage.setItem('valqmsUser', JSON.stringify({
+            email: data.user.email,
+            name,
+            loggedIn: true,
+            provider: 'supabase',
+            timestamp: Date.now()
+          }));
+
+        } else {
+          const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+          if (error) throw error;
+
+          localStorage.setItem('valqmsUser', JSON.stringify({
+            email: data.user.email,
+            name: data.user.user_metadata?.full_name || email.split('@')[0],
+            loggedIn: true,
+            provider: 'supabase',
+            timestamp: Date.now()
+          }));
+        }
+
+        submitIcon.textContent = '✓';
+        submitText.textContent = 'Success!';
+        submitBtn.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+
+        setTimeout(() => window.location.href = 'index.html', 800);
+
+      } catch (error) {
+        submitBtn.disabled = false;
+        submitIcon.textContent = isSignUpMode ? '✨' : '🔐';
+        submitText.textContent = isSignUpMode ? 'Create Account' : 'Sign In';
+
+        if (error.message.includes('already registered')) {
+          errorDiv.textContent = '⚠️ Email already registered. Please sign in.';
+        } else if (error.message.includes('Invalid login')) {
+          errorDiv.textContent = '⚠️ Invalid email or password.';
+        } else {
+          errorDiv.textContent = '⚠️ ' + error.message;
+        }
+      }
+    });
+
+    // Google Sign-In
+    document.getElementById('googleSignIn').addEventListener('click', async () => {
+      try {
+        const { error } = await sb.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.origin + '/index.html' }
+        });
+        if (error) throw error;
+      } catch (error) {
+        alert('Google Sign-In not configured yet. Use email/password.');
+      }
+    });
+
+    // Check OAuth return
+    window.addEventListener('load', async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        localStorage.setItem('valqmsUser', JSON.stringify({
+          email: session.user.email,
+          name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+          picture: session.user.user_metadata?.avatar_url,
+          loggedIn: true,
+          provider: 'google',
+          timestamp: Date.now()
+        }));
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

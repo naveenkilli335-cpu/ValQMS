@@ -1,59 +1,324 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green">
+<html lang="en" data-theme="green" data-bg="mesh">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>AI Risk Assessment Tool — ValQMS</title>
   <link rel="icon" href="favicon.jpg?v=5">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.1)}
-    :root{--bg:#0a0e1a;--surface:#1a1f2e;--border:rgba(255,255,255,0.08);--text:#f8fafc;--text-dim:#94a3b8}
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:24px}
-    .topbar{max-width:1400px;margin:0 auto 24px;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
-    .logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
-    .logo-mark{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:10px;display:flex;align-items:center;justify-content:center}
-    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
-    .brand-text h1{font-size:20px;font-weight:800;margin:0}
-    .brand-text .subtitle{font-size:13px;color:var(--text-dim)}
-    .btn-home{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:600}
-    .container{max-width:1400px;margin:0 auto}
-    .card{background:var(--surface);padding:24px;border-radius:16px;border:1px solid var(--border);margin-bottom:16px}
-    .card h3{font-size:16px;font-weight:700;margin:0 0 12px 0}
-    .field{margin-bottom:12px}
-    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600}
-    input,textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:14px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
-    .btn:hover{background:var(--accent-bright)}
-    .risk-badge{display:inline-block;padding:8px 20px;border-radius:999px;font-size:14px;font-weight:700;margin:8px 0}
-    .risk-low{background:rgba(52,211,153,0.2);color:#34d399}
-    .risk-medium{background:rgba(250,204,21,0.2);color:#facc15}
-    .risk-high{background:rgba(239,68,68,0.2);color:#f87171}
-    .result-section{background:rgba(0,0,0,0.3);padding:20px;border-radius:12px;margin-top:16px}
-    .result-section h4{margin-bottom:12px;color:var(--accent)}
+    
+    /* Theme Colors */
+    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.15);--accent-glow:rgba(16,185,129,0.4)}
+    [data-theme="cyan"]{--accent:#06b6d4;--accent-bright:#22d3ee;--accent-dim:rgba(6,182,212,0.15);--accent-glow:rgba(6,182,212,0.4)}
+    [data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.15);--accent-glow:rgba(139,92,246,0.4)}
+    [data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.15);--accent-glow:rgba(249,115,22,0.4)}
+    [data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.15);--accent-glow:rgba(59,130,246,0.4)}
+    [data-theme="red"]{--accent:#ef4444;--accent-bright:#f87171;--accent-dim:rgba(239,68,68,0.15);--accent-glow:rgba(239,68,68,0.4)}
+    [data-theme="pink"]{--accent:#ec4899;--accent-bright:#f472b6;--accent-dim:rgba(236,72,153,0.15);--accent-glow:rgba(236,72,153,0.4)}
+    [data-theme="teal"]{--accent:#14b8a6;--accent-bright:#2dd4bf;--accent-dim:rgba(20,184,166,0.15);--accent-glow:rgba(20,184,166,0.4)}
+    [data-theme="indigo"]{--accent:#6366f1;--accent-bright:#818cf8;--accent-dim:rgba(99,102,241,0.15);--accent-glow:rgba(99,102,241,0.4)}
+    [data-theme="yellow"]{--accent:#eab308;--accent-bright:#facc15;--accent-dim:rgba(234,179,8,0.15);--accent-glow:rgba(234,179,8,0.4)}
+    [data-theme="magenta"]{--accent:#d946ef;--accent-bright:#e879f9;--accent-dim:rgba(217,70,239,0.15);--accent-glow:rgba(217,70,239,0.4)}
+    [data-theme="emerald"]{--accent:#059669;--accent-bright:#10b981;--accent-dim:rgba(5,150,105,0.15);--accent-glow:rgba(5,150,105,0.4)}
+    [data-theme="amber"]{--accent:#d97706;--accent-bright:#f59e0b;--accent-dim:rgba(217,119,6,0.15);--accent-glow:rgba(217,119,6,0.4)}
+    [data-theme="lime"]{--accent:#84cc16;--accent-bright:#a3e635;--accent-dim:rgba(132,204,22,0.15);--accent-glow:rgba(132,204,22,0.4)}
+    [data-theme="violet"]{--accent:#7c3aed;--accent-bright:#a78bfa;--accent-dim:rgba(124,58,237,0.15);--accent-glow:rgba(124,58,237,0.4)}
+
+    :root{
+      --text:#ffffff;
+      --text-dim:#94a3b8;
+      --surface:rgba(255,255,255,0.05);
+      --surface-hover:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.1);
+      --glass:rgba(255,255,255,0.03);
+    }
+
+    /* ANIMATED BACKGROUNDS */
+    [data-bg="mesh"] body{background:#0f172a;position:relative}
+    [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%),radial-gradient(circle at 40% 80%, rgba(236,72,153,0.1) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
+
+    [data-bg="gradient"] body{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);position:relative}
+    [data-bg="gradient"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.3) 100%);z-index:-1}
+
+    [data-bg="dots"] body{background:#0a0e27;position:relative}
+    [data-bg="dots"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);background-size:30px 30px;z-index:-1}
+
+    [data-bg="waves"] body{background:#0f172a;position:relative}
+    [data-bg="waves"] body::before{content:'';position:fixed;bottom:0;left:0;width:100%;height:400px;background:linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.1) 100%);animation:waveMove 8s ease-in-out infinite;z-index:-1}
+
+    [data-bg="dark"] body{background:#0a0e1a;position:relative}
+    [data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
+
+    @keyframes meshMove{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(5deg)}}
+    @keyframes waveMove{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+    
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',system-ui,-apple-system,sans-serif;
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      transition:background 0.5s ease;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* GLASSMORPHISM HEADER */
+    header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:40px}
+    .header-glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.1)}
+    header .header-container{display:flex;justify-content:space-between;align-items:center;height:72px;max-width:1400px;margin:0 auto;padding:0}
+    
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s}
+    .logo:hover{transform:translateY(-2px)}
+    .logo-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;box-shadow:0 4px 20px var(--accent-glow);transition:all 0.3s;position:relative}
+    .logo-mark::after{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;z-index:-1;opacity:0;filter:blur(10px);transition:opacity 0.3s}
+    .logo-mark:hover::after{opacity:0.7}
+    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:4px}
+    .brand-text{display:flex;flex-direction:column}
+    .brand-text h1{font-size:18px;font-weight:800;letter-spacing:-0.5px;margin:0;line-height:1.2}
+    .brand-text .subtitle{font-size:12px;color:var(--text-dim);font-weight:500}
+
+    .header-controls{display:flex;gap:12px;align-items:center}
+    
+    .bg-selector{position:relative}
+    .bg-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
+    .bg-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+    .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
+    .bg-dropdown.active{display:block}
+    .bg-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;font-weight:500}
+    .bg-option:hover{background:var(--surface-hover)}
+    .bg-preview{width:32px;height:32px;border-radius:8px;border:2px solid rgba(255,255,255,0.2)}
+    .bg-preview.mesh{background:radial-gradient(circle, #10b981 0%, #6366f1 100%)}
+    .bg-preview.gradient{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%)}
+    .bg-preview.dots{background:#0a0e27;background-image:radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);background-size:15px 15px}
+    .bg-preview.waves{background:linear-gradient(180deg, #0f172a 0%, #10b981 100%)}
+    .bg-preview.dark{background:#0a0e1a}
+
+    .theme-selector{position:relative}
+    .theme-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
+    .theme-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+    .theme-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;max-height:400px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
+    .theme-dropdown.active{display:block}
+    .theme-dropdown::-webkit-scrollbar{width:6px}
+    .theme-dropdown::-webkit-scrollbar-track{background:transparent}
+    .theme-dropdown::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+    .theme-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;font-weight:500}
+    .theme-option:hover{background:var(--surface-hover)}
+    .theme-color{width:28px;height:28px;border-radius:8px;border:2px solid rgba(255,255,255,0.2);transition:all 0.3s}
+    .theme-option:hover .theme-color{transform:scale(1.1)}
+    .theme-color.green{background:linear-gradient(135deg,#10b981,#34d399)}
+    .theme-color.cyan{background:linear-gradient(135deg,#06b6d4,#22d3ee)}
+    .theme-color.purple{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
+    .theme-color.orange{background:linear-gradient(135deg,#f97316,#fb923c)}
+    .theme-color.blue{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+    .theme-color.red{background:linear-gradient(135deg,#ef4444,#f87171)}
+    .theme-color.pink{background:linear-gradient(135deg,#ec4899,#f472b6)}
+    .theme-color.teal{background:linear-gradient(135deg,#14b8a6,#2dd4bf)}
+    .theme-color.indigo{background:linear-gradient(135deg,#6366f1,#818cf8)}
+    .theme-color.yellow{background:linear-gradient(135deg,#eab308,#facc15)}
+    .theme-color.magenta{background:linear-gradient(135deg,#d946ef,#e879f9)}
+    .theme-color.emerald{background:linear-gradient(135deg,#059669,#10b981)}
+    .theme-color.amber{background:linear-gradient(135deg,#d97706,#f59e0b)}
+    .theme-color.lime{background:linear-gradient(135deg,#84cc16,#a3e635)}
+    .theme-color.violet{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+
+    .btn-home{padding:10px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px var(--accent-glow)}
+    .btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+
+    .container{max-width:1400px;margin:0 auto;padding:0 24px}
+    
+    .card{
+      background:var(--glass);
+      backdrop-filter:blur(10px);
+      padding:28px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      margin-bottom:20px;
+      transition:all 0.3s;
+    }
+    .card:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+    .card h3{font-size:18px;font-weight:700;margin:0 0 20px 0;letter-spacing:-0.3px}
+
+    .field{margin-bottom:16px}
+    label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+    
+    /* FIXED: Make text visible in form fields */
+    input[type=text],
+    textarea,
+    select {
+      width:100%;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:#ffffff !important;
+      font-size:14px;
+      transition:all 0.3s;
+      font-family:inherit;
+    }
+    
+    input:focus,
+    textarea:focus,
+    select:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-dim);
+      background:var(--surface-hover);
+    }
+
+    /* Fix placeholder text */
+    input::placeholder,
+    textarea::placeholder {
+      color:var(--text-dim);
+      opacity:0.6;
+    }
+
+    /* Ensure dropdown options are visible */
+    select option {
+      background:#1a1f2e !important;
+      color:#ffffff !important;
+      padding:10px;
+    }
+    
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 24px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+      color:#000;
+      border:none;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.3s;
+      box-shadow:0 4px 16px var(--accent-glow);
+      margin-top:8px;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+    
+    .risk-badge{
+      display:inline-block;
+      padding:12px 28px;
+      border-radius:999px;
+      font-size:16px;
+      font-weight:700;
+      margin:12px 0;
+      letter-spacing:-0.3px;
+    }
+    .risk-low{background:rgba(52,211,153,0.2);color:#34d399;border:2px solid #34d399}
+    .risk-medium{background:rgba(250,204,21,0.2);color:#facc15;border:2px solid #facc15}
+    .risk-high{background:rgba(239,68,68,0.2);color:#f87171;border:2px solid #f87171}
+    
+    .result-section{
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(10px);
+      padding:24px;
+      border-radius:14px;
+      margin-top:20px;
+      border:1px solid var(--border);
+    }
+    .result-section h4{
+      margin-bottom:16px;
+      color:var(--accent);
+      font-size:16px;
+      font-weight:700;
+      letter-spacing:-0.3px;
+    }
+    .result-section p{
+      line-height:1.9;
+      color:var(--text-dim);
+      font-size:14px;
+      font-weight:300;
+    }
+    .result-section ul{
+      margin-left:24px;
+      line-height:2.2;
+      color:var(--text-dim);
+      font-size:14px;
+      font-weight:300;
+    }
+    .result-section strong{color:var(--text);font-weight:600}
+
+    .mobile-menu-btn{display:none;background:var(--surface);border:1px solid var(--border);padding:10px;border-radius:12px;cursor:pointer;color:var(--text)}
+
+    @media(max-width:968px){
+      header{top:8px;padding:0 16px}
+      .header-glass{padding:0 20px;border-radius:16px}
+      .mobile-menu-btn{display:block}
+      .header-controls{gap:8px}
+      .bg-btn,.theme-btn{padding:10px;font-size:0}
+      .bg-btn span:last-child,.theme-btn span:last-child{display:none}
+    }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="brand">
-      <a href="index.html" class="logo-container">
-        <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
-        <div class="brand-text">
-          <h1>ValQMS Tools</h1>
-          <div class="subtitle">AI Risk Assessment (GAMP 5 / ICH Q9)</div>
+
+  <!-- GLASSMORPHISM HEADER -->
+  <header>
+    <div class="header-glass">
+      <div class="header-container">
+        <a href="index.html" class="logo">
+          <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+          <div class="brand-text">
+            <h1>ValQMS Tools</h1>
+            <div class="subtitle">AI Risk Assessment (GAMP 5 / ICH Q9)</div>
+          </div>
+        </a>
+
+        <div class="header-controls">
+          <!-- Background Selector -->
+          <div class="bg-selector">
+            <button class="bg-btn" id="bgBtn"><span>🎨</span><span>Background</span></button>
+            <div class="bg-dropdown" id="bgDropdown">
+              <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh Gradient</span></div>
+              <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Purple Gradient</span></div>
+              <div class="bg-option" data-bg="dots"><div class="bg-preview dots"></div><span>Dot Pattern</span></div>
+              <div class="bg-option" data-bg="waves"><div class="bg-preview waves"></div><span>Wave Motion</span></div>
+              <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark Mode</span></div>
+            </div>
+          </div>
+
+          <!-- Theme Selector -->
+          <div class="theme-selector">
+            <button class="theme-btn" id="themeBtn"><span>🎨</span><span>Theme</span></button>
+            <div class="theme-dropdown" id="themeDropdown">
+              <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
+              <div class="theme-option" data-theme="cyan"><div class="theme-color cyan"></div><span>Cyan</span></div>
+              <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
+              <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
+              <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
+              <div class="theme-option" data-theme="red"><div class="theme-color red"></div><span>Red</span></div>
+              <div class="theme-option" data-theme="pink"><div class="theme-color pink"></div><span>Pink</span></div>
+              <div class="theme-option" data-theme="teal"><div class="theme-color teal"></div><span>Teal</span></div>
+              <div class="theme-option" data-theme="indigo"><div class="theme-color indigo"></div><span>Indigo</span></div>
+              <div class="theme-option" data-theme="yellow"><div class="theme-color yellow"></div><span>Yellow</span></div>
+              <div class="theme-option" data-theme="magenta"><div class="theme-color magenta"></div><span>Magenta</span></div>
+              <div class="theme-option" data-theme="emerald"><div class="theme-color emerald"></div><span>Emerald</span></div>
+              <div class="theme-option" data-theme="amber"><div class="theme-color amber"></div><span>Amber</span></div>
+              <div class="theme-option" data-theme="lime"><div class="theme-color lime"></div><span>Lime</span></div>
+              <div class="theme-option" data-theme="violet"><div class="theme-color violet"></div><span>Violet</span></div>
+            </div>
+          </div>
+
+          <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
         </div>
-      </a>
+      </div>
     </div>
-    <a href="index.html" class="btn-home">← Home</a>
-  </div>
+  </header>
 
   <div class="container">
     <div class="card">
       <h3>🎯 System Information</h3>
       <div class="field">
         <label>System Name</label>
-        <input id="systemName" placeholder="LabWare LIMS">
+        <input type="text" id="systemName" placeholder="LabWare LIMS">
       </div>
       <div class="field">
         <label>System Category (GAMP 5)</label>
@@ -116,14 +381,53 @@
         <h4>Regulatory Considerations</h4>
         <div id="regulatoryConsiderations"></div>
       </div>
-      <button id="exportReport" class="btn" style="margin-top:16px">
+      <button id="exportReport" class="btn">
         <span>📥</span><span>Export Risk Assessment Report</span>
       </button>
     </div>
   </div>
 
   <script>
-    function initTheme(){document.documentElement.setAttribute('data-theme',localStorage.getItem('valqmsTheme')||'green')}initTheme();
+    // Theme System
+    const themeBtn=document.getElementById('themeBtn');
+    const themeDropdown=document.getElementById('themeDropdown');
+    const themeOptions=document.querySelectorAll('.theme-option');
+    themeBtn.addEventListener('click',e=>{e.stopPropagation();themeDropdown.classList.toggle('active');bgDropdown.classList.remove('active')});
+    document.addEventListener('click',()=>{themeDropdown.classList.remove('active');bgDropdown.classList.remove('active')});
+    themeDropdown.addEventListener('click',e=>e.stopPropagation());
+    themeOptions.forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        const theme=opt.dataset.theme;
+        document.documentElement.setAttribute('data-theme',theme);
+        localStorage.setItem('valqmsTheme',theme);
+        themeDropdown.classList.remove('active');
+      });
+    });
+
+    // Background System
+    const bgBtn=document.getElementById('bgBtn');
+    const bgDropdown=document.getElementById('bgDropdown');
+    const bgOptions=document.querySelectorAll('.bg-option');
+    bgBtn.addEventListener('click',e=>{e.stopPropagation();bgDropdown.classList.toggle('active');themeDropdown.classList.remove('active')});
+    bgDropdown.addEventListener('click',e=>e.stopPropagation());
+    bgOptions.forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        const bg=opt.dataset.bg;
+        document.documentElement.setAttribute('data-bg',bg);
+        localStorage.setItem('valqmsBg',bg);
+        bgDropdown.classList.remove('active');
+      });
+    });
+
+    // Initialize
+    function initTheme(){
+      const savedTheme=localStorage.getItem('valqmsTheme')||'green';
+      const savedBg=localStorage.getItem('valqmsBg')||'mesh';
+      document.documentElement.setAttribute('data-theme',savedTheme);
+      document.documentElement.setAttribute('data-bg',savedBg);
+    }
+    initTheme();
+
     let assessmentResult={};
     
     document.getElementById('assessRisk').addEventListener('click',()=>{
@@ -159,13 +463,14 @@
       assessmentResult={riskScore,riskLevel,riskClass,strategy:strategies[riskLevel],activities:activities[riskLevel]};
       
       document.getElementById('riskLevel').innerHTML=`<div class="risk-badge ${riskClass}">Risk Level: ${riskLevel} (Score: ${riskScore}/120)</div>`;
-      document.getElementById('validationStrategy').innerHTML=`<p style="line-height:1.8">${strategies[riskLevel]}</p>`;
-      document.getElementById('testActivities').innerHTML='<ul style="margin-left:20px;line-height:2">'+activities[riskLevel].map(a=>'<li>'+a+'</li>').join('')+'</ul>';
+      document.getElementById('validationStrategy').innerHTML=`<p>${strategies[riskLevel]}</p>`;
+      document.getElementById('testActivities').innerHTML='<ul>'+activities[riskLevel].map(a=>'<li>'+a+'</li>').join('')+'</ul>';
       document.getElementById('regulatoryConsiderations').innerHTML=gxp==='Yes'&&eSig==='Yes'?
-        '<p style="line-height:1.8">This system requires compliance with <strong>FDA 21 CFR Part 11</strong> and <strong>EU Annex 11</strong>. Electronic signatures must be validated. Audit trails must be comprehensive and review regularly.</p>':
-        '<p style="line-height:1.8">Standard GxP validation requirements apply. Follow GAMP 5 guidelines and ICH Q9 risk management principles.</p>';
+        '<p>This system requires compliance with <strong>FDA 21 CFR Part 11</strong> and <strong>EU Annex 11</strong>. Electronic signatures must be validated. Audit trails must be comprehensive and reviewed regularly.</p>':
+        '<p>Standard GxP validation requirements apply. Follow GAMP 5 guidelines and ICH Q9 risk management principles.</p>';
       
       document.getElementById('resultsCard').style.display='block';
+      document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'start'});
     });
     
     document.getElementById('exportReport').addEventListener('click',()=>{
