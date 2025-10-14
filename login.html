@@ -434,20 +434,20 @@
     });
 
     // Check OAuth return
-    window.addEventListener('load', async () => {
-      const { data: { session } } = await sb.auth.getSession();
-      if (session) {
-        localStorage.setItem('valqmsUser', JSON.stringify({
-          email: session.user.email,
-          name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
-          picture: session.user.user_metadata?.avatar_url,
-          loggedIn: true,
-          provider: 'google',
-          timestamp: Date.now()
-        }));
-        window.location.href = 'index.html';
-      }
-    });
+window.addEventListener('load', async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    localStorage.setItem('valqmsUser', JSON.stringify({
+      email: session.user.email,
+      name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+      picture: session.user.user_metadata?.avatar_url,
+      loggedIn: true,
+      provider: 'google',
+      timestamp: Date.now()
+    }));
+    window.location.href = 'index.html';
+  }
+});
   </script>
 </body>
 </html>
