@@ -253,7 +253,7 @@
 document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
   e.preventDefault();
   const email = document.getElementById('email').value.trim();
-  
+
   if (!email || !/\S+@\S+\.\S+/.test(email)) {
     errorDiv.textContent = '⚠️ Please enter your email address first';
     errorDiv.className = 'error';
@@ -288,7 +288,7 @@ document.getElementById('forgotPasswordLink').addEventListener('click', async (e
     }
 
     // Success - but don't reveal if email exists or not (security)
-    errorDiv.textContent = '✓ If an account exists with this email, you will receive reset instructions.';
+    errorDiv.textContent = '✓ Password reset email sent! Check your inbox at ' + email;
     errorDiv.className = 'success';
     
   } catch (error) {
