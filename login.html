@@ -190,264 +190,237 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script type="module">
-    // ===== REPLACE WITH YOUR ACTUAL SUPABASE CREDENTIALS =====
-    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';  // Your actual URL
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';  // Your actual key
-    // ==========================================================
+<script type="module">
+  const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+  
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Check if already logged in
+  (async function() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) window.location.href = '/index.html';
+  })();
+
+  let isSignUpMode = false;
+  const errorDiv = document.getElementById('error');
+
+  // Toggle Sign In/Up
+  document.getElementById('toggleMode').addEventListener('click', (e) => {
+    e.preventDefault();
+    isSignUpMode = !isSignUpMode;
     
-    const { createClient } = supabase;
-    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (isSignUpMode) {
+      document.getElementById('pageTitle').textContent = 'Sign up';
+      document.getElementById('pageSubtitle').textContent = 'Create a new account';
+      document.getElementById('submitIcon').textContent = '✨';
+      document.getElementById('submitText').textContent = 'Create Account';
+      document.getElementById('toggleQuestion').textContent = 'Already have an account?';
+      document.getElementById('toggleMode').textContent = 'Sign in';
+      document.getElementById('googleBtnText').textContent = 'Sign up with Google';
+      document.getElementById('nameGroup').classList.remove('hidden');
+      document.getElementById('confirmPasswordGroup').classList.remove('hidden');
+      document.getElementById('forgotPasswordLink').style.display = 'none';
+    } else {
+      document.getElementById('pageTitle').textContent = 'Sign in';
+      document.getElementById('pageSubtitle').textContent = 'Enter your credentials';
+      document.getElementById('submitIcon').textContent = '🔐';
+      document.getElementById('submitText').textContent = 'Sign In';
+      document.getElementById('toggleQuestion').textContent = "Don't have an account?";
+      document.getElementById('toggleMode').textContent = 'Sign up';
+      document.getElementById('googleBtnText').textContent = 'Continue with Google';
+      document.getElementById('nameGroup').classList.add('hidden');
+      document.getElementById('confirmPasswordGroup').classList.add('hidden');
+      document.getElementById('forgotPasswordLink').style.display = 'inline';
+    }
+    
+    document.getElementById('authForm').reset();
+    errorDiv.textContent = '';
+  });
 
-    // Initialize theme
-    (function initTheme(){
-      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-      const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      document.documentElement.setAttribute('data-bg', savedBg);
-    })();
+  // Show password toggle
+  document.getElementById('showPassword').addEventListener('change', (e) => {
+    const type = e.target.checked ? 'text' : 'password';
+    document.getElementById('password').type = type;
+    const confirmPwd = document.getElementById('confirmPassword');
+    if (confirmPwd) confirmPwd.type = type;
+  });
 
-    // Theme & BG toggles
-    document.getElementById('themeBtn').addEventListener('click', () => {
-      const themes = ['green','cyan','purple','orange','blue','red','pink','teal','indigo','yellow','magenta','emerald','amber','lime','violet'];
-      const cur = document.documentElement.getAttribute('data-theme') || 'green';
-      const next = themes[(themes.indexOf(cur) + 1) % themes.length];
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('valqmsTheme', next);
-    });
-
-    document.getElementById('bgBtn').addEventListener('click', () => {
-      const bgs = ['mesh','gradient','dots','waves','dark'];
-      const cur = document.documentElement.getAttribute('data-bg') || 'mesh';
-      const next = bgs[(bgs.indexOf(cur) + 1) % bgs.length];
-      document.documentElement.setAttribute('data-bg', next);
-      localStorage.setItem('valqmsBg', next);
-    });
-
-    // UI state
-    let isSignUpMode = false;
-    const errorDiv = document.getElementById('error');
-    const forgotPasswordLink = document.getElementById('forgotPasswordLink');
-
-    // Toggle Sign In/Up
-    document.getElementById('toggleMode').addEventListener('click', (e) => {
-      e.preventDefault();
-      isSignUpMode = !isSignUpMode;
-      
-      const els = {
-        title: document.getElementById('pageTitle'),
-        subtitle: document.getElementById('pageSubtitle'),
-        icon: document.getElementById('submitIcon'),
-        text: document.getElementById('submitText'),
-        question: document.getElementById('toggleQuestion'),
-        toggle: document.getElementById('toggleMode'),
-        googleText: document.getElementById('googleBtnText'),
-        nameGroup: document.getElementById('nameGroup'),
-        confirmGroup: document.getElementById('confirmPasswordGroup')
-      };
-
-      if (isSignUpMode) {
-        els.title.textContent = 'Sign up';
-        els.subtitle.textContent = 'Create a new account to get started';
-        els.icon.textContent = '✨';
-        els.text.textContent = 'Create Account';
-        els.question.textContent = 'Already have an account?';
-        els.toggle.textContent = 'Sign in';
-        els.googleText.textContent = 'Sign up with Google';
-        els.nameGroup.classList.remove('hidden');
-        els.confirmGroup.classList.remove('hidden');
-        forgotPasswordLink.style.display = 'none';
-      } else {
-        els.title.textContent = 'Sign in';
-        els.subtitle.textContent = 'Enter your credentials to access your account';
-        els.icon.textContent = '🔐';
-        els.text.textContent = 'Sign In';
-        els.question.textContent = "Don't have an account?";
-        els.toggle.textContent = 'Sign up';
-        els.googleText.textContent = 'Continue with Google';
-        els.nameGroup.classList.add('hidden');
-        els.confirmGroup.classList.add('hidden');
-        forgotPasswordLink.style.display = 'inline';
-      }
-      
-      document.getElementById('authForm').reset();
-      errorDiv.textContent = '';
-    });
-
-    // Forgot Password
-    forgotPasswordLink.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value.trim();
-      
-      if (!email || !/\S+@\S+\.\S+/.test(email)) {
-        errorDiv.textContent = '⚠️ Please enter your email address first';
-        errorDiv.className = 'error';
-        document.getElementById('email').focus();
-        return;
-      }
-
-      try {
-        const { error } = await sb.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + '/reset-password.html'
-        });
-
-        if (error) throw error;
-
-        errorDiv.textContent = '✓ Password reset email sent! Check your inbox.';
-        errorDiv.className = 'success';
-      } catch (error) {
-        errorDiv.textContent = '⚠️ ' + error.message;
-        errorDiv.className = 'error';
-      }
-    });
-
-    // Show password
-    document.getElementById('showPassword').addEventListener('change', (e) => {
-      const type = e.target.checked ? 'text' : 'password';
-      document.getElementById('password').type = type;
-      document.getElementById('confirmPassword').type = type;
-    });
-
-    // Form submit
-    document.getElementById('authForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorDiv.textContent = '';
+  // Forgot Password
+  document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      errorDiv.textContent = '⚠️ Please enter your email address first';
       errorDiv.className = 'error';
+      document.getElementById('email').focus();
+      return;
+    }
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const name = document.getElementById('name').value.trim();
-      const confirmPassword = document.getElementById('confirmPassword').value;
+    errorDiv.textContent = 'Sending reset email...';
+    errorDiv.className = 'success';
 
-      // Validation
-      if (isSignUpMode && (!name || name.length < 2)) {
-        errorDiv.textContent = '⚠️ Please enter your full name';
-        return;
-      }
+    try {
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://valqms.com/reset-password.html'
+      });
 
-      if (!email || !/\S+@\S+\.\S+/.test(email)) {
-        errorDiv.textContent = '⚠️ Please enter a valid email address';
-        return;
-      }
+      if (error) throw error;
 
-      if (!password || password.length < 6) {
-        errorDiv.textContent = '⚠️ Password must be at least 6 characters';
-        return;
-      }
+      errorDiv.textContent = '✓ Password reset email sent! Check your inbox at ' + email;
+      errorDiv.className = 'success';
+    } catch (error) {
+      console.error('Reset error:', error);
+      errorDiv.textContent = '⚠️ ' + error.message;
+      errorDiv.className = 'error';
+    }
+  });
 
-      if (isSignUpMode && password !== confirmPassword) {
-        errorDiv.textContent = '⚠️ Passwords do not match';
-        return;
-      }
+  // Form Submit
+  document.getElementById('authForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorDiv.textContent = '';
+    errorDiv.className = 'error';
 
-      const submitBtn = document.getElementById('submitBtn');
-      const submitIcon = document.getElementById('submitIcon');
-      const submitText = document.getElementById('submitText');
-      
-      submitBtn.disabled = true;
-      submitIcon.textContent = '⏳';
-      submitText.textContent = isSignUpMode ? 'Creating...' : 'Signing in...';
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const name = document.getElementById('name').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
-      try {
-        if (isSignUpMode) {
-          const { data, error } = await sb.auth.signUp({
-            email,
-            password,
-            options: { data: { full_name: name } }
-          });
+    // Validation
+    if (isSignUpMode && (!name || name.length < 2)) {
+      errorDiv.textContent = '⚠️ Please enter your full name';
+      return;
+    }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      errorDiv.textContent = '⚠️ Please enter a valid email address';
+      return;
+    }
+    if (!password || password.length < 6) {
+      errorDiv.textContent = '⚠️ Password must be at least 6 characters';
+      return;
+    }
+    if (isSignUpMode && password !== confirmPassword) {
+      errorDiv.textContent = '⚠️ Passwords do not match';
+      return;
+    }
 
-          if (error) throw error;
+    const btn = document.getElementById('submitBtn');
+    const icon = document.getElementById('submitIcon');
+    const text = document.getElementById('submitText');
+    
+    btn.disabled = true;
+    icon.textContent = '⏳';
+    text.textContent = isSignUpMode ? 'Creating account...' : 'Signing in...';
 
-          errorDiv.textContent = '✓ Account created!';
-          errorDiv.className = 'success';
-
-          localStorage.setItem('valqmsUser', JSON.stringify({
-            email: data.user.email,
-            name,
-            loggedIn: true,
-            provider: 'supabase',
-            timestamp: Date.now()
-          }));
-
-        } else {
-          const { data, error } = await sb.auth.signInWithPassword({ email, password });
-
-          if (error) throw error;
-
-          localStorage.setItem('valqmsUser', JSON.stringify({
-            email: data.user.email,
-            name: data.user.user_metadata?.full_name || email.split('@')[0],
-            loggedIn: true,
-            provider: 'supabase',
-            timestamp: Date.now()
-          }));
-        }
-
-        submitIcon.textContent = '✓';
-        submitText.textContent = 'Success!';
-        submitBtn.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
-
-        setTimeout(() => window.location.href = 'index.html', 800);
-
-      } catch (error) {
-        submitBtn.disabled = false;
-        submitIcon.textContent = isSignUpMode ? '✨' : '🔐';
-        submitText.textContent = isSignUpMode ? 'Create Account' : 'Sign In';
-
-        if (error.message.includes('already registered')) {
-          errorDiv.textContent = '⚠️ Email already registered. Please sign in.';
-        } else if (error.message.includes('Invalid login')) {
-          errorDiv.textContent = '⚠️ Invalid email or password.';
-        } else {
-          errorDiv.textContent = '⚠️ ' + error.message;
-        }
-      }
-    });
-
-    // Google Sign-In
-    document.getElementById('googleSignIn').addEventListener('click', async () => {
-      errorDiv.textContent = '';
-      
-      try {
-        const { data, error } = await sb.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: window.location.origin + '/login.html',
-            queryParams: {
-              access_type: 'offline',
-              prompt: 'consent',
-            }
+    try {
+      if (isSignUpMode) {
+        const { data, error } = await sb.auth.signUp({
+          email,
+          password,
+          options: { 
+            data: { full_name: name },
+            emailRedirectTo: 'https://valqms.com/index.html'
           }
         });
         
         if (error) throw error;
         
-        // OAuth redirects automatically, no need for further action
+        errorDiv.textContent = '✓ Account created! Redirecting...';
+        errorDiv.className = 'success';
         
-      } catch (error) {
-        console.error('Google OAuth Error:', error);
-        errorDiv.textContent = '⚠️ Google Sign-In not fully configured. Please use email/password or complete OAuth setup in Supabase dashboard.';
-        errorDiv.className = 'error';
+        localStorage.setItem('valqmsUser', JSON.stringify({
+          email: data.user.email,
+          name,
+          loggedIn: true,
+          provider: 'email',
+          timestamp: Date.now()
+        }));
+        
+      } else {
+        const { data, error } = await sb.auth.signInWithPassword({ 
+          email, 
+          password 
+        });
+        
+        if (error) throw error;
+        
+        localStorage.setItem('valqmsUser', JSON.stringify({
+          email: data.user.email,
+          name: data.user.user_metadata?.full_name || email.split('@')[0],
+          loggedIn: true,
+          provider: 'email',
+          timestamp: Date.now()
+        }));
       }
-    });
 
-    // Check OAuth return
-sb.auth.onAuthStateChange((event, session) => {
-  if (session && event === "SIGNED_IN") {
-    localStorage.setItem('valqmsUser', JSON.stringify({
-      email: session.user.email,
-      name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
-      picture: session.user.user_metadata?.avatar_url,
-      loggedIn: true,
-      provider: 'google',
-      timestamp: Date.now()
-    }));
-    window.location.href = 'index.html';
-  }
-});
+      icon.textContent = '✓';
+      text.textContent = 'Success!';
+      btn.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+      
+      setTimeout(() => window.location.href = '/index.html', 800);
 
-  </script>
+    } catch (error) {
+      btn.disabled = false;
+      icon.textContent = isSignUpMode ? '✨' : '🔐';
+      text.textContent = isSignUpMode ? 'Create Account' : 'Sign In';
+      
+      if (error.message.includes('already registered')) {
+        errorDiv.textContent = '⚠️ Email already registered. Please sign in.';
+      } else if (error.message.includes('Invalid login')) {
+        errorDiv.textContent = '⚠️ Invalid email or password.';
+      } else if (error.message.includes('Email not confirmed')) {
+        errorDiv.textContent = '⚠️ Please check your email and confirm your account.';
+      } else {
+        errorDiv.textContent = '⚠️ ' + error.message;
+      }
+      errorDiv.className = 'error';
+    }
+  });
+
+  // Google Sign-In
+  document.getElementById('googleSignIn').addEventListener('click', async () => {
+    errorDiv.textContent = '';
+    
+    try {
+      const { error } = await sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'https://valqms.com/index.html',
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
+        }
+      });
+      
+      if (error) throw error;
+      
+    } catch (error) {
+      console.error('Google OAuth Error:', error);
+      errorDiv.textContent = '⚠️ Google Sign-In error. Please use email/password.';
+      errorDiv.className = 'error';
+    }
+  });
+
+  // Handle OAuth callback
+  sb.auth.onAuthStateChange((event, session) => {
+    if (session && event === 'SIGNED_IN') {
+      localStorage.setItem('valqmsUser', JSON.stringify({
+        email: session.user.email,
+        name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+        picture: session.user.user_metadata?.avatar_url,
+        loggedIn: true,
+        provider: session.user.app_metadata?.provider || 'google',
+        timestamp: Date.now()
+      }));
+      window.location.href = '/index.html';
+    }
+  });
+</script>
 </body>
 </html>

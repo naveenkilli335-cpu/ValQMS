@@ -522,176 +522,174 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script type="module">
-// ===== SUPABASE SETUP =====
-const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+  const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
 
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Authentication check - MUST COMPLETE BEFORE REST OF CODE
-(async function checkAuth() {
-  const { data: { session } } = await sb.auth.getSession();
-  
-  if (!session) {
-    // No Supabase session, redirect to login
-    window.location.href = 'login.html';
-    return;
-  }
+  // Authentication check - MUST COMPLETE BEFORE REST OF CODE
+  (async function checkAuth() {
+    const { data: { session } } = await sb.auth.getSession();
+    
+    if (!session) {
+      window.location.href = '/login.html';
+      return;
+    }
 
-  // Session exists, save to localStorage
-  localStorage.setItem('valqmsUser', JSON.stringify({
-    email: session.user.email,
-    name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
-    picture: session.user.user_metadata?.avatar_url,
-    loggedIn: true,
-    provider: session.user.app_metadata?.provider || 'supabase',
-    timestamp: Date.now()
-  }));
+    // Session exists, save to localStorage
+    localStorage.setItem('valqmsUser', JSON.stringify({
+      email: session.user.email,
+      name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+      picture: session.user.user_metadata?.avatar_url,
+      loggedIn: true,
+      provider: session.user.app_metadata?.provider || 'email',
+      timestamp: Date.now()
+    }));
 
-  // Now initialize the rest of the page
-  initializePage();
-})();
+    // Now initialize the rest of the page
+    initializePage();
+  })();
 
-function initializePage() {
-  // Theme/background initializers
-  const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-  const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  document.documentElement.setAttribute('data-bg', savedBg);
+  function initializePage() {
+    // Theme/background initializers
+    const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+    const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute('data-bg', savedBg);
 
-  // Background selector
-  const bgBtn = document.getElementById('bgBtn');
-  const bgDropdown = document.getElementById('bgDropdown');
-  
-  if (bgBtn && bgDropdown) {
-    bgBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      bgDropdown.classList.toggle('active');
-      const themeDropdown = document.getElementById('themeDropdown');
+    // Background selector
+    const bgBtn = document.getElementById('bgBtn');
+    const bgDropdown = document.getElementById('bgDropdown');
+    
+    if (bgBtn && bgDropdown) {
+      bgBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgDropdown.classList.toggle('active');
+        const themeDropdown = document.getElementById('themeDropdown');
+        if (themeDropdown) themeDropdown.classList.remove('active');
+      });
+
+      document.querySelectorAll('.bg-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const bg = opt.dataset.bg;
+          document.documentElement.setAttribute('data-bg', bg);
+          localStorage.setItem('valqmsBg', bg);
+          bgDropdown.classList.remove('active');
+        });
+      });
+    }
+
+    // Theme selector
+    const themeBtn = document.getElementById('themeBtn');
+    const themeDropdown = document.getElementById('themeDropdown');
+    
+    if (themeBtn && themeDropdown) {
+      themeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        themeDropdown.classList.toggle('active');
+        if (bgDropdown) bgDropdown.classList.remove('active');
+      });
+
+      document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const theme = opt.dataset.theme;
+          document.documentElement.setAttribute('data-theme', theme);
+          localStorage.setItem('valqmsTheme', theme);
+          themeDropdown.classList.remove('active');
+        });
+      });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+      if (bgDropdown) bgDropdown.classList.remove('active');
       if (themeDropdown) themeDropdown.classList.remove('active');
     });
 
-    document.querySelectorAll('.bg-option').forEach(opt => {
-      opt.addEventListener('click', () => {
-        const bg = opt.dataset.bg;
-        document.documentElement.setAttribute('data-bg', bg);
-        localStorage.setItem('valqmsBg', bg);
-        bgDropdown.classList.remove('active');
-      });
-    });
-  }
+    // User menu setup
+    const loginLink = document.getElementById('loginLink');
+    const userMenu = document.getElementById('userMenu');
+    const userBadge = document.getElementById('userBadge');
+    const userDropdown = document.getElementById('userDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-  // Theme selector
-  const themeBtn = document.getElementById('themeBtn');
-  const themeDropdown = document.getElementById('themeDropdown');
-  
-  if (themeBtn && themeDropdown) {
-    themeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      themeDropdown.classList.toggle('active');
-      if (bgDropdown) bgDropdown.classList.remove('active');
-    });
-
-    document.querySelectorAll('.theme-option').forEach(opt => {
-      opt.addEventListener('click', () => {
-        const theme = opt.dataset.theme;
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('valqmsTheme', theme);
-        themeDropdown.classList.remove('active');
-      });
-    });
-  }
-
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', () => {
-    if (bgDropdown) bgDropdown.classList.remove('active');
-    if (themeDropdown) themeDropdown.classList.remove('active');
-  });
-
-  // User menu setup
-  const loginLink = document.getElementById('loginLink');
-  const userMenu = document.getElementById('userMenu');
-  const userBadge = document.getElementById('userBadge');
-  const userDropdown = document.getElementById('userDropdown');
-  const logoutBtn = document.getElementById('logoutBtn');
-
-  function getSession() {
-    try { return JSON.parse(localStorage.getItem('valqmsUser')); } catch (e) { return null; }
-  }
-
-  function getInitials(name) {
-    if (!name) return 'U';
-    const parts = name.trim().split(' ');
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    function getSession() {
+      try { return JSON.parse(localStorage.getItem('valqmsUser')); } catch (e) { return null; }
     }
-    return name[0].toUpperCase();
-  }
 
-  function updateUserUI() {
-    const user = getSession();
-    if (user && userMenu) {
-      if (loginLink) loginLink.style.display = 'none';
-      userMenu.style.display = 'inline-block';
-      if (userBadge) {
-        const displayName = user.name || user.email.split('@')[0];
-        userBadge.textContent = getInitials(displayName);
+    function getInitials(name) {
+      if (!name) return 'U';
+      const parts = name.trim().split(' ');
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
       }
-    } else {
-      if (userMenu) userMenu.style.display = 'none';
-      if (loginLink) loginLink.style.display = 'inline-block';
+      return name[0].toUpperCase();
+    }
+
+    function updateUserUI() {
+      const user = getSession();
+      if (user && userMenu) {
+        if (loginLink) loginLink.style.display = 'none';
+        userMenu.style.display = 'inline-block';
+        if (userBadge) {
+          const displayName = user.name || user.email.split('@')[0];
+          userBadge.textContent = getInitials(displayName);
+        }
+      } else {
+        if (userMenu) userMenu.style.display = 'none';
+        if (loginLink) loginLink.style.display = 'inline-block';
+      }
+    }
+
+    updateUserUI();
+
+    // User menu dropdown
+    if (userBadge && userDropdown) {
+      userBadge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = userDropdown.style.display === 'block';
+        userDropdown.style.display = isOpen ? 'none' : 'block';
+      });
+    }
+
+    // Close user dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (userMenu && userDropdown && !userMenu.contains(e.target)) {
+        userDropdown.style.display = 'none';
+      }
+    });
+
+    // Logout functionality
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Clear localStorage
+        localStorage.removeItem('valqmsUser');
+        
+        // Sign out from Supabase
+        await sb.auth.signOut();
+        
+        // Hide dropdown
+        if (userDropdown) userDropdown.style.display = 'none';
+        
+        // Redirect to login
+        window.location.href = '/login.html';
+      });
+    }
+
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mainNav = document.getElementById('mainNav');
+    if (mobileMenuBtn && mainNav) {
+      mobileMenuBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        mainNav.classList.toggle('active');
+      });
     }
   }
-
-  updateUserUI();
-
-  // User menu dropdown
-  if (userBadge && userDropdown) {
-    userBadge.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = userDropdown.style.display === 'block';
-      userDropdown.style.display = isOpen ? 'none' : 'block';
-    });
-  }
-
-  // Close user dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (userMenu && userDropdown && !userMenu.contains(e.target)) {
-      userDropdown.style.display = 'none';
-    }
-  });
-
-  // Logout functionality
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', async function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Clear localStorage
-      localStorage.removeItem('valqmsUser');
-      
-      // Sign out from Supabase
-      await sb.auth.signOut();
-      
-      // Hide dropdown
-      if (userDropdown) userDropdown.style.display = 'none';
-      
-      // Redirect to login
-      window.location.href = 'login.html';
-    });
-  }
-
-  // Mobile menu
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mainNav = document.getElementById('mainNav');
-  if (mobileMenuBtn && mainNav) {
-    mobileMenuBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      mainNav.classList.toggle('active');
-    });
-  }
-}
 </script>
 
 </body>
