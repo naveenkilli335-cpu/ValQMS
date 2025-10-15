@@ -922,44 +922,42 @@
     }
   }
 
-  async function saveProfile() {
-    if (!profileMsg) return;
-    profileMsg.textContent = 'Saving...';
-    profileMsg.style.color = 'var(--text-dim)';
-    
-    try {
-      const user = await getCurrentUser();
-      const fullName = document.getElementById('pf_full_name')?.value.trim() || '';
-      const phone = document.getElementById('pf_phone')?.value.trim() || '';
+async function saveProfile() {
+  if (!profileMsg) return;
+  profileMsg.textContent = 'Saving...';
+  profileMsg.style.color = 'var(--text-dim)';
+  try {
+    const user = await getCurrentUser();
+    const fullName = document.getElementById('pf_full_name')?.value.trim() || '';
+    const phone = document.getElementById('pf_phone')?.value.trim() || '';
+    const email = document.getElementById('pf_email')?.value.trim() || user.email; // Always populate email
 
-      const updates = {
-        id: user.id,
-        full_name: fullName || null,
-        phone: phone || null,
-        updated_at: new Date().toISOString()
-      };
+    const updates = {
+      id: user.id,
+      full_name: fullName || null,
+      phone: phone || null,
+      email, // Always REQUIRED
+      updated_at: new Date().toISOString()
+    };
 
-      const { error } = await sb
-        .from('user_profiles')
-        .upsert(updates, { onConflict: 'id' });
+    const { error } = await sb
+      .from('user_profiles')
+      .upsert(updates, { onConflict: 'id' });
 
-      if (error) throw error;
+    if (error) throw error;
 
-      profileMsg.style.color = 'var(--accent)';
-      profileMsg.textContent = 'Profile updated successfully!';
-      
-      // Close panel after success
-      if (profilePanel) {
-        setTimeout(() => { 
-          profilePanel.style.display = 'none'; 
-        }, 1500);
-      }
-    } catch (error) {
-      console.error('Save profile error:', error);
-      profileMsg.style.color = '#f87171';
-      profileMsg.textContent = 'Save failed: ' + error.message;
+    profileMsg.style.color = 'var(--accent)';
+    profileMsg.textContent = 'Profile updated successfully!';
+    if (profilePanel) {
+      setTimeout(() => { profilePanel.style.display = 'none'; }, 1200);
     }
+  } catch (error) {
+    console.error('Save profile error:', error);
+    profileMsg.style.color = '#f87171';
+    profileMsg.textContent = 'Save failed: ' + error.message;
   }
+}
+
 
   // Hook up profile panel if HTML exists
   if (profilePanel) {
