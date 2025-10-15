@@ -336,30 +336,41 @@ document.getElementById('forgotPasswordLink').addEventListener('click', async (e
     text.textContent = isSignUpMode ? 'Creating account...' : 'Signing in...';
 
     try {
-      if (isSignUpMode) {
-        const { data, error } = await sb.auth.signUp({
-          email,
-          password,
-          options: { 
-            data: { full_name: name },
-            emailRedirectTo: 'https://valqms.com/index.html'
-          }
-        });
-        
-        if (error) throw error;
-        
-        errorDiv.textContent = '✓ Account created! Redirecting...';
-        errorDiv.className = 'success';
-        
-        localStorage.setItem('valqmsUser', JSON.stringify({
-          email: data.user.email,
-          name,
-          loggedIn: true,
-          provider: 'email',
-          timestamp: Date.now()
-        }));
-        
-      } else {
+if (isSignUpMode) {
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password,
+    options: { 
+      data: { full_name: name },
+      emailRedirectTo: 'https://valqms.com/index.html'
+    }
+  });
+
+  if (error) {
+    // Handle specific errors
+    if (error.message.includes('already registered') || error.message.includes('User already registered')) {
+      errorDiv.textContent = '⚠️ Email already registered. Please sign in instead.';
+    } else {
+      errorDiv.textContent = '⚠️ ' + error.message;
+    }
+    errorDiv.className = 'error';
+    btn.disabled = false;
+    icon.textContent = '✨';
+    text.textContent = 'Create Account';
+    return;
+  }
+
+  // Success - but don't auto-login
+  errorDiv.textContent = '✓ Account created! Please check your email to confirm your registration.';
+  errorDiv.className = 'success';
+
+  // DO NOT set loggedIn: true - wait for actual confirmation and login
+  // Reset button state
+  btn.disabled = false;
+  icon.textContent = '✨';
+  text.textContent = 'Create Account';
+  return; // Exit early, no redirect
+} else {
         const { data, error } = await sb.auth.signInWithPassword({ 
           email, 
           password 

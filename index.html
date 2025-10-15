@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ValQMS — Simplify Validation. Strengthen Quality. Accelerate Compliance.</title>
-  <meta name="description" content="AI-driven validation tools and QMS platform for Life Sciences organizations. GAMP 5 compliant, FDA 21 CFR Part 11 ready.">
+  <meta name="description" content="Validation tools and QMS Procedures.">
   <link rel="icon" href="favicon.jpg?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,7 +162,18 @@
     /* Sections */
     section{padding:100px 0}
     .section-head{text-align:center;margin-bottom:64px}
-    .section-head h2{font-size:clamp(36px,6vw,56px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .section-head h2 {
+  font-size:clamp(36px,6vw,56px);
+  font-weight:900;
+  letter-spacing:-2px;
+  margin-bottom:16px;
+  color:#fff; /* Fallback for browsers without background-clip support */
+  background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;          /* Standard property */
+  }
+
     .section-head p{font-size:19px;color:var(--text-dim);max-width:740px;margin:0 auto;line-height:1.8;font-weight:300}
 
     /* Tools List */
@@ -226,21 +237,88 @@
     /* Mobile Menu Toggle */
     .mobile-menu-btn{display:none;background:var(--surface);border:1px solid var(--border);padding:10px;border-radius:12px;cursor:pointer;color:var(--text)}
     
-    @media(max-width:968px){
-      header{top:8px;padding:0 16px}
-      .header-glass{padding:0 20px;border-radius:16px}
-      nav{display:none;position:absolute;top:80px;left:16px;right:16px;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:16px;flex-direction:column;gap:4px}
-      nav.active{display:flex}
-      nav a{width:100%;padding:12px 16px}
-      .mobile-menu-btn{display:block}
-      .header-controls{gap:8px}
-      .bg-btn,.theme-btn{padding:10px;font-size:0}
-      .bg-btn span:last-child,.theme-btn span:last-child{display:none}
-      .tools-scroll-wrapper{padding:0 16px}
-      .tool-item{flex-direction:column;text-align:center}
-      .footer-grid{grid-template-columns:1fr;gap:32px}
-      .footer-bottom{flex-direction:column;gap:20px;text-align:center}
-    }
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+    font-size: 15px;
+  }
+  
+  .login-card, #profilePanel > div {
+    padding: 20px !important;
+    max-width: 97vw !important;
+    border-radius: 14px !important;
+    font-size: 15px !important;
+    margin: 40px auto !important;
+  }
+  
+  h1, h2 {
+    font-size: 20px !important;
+  }
+  
+  input, .btn, button {
+    font-size: 15px !important;
+    padding: 12px 8px !important;
+    border-radius: 10px !important;
+    min-height: 44px !important; /* Touch target size */
+  }
+  
+  label {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .header-glass {
+    padding: 8px 8px !important;
+    border-radius: 12px !important;
+  }
+  
+  nav {
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding: 12px 4px !important;
+  }
+  
+  .user-badge, .btn, .mobile-menu-btn, #saveProfileBtn, #closeProfileBtn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+  
+  /* Profile panel mobile fixes */
+  #profilePanel > div {
+    margin: 20px auto !important;
+    max-height: calc(100vh - 40px) !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Hero section mobile */
+  .hero {
+    padding: 80px 0 60px !important;
+  }
+  
+  h1 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .lead {
+    font-size: 16px !important;
+    margin-bottom: 32px !important;
+  }
+  
+  .cta-group {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  
+  .cta {
+    width: 100% !important;
+    max-width: 280px !important;
+    justify-content: center !important;
+  }
+}
+
+
   </style>
 </head>
 <body>
@@ -521,177 +599,454 @@
   </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script type="module">
   const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
-
+  
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Authentication check - MUST COMPLETE BEFORE REST OF CODE
-  (async function checkAuth() {
-    const { data: { session } } = await sb.auth.getSession();
-    
-    if (!session) {
-      window.location.href = '/login.html';
-      return;
-    }
-
-    // Session exists, save to localStorage
-    localStorage.setItem('valqmsUser', JSON.stringify({
-      email: session.user.email,
-      name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
-      picture: session.user.user_metadata?.avatar_url,
-      loggedIn: true,
-      provider: session.user.app_metadata?.provider || 'email',
-      timestamp: Date.now()
-    }));
-
-    // Now initialize the rest of the page
-    initializePage();
-  })();
-
-  function initializePage() {
-    // Theme/background initializers
-    const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-    const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    document.documentElement.setAttribute('data-bg', savedBg);
-
-    // Background selector
-    const bgBtn = document.getElementById('bgBtn');
-    const bgDropdown = document.getElementById('bgDropdown');
-    
-    if (bgBtn && bgDropdown) {
-      bgBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        bgDropdown.classList.toggle('active');
-        const themeDropdown = document.getElementById('themeDropdown');
-        if (themeDropdown) themeDropdown.classList.remove('active');
-      });
-
-      document.querySelectorAll('.bg-option').forEach(opt => {
-        opt.addEventListener('click', () => {
-          const bg = opt.dataset.bg;
-          document.documentElement.setAttribute('data-bg', bg);
-          localStorage.setItem('valqmsBg', bg);
-          bgDropdown.classList.remove('active');
-        });
-      });
-    }
-
-    // Theme selector
-    const themeBtn = document.getElementById('themeBtn');
-    const themeDropdown = document.getElementById('themeDropdown');
-    
-    if (themeBtn && themeDropdown) {
-      themeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        themeDropdown.classList.toggle('active');
-        if (bgDropdown) bgDropdown.classList.remove('active');
-      });
-
-      document.querySelectorAll('.theme-option').forEach(opt => {
-        opt.addEventListener('click', () => {
-          const theme = opt.dataset.theme;
-          document.documentElement.setAttribute('data-theme', theme);
-          localStorage.setItem('valqmsTheme', theme);
-          themeDropdown.classList.remove('active');
-        });
-      });
-    }
-
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', () => {
-      if (bgDropdown) bgDropdown.classList.remove('active');
-      if (themeDropdown) themeDropdown.classList.remove('active');
-    });
-
-    // User menu setup
-    const loginLink = document.getElementById('loginLink');
-    const userMenu = document.getElementById('userMenu');
-    const userBadge = document.getElementById('userBadge');
-    const userDropdown = document.getElementById('userDropdown');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    function getSession() {
-      try { return JSON.parse(localStorage.getItem('valqmsUser')); } catch (e) { return null; }
-    }
-
-    function getInitials(name) {
-      if (!name) return 'U';
-      const parts = name.trim().split(' ');
-      if (parts.length >= 2) {
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  // CORRECTED: Proper authentication check
+  async function checkAuth() {
+    try {
+      // Always check Supabase session first (most reliable)
+      const { data: { session }, error: sessionError } = await sb.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        window.location.href = 'login.html';
+        return null;
       }
-      return name[0].toUpperCase();
-    }
 
-    function updateUserUI() {
-      const user = getSession();
-      if (user && userMenu) {
-        if (loginLink) loginLink.style.display = 'none';
-        userMenu.style.display = 'inline-block';
-        if (userBadge) {
-          const displayName = user.name || user.email.split('@')[0];
-          userBadge.textContent = getInitials(displayName);
+      // If we have a valid session, user is authenticated
+      if (session) {
+        // Sync localStorage with real session
+        localStorage.setItem('valqmsUser', JSON.stringify({
+          email: session.user.email,
+          name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+          picture: session.user.user_metadata?.avatar_url,
+          loggedIn: true,
+          provider: session.user.app_metadata?.provider || 'email',
+          timestamp: Date.now()
+        }));
+        return session;
+      }
+
+      // No session - check if localStorage has stale data (fallback only)
+      const localUserStr = localStorage.getItem('valqmsUser');
+      if (localUserStr) {
+        try {
+          const localUser = JSON.parse(localUserStr);
+          if (localUser.loggedIn && localUser.timestamp > Date.now() - 24*60*60*1000) { // 24h validity
+            // Verify with Supabase (refresh token check)
+            const { data: { session: refreshed } } = await sb.auth.refreshSession();
+            if (refreshed) {
+              return refreshed;
+            }
+          }
+        } catch (e) {
+          console.error('LocalStorage parse error:', e);
         }
-      } else {
-        if (userMenu) userMenu.style.display = 'none';
-        if (loginLink) loginLink.style.display = 'inline-block';
       }
+
+      // No valid auth found
+      localStorage.removeItem('valqmsUser');
+      window.location.href = 'login.html';
+      return null;
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      localStorage.removeItem('valqmsUser');
+      window.location.href = 'login.html';
+      return null;
     }
+  }
 
-    updateUserUI();
+  // CORRECTED: Initialize page only after auth check
+  async function initializePage() {
+    try {
+      const session = await checkAuth();
+      if (!session) return; // Redirect already handled
 
-    // User menu dropdown
-    if (userBadge && userDropdown) {
-      userBadge.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = userDropdown.style.display === 'block';
-        userDropdown.style.display = isOpen ? 'none' : 'block';
+      // Theme and background initializers
+      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+      const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.documentElement.setAttribute('data-bg', savedBg);
+
+      // Background selector
+      const bgBtn = document.getElementById('bgBtn');
+      const bgDropdown = document.getElementById('bgDropdown');
+      if (bgBtn && bgDropdown) {
+        bgBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          bgDropdown.classList.toggle('active');
+          if (document.getElementById('themeDropdown')) {
+            document.getElementById('themeDropdown').classList.remove('active');
+          }
+        });
+
+        document.querySelectorAll('.bg-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            const bg = opt.dataset.bg;
+            document.documentElement.setAttribute('data-bg', bg);
+            localStorage.setItem('valqmsBg', bg);
+            bgDropdown.classList.remove('active');
+          });
+        });
+      }
+
+      // Theme selector
+      const themeBtn = document.getElementById('themeBtn');
+      const themeDropdown = document.getElementById('themeDropdown');
+      if (themeBtn && themeDropdown) {
+        themeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          themeDropdown.classList.toggle('active');
+          if (bgDropdown) {
+            bgDropdown.classList.remove('active');
+          }
+        });
+
+        document.querySelectorAll('.theme-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            const theme = opt.dataset.theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('valqmsTheme', theme);
+            themeDropdown.classList.remove('active');
+          });
+        });
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', () => {
+        if (bgDropdown) bgDropdown.classList.remove('active');
+        if (themeDropdown) themeDropdown.classList.remove('active');
+        if (userDropdown) userDropdown.style.display = 'none';
       });
-    }
 
-    // Close user dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (userMenu && userDropdown && !userMenu.contains(e.target)) {
-        userDropdown.style.display = 'none';
+      // User menu setup
+      const loginLink = document.getElementById('loginLink');
+      const userMenu = document.getElementById('userMenu');
+      const userBadge = document.getElementById('userBadge');
+      const userDropdown = document.getElementById('userDropdown');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      function getInitials(name) {
+        if (!name) return 'U';
+        const parts = name.trim().split(' ');
+        if (parts.length >= 2) {
+          return parts[0][0] + parts[parts.length - 1][0];
+        }
+        return name[0].toUpperCase();
+      }
+
+      function updateUserUI() {
+        const userData = localStorage.getItem('valqmsUser');
+        if (userData) {
+          const user = JSON.parse(userData);
+          if (user.loggedIn) {
+            if (userMenu && loginLink) {
+              loginLink.style.display = 'none';
+              userMenu.style.display = 'inline-block';
+            }
+            if (userBadge) {
+              const displayName = user.name || user.email.split('@')[0];
+              userBadge.textContent = getInitials(displayName);
+            }
+            return;
+          }
+        }
+        // No user
+        if (userMenu && loginLink) {
+          userMenu.style.display = 'none';
+          loginLink.style.display = 'inline-block';
+        }
+      }
+
+      updateUserUI();
+
+      // User menu dropdown
+      if (userBadge && userDropdown) {
+        userBadge.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = userDropdown.style.display === 'block';
+          userDropdown.style.display = isOpen ? 'none' : 'block';
+        });
+      }
+
+      // Logout functionality
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Clear localStorage
+          localStorage.removeItem('valqmsUser');
+
+          // Sign out from Supabase
+          try {
+            await sb.auth.signOut();
+          } catch (error) {
+            console.error('Logout error:', error);
+          }
+
+          // Hide dropdown
+          if (userDropdown) userDropdown.style.display = 'none';
+
+          // Update UI
+          if (userMenu && loginLink) {
+            userMenu.style.display = 'none';
+            loginLink.style.display = 'inline-block';
+          }
+          if (userBadge) userBadge.textContent = 'U';
+
+          // Redirect to login
+          setTimeout(() => window.location.href = 'login.html', 300);
+        });
+      }
+
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mainNav = document.getElementById('mainNav');
+      if (mobileMenuBtn && mainNav) {
+        mobileMenuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          mainNav.classList.toggle('active');
+        });
+      }
+
+      // CORRECTED: Essential Supabase auth state listener
+      sb.auth.onAuthStateChange((event, session) => {
+        console.log('Auth state changed:', event, session);
+        
+        if (event === 'SIGNED_IN') {
+          // User signed in - sync localStorage
+          if (session) {
+            localStorage.setItem('valqmsUser', JSON.stringify({
+              email: session.user.email,
+              name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+              picture: session.user.user_metadata?.avatar_url,
+              loggedIn: true,
+              provider: session.user.app_metadata?.provider || 'email',
+              timestamp: Date.now()
+            }));
+            updateUserUI();
+            // Reload to show profile features
+            setTimeout(() => location.reload(), 100);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          // User signed out - clear everything
+          localStorage.removeItem('valqmsUser');
+          if (userMenu && loginLink) {
+            userMenu.style.display = 'none';
+            loginLink.style.display = 'inline-block';
+          }
+          if (userBadge) userBadge.textContent = 'U';
+          window.location.href = 'login.html';
+        }
+      });
+
+    } catch (error) {
+      console.error('Page initialization failed:', error);
+      window.location.href = 'login.html';
+    }
+  }
+
+  // PROFILE PANEL FUNCTIONS (CORRECTED)
+  // Note: Add the HTML first, then this will work
+  const profilePanel = document.getElementById('profilePanel');
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
+  const closeProfileBtn = document.getElementById('closeProfileBtn');
+  const profileMsg = document.getElementById('profileMsg');
+
+  async function getCurrentUser() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) throw new Error('Not authenticated');
+    return session.user;
+  }
+
+  async function loadProfile() {
+    if (!profileMsg) return;
+    profileMsg.textContent = 'Loading...';
+    profileMsg.style.color = 'var(--text-dim)';
+    
+    try {
+      const user = await getCurrentUser();
+      
+      // Fetch existing profile from user_profiles table
+      let { data: profile, error: fetchError } = await sb
+        .from('user_profiles')
+        .select('full_name, email, phone')
+        .eq('id', user.id)
+        .single();
+
+      if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = no rows
+        throw fetchError;
+      }
+
+      let profileData = profile;
+
+      // If no profile exists, create one
+      if (!profileData) {
+        const insertData = {
+          id: user.id,
+          email: user.email,
+          full_name: user.user_metadata?.full_name || user.email.split('@')[0] || '',
+          phone: ''
+        };
+
+        const { data: created, error: insertError } = await sb
+          .from('user_profiles')
+          .insert(insertData)
+          .select('full_name, email, phone')
+          .single();
+
+        if (insertError) throw insertError;
+        profileData = created;
+      }
+
+      // Populate form fields
+      const fullNameInput = document.getElementById('pf_full_name');
+      const emailInput = document.getElementById('pf_email');
+      const phoneInput = document.getElementById('pf_phone');
+
+      if (fullNameInput) fullNameInput.value = profileData.full_name || '';
+      if (emailInput) emailInput.value = profileData.email || user.email;
+      if (phoneInput) phoneInput.value = profileData.phone || '';
+
+      profileMsg.textContent = '';
+    } catch (error) {
+      console.error('Load profile error:', error);
+      profileMsg.style.color = '#f87171';
+      profileMsg.textContent = 'Error loading profile: ' + error.message;
+    }
+  }
+
+  async function saveProfile() {
+    if (!profileMsg) return;
+    profileMsg.textContent = 'Saving...';
+    profileMsg.style.color = 'var(--text-dim)';
+    
+    try {
+      const user = await getCurrentUser();
+      const fullName = document.getElementById('pf_full_name')?.value.trim() || '';
+      const phone = document.getElementById('pf_phone')?.value.trim() || '';
+
+      const updates = {
+        id: user.id,
+        full_name: fullName || null,
+        phone: phone || null,
+        updated_at: new Date().toISOString()
+      };
+
+      const { error } = await sb
+        .from('user_profiles')
+        .upsert(updates, { onConflict: 'id' });
+
+      if (error) throw error;
+
+      profileMsg.style.color = 'var(--accent)';
+      profileMsg.textContent = 'Profile updated successfully!';
+      
+      // Close panel after success
+      if (profilePanel) {
+        setTimeout(() => { 
+          profilePanel.style.display = 'none'; 
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Save profile error:', error);
+      profileMsg.style.color = '#f87171';
+      profileMsg.textContent = 'Save failed: ' + error.message;
+    }
+  }
+
+  // Hook up profile panel if HTML exists
+  if (profilePanel) {
+    profilePanel.addEventListener('click', (e) => {
+      if (e.target === profilePanel) {
+        profilePanel.style.display = 'none';
       }
     });
 
-    // Logout functionality
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', async function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Clear localStorage
-        localStorage.removeItem('valqmsUser');
-        
-        // Sign out from Supabase
-        await sb.auth.signOut();
-        
-        // Hide dropdown
-        if (userDropdown) userDropdown.style.display = 'none';
-        
-        // Redirect to login
-        window.location.href = '/login.html';
+    if (saveProfileBtn) {
+      saveProfileBtn.addEventListener('click', saveProfile);
+    }
+
+    if (closeProfileBtn) {
+      closeProfileBtn.addEventListener('click', () => {
+        profilePanel.style.display = 'none';
       });
     }
 
-    // Mobile menu
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mainNav = document.getElementById('mainNav');
-    if (mobileMenuBtn && mainNav) {
-      mobileMenuBtn.addEventListener('click', function (e) {
+    // Open profile from user badge
+    if (userBadge) {
+      userBadge.addEventListener('click', async (e) => {
         e.stopPropagation();
-        mainNav.classList.toggle('active');
+        
+        // Check if it's the profile click (not dropdown)
+        if (userDropdown && userDropdown.style.display !== 'block') {
+          profilePanel.style.display = 'block';
+          await loadProfile();
+        }
       });
     }
   }
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mainNav = document.getElementById('mainNav');
+  if (mobileMenuBtn && mainNav) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mainNav.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking a link
+    mainNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('active');
+      });
+    });
+  }
+
+  // Initialize page when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePage);
+  } else {
+    initializePage();
+  }
+
 </script>
+
+<div id="profilePanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; backdrop-filter:blur(8px);">
+  <div style="max-width:420px; margin:80px auto; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:20px; padding:32px; box-shadow:0 12px 40px rgba(0,0,0,0.3); position:relative;">
+    <button onclick="document.getElementById('profilePanel').style.display='none'" style="position:absolute; top:12px; right:12px; background:none; border:none; color:var(--text-dim); font-size:24px; cursor:pointer; width:32px; height:32px; display:flex; align-items:center; justify-content:center;">×</button>
+    
+    <h2 style="font-size:24px; font-weight:800; margin-bottom:20px; color:var(--text);">My Profile</h2>
+    <p id="profileMsg" style="min-height:20px; color:var(--text-dim); margin-bottom:20px; font-size:14px;"></p>
+    
+    <div style="margin-bottom:20px;">
+      <label style="display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Full Name</label>
+      <input id="pf_full_name" type="text" style="width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:14px;" placeholder="Your full name">
+    </div>
+    
+    <div style="margin-bottom:20px;">
+      <label style="display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Email</label>
+      <input id="pf_email" type="email" style="width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:14px;" placeholder="you@company.com" disabled>
+    </div>
+    
+    <div style="margin-bottom:24px;">
+      <label style="display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Mobile Number</label>
+      <input id="pf_phone" type="tel" style="width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:14px;" placeholder="+91-XXXXXXXXXX">
+    </div>
+    
+    <div style="display:flex; gap:12px;">
+      <button id="saveProfileBtn" style="flex:1; padding:12px 24px; background:linear-gradient(135deg, var(--accent), var(--accent-bright)); color:#000; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer;">Save Changes</button>
+      <button id="closeProfileBtn" style="flex:1; padding:12px 24px; background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:12px; font-size:14px; font-weight:600; cursor:pointer;" onclick="document.getElementById('profilePanel').style.display='none'">Close</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
