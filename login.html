@@ -249,36 +249,54 @@
     if (confirmPwd) confirmPwd.type = type;
   });
 
-  // Forgot Password
-  document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      errorDiv.textContent = '⚠️ Please enter your email address first';
-      errorDiv.className = 'error';
-      document.getElementById('email').focus();
-      return;
+// Forgot Password - IMPROVED VERSION
+document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    errorDiv.textContent = '⚠️ Please enter your email address first';
+    errorDiv.className = 'error';
+    document.getElementById('email').focus();
+    return;
+  }
+
+  errorDiv.textContent = 'Sending reset email...';
+  errorDiv.className = 'success';
+
+  try {
+    const { data, error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://valqms.com/reset-password.html'
+    });
+
+    if (error) {
+      // Check if it's an SMTP error
+      if (error.message.includes('SMTP') || error.message.includes('email')) {
+        errorDiv.textContent = '⚠️ Email service not configured. Please contact support at support@valqms.com';
+        errorDiv.className = 'error';
+        return;
+      }
+      
+      // Check if it's a rate limit
+      if (error.message.includes('rate limit')) {
+        errorDiv.textContent = '⚠️ Too many requests. Please wait a few minutes.';
+        errorDiv.className = 'error';
+        return;
+      }
+      
+      throw error;
     }
 
-    errorDiv.textContent = 'Sending reset email...';
+    // Success - but don't reveal if email exists or not (security)
+    errorDiv.textContent = '✓ If an account exists with this email, you will receive reset instructions.';
     errorDiv.className = 'success';
-
-    try {
-      const { error } = await sb.auth.resetPasswordForEmail(email, {
-        redirectTo: 'https://valqms.com/reset-password.html'
-      });
-
-      if (error) throw error;
-
-      errorDiv.textContent = '✓ Password reset email sent! Check your inbox at ' + email;
-      errorDiv.className = 'success';
-    } catch (error) {
-      console.error('Reset error:', error);
-      errorDiv.textContent = '⚠️ ' + error.message;
-      errorDiv.className = 'error';
-    }
-  });
+    
+  } catch (error) {
+    console.error('Reset error:', error);
+    errorDiv.textContent = '⚠️ Unable to send reset email. Please contact support@valqms.com';
+    errorDiv.className = 'error';
+  }
+});
 
   // Form Submit
   document.getElementById('authForm').addEventListener('submit', async (e) => {
