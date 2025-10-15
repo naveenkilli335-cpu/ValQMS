@@ -519,147 +519,180 @@
     </div>
   </footer>
 
-   <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Authentication check
-    (function checkAuth() {
-      const user = localStorage.getItem('valqmsUser');
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
-      try {
-        const userData = JSON.parse(user);
-        if (!userData.loggedIn) {
-          window.location.href = 'login.html';
-          return;
-        }
-        const sessionDuration = 24 * 60 * 60 * 1000;
-        const now = Date.now();
-        if (userData.timestamp && (now - userData.timestamp) > sessionDuration) {
-          localStorage.removeItem('valqmsUser');
-          alert('Session expired. Please log in again.');
-          window.location.href = 'login.html';
-          return;
-        }
-      } catch (e) {
-        localStorage.removeItem('valqmsUser');
-        window.location.href = 'login.html';
-      }
-    })();
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    // Theme/background initializers
-    (function initTheme() {
-      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-      const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      document.documentElement.setAttribute('data-bg', savedBg);
-    })();
+<script type="module">
+// ===== SUPABASE SETUP =====
+const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
 
-    // Theme/background system
-    const themeBtn = document.getElementById('themeBtn');
-    const themeDropdown = document.getElementById('themeDropdown');
-    const themeOptions = document.querySelectorAll('.theme-option');
-    const bgBtn = document.getElementById('bgBtn');
-    const bgDropdown = document.getElementById('bgDropdown');
-    const bgOptions = document.querySelectorAll('.bg-option');
-    if (themeBtn && themeDropdown && themeOptions) {
-      themeBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        themeDropdown.classList.toggle('active');
-        if (bgDropdown) bgDropdown.classList.remove('active');
-      });
-      document.addEventListener('click', () => { themeDropdown.classList.remove('active'); if (bgDropdown) bgDropdown.classList.remove('active'); });
-      themeDropdown.addEventListener('click', e => e.stopPropagation());
-      themeOptions.forEach(opt => {
-        opt.addEventListener('click', () => {
-          const theme = opt.dataset.theme;
-          document.documentElement.setAttribute('data-theme', theme);
-          localStorage.setItem('valqmsTheme', theme);
-          themeDropdown.classList.remove('active');
-        });
-      });
-    }
-    if (bgBtn && bgDropdown && bgOptions) {
-      bgBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        bgDropdown.classList.toggle('active');
-        if (themeDropdown) themeDropdown.classList.remove('active');
-      });
-      bgDropdown.addEventListener('click', e => e.stopPropagation());
-      bgOptions.forEach(opt => {
-        opt.addEventListener('click', () => {
-          const bg = opt.dataset.bg;
-          document.documentElement.setAttribute('data-bg', bg);
-          localStorage.setItem('valqmsBg', bg);
-          bgDropdown.classList.remove('active');
-        });
-      });
-    }
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // User menu/session
-    const loginLink = document.getElementById('loginLink');
-    const userMenu = document.getElementById('userMenu');
-    const userBadge = document.getElementById('userBadge');
-    const userDropdown = document.getElementById('userDropdown');
-    const logoutBtn = document.getElementById('logoutBtn');
-    function getSession() {
-      try { return JSON.parse(localStorage.getItem('valqmsUser')); } catch (e) { return null; }
-    }
-    function getInitials(name) {
-      if (!name) return 'U';
-      const parts = name.trim().split(' ');
-      if (parts.length >= 2) {
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-      }
-      return name[0].toUpperCase();
-    }
-    function updateUserUI() {
-      const user = getSession();
-      if (user && userMenu) {
-        if (loginLink) loginLink.style.display = 'none';
-        userMenu.style.display = 'inline-block';
-        if (userBadge) {
-          const displayName = user.name || user.email.split('@')[0];
-          userBadge.textContent = getInitials(displayName);
-        }
-      } else {
-        if (userMenu) userMenu.style.display = 'none';
-        if (loginLink) loginLink.style.display = 'inline-block';
-      }
-    }
-    if (userBadge && userDropdown) {
-      userBadge.addEventListener('click', e => {
-        e.stopPropagation();
-        const isOpen = userDropdown.style.display === 'block';
-        userDropdown.style.display = isOpen ? 'none' : 'block';
-        if (themeDropdown) themeDropdown.classList.remove('active');
-        if (bgDropdown) bgDropdown.classList.remove('active');
-      });
-    }
-    document.addEventListener('click', e => {
-      if (userMenu && userDropdown && !userMenu.contains(e.target)) { userDropdown.style.display = 'none'; }
+// Authentication check - MUST COMPLETE BEFORE REST OF CODE
+(async function checkAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  
+  if (!session) {
+    // No Supabase session, redirect to login
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Session exists, save to localStorage
+  localStorage.setItem('valqmsUser', JSON.stringify({
+    email: session.user.email,
+    name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+    picture: session.user.user_metadata?.avatar_url,
+    loggedIn: true,
+    provider: session.user.app_metadata?.provider || 'supabase',
+    timestamp: Date.now()
+  }));
+
+  // Now initialize the rest of the page
+  initializePage();
+})();
+
+function initializePage() {
+  // Theme/background initializers
+  const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+  const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.documentElement.setAttribute('data-bg', savedBg);
+
+  // Background selector
+  const bgBtn = document.getElementById('bgBtn');
+  const bgDropdown = document.getElementById('bgDropdown');
+  
+  if (bgBtn && bgDropdown) {
+    bgBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      bgDropdown.classList.toggle('active');
+      const themeDropdown = document.getElementById('themeDropdown');
+      if (themeDropdown) themeDropdown.classList.remove('active');
     });
-    if (logoutBtn && userDropdown) {
-      logoutBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (confirm('Are you sure you want to logout?')) {
-          localStorage.removeItem('valqmsUser');
-          userDropdown.style.display = 'none';
-          window.location.href = 'login.html';
-        }
-      });
-    }
-    updateUserUI();
 
-    // Mobile Menu
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mainNav = document.getElementById('mainNav');
-    if (mobileMenuBtn && mainNav) {
-      mobileMenuBtn.addEventListener('click', e => { e.stopPropagation(); mainNav.classList.toggle('active'); });
+    document.querySelectorAll('.bg-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const bg = opt.dataset.bg;
+        document.documentElement.setAttribute('data-bg', bg);
+        localStorage.setItem('valqmsBg', bg);
+        bgDropdown.classList.remove('active');
+      });
+    });
+  }
+
+  // Theme selector
+  const themeBtn = document.getElementById('themeBtn');
+  const themeDropdown = document.getElementById('themeDropdown');
+  
+  if (themeBtn && themeDropdown) {
+    themeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      themeDropdown.classList.toggle('active');
+      if (bgDropdown) bgDropdown.classList.remove('active');
+    });
+
+    document.querySelectorAll('.theme-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const theme = opt.dataset.theme;
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('valqmsTheme', theme);
+        themeDropdown.classList.remove('active');
+      });
+    });
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    if (bgDropdown) bgDropdown.classList.remove('active');
+    if (themeDropdown) themeDropdown.classList.remove('active');
+  });
+
+  // User menu setup
+  const loginLink = document.getElementById('loginLink');
+  const userMenu = document.getElementById('userMenu');
+  const userBadge = document.getElementById('userBadge');
+  const userDropdown = document.getElementById('userDropdown');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function getSession() {
+    try { return JSON.parse(localStorage.getItem('valqmsUser')); } catch (e) { return null; }
+  }
+
+  function getInitials(name) {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name[0].toUpperCase();
+  }
+
+  function updateUserUI() {
+    const user = getSession();
+    if (user && userMenu) {
+      if (loginLink) loginLink.style.display = 'none';
+      userMenu.style.display = 'inline-block';
+      if (userBadge) {
+        const displayName = user.name || user.email.split('@')[0];
+        userBadge.textContent = getInitials(displayName);
+      }
+    } else {
+      if (userMenu) userMenu.style.display = 'none';
+      if (loginLink) loginLink.style.display = 'inline-block';
+    }
+  }
+
+  updateUserUI();
+
+  // User menu dropdown
+  if (userBadge && userDropdown) {
+    userBadge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = userDropdown.style.display === 'block';
+      userDropdown.style.display = isOpen ? 'none' : 'block';
+    });
+  }
+
+  // Close user dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (userMenu && userDropdown && !userMenu.contains(e.target)) {
+      userDropdown.style.display = 'none';
     }
   });
-  </script>
+
+  // Logout functionality
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Clear localStorage
+      localStorage.removeItem('valqmsUser');
+      
+      // Sign out from Supabase
+      await sb.auth.signOut();
+      
+      // Hide dropdown
+      if (userDropdown) userDropdown.style.display = 'none';
+      
+      // Redirect to login
+      window.location.href = 'login.html';
+    });
+  }
+
+  // Mobile menu
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mainNav = document.getElementById('mainNav');
+  if (mobileMenuBtn && mainNav) {
+    mobileMenuBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      mainNav.classList.toggle('active');
+    });
+  }
+}
+</script>
+
 </body>
 </html>
