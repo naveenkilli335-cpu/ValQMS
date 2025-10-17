@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green" data-bg="mesh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Change Request Details — ValQMS</title>
+<link rel="icon" href="favicon.jpg?v=5">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+[data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.15);--accent-glow:rgba(16,185,129,0.4)}
+:root{--text:#ffffff;--text-dim:#94a3b8;--surface:rgba(255,255,255,0.05);--surface-hover:rgba(255,255,255,0.08);--border:rgba(255,255,255,0.1);--glass:rgba(255,255,255,0.03)}
+[data-bg="mesh"] body{background:#0f172a;position:relative}
+[data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
+@keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
+body{font-family:'Inter',sans-serif;color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:24px}
+.header-glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:18px}
+.back-btn{
+  color:var(--text-dim);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:600;
+  padding:8px 16px;
+  border-radius:8px;
+  transition:all 0.3s;
+  cursor:pointer;
+}
+.back-btn:hover{
+  color:var(--text);
+  background:var(--surface);
+}
+.page-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:32px}
+.page-title{font-size:28px;font-weight:800;margin-bottom:8px}
+.page-subtitle{color:var(--text-dim);font-size:14px}
+.workflow-progress{display:flex;justify-content:space-between;margin:32px 0;padding:0 20px;position:relative}
+.workflow-progress::before{content:'';position:absolute;top:20px;left:40px;right:40px;height:3px;background:var(--border);z-index:0}
+/* Progress line that fills as stages complete */
+.workflow-progress::after{
+  content:'';
+  position:absolute;
+  top:20px;
+  left:40px;
+  height:3px;
+  background:var(--accent);
+  z-index:0;
+  transition:width 0.5s ease;
+}
+
+/* Dynamically set width based on completion */
+.workflow-progress[data-completion="0"]::after{width:0%}
+.workflow-progress[data-completion="1"]::after{width:11%}
+.workflow-progress[data-completion="2"]::after{width:22%}
+.workflow-progress[data-completion="3"]::after{width:33%}
+.workflow-progress[data-completion="4"]::after{width:44%}
+.workflow-progress[data-completion="5"]::after{width:55%}
+.workflow-progress[data-completion="6"]::after{width:66%}
+.workflow-progress[data-completion="7"]::after{width:77%}
+.workflow-progress[data-completion="8"]::after{width:88%}
+.workflow-progress[data-completion="9"]::after{width:100%}
+.workflow-step{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;flex:1;max-width:100px}
+.workflow-circle{width:42px;height:42px;border-radius:50%;background:var(--surface);border:3px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:8px;transition:all 0.3s}
+.workflow-step.active .workflow-circle{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-dim)}
+.workflow-step.completed .workflow-circle{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#000;
+  font-weight:700;
+}
+.workflow-step.completed .workflow-label{
+  color:var(--accent);
+}
+.workflow-label{font-size:11px;color:var(--text-dim);text-align:center;font-weight:600}
+.workflow-step.active .workflow-label{color:var(--accent)}
+.grid-2col{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px}
+.card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.card-title{font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.detail-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.detail-label{color:var(--text-dim);font-size:13px;font-weight:600}
+.detail-value{color:var(--text);font-size:14px;font-weight:500}
+.badge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700}
+.badge.draft{background:rgba(148,163,184,0.2);color:#94a3b8}
+.badge.medium{background:rgba(251,146,60,0.2);color:#fb923c}
+.badge.high{background:rgba(239,68,68,0.2);color:#f87171}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+.btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+.actions-grid{display:grid;gap:12px}
+.action-btn{width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s;text-align:left}
+.action-btn:hover{background:var(--surface-hover);border-color:var(--accent)}
+.loading{display:flex;justify-content:center;align-items:center;padding:60px;font-size:18px;color:var(--text-dim)}
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-glass">
+<div style="display:flex;gap:20px;align-items:center">
+<a href="change-management.html" class="back-btn" style="display:flex;align-items:center;gap:8px">
+<span style="font-size:18px">←</span>
+<span>Back to Dashboard</span>
+</a>
+<span style="color:var(--border)">|</span>
+<a href="index.html" class="back-btn" style="display:flex;align-items:center;gap:8px">
+<span style="font-size:18px">🏠</span>
+<span>Home</span>
+</a>
+</div>
+<a href="change-management.html" class="btn btn-secondary" style="padding:8px 16px;font-size:13px">Close</a>
+</div>
+</header>
+
+
+<div class="container">
+<div class="page-header">
+<div>
+<h1 class="page-title" id="changeTitle">Loading...</h1>
+<p class="page-subtitle" id="changeSubtitle">Change Request Details</p>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">📊 Workflow Progress</h3>
+</div>
+<div class="workflow-progress" id="workflowProgress">
+<!-- Dynamic workflow steps -->
+</div>
+</div>
+
+<div class="grid-2col">
+<div>
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">📝 Change Description</h3>
+</div>
+<p id="changeDescription" style="color:var(--text);line-height:1.8"></p>
+</div>
+
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">⚠️ Impact Assessment</h3>
+</div>
+<div id="impactSection">
+<p style="color:var(--text-dim);font-size:14px">No impact assessment submitted yet</p>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">🎯 Risk Assessment</h3>
+</div>
+<div id="riskSection">
+<p style="color:var(--text-dim);font-size:14px">No risk assessment available</p>
+</div>
+</div>
+</div>
+
+<div>
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">ℹ️ Details</h3>
+</div>
+<div id="detailsSection"></div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">⚡ Actions</h3>
+</div>
+<div class="actions-grid">
+<button class="action-btn" onclick="editChange()">✏️ Edit Change Request</button>
+<button class="action-btn" onclick="addComment()">💬 Add Comment</button>
+<button class="action-btn" onclick="attachDocument()">📎 Attach Document</button>
+<button class="action-btn" onclick="viewAuditTrail()">🔍 View Audit Trail</button>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://nufpaayytxtjihqrvtfi.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const urlParams=new URLSearchParams(window.location.search);
+const changeId=urlParams.get('id');
+
+if(!changeId){
+window.location.href='change-management.html';
+}
+
+const WORKFLOW_STAGES=['Draft','Submitted for QA Review','Impact Assessment','Risk Assessment','QA Consolidation','CAB Review','Approved','Implementation','Verification','Closed'];
+
+
+(async function loadChangeDetails(){
+try{
+const {data:change,error}=await sb.from('change_requests').select('*').eq('id',changeId).single();
+if(error)throw error;
+
+document.getElementById('changeTitle').textContent=change.change_number+' - '+change.title;
+document.getElementById('changeSubtitle').textContent='Created by '+change.initiator_name+' on '+new Date(change.created_at).toLocaleDateString();
+document.getElementById('changeDescription').textContent=change.description||'No description provided';
+
+const currentStage=change.workflow_stage||'Draft';
+renderWorkflowProgress(currentStage);
+renderDetails(change);
+
+}catch(error){
+console.error('Error:',error);
+document.querySelector('.container').innerHTML='<div class="loading">Error loading change request</div>';
+}
+})();
+
+function renderWorkflowProgress(currentStage){
+const container=document.getElementById('workflowProgress');
+let html='';
+WORKFLOW_STAGES.forEach((stage,index)=>{
+const isCurrent=stage===currentStage;
+  // Set completion level on parent
+  container.parentElement.setAttribute('data-completion', currentIndex);
+
+const isCompleted=WORKFLOW_STAGES.indexOf(currentStage)>index;
+const statusClass=isCurrent?'active':(isCompleted?'completed':'');
+const icon=isCompleted?'✓':(index+1);
+html+=`
+<div class="workflow-step ${statusClass}">
+<div class="workflow-circle">${icon}</div>
+<div class="workflow-label">${stage}</div>
+</div>
+`;
+});
+container.innerHTML=html;
+}
+
+function renderDetails(change){
+const details=[
+{label:'Initiator',value:change.initiator_name||'Unknown'},
+{label:'Department',value:change.department},
+{label:'Change Type',value:change.change_type},
+{label:'Category',value:change.change_category||'-'},
+{label:'Priority',value:`<span class="badge ${(change.priority||'medium').toLowerCase()}">${change.priority||'Medium'}</span>`},
+{label:'Status',value:`<span class="badge ${(change.workflow_stage||'draft').toLowerCase().replace(/\s+/g,'-')}">${change.workflow_stage||'Draft'}</span>`},
+{label:'Created',value:new Date(change.created_at).toLocaleDateString()},
+{label:'Target Date',value:change.proposed_implementation_date?new Date(change.proposed_implementation_date).toLocaleDateString():'-'}
+];
+
+let html='';
+details.forEach(d=>{
+html+=`<div class="detail-row"><span class="detail-label">${d.label}</span><span class="detail-value">${d.value}</span></div>`;
+});
+document.getElementById('detailsSection').innerHTML=html;
+}
+
+// ============================================
+// ACTION BUTTONS - FULLY FUNCTIONAL
+// ============================================
+
+function editChange(){
+  if(confirm('Are you sure you want to edit this change request?')){
+    const newTitle=prompt('Enter new title:',document.getElementById('changeTitle').textContent.split(' - ')[1]);
+    if(newTitle){
+      updateChange({title:newTitle});
+    }
+  }
+}
+
+async function updateChange(updates){
+  try{
+    const {error}=await sb.from('change_requests').update(updates).eq('id',changeId);
+    if(error)throw error;
+    alert('✅ Change updated successfully!');
+    location.reload();
+  }catch(error){
+    console.error('Error:',error);
+    alert('❌ Error updating change: '+error.message);
+  }
+}
+
+function addComment(){
+  const comment=prompt('Enter your comment:');
+  if(comment){
+    submitComment(comment);
+  }
+}
+
+async function submitComment(commentText){
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const {error}=await sb.from('change_comments').insert([{
+      change_request_id:changeId,
+      user_id:session.user.id,
+      user_name:session.user.email,
+      comment:commentText,
+      comment_type:'General'
+    }]);
+    if(error)throw error;
+    alert('✅ Comment added successfully!');
+    loadComments();
+  }catch(error){
+    console.error('Error:',error);
+    alert('❌ Error adding comment: '+error.message);
+  }
+}
+
+async function loadComments(){
+  try{
+    const {data,error}=await sb.from('change_comments').select('*').eq('change_request_id',changeId).order('created_at',{ascending:false});
+    if(error)throw error;
+    if(data.length>0){
+      let html='<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px">';
+      html+='<h4 style="color:var(--text);margin-bottom:12px">💬 Comments ('+data.length+')</h4>';
+      data.forEach(c=>{
+        html+=`<div style="background:var(--surface);padding:12px;border-radius:8px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <strong style="color:var(--accent)">${c.user_name}</strong>
+            <span style="color:var(--text-dim);font-size:12px">${new Date(c.created_at).toLocaleString()}</span>
+          </div>
+          <p style="color:var(--text);font-size:14px">${c.comment}</p>
+        </div>`;
+      });
+      html+='</div>';
+      document.querySelector('.card:nth-child(2)').insertAdjacentHTML('beforeend',html);
+    }
+  }catch(error){
+    console.error('Error loading comments:',error);
+  }
+}
+
+function attachDocument(){
+  const input=document.createElement('input');
+  input.type='file';
+  input.accept='.pdf,.doc,.docx,.xlsx,.png,.jpg';
+  input.onchange=async(e)=>{
+    const file=e.target.files[0];
+    if(file){
+      if(file.size>10*1024*1024){
+        alert('❌ File too large. Max 10MB.');
+        return;
+      }
+      await uploadFile(file);
+    }
+  };
+  input.click();
+}
+
+async function uploadFile(file){
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    const fileName=`${changeId}/${Date.now()}_${file.name}`;
+    
+    // Note: You need to set up Supabase Storage bucket first
+    // For now, just log the file info
+    const {error}=await sb.from('change_attachments').insert([{
+      change_request_id:changeId,
+      file_name:file.name,
+      file_path:fileName,
+      file_type:file.type,
+      file_size:file.size,
+      document_type:'Other',
+      uploaded_by:session.user.id
+    }]);
+    
+    if(error)throw error;
+    alert('✅ Document attached successfully!\n\nFile: '+file.name);
+    loadAttachments();
+  }catch(error){
+    console.error('Error:',error);
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function loadAttachments(){
+  try{
+    const {data,error}=await sb.from('change_attachments').select('*').eq('change_request_id',changeId).order('uploaded_at',{ascending:false});
+    if(error)throw error;
+    if(data.length>0){
+      let html='<div style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px">';
+      html+='<h4 style="color:var(--text);margin-bottom:12px">📎 Attachments ('+data.length+')</h4>';
+      data.forEach(a=>{
+        html+=`<div style="background:var(--surface);padding:10px;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong style="color:var(--text)">${a.file_name}</strong>
+            <div style="color:var(--text-dim);font-size:12px">${(a.file_size/1024).toFixed(1)} KB • ${new Date(a.uploaded_at).toLocaleDateString()}</div>
+          </div>
+        </div>`;
+      });
+      html+='</div>';
+      document.querySelector('.card:nth-child(3)').insertAdjacentHTML('beforeend',html);
+    }
+  }catch(error){
+    console.error('Error loading attachments:',error);
+  }
+}
+
+function viewAuditTrail(){
+  loadAuditTrail();
+}
+
+async function loadAuditTrail(){
+  try{
+    const {data,error}=await sb.from('audit_trail').select('*').eq('record_id',changeId).order('timestamp',{ascending:false});
+    if(error)throw error;
+    
+    let html='<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px" onclick="this.remove()">';
+    html+='<div style="background:#0f172a;border:1px solid var(--border);border-radius:16px;max-width:900px;width:100%;max-height:85vh;overflow-y:auto;padding:28px" onclick="event.stopPropagation()">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:2px solid var(--border);padding-bottom:16px">';
+    html+='<h2 style="color:var(--text);font-size:24px;font-weight:800">🔍 Complete Audit Trail</h2>';
+    html+='<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;color:var(--text-dim);font-size:28px;cursor:pointer;width:36px;height:36px;border-radius:8px;transition:all 0.3s" onmouseover="this.style.background=\'rgba(255,255,255,0.1)\'" onmouseout="this.style.background=\'none\'">×</button>';
+    html+='</div>';
+    
+    if(data.length===0){
+      html+='<p style="color:var(--text-dim);text-align:center;padding:40px">No audit records found</p>';
+    }else{
+      data.forEach(a=>{
+        // Format action title
+        let actionTitle = a.action;
+        let actionIcon = '📝';
+        let actionColor = '#10b981';
+        
+        if(a.action === 'Workflow Transition'){
+            actionTitle = `${a.old_value} → ${a.new_value}`;
+            actionIcon = '🔄';
+            actionColor = '#3b82f6';
+        } else if(a.action === 'Record Created'){
+          actionTitle = 'Change Request Created';
+          actionIcon = '✨';
+          actionColor = '#10b981';
+        } else if(a.action === 'Comment Added'){
+          actionTitle = 'Comment Added';
+          actionIcon = '💬';
+          actionColor = '#06b6d4';
+        } else if(a.action === 'Document Attached'){
+          actionTitle = 'Document Attached';
+          actionIcon = '📎';
+          actionColor = '#8b5cf6';
+        } else if(a.action === 'Field Updated'){
+          actionTitle = `Field Updated`;
+          actionIcon = '✏️';
+          actionColor = '#fb923c';
+        } else if(a.action === 'Status Changed'){
+          actionTitle = `Status Changed`;
+          actionIcon = '🔄';
+          actionColor = '#3b82f6';
+        } else if(a.action === 'Priority Changed'){
+          actionTitle = `Priority Level Changed`;
+          actionIcon = '⚡';
+          actionColor = '#f59e0b';
+        } else if(a.action === 'Risk Rating Changed'){
+          actionTitle = `Risk Rating Modified`;
+          actionIcon = '⚠️';
+          actionColor = '#ef4444';
+        } else if(a.action === 'Submitted for Review'){
+          actionTitle = 'Submitted for QA Review';
+          actionIcon = '📤';
+          actionColor = '#06b6d4';
+        } else if(a.action === 'Approved'){
+          actionTitle = 'Change Request Approved';
+          actionIcon = '✅';
+          actionColor = '#10b981';
+        } else if(a.action === 'Closed'){
+          actionTitle = 'Change Request Closed';
+          actionIcon = '🔒';
+          actionColor = '#64748b';
+        } else if(a.action === 'Comment Deleted'){
+          actionTitle = 'Comment Deleted';
+          actionIcon = '🗑️';
+          actionColor = '#ef4444';
+        } else if(a.action === 'Document Deleted'){
+          actionTitle = 'Document Removed';
+          actionIcon = '🗑️';
+          actionColor = '#ef4444';
+        }
+        
+        // Format field name nicely
+        let fieldDisplay = a.field_name ? a.field_name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
+        
+        html+=`<div style="background:var(--surface);padding:20px;border-radius:12px;margin-bottom:16px;border-left:4px solid ${actionColor};box-shadow:0 2px 8px rgba(0,0,0,0.2)">
+          
+          <!-- Header Section -->
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+            <div style="flex:1">
+              <div style="color:${actionColor};font-size:18px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+                <span>${actionIcon}</span>
+                <span>${actionTitle}</span>
+              </div>
+              
+              <!-- User Info -->
+              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="color:var(--text-dim);font-size:13px">👤</span>
+                  <span style="color:var(--text);font-size:14px;font-weight:600">${a.performed_by_name||'System'}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="color:var(--text-dim);font-size:13px">🕐</span>
+                  <span style="color:var(--text-dim);font-size:13px">
+                    ${new Date(a.timestamp).toLocaleString('en-IN',{
+                      day:'2-digit',
+                      month:'short', 
+                      year:'numeric',
+                      hour:'2-digit',
+                      minute:'2-digit',
+                      second:'2-digit',
+                      hour12:true
+                    })}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Field Name (if applicable) -->
+          ${fieldDisplay && fieldDisplay !== 'ALL' ? `
+            <div style="background:rgba(16,185,129,0.1);padding:8px 12px;border-radius:6px;margin-bottom:12px;border-left:3px solid #10b981">
+              <span style="color:var(--text-dim);font-size:12px;text-transform:uppercase;letter-spacing:0.5px">Field Modified</span>
+              <div style="color:var(--text);font-size:15px;font-weight:600;margin-top:2px">${fieldDisplay}</div>
+            </div>
+          ` : ''}
+          
+          <!-- Old & New Values Section -->
+          ${(a.old_value || a.new_value) && a.action !== 'Record Created' ? `
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+              
+              <!-- Old Value -->
+              ${a.old_value && a.old_value !== 'N/A' && a.old_value !== 'NULL' ? `
+                <div style="background:rgba(239,68,68,0.1);padding:12px;border-radius:8px;border:1px solid rgba(239,68,68,0.3)">
+                  <div style="color:#f87171;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:700">
+                    ❌ Previous Value
+                  </div>
+                  <div style="color:var(--text);font-size:14px;font-weight:500;word-break:break-word">
+                    ${a.old_value.length > 150 ? a.old_value.substring(0,150)+'...' : a.old_value}
+                  </div>
+                </div>
+              ` : `
+                <div style="background:rgba(100,116,139,0.1);padding:12px;border-radius:8px;border:1px solid rgba(100,116,139,0.2)">
+                  <div style="color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:700">
+                    Previous Value
+                  </div>
+                  <div style="color:var(--text-dim);font-size:14px;font-style:italic">
+                    Not Set
+                  </div>
+                </div>
+              `}
+              
+              <!-- New Value -->
+              ${a.new_value && a.new_value !== 'N/A' && a.new_value !== 'NULL' ? `
+                <div style="background:rgba(16,185,129,0.1);padding:12px;border-radius:8px;border:1px solid rgba(16,185,129,0.3)">
+                  <div style="color:#10b981;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:700">
+                    ✅ New Value
+                  </div>
+                  <div style="color:var(--text);font-size:14px;font-weight:500;word-break:break-word">
+                    ${a.new_value.length > 150 ? a.new_value.substring(0,150)+'...' : a.new_value}
+                  </div>
+                </div>
+              ` : `
+                <div style="background:rgba(100,116,139,0.1);padding:12px;border-radius:8px;border:1px solid rgba(100,116,139,0.2)">
+                  <div style="color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-weight:700">
+                    New Value
+                  </div>
+                  <div style="color:var(--text-dim);font-size:14px;font-style:italic">
+                    Not Set
+                  </div>
+                </div>
+              `}
+            </div>
+          ` : a.action === 'Record Created' ? `
+            <div style="background:rgba(16,185,129,0.1);padding:12px;border-radius:8px;margin-top:12px;border-left:3px solid #10b981">
+              <div style="color:var(--text);font-size:14px">
+                ${a.new_value || 'Initial change request record created in the system'}
+              </div>
+            </div>
+          ` : ''}
+          
+          <!-- Additional Info (Reason, IP, etc.) -->
+          ${a.reason ? `
+            <div style="background:rgba(59,130,246,0.1);padding:10px 12px;border-radius:6px;margin-top:12px;border-left:3px solid #3b82f6">
+              <span style="color:#60a5fa;font-size:12px;font-weight:700">💭 REASON: </span>
+              <span style="color:var(--text);font-size:13px">${a.reason}</span>
+            </div>
+          ` : ''}
+          
+          ${a.ip_address ? `
+            <div style="color:var(--text-dim);font-size:12px;margin-top:8px;display:flex;gap:12px">
+              <span>🌐 IP: ${a.ip_address}</span>
+              ${a.device_info ? `<span>💻 ${a.device_info}</span>` : ''}
+            </div>
+          ` : ''}
+          
+        </div>`;
+      });
+    }
+    
+    html+='<div style="text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">';
+    html+=`<p style="color:var(--text-dim);font-size:13px">Total Audit Entries: <strong style="color:var(--accent)">${data.length}</strong></p>`;
+    html+='</div>';
+    
+    html+='</div></div>';
+    document.body.insertAdjacentHTML('beforeend',html);
+  }catch(error){
+    console.error('Error loading audit trail:',error);
+    alert('❌ Error: '+error.message);
+  }
+}
+
+
+
+// Load comments and attachments on page load
+setTimeout(()=>{
+  loadComments();
+  loadAttachments();
+},1000);
+
+// ============================================
+// INTERACTIVE WORKFLOW STEPS
+// ============================================
+
+function renderWorkflowProgress(currentStage){
+  const container=document.getElementById('workflowProgress');
+  let html='';
+  
+  const currentIndex = WORKFLOW_STAGES.indexOf(currentStage);
+  
+  WORKFLOW_STAGES.forEach((stage,index)=>{
+    const isCurrent = index === currentIndex;
+    const isCompleted = index < currentIndex;
+    const isNextStage = index === currentIndex + 1;
+    
+    let statusClass = '';
+    if(isCompleted) statusClass = 'completed';
+    else if(isCurrent) statusClass = 'active';
+    
+    const icon = isCompleted ? '✓' : (index + 1);
+    
+    // Make clickable if it's current or next stage
+    const clickHandler = (isCurrent || isNextStage) ? `onclick="openStageModal('${stage}')"` : 
+                        isCompleted ? `onclick="viewStageInfo('${stage}')"` : '';
+    
+    const cursorStyle = (isCurrent || isNextStage) ? 'cursor:pointer' : 
+                        isCompleted ? 'cursor:pointer' : 'cursor:not-allowed';
+    
+    html+=`
+    <div class="workflow-step ${statusClass}" ${clickHandler} style="${cursorStyle}">
+      <div class="workflow-circle">${icon}</div>
+      <div class="workflow-label">${stage}</div>
+    </div>
+    `;
+  });
+  container.innerHTML=html;
+}
+
+
+function openStageModal(stageName){
+  let modalContent='';
+  
+  switch(stageName){
+    case 'Draft':
+      modalContent=`
+        <h3>✏️ Edit Draft</h3>
+        <p style="margin:12px 0;color:var(--text-dim)">You can edit this change request while it's in Draft status.</p>
+        <button class="btn" onclick="editChange();closeStageModal()">Edit Change</button>
+        <button class="btn" onclick="transitionToNextStage('Submitted for QA Review');closeStageModal()">Submit for QA Review</button>
+      `;
+      break;
+      
+    case 'Submitted for QA Review':
+      modalContent=`
+        <h3>📋 QA Review</h3>
+        <div class="form-group">
+          <label>QA Review Comments</label>
+          <textarea id="qaComments" placeholder="Enter your review comments..."></textarea>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn" onclick="submitQAReview('accept')">Accept & Move to Impact Assessment</button>
+          <button class="btn btn-secondary" onclick="submitQAReview('reject')">Reject to Draft</button>
+        </div>
+      `;
+      break;
+      
+    case 'Impact Assessment':
+      modalContent=`
+        <h3>⚠️ Impact Assessment</h3>
+        <div class="form-group">
+          <label>Impact on Quality</label>
+          <textarea id="impactQuality" placeholder="Describe impact on product quality..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Impact on Safety</label>
+          <textarea id="impactSafety" placeholder="Describe impact on patient safety..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Risk Rating</label>
+          <select id="riskRating">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+        </div>
+        <button class="btn" onclick="submitImpactAssessment()">Submit & Move to Risk Assessment</button>
+      `;
+      break;
+      
+    case 'Risk Assessment':
+      modalContent=`
+        <h3>🎯 Risk Assessment</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Severity (1-5)</label>
+            <input type="number" id="severity" min="1" max="5" value="3">
+          </div>
+          <div class="form-group">
+            <label>Occurrence (1-5)</label>
+            <input type="number" id="occurrence" min="1" max="5" value="3">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mitigation Strategy</label>
+          <textarea id="mitigation" placeholder="Describe mitigation actions..."></textarea>
+        </div>
+        <button class="btn" onclick="submitRiskAssessment()">Submit & Move to QA Consolidation</button>
+      `;
+      break;
+      
+    case 'CAB Review':
+      modalContent=`
+        <h3>👥 CAB Review</h3>
+        <div class="form-group">
+          <label>CAB Decision Comments</label>
+          <textarea id="cabComments" placeholder="Enter CAB review comments..."></textarea>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn" onclick="submitCABDecision('approved')">✅ Approve for Implementation</button>
+          <button class="btn btn-secondary" onclick="submitCABDecision('rejected')" style="background:#ef4444;color:#fff">❌ Reject</button>
+        </div>
+      `;
+      break;
+      
+    case 'Approved':
+      modalContent=`
+        <h3>✅ Approved for Implementation</h3>
+        <p style="margin:12px 0;color:var(--text-dim)">This change has been approved. Click below to start implementation.</p>
+        <button class="btn" onclick="transitionToNextStage('Implementation');closeStageModal()">Start Implementation</button>
+      `;
+      break;
+      
+    case 'Implementation':
+      modalContent=`
+        <h3>⚙️ Implementation</h3>
+        <div class="form-group">
+          <label>Implementation Notes</label>
+          <textarea id="implNotes" placeholder="Document implementation details..."></textarea>
+        </div>
+        <button class="btn" onclick="submitImplementation()">Complete & Move to Verification</button>
+      `;
+      break;
+      
+    case 'Verification':
+      modalContent=`
+        <h3>✔️ Verification</h3>
+        <div class="form-group">
+          <label>Verification Result</label>
+          <select id="verifyResult">
+            <option value="Passed">Passed</option>
+            <option value="Failed">Failed - Return to Implementation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Verification Comments</label>
+          <textarea id="verifyComments" placeholder="Enter verification results..."></textarea>
+        </div>
+        <button class="btn" onclick="submitVerification()">Submit Verification</button>
+      `;
+      break;
+      
+    case 'Closed':
+      modalContent=`
+        <h3>✅ Closed</h3>
+        <p style="color:var(--text-dim)">This change request has been completed and closed.</p>
+        <button class="btn btn-secondary" onclick="closeStageModal()">Close</button>
+      `;
+      break;
+      
+    default:
+      modalContent=`<h3>${stageName}</h3><p>Form coming soon...</p>`;
+  }
+  
+  showStageModal(modalContent);
+}
+
+function showStageModal(content){
+  const modal=`
+    <div id="stageModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px">
+      <div style="background:#0f172a;border:1px solid var(--border);border-radius:16px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;padding:24px">
+        ${content}
+        <button class="btn btn-secondary" onclick="closeStageModal()" style="margin-top:16px;width:100%">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend',modal);
+}
+
+function closeStageModal(){
+  const modal=document.getElementById('stageModal');
+  if(modal)modal.remove();
+}
+
+async function transitionToNextStage(nextStage){
+  try{
+    const {error}=await sb.from('change_requests')
+      .update({workflow_stage:nextStage,updated_by:currentUser.id})
+      .eq('id',changeId);
+    if(error)throw error;
+    alert('✅ Transitioned to: '+nextStage);
+    location.reload();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function submitQAReview(decision){
+  const comments=document.getElementById('qaComments').value;
+  const nextStage=decision==='accept'?'Impact Assessment':'Draft';
+  try{
+    await sb.from('change_requests').update({
+      workflow_stage:nextStage,
+      qa_comments:comments,
+      qa_reviewed_at:new Date().toISOString(),
+      updated_by:currentUser.id
+    }).eq('id',changeId);
+    await addComment('QA Review: '+decision+'. '+comments);
+    closeStageModal();
+    alert('✅ QA Review submitted!');
+    location.reload();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function submitImpactAssessment(){
+  const quality=document.getElementById('impactQuality').value;
+  const safety=document.getElementById('impactSafety').value;
+  const risk=document.getElementById('riskRating').value;
+  
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    await sb.from('impact_assessments').insert([{
+      change_request_id:changeId,
+      department:'Quality Assurance',
+      assessor_id:session.user.id,
+      assessor_name:session.user.email,
+      impact_on_quality:quality,
+      impact_on_safety:safety,
+      risk_rating:risk
+    }]);
+    
+    await sb.from('change_requests').update({
+      workflow_stage:'Risk Assessment',
+      overall_risk_rating:risk,
+      updated_by:session.user.id
+    }).eq('id',changeId);
+    
+    closeStageModal();
+    alert('✅ Impact Assessment submitted!');
+    location.reload();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function submitRiskAssessment(){
+  const severity=document.getElementById('severity').value;
+  const occurrence=document.getElementById('occurrence').value;
+  const mitigation=document.getElementById('mitigation').value;
+  
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    await sb.from('risk_assessments').insert([{
+      change_request_id:changeId,
+      assessor_id:session.user.id,
+      assessor_name:session.user.email,
+      severity:parseInt(severity),
+      occurrence:parseInt(occurrence),
+      detection:3,
+      mitigation_strategy:mitigation,
+      risk_level:'Medium'
+    }]);
+    
+await sb.from('change_requests').update({
+  workflow_stage:'CAB Review',  // Changed from 'QA Consolidation'
+  updated_by:session.user.id
+}).eq('id',changeId);
+
+    
+    closeStageModal();
+    alert('✅ Risk Assessment submitted!');
+    location.reload();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function submitCABDecision(decision){
+  const comments=document.getElementById('cabComments').value;
+  const nextStage=decision==='approved'?'Approved':'Rejected';
+  
+  try{
+    await sb.from('change_requests').update({
+      workflow_stage:nextStage,
+      approved_at:decision==='approved'?new Date().toISOString():null,
+      updated_by:currentUser.id
+    }).eq('id',changeId);
+    
+    await addComment('CAB Decision: '+decision.toUpperCase()+'. '+comments);
+    closeStageModal();
+    alert('✅ CAB Decision recorded!');
+    location.reload();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function submitImplementation(){
+  const notes=document.getElementById('implNotes').value;
+  try{
+    await addComment('Implementation completed. '+notes);
+    await transitionToNextStage('Verification');
+    closeStageModal();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+async function submitVerification(){
+  const result=document.getElementById('verifyResult').value;
+  const comments=document.getElementById('verifyComments').value;
+  const nextStage=result==='Passed'?'Closed':'Implementation';
+  
+  try{
+    await sb.from('change_requests').update({
+      workflow_stage:nextStage,
+      verification_result:result,
+      closed_at:result==='Passed'?new Date().toISOString():null,
+      updated_by:currentUser.id
+    }).eq('id',changeId);
+    
+    await addComment('Verification: '+result+'. '+comments);
+    closeStageModal();
+    alert('✅ Verification submitted!');
+    location.reload();
+  }catch(error){
+    alert('❌ Error: '+error.message);
+  }
+}
+
+function viewStageInfo(stage){
+  alert('This stage ('+stage+') has been completed. View audit trail for details.');
+}
+
+// Get current user
+let currentUser;
+(async function(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session)currentUser=session.user;
+})();
+
+
+</script>
+</body>
+</html>

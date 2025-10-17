@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="mesh">
+<html lang="en" data-theme="green" data-bg="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ValQMS — Simplify Validation. Strengthen Quality. Accelerate Compliance.</title>
-  <meta name="description" content="Validation tools and QMS Procedures.">
+  <meta name="description" content="Validation tools and QMS Procedures/Applications.">
   <link rel="icon" href="favicon.jpg?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +55,14 @@
     [data-bg="dark"] body{background:#0a0e1a;position:relative}
     [data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
 
+    [data-bg="blobs"] body {background: #0f172a;position: relative;overflow: hidden;}
+    [data-bg="blobs"] body::before {content: '';position: fixed;top: -100px;left: -100px;width: 140%;height: 140%;background:radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.25), transparent 40%),radial-gradient(circle at 70% 70%, rgba(0, 128, 255, 0.2), transparent 40%),radial-gradient(circle at 50% 50%, rgba(0, 255, 128, 0.15), transparent 30%);filter: blur(100px);animation: blobMove 20s infinite ease-in-out alternate;z-index: -1}
+
+    [data-bg="mesh2"] body {background: #0f172a;position: relative;}
+    [data-bg="mesh2"] body::before {content: '';position: fixed;top: 0;left: 0;width: 100%;height: 100%;background:radial-gradient(circle at 15% 60%, rgba(255, 0, 128, 0.12), transparent 50%),radial-gradient(circle at 85% 40%, rgba(0, 128, 255, 0.12), transparent 50%),radial-gradient(circle at 50% 90%, rgba(0, 255, 128, 0.1), transparent 50%);animation: mesh2Move 25s ease-in-out infinite alternate;z-index: -1}
+
+    @keyframes mesh2Move {0% {transform: translate(0, 0);}100% {transform: translate(-50px, 40px);}}
+    @keyframes blobMove {0%{transform: translate(0, 0);}100% {transform: translate(-50px, 50px);}}
     @keyframes meshMove{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(5deg)}}
     @keyframes waveMove{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
 
@@ -97,6 +105,8 @@
     .bg-preview.dots{background:#0a0e27;background-image:radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);background-size:15px 15px}
     .bg-preview.waves{background:linear-gradient(180deg, #0f172a 0%, #10b981 100%)}
     .bg-preview.dark{background:#0a0e1a}
+    .bg-preview.blobs {background: radial-gradient(circle, #ff0080 0%, transparent 40%),radial-gradient(circle, #0080ff 0%, transparent 40%);background-size: 80% 80%;}
+    .bg-preview.mesh2 {background: radial-gradient(circle, rgba(255,0,128,0.3) 0%, transparent 50%),radial-gradient(circle, rgba(0,255,128,0.3) 0%, transparent 50%);}
 
     /* Theme Selector */
     .theme-selector{position:relative}
@@ -334,7 +344,7 @@
         <nav id="mainNav">
           <a href="#tools">Tools</a>
           <a href="#qms">QMS Modules</a>
-          <a href="qms_procedures.html">QMS Procedures</a>
+          <a href="#QMS Procedures">QMS Procedures</a>
           <a href="#resources">Resources</a>
           <a href="#about">About</a>
         </nav>
@@ -349,6 +359,8 @@
               <div class="bg-option" data-bg="dots"><div class="bg-preview dots"></div><span>Dot Pattern</span></div>
               <div class="bg-option" data-bg="waves"><div class="bg-preview waves"></div><span>Wave Motion</span></div>
               <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark Mode</span></div>
+              <div class="bg-option" data-bg="blobs"><div class="bg-preview blobs"></div><span>Blob Motion</span></div>
+              <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
             </div>
           </div>
 
@@ -420,33 +432,171 @@
             <a href="SOPComparisionTool.html" class="tool-item"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p></div><div class="tool-arrow">→</div></a>
             <a href="AdvancedUserAcessMatrixTool.html" class="tool-item"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p></div><div class="tool-arrow">→</div></a>
             <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p></div><div class="tool-arrow">→</div></a>
-            <a href="AdvancedRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>AI Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p></div><div class="tool-arrow">→</div></a>
+            <a href="AdvancedRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p></div><div class="tool-arrow">→</div></a>
 
           </div>
         </div>
       </div>
     </section>
 
-    <!-- QMS Modules -->
-    <section id="qms">
-      <div class="container">
-        <div class="section-head">
-          <h2>Quality Management System</h2>
-          <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
+<!-- QMS Modules -->
+<section id="qms">
+  <div class="container">
+    <div class="section-head">
+      <h2>Quality Management System Modules</h2>
+      <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
+    </div>
+
+    <div class="qms-grid">
+      <a href="change-management.html" style="text-decoration:none; color:inherit;">
+        <div class="module-card">
+          <h4>📋 Change Control</h4>
+          <p>Manage pharmaceutical change requests with full GMP compliance</p>
         </div>
-        <div class="qms-grid">
-          <div class="module-card"><h4>🔄 Change Control</h4><p>Manage controlled changes with risk evaluation, approvals, and full traceability</p></div>
-          <div class="module-card"><h4>📊 Deviation Management</h4><p>Record, analyze, and close deviations efficiently with root cause analysis</p></div>
-          <div class="module-card"><h4>🎯 CAPA Management</h4><p>Plan, execute, and track corrective and preventive actions systematically</p></div>
-          <div class="module-card"><h4>⚠️ Risk Management</h4><p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p></div>
-          <div class="module-card"><h4>🔍 Audit & Inspection</h4><p>Digital audit trails and inspection readiness with full documentation</p></div>
-          <div class="module-card"><h4>🎓 Training Management</h4><p>Ensure training effectiveness tied to system and process changes</p></div>
+      </a>
+      
+      <a href="deviation-management.html" style="text-decoration:none; color:inherit;">
+        <div class="module-card">
+          <h4>📊 Deviation Management</h4>
+          <p>Record, analyze, and close deviations efficiently with root cause analysis</p>
         </div>
-        <div class="qms-cta-wrapper">
-          <a href="qms_procedures.html" class="cta"><span>View Complete QMS Documentation</span><span>→</span></a>
+      </a>
+
+      <a href="capa-management.html" style="text-decoration:none; color:inherit;">
+        <div class="module-card">
+          <h4>🎯 CAPA Management</h4>
+          <p>Plan, execute, and track corrective and preventive actions systematically</p>
         </div>
+      </a>
+
+      <a href="risk-management.html" style="text-decoration:none; color:inherit;">
+        <div class="module-card">
+          <h4>⚠️ Risk Management</h4>
+          <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
+        </div>
+      </a>
+
+      <a href="audit-inspection.html" style="text-decoration:none; color:inherit;">
+        <div class="module-card">
+          <h4>🔍 Audit & Inspection</h4>
+          <p>Digital audit trails and inspection readiness with full documentation</p>
+        </div>
+      </a>
+
+      <a href="training-management.html" style="text-decoration:none; color:inherit;">
+        <div class="module-card">
+          <h4>🎓 Training Management</h4>
+          <p>Ensure training effectiveness tied to system and process changes</p>
+        </div>
+      </a>
+    </div>
+
+</section>
+
+<!-- QMS Procedures -->
+<section id="QMS Procedures">
+  <div class="container">
+    <div class="section-head">
+      <h2>Quality Management Procedures</h2>
+      <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
+    </div>
+
+    <div class="qms-grid">
+      <div class="module-card">
+        <h4>📋 Change Control</h4>
+        <p>Manage pharmaceutical change requests with full GMP compliance</p>
       </div>
-    </section>
+
+      <div class="module-card">
+        <h4>📊 Deviation Management</h4>
+        <p>Record, analyze, and close deviations efficiently with root cause analysis</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🎯 CAPA Management</h4>
+        <p>Plan, execute, and track corrective and preventive actions systematically</p>
+      </div>
+
+      <div class="module-card">
+        <h4>⚠️ Risk Management</h4>
+        <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🔍 Audit & Inspection</h4>
+        <p>Digital audit trails and inspection readiness with full documentation</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🎓 Training Management</h4>
+        <p>Ensure training effectiveness tied to system and process changes</p>
+      </div>
+
+      <div class="module-card">
+        <h4>📄 Document Control</h4>
+        <p>Manage creation, approval, distribution, revision, and retirement of QMS documents with version control</p>
+      </div>
+
+      <div class="module-card">
+        <h4>📞 Complaint Management</h4>
+        <p>Capture, log, investigate, and resolve customer complaints with trending analysis</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🏭 Supplier Management</h4>
+        <p>Qualify suppliers, monitor performance, and enforce quality agreements</p>
+      </div>
+
+      <div class="module-card">
+        <h4>⚙️ Equipment Management</h4>
+        <p>Calibration, preventive maintenance, and qualification (IQ/OQ/PQ) for compliant production</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🔄 Product Lifecycle Management</h4>
+        <p>Oversee product flow from concept to distribution with batch review and QC testing</p>
+      </div>
+
+      <div class="module-card">
+        <h4>📈 Management Review</h4>
+        <p>Conduct structured evaluations of QMS metrics and drive continual improvement</p>
+      </div>
+
+      <div class="module-card">
+        <h4>📦 Batch Record Management</h4>
+        <p>Maintain complete batch documentation and ensure GMP compliance</p>
+      </div>
+
+      <div class="module-card">
+        <h4>✅ Validation Management</h4>
+        <p>Execute IQ/OQ/PQ protocols and maintain validation lifecycle documentation</p>
+      </div>
+
+      <div class="module-card">
+        <h4>❌ Non-Conformance Management</h4>
+        <p>Document, investigate, and resolve product and process non-conformances</p>
+      </div>
+
+      <div class="module-card">
+        <h4>📋 Quality Planning</h4>
+        <p>Establish quality objectives, KPIs, and strategic quality initiatives</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🧪 Laboratory Management</h4>
+        <p>Control testing, OOS investigations, method validation, and lab documentation</p>
+      </div>
+
+      <div class="module-card">
+        <h4>🌡️ Environmental Monitoring</h4>
+        <p>Track environmental conditions in manufacturing areas and ensure compliance</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
     <!-- Resources -->
     <section id="resources">
@@ -460,10 +610,17 @@
             <div class="resource-icon">📚</div>
             <h3>Key Guidelines</h3>
             <ul>
-              <li>📄 <a href="https://www.fda.gov" target="_blank">FDA 21 CFR Part 11</a></li>
-              <li>📄 <a href="https://www.ema.europa.eu" target="_blank">EU Annex 11</a></li>
-              <li>📄 <a href="https://www.ich.org" target="_blank">ICH Q9 Risk Management</a></li>
-              <li>📄 <a href="https://ispe.org" target="_blank">GAMP 5 (2nd Edition)</a></li>
+              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application" target="_blank">FDA 21 CFR Part 11 - Electronic Records</a></li>
+              <li>📄 <a href="https://www.fda.gov/medical-devices/quality-system-qs-regulationdevice-good-manufacturing-practices" target="_blank">FDA 21 CFR Part 820 - Quality System Regulation</a></li>
+              <li>📄 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines/multidisciplinary/multidisciplinary-quality" target="_blank">EU GMP Guidelines - Annex 11</a></li>
+              <li>📄 <a href="https://database.ich.org/sites/default/files/Q10%20Guideline.pdf" target="_blank">ICH Q10 - Pharmaceutical Quality System</a></li>
+              <li>📄 <a href="https://database.ich.org/sites/default/files/Q9_Guideline.pdf" target="_blank">ICH Q9 - Quality Risk Management</a></li>
+              <li>📄 <a href="https://www.iso.org/standard/59752.html" target="_blank">ISO 13485 - Medical Devices QMS</a></li>
+              <li>📄 <a href="https://www.iso.org/standard/62085.html" target="_blank">ISO 9001 - Quality Management Systems</a></li>
+              <li>📄 <a href="https://www.fda.gov/media/116573/download" target="_blank">FDA Computer System Validation Guidance</a></li>
+              <li>📄 <a href="https://www.ema.europa.eu/en/data-integrity" target="_blank">EMA Data Integrity Guidelines</a></li>
+              <li>📄 <a href="https://www.fda.gov/vaccines-blood-biologics/guidance-compliance-regulatory-information-biologics/biologics-guidances" target="_blank">FDA Biologics Guidances</a></li>
+              <li>📄 <a href="https://www.raps.org" target="_blank">RAPS - Regulatory Affairs Professionals Society</a></li>
             </ul>
           </div>
           <div class="resource-card">
@@ -473,15 +630,55 @@
               <li>🌐 <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
               <li>🌐 <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
               <li>🌐 <a href="https://www.who.int" target="_blank">WHO Quality Assurance</a></li>
+              <li>🌐 <a href="https://www.fda.gov/news-events/fda-newsroom" target="_blank">FDA Newsroom - Latest Updates</a></li>
+              <li>🌐 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents" target="_blank">FDA Guidance Documents</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu/en/news-events" target="_blank">EMA News & Events</a></li>
+  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines" target="_blank">EMA Scientific Guidelines</a></li>
+  <li>🌐 <a href="https://www.ich.org/page/news" target="_blank">ICH News & Updates</a></li>
+  <li>🌐 <a href="https://www.who.int/news-room" target="_blank">WHO News Room</a></li>
+  <li>🌐 <a href="https://www.picscheme.org/en/news" target="_blank">PIC/S News & Updates</a></li>
+  <li>🌐 <a href="https://www.fda.gov/drugs/drug-approvals-and-databases/drug-safety-communications" target="_blank">FDA Drug Safety Communications</a></li>
+  <li>🌐 <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/medical-device-recalls" target="_blank">FDA Medical Device Recalls</a></li>
+  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/pharmacovigilance" target="_blank">EMA Pharmacovigilance Updates</a></li>
+  <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters</a></li>
+  <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities" target="_blank">FDA Compliance Actions</a></li>
+  <li>🌐 <a href="https://www.ema.europa.eu/en/news-events/regulatory-updates" target="_blank">EMA Regulatory Updates</a></li>
+  <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/applications-submissions/guidance-documents.html" target="_blank">Health Canada Guidance</a></li>
+  <li>🌐 <a href="https://www.mhra.gov.uk/news-and-events/" target="_blank">MHRA News & Publications</a></li>
+  <li>🌐 <a href="https://www.tga.gov.au/news-and-events" target="_blank">TGA (Australia) News</a></li>
+  <li>🌐 <a href="https://www.pmda.go.jp/english/index.html" target="_blank">PMDA (Japan) Updates</a></li>
+  <li>🌐 <a href="https://cdsco.gov.in/opencms/opencms/en/Home/" target="_blank">CDSCO (India) - Central Drugs Standard Control</a></li>
+  <li>🌐 <a href="https://www.nmpa.gov.cn/en/" target="_blank">NMPA (China) News</a></li>
             </ul>
           </div>
           <div class="resource-card">
             <div class="resource-icon">📰</div>
             <h3>Regulatory Observations</h3>
             <ul>
-              <li>🌐 <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
-              <li>🌐 <a href="https://www.who.int" target="_blank">WHO Quality Assurance</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-guides" target="_blank">FDA Inspection Guides</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-reports" target="_blank">FDA Establishment Inspection Reports (EIRs)</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters Database</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters" target="_blank">FDA Recent Warning Letters</a></li>
+  <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/untitled-letters" target="_blank">FDA Untitled Letters</a></li>
+  <li>🌐 <a href="https://www.accessdata.fda.gov/scripts/cder/clia/index.cfm" target="_blank">FDA Clinical Laboratory Improvement Amendments (CLIA)</a></li>
+  <li>🌐 <a href="https://datadashboard.fda.gov/ora/firmssearch.htm" target="_blank">FDA Inspection Classifications Database</a></li>
+  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/compliance/good-manufacturing-practice/inspection-database" target="_blank">EMA GMP Inspection Database</a></li>
+  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/compliance/non-compliance" target="_blank">EMA Non-Compliance Reports</a></li>
+  <li>🌐 <a href="https://www.picscheme.org/en/inspection-reliance" target="_blank">PIC/S Inspection Reliance Database</a></li>
+  <li>🌐 <a href="https://www.mhra.gov.uk/inspection-and-enforcement/" target="_blank">MHRA Inspection Reports</a></li>
+  <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/inspections.html" target="_blank">Health Canada Inspection Reports</a></li>
+  <li>🌐 <a href="https://www.tga.gov.au/compliance-action" target="_blank">TGA Compliance Actions</a></li>
+  <li>🌐 <a href="https://www.who.int/teams/regulation-prequalification/inspection" target="_blank">WHO Inspection Reports</a></li>
+  <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/fda-warning-letters" target="_blank">GMP Compliance - FDA Warning Letters Analysis</a></li>
+   <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/responding-form-fda-483" target="_blank">FDA - Responding to Form 483</a></li>
+  <li>🌐 <a href="https://www.raps.org/news-and-articles/news-articles/how-to-respond-to-fda-warning-letter" target="_blank">RAPS - How to Respond to Warning Letters</a></li>
+  <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/warning-letter-response" target="_blank">GMP Compliance - Warning Letter Response Guide</a></li>
+  <li>🌐 <a href="https://www.ispe.org/pharmaceutical-engineering/ispeak/inspection-readiness-and-response" target="_blank">ISPE - Inspection Readiness & Response</a></li>
+  <li>🌐 <a href="https://www.pda.org/resources/regulatory-resources/inspection-remediation" target="_blank">PDA - Inspection & Remediation Resources</a></li>
+  <li>🌐 <a href="https://www.fda.gov/drugs/pharmaceutical-quality-resources/facts-about-current-good-manufacturing-practices-cgmps" target="_blank">FDA CGMP Change Control Findings</a></li>
+  <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/change-control" target="_blank">GMP Compliance - Change Control Violations</a></li>
+  <li>🌐 <a href="https://www.pharmaceutical-technology.com/features/change-control-common-inspection-findings/" target="_blank">Pharma Tech - Change Control Inspection Findings</a></li>
+  <li>🌐 <a href="https://www.in-pharmatechnologist.com/Article/Common-change-control-deficiencies-in-pharma" target="_blank">In-Pharma - Change Control Deficiencies</a></li>
             </ul>
           </div>
         </div>
@@ -521,7 +718,7 @@
             <ul>
               <li><a href="#tools">Tools</a></li>
               <li><a href="#qms">QMS</a></li>
-              <li><a href="qms_procedures.html">QMS Procedures</a></li>
+              <li><a href="qms-procedures">QMS Procedures</a></li>
               <li><a href="#resources">Resources</a></li>
             </ul>
           </div>
@@ -576,7 +773,7 @@
       
       <div>
         <label>Mobile Number</label>
-        <input id="pf_phone" type="tel" placeholder="+91-XXXXXXXXXX">
+        <input id="pf_phone" type="tel" placeholder="XX-XXXXXXXXXX">
       </div>
       
       <div class="btn-group">
