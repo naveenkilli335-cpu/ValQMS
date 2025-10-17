@@ -131,6 +131,33 @@
     .btn-login{padding:10px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s}
     .btn-login:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-glow)}
 
+/* User Menu - UPDATED TO MATCH OTHER BUTTONS */
+.user-menu{position:relative;display:none}
+.user-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 18px;
+  min-width:50px;
+  height:40px;
+  border-radius:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.3s;
+  letter-spacing:0.5px;
+}
+.user-badge:hover{
+  background:var(--surface-hover);
+  border-color:var(--accent);
+  color:var(--text);
+  transform:translateY(-2px);
+}
+
+
     /* User Menu - FIXED */
 .user-dropdown{
   position:absolute;
@@ -390,15 +417,11 @@
           <div class="tools-list">
             <a href="ComparisionTool.html" class="tool-item"><div class="tool-icon">📊</div><div class="tool-content"><h3>Excel Comparison Tool</h3><p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p></div><div class="tool-arrow">→</div></a>
             <a href="MasterDataTool.html" class="tool-item"><div class="tool-icon">🧬</div><div class="tool-content"><h3>LIMS Master Data Tool</h3><p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p></div><div class="tool-arrow">→</div></a>
-            <a href="ValidationPlanGeneratorTool.html" class="tool-item"><div class="tool-icon">🤖</div><div class="tool-content"><h3>AI Validation Plan Generator</h3><p>Generate complete, compliant validation plans for any GxP or SaaS system within minutes using AI.</p></div><div class="tool-arrow">→</div></a>
-            <a href="RTMBuilderTool.html" class="tool-item"><div class="tool-icon">🔗</div><div class="tool-content"><h3>Requirements Traceability Matrix</h3><p>Intelligent auto-linking of requirements to test cases with bi-directional traceability and coverage analysis.</p></div><div class="tool-arrow">→</div></a>
             <a href="SOPComparisionTool.html" class="tool-item"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p></div><div class="tool-arrow">→</div></a>
-            <a href="DataIntegrityCheckerTool.html" class="tool-item"><div class="tool-icon">🔬</div><div class="tool-content"><h3>Data Integrity Checker</h3><p>SHA-256 cryptographic validation, ALCOA+ compliance scoring, and 12 comprehensive integrity checks.</p></div><div class="tool-arrow">→</div></a>
             <a href="AdvancedUserAcessMatrixTool.html" class="tool-item"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p></div><div class="tool-arrow">→</div></a>
-            <a href="ValidationStatusDashboardTool.html" class="tool-item"><div class="tool-icon">📈</div><div class="tool-content"><h3>Validation Status Dashboard</h3><p>Real-time validation lifecycle tracking with IQ/OQ/PQ status, revalidation alerts, and executive reports.</p></div><div class="tool-arrow">→</div></a>
             <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p></div><div class="tool-arrow">→</div></a>
-            <a href="TestProtocolGeneratorTool.html" class="tool-item"><div class="tool-icon">📋</div><div class="tool-content"><h3>Test Protocol Generator</h3><p>Auto-generate IQ/OQ/PQ/UAT protocols with pre-built test cases, GAMP 5 templates, and Word export.</p></div><div class="tool-arrow">→</div></a>
             <a href="AdvancedRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>AI Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p></div><div class="tool-arrow">→</div></a>
+
           </div>
         </div>
       </div>
@@ -446,6 +469,15 @@
           <div class="resource-card">
             <div class="resource-icon">📰</div>
             <h3>Regulatory Updates</h3>
+            <ul>
+              <li>🌐 <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
+              <li>🌐 <a href="https://www.who.int" target="_blank">WHO Quality Assurance</a></li>
+            </ul>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">📰</div>
+            <h3>Regulatory Observations</h3>
             <ul>
               <li>🌐 <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
               <li>🌐 <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
@@ -561,6 +593,46 @@
   
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Check authentication immediately
+  (async function checkAuth() {
+    const { data: { session }, error } = await sb.auth.getSession();
+    
+    if (!session) {
+      // No session - redirect to login
+      console.log('No active session. Redirecting to login...');
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // User is authenticated - show content
+    console.log('User authenticated:', session.user.email);
+    
+    // Update UI with user info
+    if (session && session.user) {
+      const userMenu = document.getElementById('userMenu');
+      const loginLink = document.getElementById('loginLink');
+      const userBadge = document.getElementById('userBadge');
+      
+      if (loginLink) loginLink.style.display = 'none';
+      if (userMenu) userMenu.style.display = 'inline-block';
+      
+      if (userBadge) {
+        const displayName = session.user.user_metadata?.full_name || session.user.email.split('@')[0];
+        userBadge.textContent = getInitials(displayName);
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('valqmsUser', JSON.stringify({
+        email: session.user.email,
+        name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+        picture: session.user.user_metadata?.avatar_url,
+        loggedIn: true,
+        provider: session.user.app_metadata?.provider || 'email',
+        timestamp: Date.now()
+      }));
+    }
+  })();
 
   // Initialize theme FIRST
   const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
