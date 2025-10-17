@@ -131,14 +131,58 @@
     .btn-login{padding:10px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s}
     .btn-login:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-glow)}
 
-    /* User Menu */
-    .user-menu{position:relative;display:none}
-    .user-badge{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;font-weight:800;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 16px var(--accent-glow)}
-    .user-badge:hover{transform:scale(1.05)}
-    .user-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:160px;z-index:2000;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-    .user-dropdown button{display:block;width:100%;text-align:center;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.3s}
-    .user-dropdown button:hover{background:rgba(239,68,68,0.1);border-color:#ef4444;color:#ef4444;transform:translateY(-2px)}
+    /* User Menu - FIXED */
+.user-dropdown{
+  position:absolute;
+  top:calc(100% + 12px);
+  right:0;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:8px;
+  display:none;
+  min-width:160px;
+  z-index:2000;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
 
+.user-dropdown.active{
+  display:block;
+}
+
+.user-dropdown button{
+  display:block;
+  width:100%;
+  text-align:left;
+  background:transparent;
+  border:none;
+  border-radius:10px;
+  color:var(--text);
+  padding:12px 16px;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all 0.3s;
+  margin-bottom:4px;
+}
+
+.user-dropdown button:hover{
+  background:var(--surface-hover);
+}
+
+.user-dropdown button:last-child{
+  margin-bottom:0;
+}
+
+.user-dropdown button:last-child:hover{
+  background:rgba(239,68,68,0.1);
+  color:#f87171;
+}
+
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-btn{display:none;background:var(--surface);border:1px solid var(--border);padding:10px;border-radius:12px;cursor:pointer;color:var(--text)}
 
     /* Hero Section */
     .hero{padding:140px 0 120px;text-align:center;position:relative}
@@ -162,18 +206,7 @@
     /* Sections */
     section{padding:100px 0}
     .section-head{text-align:center;margin-bottom:64px}
-    .section-head h2 {
-  font-size:clamp(36px,6vw,56px);
-  font-weight:900;
-  letter-spacing:-2px;
-  margin-bottom:16px;
-  color:#fff; /* Fallback for browsers without background-clip support */
-  background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;          /* Standard property */
-  }
-
+    .section-head h2{font-size:clamp(36px,6vw,56px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;color:#fff;background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .section-head p{font-size:19px;color:var(--text-dim);max-width:740px;margin:0 auto;line-height:1.8;font-weight:300}
 
     /* Tools List */
@@ -181,7 +214,6 @@
     .tools-scroll-wrapper::-webkit-scrollbar{width:10px}
     .tools-scroll-wrapper::-webkit-scrollbar-track{background:var(--glass);border-radius:10px}
     .tools-scroll-wrapper::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px;border:2px solid transparent;background-clip:padding-box}
-    .tools-scroll-wrapper::-webkit-scrollbar-thumb:hover{background:var(--accent-bright);background-clip:padding-box}
     .tools-list{display:flex;flex-direction:column;gap:16px}
     .tool-item{display:flex;align-items:center;gap:20px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:20px 24px;text-decoration:none;color:inherit;transition:all 0.4s;position:relative;overflow:hidden}
     .tool-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--accent),var(--accent-bright));transform:scaleY(0);transition:transform 0.4s}
@@ -202,9 +234,7 @@
     .module-card:hover{transform:translateY(-8px);border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
     .module-card:hover::before{transform:scaleX(1)}
     .module-card h4{font-size:19px;font-weight:700;margin-bottom:12px;color:var(--text);letter-spacing:-0.3px}
-    .module-card h4::before{content:attr(data-icon);margin-right:8px}
     .module-card p{font-size:14px;color:var(--text-dim);line-height:1.7;font-weight:300}
-
     .qms-cta-wrapper{text-align:center;margin-top:56px}
 
     /* Resources Grid */
@@ -234,91 +264,33 @@
     .footer-socials a{width:36px;height:36px;border-radius:10px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);text-decoration:none;transition:all 0.3s}
     .footer-socials a:hover{background:var(--accent);color:#000;border-color:var(--accent);transform:translateY(-2px)}
 
-    /* Mobile Menu Toggle */
-    .mobile-menu-btn{display:none;background:var(--surface);border:1px solid var(--border);padding:10px;border-radius:12px;cursor:pointer;color:var(--text)}
-    
-@media (max-width: 600px) {
-  body {
-    padding: 10px;
-    font-size: 15px;
-  }
-  
-  .login-card, #profilePanel > div {
-    padding: 20px !important;
-    max-width: 97vw !important;
-    border-radius: 14px !important;
-    font-size: 15px !important;
-    margin: 40px auto !important;
-  }
-  
-  h1, h2 {
-    font-size: 20px !important;
-  }
-  
-  input, .btn, button {
-    font-size: 15px !important;
-    padding: 12px 8px !important;
-    border-radius: 10px !important;
-    min-height: 44px !important; /* Touch target size */
-  }
-  
-  label {
-    font-size: 12px !important;
-    margin-bottom: 4px !important;
-  }
-  
-  .header-glass {
-    padding: 8px 8px !important;
-    border-radius: 12px !important;
-  }
-  
-  nav {
-    flex-direction: column !important;
-    gap: 4px !important;
-    padding: 12px 4px !important;
-  }
-  
-  .user-badge, .btn, .mobile-menu-btn, #saveProfileBtn, #closeProfileBtn {
-    min-width: 44px !important;
-    min-height: 44px !important;
-    font-size: 16px !important;
-  }
-  
-  /* Profile panel mobile fixes */
-  #profilePanel > div {
-    margin: 20px auto !important;
-    max-height: calc(100vh - 40px) !important;
-    overflow-y: auto !important;
-  }
-  
-  /* Hero section mobile */
-  .hero {
-    padding: 80px 0 60px !important;
-  }
-  
-  h1 {
-    font-size: 32px !important;
-    line-height: 1.2 !important;
-  }
-  
-  .lead {
-    font-size: 16px !important;
-    margin-bottom: 32px !important;
-  }
-  
-  .cta-group {
-    flex-direction: column !important;
-    align-items: center !important;
-  }
-  
-  .cta {
-    width: 100% !important;
-    max-width: 280px !important;
-    justify-content: center !important;
-  }
-}
+    /* Profile Panel */
+    #profilePanel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2000;backdrop-filter:blur(8px)}
+    .profile-content{max-width:420px;margin:80px auto;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;box-shadow:0 12px 40px rgba(0,0,0,0.3);position:relative}
+    .close-btn{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+    .close-btn:hover{color:var(--text);transform:rotate(90deg)}
+    .profile-content h2{font-size:24px;font-weight:800;margin-bottom:20px;color:var(--text)}
+    .profile-content label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+    .profile-content input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:#ffffff !important;font-size:14px;margin-bottom:20px;transition:all 0.3s}
+    .profile-content input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+    .profile-content input:disabled{opacity:0.5;cursor:not-allowed}
+    .btn-group{display:flex;gap:12px}
+    .btn{flex:1;padding:12px 24px;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;box-shadow:0 4px 16px var(--accent-glow)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+    .btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}
+    .btn-secondary:hover{background:var(--surface-hover)}
+    #profileMsg{min-height:20px;color:var(--text-dim);margin-bottom:20px;font-size:14px}
 
-
+    @media(max-width:968px){
+      header{top:8px;padding:0 16px}
+      .header-glass{padding:0 20px;border-radius:16px}
+      .mobile-menu-btn{display:block}
+      nav{display:none}
+      .hero{padding:80px 0 60px}
+      h1{font-size:42px}
+      .footer-grid{grid-template-columns:1fr;gap:32px}
+    }
   </style>
 </head>
 <body>
@@ -377,13 +349,14 @@
 
           <a class="btn-login" href="login.html" id="loginLink">Login</a>
 
-          <!-- User Menu -->
-          <div id="userMenu" class="user-menu">
-            <div id="userBadge" class="user-badge">U</div>
-            <div id="userDropdown" class="user-dropdown">
-              <button id="logoutBtn">Logout</button>
-            </div>
-          </div>
+<!-- User Menu -->
+<div id="userMenu" class="user-menu">
+  <div id="userBadge" class="user-badge">U</div>
+  <div id="userDropdown" class="user-dropdown">
+    <button id="profileBtn">👤 My Profile</button>
+    <button id="logoutBtn">🚪 Logout</button>
+  </div>
+</div>
 
           <!-- Mobile Menu Button -->
           <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
@@ -425,7 +398,7 @@
             <a href="ValidationStatusDashboardTool.html" class="tool-item"><div class="tool-icon">📈</div><div class="tool-content"><h3>Validation Status Dashboard</h3><p>Real-time validation lifecycle tracking with IQ/OQ/PQ status, revalidation alerts, and executive reports.</p></div><div class="tool-arrow">→</div></a>
             <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p></div><div class="tool-arrow">→</div></a>
             <a href="TestProtocolGeneratorTool.html" class="tool-item"><div class="tool-icon">📋</div><div class="tool-content"><h3>Test Protocol Generator</h3><p>Auto-generate IQ/OQ/PQ/UAT protocols with pre-built test cases, GAMP 5 templates, and Word export.</p></div><div class="tool-arrow">→</div></a>
-            <a href="AIPoweredRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>AI Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p></div><div class="tool-arrow">→</div></a>
+            <a href="AdvancedRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>AI Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p></div><div class="tool-arrow">→</div></a>
           </div>
         </div>
       </div>
@@ -445,18 +418,6 @@
           <div class="module-card"><h4>⚠️ Risk Management</h4><p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p></div>
           <div class="module-card"><h4>🔍 Audit & Inspection</h4><p>Digital audit trails and inspection readiness with full documentation</p></div>
           <div class="module-card"><h4>🎓 Training Management</h4><p>Ensure training effectiveness tied to system and process changes</p></div>
-          <div class="module-card"><h4>📄 Document Control</h4><p>Manage creation, approval, distribution, revision, and retirement of QMS documents with version control</p></div>
-          <div class="module-card"><h4>📞 Complaint Management</h4><p>Capture, log, investigate, and resolve customer complaints with trending analysis</p></div>
-          <div class="module-card"><h4>🤝 Supplier Management</h4><p>Qualify suppliers, monitor performance, and enforce quality agreements</p></div>
-          <div class="module-card"><h4>⚙️ Equipment Management</h4><p>Calibration, preventive maintenance, and qualification (IQ/OQ/PQ) for compliant production</p></div>
-          <div class="module-card"><h4>🔄 Product Lifecycle Management</h4><p>Oversee product flow from concept to distribution with batch review and QC testing</p></div>
-          <div class="module-card"><h4>📊 Management Review</h4><p>Conduct structured evaluations of QMS metrics and drive continual improvement</p></div>
-          <div class="module-card"><h4>📋 Batch Record Management</h4><p>Maintain complete batch documentation and ensure GMP compliance</p></div>
-          <div class="module-card"><h4>✅ Validation Management</h4><p>Execute IQ/OQ/PQ protocols and maintain validation lifecycle documentation</p></div>
-          <div class="module-card"><h4>❌ Non-Conformance Management</h4><p>Document, investigate, and resolve product and process non-conformances</p></div>
-          <div class="module-card"><h4>📈 Quality Planning</h4><p>Establish quality objectives, KPIs, and strategic quality initiatives</p></div>
-          <div class="module-card"><h4>🧪 Laboratory Management</h4><p>Control testing, OOS investigations, method validation, and lab documentation</p></div>
-          <div class="module-card"><h4>🌡️ Environmental Monitoring</h4><p>Track environmental conditions in manufacturing areas and ensure compliance</p></div>
         </div>
         <div class="qms-cta-wrapper">
           <a href="qms_procedures.html" class="cta"><span>View Complete QMS Documentation</span><span>→</span></a>
@@ -476,54 +437,19 @@
             <div class="resource-icon">📚</div>
             <h3>Key Guidelines</h3>
             <ul>
-              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/computer-software-assurance-production-and-quality-system-software-0" target="_blank">FDA CSA Guidance (2025)</a></li>
-              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application" target="_blank">FDA 21 CFR Part 11</a></li>
-              <li>📄 <a href="https://health.ec.europa.eu/system/files/2016-11/annex11_01-2011_en_0.pdf" target="_blank">EU Annex 11 (PDF)</a></li>
-              <li>📄 <a href="https://database.ich.org/sites/default/files/Q9_Guideline.pdf" target="_blank">ICH Q9(R1) Risk Management</a></li>
-              <li>📄 <a href="https://ispe.org/publications/guidance-documents/gamp-5-guide-2nd-edition" target="_blank">GAMP 5 (2nd Edition)</a></li>
-              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/general-principles-software-validation" target="_blank">FDA General Principles of Software Validation</a></li>
-              <li>📄 <a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-H/part-820" target="_blank">FDA 21 CFR Part 820 - Quality System Regulation</a></li>
-              <li>📄 <a href="https://health.ec.europa.eu/system/files/2016-11/2015-10_annex15_0.pdf" target="_blank">EU GMP Annex 15 - Qualification and Validation</a></li>
-              <li>📄 <a href="https://database.ich.org/sites/default/files/Q10%20Guideline.pdf" target="_blank">ICH Q10 - Pharmaceutical Quality System</a></li>
-              <li>📄 <a href="https://database.ich.org/sites/default/files/Q7%20Guideline.pdf" target="_blank">ICH Q7 - Good Manufacturing Practice for APIs</a></li>
-              <li>📄 <a href="https://www.fda.gov/media/116573/download" target="_blank">FDA Design Control Guidance for Medical Device Manufacturers</a></li>
-              <li>📄 <a href="https://www.iso.org/standard/59752.html" target="_blank">ISO 13485:2016 - Medical Devices Quality Management Systems</a></li>
-              <li>📄 <a href="https://www.iso.org/standard/38421.html" target="_blank">IEC 62304:2006 - Medical Device Software Life Cycle Processes</a></li>
-              <li>📄 <a href="https://www.fda.gov/files/drugs/published/Process-Validation--General-Principles-and-Practices.pdf" target="_blank">FDA Process Validation - General Principles and Practices</a></li>
-              <li>📄 <a href="https://picscheme.org/docview/3444" target="_blank">PIC/S Good Practices for Computerised Systems in Regulated GXP Environments</a></li>
+              <li>📄 <a href="https://www.fda.gov" target="_blank">FDA 21 CFR Part 11</a></li>
+              <li>📄 <a href="https://www.ema.europa.eu" target="_blank">EU Annex 11</a></li>
+              <li>📄 <a href="https://www.ich.org" target="_blank">ICH Q9 Risk Management</a></li>
+              <li>📄 <a href="https://ispe.org" target="_blank">GAMP 5 (2nd Edition)</a></li>
             </ul>
           </div>
           <div class="resource-card">
             <div class="resource-icon">📰</div>
             <h3>Regulatory Updates</h3>
             <ul>
-              <li>🌐 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents" target="_blank">FDA Guidance Documents</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/news-events" target="_blank">EMA News & Events</a></li>
-              <li>🌐 <a href="https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency" target="_blank">MHRA Updates</a></li>
-              <li>🌐 <a href="https://www.who.int/health-topics/quality-assurance-of-medicines" target="_blank">WHO Quality Assurance</a></li>
-              <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/medical-devices.html" target="_blank">Health Canada - Medical Devices</a></li>
-              <li>🌐 <a href="https://www.tga.gov.au/therapeutic-goods-administration-tga" target="_blank">TGA - Therapeutic Goods Administration (Australia)</a></li>
-              <li>🌐 <a href="https://www.pmda.go.jp/english/" target="_blank">PMDA - Pharmaceuticals and Medical Devices Agency (Japan)</a></li>
-              <li>🌐 <a href="https://www.ich.org" target="_blank">ICH - International Council for Harmonisation</a></li>
-              <li>🌐 <a href="https://www.ich.org/page/ich-guidelines" target="_blank">ICH Guidelines Database</a></li>
-              <li>🌐 <a href="https://picscheme.org/en/picscheme" target="_blank">PIC/S - Pharmaceutical Inspection Co-operation Scheme</a></li>
-              <li>🌐 <a href="https://ispe.org" target="_blank">ISPE - International Society for Pharmaceutical Engineering</a></li>
-              <li>🌐 <a href="https://ispe.org/publications/guidance-documents" target="_blank">ISPE Guidance Documents Library</a></li>
-              <li>🌐 <a href="https://www.iso.org/iso-13485-medical-devices.html" target="_blank">ISO 13485 - Medical Devices Standards</a></li>
-            </ul>
-          </div>
-          <div class="resource-card">
-            <div class="resource-icon">📋</div>
-            <h3>Regulatory Observations</h3>
-            <ul>
-              <li>⚠️ <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters" target="_blank">FDA Warning Letters</a></li>
-              <li>⚠️ <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-observations" target="_blank">FDA Form 483 Inspection Observations</a></li>
-              <li>⚠️ <a href="https://www.fda.gov/drugs/cder-foia-electronic-reading-room/frequently-requested-or-proactively-posted-compliance-records" target="_blank">FDA Compliance Records (483s & EIRs)</a></li>
-              <li>⚠️ <a href="https://www.ema.europa.eu/en/annual-report/2024/inspections-and-compliance/" target="_blank">EMA Inspections & Compliance Report</a></li>
-              <li>⚠️ <a href="https://www.gov.uk/government/statistics/good-manufacturing-practice-inspection-deficiencies" target="_blank">MHRA GMP Inspection Deficiencies</a></li>
-              <li>⚠️ <a href="https://extranet.who.int/prequal/inspection-services/whopirs" target="_blank">WHO Public Inspection Reports (WHOPIRs)</a></li>
-              <li>⚠️ <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/recalls/guidance-drug-natural-health-products/document.html" target="_blank">Health Canada Drug Recalls & GMP</a></li>
-              <li>⚠️ <a href="https://www.tga.gov.au/how-we-regulate/manufacturing/manufacture-medicine/manufacturer-inspections" target="_blank">TGA Australia Manufacturing Inspections</a></li>
+              <li>🌐 <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
+              <li>🌐 <a href="https://www.who.int" target="_blank">WHO Quality Assurance</a></li>
             </ul>
           </div>
         </div>
@@ -598,6 +524,36 @@
     </div>
   </footer>
 
+  <!-- Profile Panel -->
+  <div id="profilePanel">
+    <div class="profile-content">
+      <button class="close-btn" id="closeProfileBtn">×</button>
+      
+      <h2>My Profile</h2>
+      <p id="profileMsg"></p>
+      
+      <div>
+        <label>Full Name</label>
+        <input id="pf_full_name" type="text" placeholder="Your full name">
+      </div>
+      
+      <div>
+        <label>Email</label>
+        <input id="pf_email" type="email" placeholder="you@company.com" disabled>
+      </div>
+      
+      <div>
+        <label>Mobile Number</label>
+        <input id="pf_phone" type="tel" placeholder="+91-XXXXXXXXXX">
+      </div>
+      
+      <div class="btn-group">
+        <button id="saveProfileBtn" class="btn btn-primary">Save Changes</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('profilePanel').style.display='none'">Close</button>
+      </div>
+    </div>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script type="module">
   const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
@@ -606,21 +562,98 @@
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // CORRECTED: Proper authentication check
-  async function checkAuth() {
-    try {
-      // Always check Supabase session first (most reliable)
-      const { data: { session }, error: sessionError } = await sb.auth.getSession();
-      
-      if (sessionError) {
-        console.error('Session error:', sessionError);
-        window.location.href = 'login.html';
-        return null;
-      }
+  // Initialize theme FIRST
+  const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+  const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.documentElement.setAttribute('data-bg', savedBg);
 
-      // If we have a valid session, user is authenticated
-      if (session) {
-        // Sync localStorage with real session
+  // Background selector
+  const bgBtn = document.getElementById('bgBtn');
+  const bgDropdown = document.getElementById('bgDropdown');
+  const themeBtn = document.getElementById('themeBtn');
+  const themeDropdown = document.getElementById('themeDropdown');
+
+  if (bgBtn && bgDropdown) {
+    bgBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      bgDropdown.classList.toggle('active');
+      if (themeDropdown) themeDropdown.classList.remove('active');
+    });
+
+    document.querySelectorAll('.bg-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const bg = opt.dataset.bg;
+        document.documentElement.setAttribute('data-bg', bg);
+        localStorage.setItem('valqmsBg', bg);
+        bgDropdown.classList.remove('active');
+      });
+    });
+  }
+
+  // Theme selector
+  if (themeBtn && themeDropdown) {
+    themeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      themeDropdown.classList.toggle('active');
+      if (bgDropdown) bgDropdown.classList.remove('active');
+    });
+
+    document.querySelectorAll('.theme-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const theme = opt.dataset.theme;
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('valqmsTheme', theme);
+        themeDropdown.classList.remove('active');
+      });
+    });
+  }
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', () => {
+    if (bgDropdown) bgDropdown.classList.remove('active');
+    if (themeDropdown) themeDropdown.classList.remove('active');
+    const userDropdown = document.getElementById('userDropdown');
+    if (userDropdown) userDropdown.classList.remove('active');
+  });
+
+  // Prevent dropdown close when clicking inside
+  if (bgDropdown) bgDropdown.addEventListener('click', e => e.stopPropagation());
+  if (themeDropdown) themeDropdown.addEventListener('click', e => e.stopPropagation());
+
+  // User menu setup
+  const loginLink = document.getElementById('loginLink');
+  const userMenu = document.getElementById('userMenu');
+  const userBadge = document.getElementById('userBadge');
+  const userDropdown = document.getElementById('userDropdown');
+  const profileBtn = document.getElementById('profileBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const profilePanel = document.getElementById('profilePanel');
+
+  function getInitials(name) {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return parts[0][0] + parts[parts.length - 1][0];
+    }
+    return name[0].toUpperCase();
+  }
+
+  async function updateUserUI() {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      
+      if (session && session.user) {
+        // User is logged in - show user menu
+        if (loginLink) loginLink.style.display = 'none';
+        if (userMenu) userMenu.style.display = 'inline-block';
+        
+        if (userBadge) {
+          const displayName = session.user.user_metadata?.full_name || session.user.email.split('@')[0];
+          userBadge.textContent = getInitials(displayName);
+        }
+        
+        // Save to localStorage
         localStorage.setItem('valqmsUser', JSON.stringify({
           email: session.user.email,
           name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
@@ -629,241 +662,73 @@
           provider: session.user.app_metadata?.provider || 'email',
           timestamp: Date.now()
         }));
-        return session;
+      } else {
+        // No session - show login button
+        if (userMenu) userMenu.style.display = 'none';
+        if (loginLink) loginLink.style.display = 'inline-block';
+        localStorage.removeItem('valqmsUser');
       }
-
-      // No session - check if localStorage has stale data (fallback only)
-      const localUserStr = localStorage.getItem('valqmsUser');
-      if (localUserStr) {
-        try {
-          const localUser = JSON.parse(localUserStr);
-          if (localUser.loggedIn && localUser.timestamp > Date.now() - 24*60*60*1000) { // 24h validity
-            // Verify with Supabase (refresh token check)
-            const { data: { session: refreshed } } = await sb.auth.refreshSession();
-            if (refreshed) {
-              return refreshed;
-            }
-          }
-        } catch (e) {
-          console.error('LocalStorage parse error:', e);
-        }
-      }
-
-      // No valid auth found
-      localStorage.removeItem('valqmsUser');
-      window.location.href = 'login.html';
-      return null;
     } catch (error) {
-      console.error('Auth check failed:', error);
-      localStorage.removeItem('valqmsUser');
-      window.location.href = 'login.html';
-      return null;
+      console.error('Error checking auth:', error);
+      if (userMenu) userMenu.style.display = 'none';
+      if (loginLink) loginLink.style.display = 'inline-block';
     }
   }
 
-  // CORRECTED: Initialize page only after auth check
-  async function initializePage() {
-    try {
-      const session = await checkAuth();
-      if (!session) return; // Redirect already handled
+  // Initialize user UI
+  updateUserUI();
 
-      // Theme and background initializers
-      const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-      const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      document.documentElement.setAttribute('data-bg', savedBg);
+  // Toggle user dropdown
+  if (userBadge && userDropdown) {
+    userBadge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      userDropdown.classList.toggle('active');
+      if (themeDropdown) themeDropdown.classList.remove('active');
+      if (bgDropdown) bgDropdown.classList.remove('active');
+    });
 
-      // Background selector
-      const bgBtn = document.getElementById('bgBtn');
-      const bgDropdown = document.getElementById('bgDropdown');
-      if (bgBtn && bgDropdown) {
-        bgBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          bgDropdown.classList.toggle('active');
-          if (document.getElementById('themeDropdown')) {
-            document.getElementById('themeDropdown').classList.remove('active');
-          }
-        });
+    userDropdown.addEventListener('click', e => e.stopPropagation());
+  }
 
-        document.querySelectorAll('.bg-option').forEach(opt => {
-          opt.addEventListener('click', () => {
-            const bg = opt.dataset.bg;
-            document.documentElement.setAttribute('data-bg', bg);
-            localStorage.setItem('valqmsBg', bg);
-            bgDropdown.classList.remove('active');
-          });
-        });
-      }
+  // Open profile panel
+  if (profileBtn) {
+    profileBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (userDropdown) userDropdown.classList.remove('active');
+      if (profilePanel) profilePanel.style.display = 'block';
+      await loadProfile();
+    });
+  }
 
-      // Theme selector
-      const themeBtn = document.getElementById('themeBtn');
-      const themeDropdown = document.getElementById('themeDropdown');
-      if (themeBtn && themeDropdown) {
-        themeBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          themeDropdown.classList.toggle('active');
-          if (bgDropdown) {
-            bgDropdown.classList.remove('active');
-          }
-        });
-
-        document.querySelectorAll('.theme-option').forEach(opt => {
-          opt.addEventListener('click', () => {
-            const theme = opt.dataset.theme;
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('valqmsTheme', theme);
-            themeDropdown.classList.remove('active');
-          });
-        });
-      }
-
-      // Close dropdowns when clicking outside
-      document.addEventListener('click', () => {
-        if (bgDropdown) bgDropdown.classList.remove('active');
-        if (themeDropdown) themeDropdown.classList.remove('active');
-        if (userDropdown) userDropdown.style.display = 'none';
-      });
-
-      // User menu setup
-      const loginLink = document.getElementById('loginLink');
-      const userMenu = document.getElementById('userMenu');
-      const userBadge = document.getElementById('userBadge');
-      const userDropdown = document.getElementById('userDropdown');
-      const logoutBtn = document.getElementById('logoutBtn');
-
-      function getInitials(name) {
-        if (!name) return 'U';
-        const parts = name.trim().split(' ');
-        if (parts.length >= 2) {
-          return parts[0][0] + parts[parts.length - 1][0];
-        }
-        return name[0].toUpperCase();
-      }
-
-      function updateUserUI() {
-        const userData = localStorage.getItem('valqmsUser');
-        if (userData) {
-          const user = JSON.parse(userData);
-          if (user.loggedIn) {
-            if (userMenu && loginLink) {
-              loginLink.style.display = 'none';
-              userMenu.style.display = 'inline-block';
-            }
-            if (userBadge) {
-              const displayName = user.name || user.email.split('@')[0];
-              userBadge.textContent = getInitials(displayName);
-            }
-            return;
-          }
-        }
-        // No user
-        if (userMenu && loginLink) {
-          userMenu.style.display = 'none';
-          loginLink.style.display = 'inline-block';
-        }
-      }
-
-      updateUserUI();
-
-      // User menu dropdown
-      if (userBadge && userDropdown) {
-        userBadge.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const isOpen = userDropdown.style.display === 'block';
-          userDropdown.style.display = isOpen ? 'none' : 'block';
-        });
-      }
-
-      // Logout functionality
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          // Clear localStorage
-          localStorage.removeItem('valqmsUser');
-
-          // Sign out from Supabase
-          try {
-            await sb.auth.signOut();
-          } catch (error) {
-            console.error('Logout error:', error);
-          }
-
-          // Hide dropdown
-          if (userDropdown) userDropdown.style.display = 'none';
-
-          // Update UI
-          if (userMenu && loginLink) {
-            userMenu.style.display = 'none';
-            loginLink.style.display = 'inline-block';
-          }
-          if (userBadge) userBadge.textContent = 'U';
-
-          // Redirect to login
-          setTimeout(() => window.location.href = 'login.html', 300);
-        });
-      }
-
-      // Mobile menu
-      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-      const mainNav = document.getElementById('mainNav');
-      if (mobileMenuBtn && mainNav) {
-        mobileMenuBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          mainNav.classList.toggle('active');
-        });
-      }
-
-      // CORRECTED: Essential Supabase auth state listener
-      sb.auth.onAuthStateChange((event, session) => {
-        console.log('Auth state changed:', event, session);
+  // Logout functionality
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      try {
+        await sb.auth.signOut();
+        localStorage.removeItem('valqmsUser');
         
-        if (event === 'SIGNED_IN') {
-          // User signed in - sync localStorage
-          if (session) {
-            localStorage.setItem('valqmsUser', JSON.stringify({
-              email: session.user.email,
-              name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
-              picture: session.user.user_metadata?.avatar_url,
-              loggedIn: true,
-              provider: session.user.app_metadata?.provider || 'email',
-              timestamp: Date.now()
-            }));
-            updateUserUI();
-            // Reload to show profile features
-            setTimeout(() => location.reload(), 100);
-          }
-        } else if (event === 'SIGNED_OUT') {
-          // User signed out - clear everything
-          localStorage.removeItem('valqmsUser');
-          if (userMenu && loginLink) {
-            userMenu.style.display = 'none';
-            loginLink.style.display = 'inline-block';
-          }
-          if (userBadge) userBadge.textContent = 'U';
-          window.location.href = 'login.html';
-        }
-      });
-
-    } catch (error) {
-      console.error('Page initialization failed:', error);
-      window.location.href = 'login.html';
-    }
+        if (userDropdown) userDropdown.classList.remove('active');
+        if (userMenu) userMenu.style.display = 'none';
+        if (loginLink) loginLink.style.display = 'inline-block';
+        if (userBadge) userBadge.textContent = 'U';
+        
+        alert('You have been logged out successfully');
+        setTimeout(() => window.location.href = 'login.html', 500);
+      } catch (error) {
+        console.error('Logout error:', error);
+        alert('Logout failed. Please try again.');
+      }
+    });
   }
 
-  // PROFILE PANEL FUNCTIONS (CORRECTED)
-  // Note: Add the HTML first, then this will work
-  const profilePanel = document.getElementById('profilePanel');
-  const saveProfileBtn = document.getElementById('saveProfileBtn');
-  const closeProfileBtn = document.getElementById('closeProfileBtn');
+  // Profile panel functions
   const profileMsg = document.getElementById('profileMsg');
-
-  async function getCurrentUser() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) throw new Error('Not authenticated');
-    return session.user;
-  }
+  const closeProfileBtn = document.getElementById('closeProfileBtn');
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
 
   async function loadProfile() {
     if (!profileMsg) return;
@@ -871,22 +736,23 @@
     profileMsg.style.color = 'var(--text-dim)';
     
     try {
-      const user = await getCurrentUser();
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
       
-      // Fetch existing profile from user_profiles table
+      const user = session.user;
+      
       let { data: profile, error: fetchError } = await sb
         .from('user_profiles')
         .select('full_name, email, phone')
         .eq('id', user.id)
         .single();
 
-      if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = no rows
+      if (fetchError && fetchError.code !== 'PGRST116') {
         throw fetchError;
       }
 
       let profileData = profile;
 
-      // If no profile exists, create one
       if (!profileData) {
         const insertData = {
           id: user.id,
@@ -905,7 +771,6 @@
         profileData = created;
       }
 
-      // Populate form fields
       const fullNameInput = document.getElementById('pf_full_name');
       const emailInput = document.getElementById('pf_email');
       const phoneInput = document.getElementById('pf_phone');
@@ -922,129 +787,101 @@
     }
   }
 
-async function saveProfile() {
-  if (!profileMsg) return;
-  profileMsg.textContent = 'Saving...';
-  profileMsg.style.color = 'var(--text-dim)';
-  try {
-    const user = await getCurrentUser();
-    const fullName = document.getElementById('pf_full_name')?.value.trim() || '';
-    const phone = document.getElementById('pf_phone')?.value.trim() || '';
-    const email = document.getElementById('pf_email')?.value.trim() || user.email; // Always populate email
+  async function saveProfile() {
+    if (!profileMsg) return;
+    profileMsg.textContent = 'Saving...';
+    profileMsg.style.color = 'var(--text-dim)';
+    
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) throw new Error('Not authenticated');
+      
+      const user = session.user;
+      const fullName = document.getElementById('pf_full_name')?.value.trim() || '';
+      const phone = document.getElementById('pf_phone')?.value.trim() || '';
+      const email = document.getElementById('pf_email')?.value.trim() || user.email;
 
-    const updates = {
-      id: user.id,
-      full_name: fullName || null,
-      phone: phone || null,
-      email, // Always REQUIRED
-      updated_at: new Date().toISOString()
-    };
+      const updates = {
+        id: user.id,
+        full_name: fullName || null,
+        phone: phone || null,
+        email,
+        updated_at: new Date().toISOString()
+      };
 
-    const { error } = await sb
-      .from('user_profiles')
-      .upsert(updates, { onConflict: 'id' });
+      const { error } = await sb
+        .from('user_profiles')
+        .upsert(updates, { onConflict: 'id' });
 
-    if (error) throw error;
+      if (error) throw error;
 
-    profileMsg.style.color = 'var(--accent)';
-    profileMsg.textContent = 'Profile updated successfully!';
-    if (profilePanel) {
-      setTimeout(() => { profilePanel.style.display = 'none'; }, 1200);
+      // Update localStorage
+      const userData = JSON.parse(localStorage.getItem('valqmsUser') || '{}');
+      userData.name = fullName;
+      userData.phone = phone;
+      localStorage.setItem('valqmsUser', JSON.stringify(userData));
+
+      // Update UI
+      if (userBadge) {
+        userBadge.textContent = getInitials(fullName);
+      }
+
+      profileMsg.style.color = 'var(--accent)';
+      profileMsg.textContent = '✓ Profile updated successfully!';
+      
+      setTimeout(() => {
+        if (profilePanel) profilePanel.style.display = 'none';
+        profileMsg.textContent = '';
+      }, 1500);
+    } catch (error) {
+      console.error('Save profile error:', error);
+      profileMsg.style.color = '#f87171';
+      profileMsg.textContent = 'Save failed: ' + error.message;
     }
-  } catch (error) {
-    console.error('Save profile error:', error);
-    profileMsg.style.color = '#f87171';
-    profileMsg.textContent = 'Save failed: ' + error.message;
   }
-}
 
+  if (saveProfileBtn) {
+    saveProfileBtn.addEventListener('click', saveProfile);
+  }
 
-  // Hook up profile panel if HTML exists
+  if (closeProfileBtn) {
+    closeProfileBtn.addEventListener('click', () => {
+      if (profilePanel) profilePanel.style.display = 'none';
+    });
+  }
+
+  // Close profile panel on backdrop click
   if (profilePanel) {
     profilePanel.addEventListener('click', (e) => {
       if (e.target === profilePanel) {
         profilePanel.style.display = 'none';
       }
     });
-
-    if (saveProfileBtn) {
-      saveProfileBtn.addEventListener('click', saveProfile);
-    }
-
-    if (closeProfileBtn) {
-      closeProfileBtn.addEventListener('click', () => {
-        profilePanel.style.display = 'none';
-      });
-    }
-
-    // Open profile from user badge
-    if (userBadge) {
-      userBadge.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        
-        // Check if it's the profile click (not dropdown)
-        if (userDropdown && userDropdown.style.display !== 'block') {
-          profilePanel.style.display = 'block';
-          await loadProfile();
-        }
-      });
-    }
   }
 
-  // Mobile menu toggle
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mainNav = document.getElementById('mainNav');
-  if (mobileMenuBtn && mainNav) {
-    mobileMenuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      mainNav.classList.toggle('active');
-    });
-
-    // Close mobile menu when clicking a link
-    mainNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mainNav.classList.remove('active');
-      });
-    });
-  }
-
-  // Initialize page when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializePage);
-  } else {
-    initializePage();
-  }
+  // Auth state listener
+  sb.auth.onAuthStateChange((event, session) => {
+    console.log('Auth state changed:', event);
+    
+    if (event === 'SIGNED_IN' && session) {
+      localStorage.setItem('valqmsUser', JSON.stringify({
+        email: session.user.email,
+        name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+        picture: session.user.user_metadata?.avatar_url,
+        loggedIn: true,
+        provider: session.user.app_metadata?.provider || 'email',
+        timestamp: Date.now()
+      }));
+      updateUserUI();
+    } else if (event === 'SIGNED_OUT') {
+      localStorage.removeItem('valqmsUser');
+      if (userMenu) userMenu.style.display = 'none';
+      if (loginLink) loginLink.style.display = 'inline-block';
+      if (userBadge) userBadge.textContent = 'U';
+    }
+  });
 
 </script>
-
-<div id="profilePanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; backdrop-filter:blur(8px);">
-  <div style="max-width:420px; margin:80px auto; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:20px; padding:32px; box-shadow:0 12px 40px rgba(0,0,0,0.3); position:relative;">
-    <button onclick="document.getElementById('profilePanel').style.display='none'" style="position:absolute; top:12px; right:12px; background:none; border:none; color:var(--text-dim); font-size:24px; cursor:pointer; width:32px; height:32px; display:flex; align-items:center; justify-content:center;">×</button>
-    
-    <h2 style="font-size:24px; font-weight:800; margin-bottom:20px; color:var(--text);">My Profile</h2>
-    <p id="profileMsg" style="min-height:20px; color:var(--text-dim); margin-bottom:20px; font-size:14px;"></p>
-    
-    <div style="margin-bottom:20px;">
-      <label style="display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Full Name</label>
-      <input id="pf_full_name" type="text" style="width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:14px;" placeholder="Your full name">
-    </div>
-    
-    <div style="margin-bottom:20px;">
-      <label style="display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Email</label>
-      <input id="pf_email" type="email" style="width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:14px;" placeholder="you@company.com" disabled>
-    </div>
-    
-    <div style="margin-bottom:24px;">
-      <label style="display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Mobile Number</label>
-      <input id="pf_phone" type="tel" style="width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text); font-size:14px;" placeholder="+91-XXXXXXXXXX">
-    </div>
-    
-    <div style="display:flex; gap:12px;">
-      <button id="saveProfileBtn" style="flex:1; padding:12px 24px; background:linear-gradient(135deg, var(--accent), var(--accent-bright)); color:#000; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer;">Save Changes</button>
-      <button id="closeProfileBtn" style="flex:1; padding:12px 24px; background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:12px; font-size:14px; font-weight:600; cursor:pointer;" onclick="document.getElementById('profilePanel').style.display='none'">Close</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AI Risk Assessment Tool — ValQMS</title>
+  <title>Advanced Risk Assessment Tool — ValQMS</title>
   <link rel="icon" href="favicon.jpg?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,10 +144,22 @@
     .card:hover{border-color:var(--accent);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
     .card h3{font-size:18px;font-weight:700;margin:0 0 20px 0;letter-spacing:-0.3px}
 
+    /* Multi-Step Progress Bar */
+    .progress-bar{display:flex;justify-content:space-between;margin-bottom:32px;position:relative;gap:8px}
+    .progress-bar::before{content:'';position:absolute;top:20px;left:10%;right:10%;height:2px;background:var(--border);z-index:0}
+    .progress-step{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--text-dim);position:relative;z-index:1;flex:1;cursor:pointer;transition:all 0.3s}
+    .progress-step span{width:40px;height:40px;border-radius:50%;background:var(--surface);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;transition:all 0.3s}
+    .progress-step.active span{background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-color:var(--accent);color:#000;box-shadow:0 0 20px var(--accent-glow)}
+    .progress-step.active{color:var(--text);font-weight:600}
+    .progress-step.completed span{background:var(--surface);border-color:var(--accent);color:var(--accent)}
+
+    .form-step{display:none;animation:fadeIn 0.3s ease-in}
+    .form-step.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
     .field{margin-bottom:16px}
     label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
     
-    /* FIXED: Make text visible in form fields */
     input[type=text],
     textarea,
     select {
@@ -171,14 +183,12 @@
       background:var(--surface-hover);
     }
 
-    /* Fix placeholder text */
     input::placeholder,
     textarea::placeholder {
       color:var(--text-dim);
       opacity:0.6;
     }
 
-    /* Ensure dropdown options are visible */
     select option {
       background:#1a1f2e !important;
       color:#ffffff !important;
@@ -202,6 +212,19 @@
       margin-top:8px;
     }
     .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
+    
+    .btn-secondary{
+      background:var(--surface);
+      color:var(--text);
+      box-shadow:none;
+      border:1px solid var(--border);
+    }
+    .btn-secondary:hover{
+      background:var(--surface-hover);
+      border-color:var(--accent);
+    }
+
+    .btn-group{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
     
     .risk-badge{
       display:inline-block;
@@ -246,21 +269,19 @@
     }
     .result-section strong{color:var(--text);font-weight:600}
 
-    .mobile-menu-btn{display:none;background:var(--surface);border:1px solid var(--border);padding:10px;border-radius:12px;cursor:pointer;color:var(--text)}
-
     @media(max-width:968px){
       header{top:8px;padding:0 16px}
       .header-glass{padding:0 20px;border-radius:16px}
-      .mobile-menu-btn{display:block}
       .header-controls{gap:8px}
       .bg-btn,.theme-btn{padding:10px;font-size:0}
       .bg-btn span:last-child,.theme-btn span:last-child{display:none}
+      .progress-bar{font-size:11px}
+      .progress-step span{width:32px;height:32px;font-size:12px}
     }
   </style>
 </head>
 <body>
 
-  <!-- GLASSMORPHISM HEADER -->
   <header>
     <div class="header-glass">
       <div class="header-container">
@@ -273,7 +294,6 @@
         </a>
 
         <div class="header-controls">
-          <!-- Background Selector -->
           <div class="bg-selector">
             <button class="bg-btn" id="bgBtn"><span>🎨</span><span>Background</span></button>
             <div class="bg-dropdown" id="bgDropdown">
@@ -285,7 +305,6 @@
             </div>
           </div>
 
-          <!-- Theme Selector -->
           <div class="theme-selector">
             <button class="theme-btn" id="themeBtn"><span>🎨</span><span>Theme</span></button>
             <div class="theme-dropdown" id="themeDropdown">
@@ -315,86 +334,247 @@
 
   <div class="container">
     <div class="card">
-      <h3>🎯 System Information</h3>
-      <div class="field">
-        <label>System Name</label>
-        <input type="text" id="systemName" placeholder="LabWare LIMS">
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1"><span>1</span> System Info</div>
+        <div class="progress-step" data-step="2"><span>2</span> Technical</div>
+        <div class="progress-step" data-step="3"><span>3</span> Compliance</div>
+        <div class="progress-step" data-step="4"><span>4</span> Operations</div>
       </div>
-      <div class="field">
-        <label>System Category (GAMP 5)</label>
-        <select id="gampCategory">
-          <option value="3">Category 3: Non-configured product</option>
-          <option value="4">Category 4: Configured product</option>
-          <option value="5" selected>Category 5: Custom application</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Business Impact if System Fails</label>
-        <select id="businessImpact">
-          <option>Low - Minor inconvenience</option>
-          <option selected>Medium - Significant disruption</option>
-          <option>High - Critical business impact</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Does System Handle GxP Data?</label>
-        <select id="gxpData">
-          <option>No</option>
-          <option selected>Yes</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Does System Have Electronic Signatures?</label>
-        <select id="eSig">
-          <option>No</option>
-          <option selected>Yes</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>System Complexity</label>
-        <select id="complexity">
-          <option>Simple - Basic CRUD operations</option>
-          <option selected>Moderate - Business logic + integrations</option>
-          <option>Complex - Advanced algorithms + multiple integrations</option>
-        </select>
-      </div>
-      <button id="assessRisk" class="btn">
-        <span>🤖</span><span>Perform AI Risk Assessment</span>
-      </button>
-    </div>
 
-    <div class="card" id="resultsCard" style="display:none">
-      <h3>📊 Risk Assessment Results</h3>
-      <div class="result-section">
-        <h4>Overall Risk Level</h4>
-        <div id="riskLevel"></div>
+      <!-- Step 1 -->
+      <div class="form-step active" data-step="1">
+        <h3>🎯 System Information</h3>
+        <div class="field">
+          <label>System Name</label>
+          <input type="text" id="systemName" placeholder="e.g., LabWare LIMS v7.2">
+        </div>
+        <div class="field">
+          <label>System Type</label>
+          <select id="systemType">
+            <option>LIMS (Laboratory Information Management)</option>
+            <option>ERP (Enterprise Resource Planning)</option>
+            <option>MES (Manufacturing Execution System)</option>
+            <option>QMS (Quality Management System)</option>
+            <option>EDMS (Electronic Document Management)</option>
+            <option>CDS (Chromatography Data System)</option>
+            <option>ELN (Electronic Lab Notebook)</option>
+            <option>Custom Application</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>System Category (GAMP 5)</label>
+          <select id="gampCategory">
+            <option value="1">Category 1: Infrastructure Software (OS, Database)</option>
+            <option value="3">Category 3: Non-configured Product (COTS)</option>
+            <option value="4">Category 4: Configured Product</option>
+            <option value="5" selected>Category 5: Custom Application</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Deployment Model</label>
+          <select id="deployment">
+            <option>On-Premise</option>
+            <option>Cloud (SaaS)</option>
+            <option>Hybrid</option>
+            <option>Validated Cloud (AWS/Azure GxP)</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button class="btn" onclick="nextStep()">Next <span>→</span></button>
+        </div>
       </div>
-      <div class="result-section">
-        <h4>Recommended Validation Strategy</h4>
-        <div id="validationStrategy"></div>
+
+      <!-- Step 2 -->
+      <div class="form-step" data-step="2">
+        <h3>⚙️ Technical Assessment</h3>
+        <div class="field">
+          <label>System Complexity</label>
+          <select id="complexity">
+            <option>Simple - Basic CRUD, minimal business logic</option>
+            <option selected>Moderate - Business logic, some integrations</option>
+            <option>Complex - Advanced workflows, multiple integrations</option>
+            <option>Very Complex - AI/ML, real-time processing, critical algorithms</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Number of Integrations</label>
+          <select id="integrations">
+            <option>0 - Standalone system</option>
+            <option>1-3 - Few integrations</option>
+            <option selected>4-7 - Multiple integrations</option>
+            <option>8+ - Highly integrated</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Data Volume</label>
+          <select id="dataVolume">
+            <option>Low - < 1GB, < 1000 records/day</option>
+            <option selected>Medium - 1-100GB, 1K-10K records/day</option>
+            <option>High - 100GB-1TB, 10K-100K records/day</option>
+            <option>Very High - > 1TB, > 100K records/day</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>System Maturity</label>
+          <select id="maturity">
+            <option>New/Prototype - First deployment</option>
+            <option>Developing - Early versions, frequent changes</option>
+            <option selected>Mature - Established, stable releases</option>
+            <option>Legacy - Old technology, maintenance mode</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Vendor Support Quality</label>
+          <select id="vendorSupport">
+            <option>Poor - Limited support, slow response</option>
+            <option>Fair - Basic support available</option>
+            <option selected>Good - Responsive, documented processes</option>
+            <option>Excellent - 24/7 support, GxP expertise</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevStep()"><span>←</span> Previous</button>
+          <button class="btn" onclick="nextStep()">Next <span>→</span></button>
+        </div>
       </div>
-      <div class="result-section">
-        <h4>Required Test Activities</h4>
-        <div id="testActivities"></div>
+
+      <!-- Step 3 -->
+      <div class="form-step" data-step="3">
+        <h3>📋 Compliance & Regulatory</h3>
+        <div class="field">
+          <label>Does System Handle GxP Data?</label>
+          <select id="gxpData">
+            <option>No - Non-GxP system</option>
+            <option selected>Yes - GxP critical data</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Regulatory Scope</label>
+          <select id="regulatoryScope">
+            <option>FDA (US) Only</option>
+            <option>EMA (EU) Only</option>
+            <option selected>FDA + EMA (Global)</option>
+            <option>MHRA (UK)</option>
+            <option>Multiple Regions (FDA, EMA, PMDA, etc.)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Electronic Signatures (21 CFR Part 11)</label>
+          <select id="eSig">
+            <option>No</option>
+            <option selected>Yes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Audit Trail Requirements</label>
+          <select id="auditTrail">
+            <option>No audit trail required</option>
+            <option>Basic - Create/Update/Delete logging</option>
+            <option selected>Comprehensive - All data changes tracked</option>
+            <option>Advanced - Real-time monitoring, tamper-proof</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Data Integrity Risk (ALCOA+)</label>
+          <select id="dataIntegrity">
+            <option>Low - Minimal DI concerns</option>
+            <option selected>Medium - Standard DI controls needed</option>
+            <option>High - Critical DI controls, inspection history</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Patient Safety Impact</label>
+          <select id="patientSafety">
+            <option>None - No direct patient impact</option>
+            <option>Indirect - Supply chain, quality data</option>
+            <option selected>Direct - Clinical data, batch release</option>
+            <option>Critical - Life-saving drug manufacturing</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevStep()"><span>←</span> Previous</button>
+          <button class="btn" onclick="nextStep()">Next <span>→</span></button>
+        </div>
       </div>
-      <div class="result-section">
-        <h4>Regulatory Considerations</h4>
-        <div id="regulatoryConsiderations"></div>
+
+      <!-- Step 4 -->
+      <div class="form-step" data-step="4">
+        <h3>🏢 Operational Factors</h3>
+        <div class="field">
+          <label>Business Impact if System Fails</label>
+          <select id="businessImpact">
+            <option>Low - Minor inconvenience, workarounds available</option>
+            <option>Medium - Significant disruption, delays possible</option>
+            <option selected>High - Critical operations stop, revenue loss</option>
+            <option>Catastrophic - Patient safety risk, regulatory action</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Number of Users</label>
+          <select id="users">
+            <option>1-10 users</option>
+            <option>11-50 users</option>
+            <option selected>51-200 users</option>
+            <option>200+ users</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Geographic Distribution</label>
+          <select id="geography">
+            <option>Single site</option>
+            <option selected>Multiple sites (same region)</option>
+            <option>Global (multiple regions)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Change Frequency</label>
+          <select id="changeFreq">
+            <option>Rare - < 1 change per year</option>
+            <option>Low - 1-4 changes per year</option>
+            <option selected>Moderate - 5-12 changes per year</option>
+            <option>High - Monthly or more frequent changes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Historical Issues</label>
+          <select id="history">
+            <option>No known issues</option>
+            <option selected>Minor issues, resolved quickly</option>
+            <option>Moderate issues, some downtime</option>
+            <option>Major issues, FDA observations, recalls</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="prevStep()"><span>←</span> Previous</button>
+          <button class="btn" onclick="performAssessment()">
+            <span>🤖</span><span>Perform AI Risk Assessment</span>
+          </button>
+        </div>
       </div>
-      <button id="exportReport" class="btn">
-        <span>📥</span><span>Export Risk Assessment Report</span>
-      </button>
     </div>
   </div>
 
   <script>
-    // Theme System
+    // Initialize theme and background
+    function initTheme(){
+      const savedTheme=localStorage.getItem('valqmsTheme')||'green';
+      const savedBg=localStorage.getItem('valqmsBg')||'mesh';
+      document.documentElement.setAttribute('data-theme',savedTheme);
+      document.documentElement.setAttribute('data-bg',savedBg);
+    }
+    initTheme();
+
+    // Theme selector
     const themeBtn=document.getElementById('themeBtn');
     const themeDropdown=document.getElementById('themeDropdown');
     const themeOptions=document.querySelectorAll('.theme-option');
-    themeBtn.addEventListener('click',e=>{e.stopPropagation();themeDropdown.classList.toggle('active');bgDropdown.classList.remove('active')});
-    document.addEventListener('click',()=>{themeDropdown.classList.remove('active');bgDropdown.classList.remove('active')});
-    themeDropdown.addEventListener('click',e=>e.stopPropagation());
+    
+    themeBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      themeDropdown.classList.toggle('active');
+      document.getElementById('bgDropdown').classList.remove('active');
+    });
+    
     themeOptions.forEach(opt=>{
       opt.addEventListener('click',()=>{
         const theme=opt.dataset.theme;
@@ -404,12 +584,17 @@
       });
     });
 
-    // Background System
+    // Background selector
     const bgBtn=document.getElementById('bgBtn');
     const bgDropdown=document.getElementById('bgDropdown');
     const bgOptions=document.querySelectorAll('.bg-option');
-    bgBtn.addEventListener('click',e=>{e.stopPropagation();bgDropdown.classList.toggle('active');themeDropdown.classList.remove('active')});
-    bgDropdown.addEventListener('click',e=>e.stopPropagation());
+    
+    bgBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      bgDropdown.classList.toggle('active');
+      themeDropdown.classList.remove('active');
+    });
+    
     bgOptions.forEach(opt=>{
       opt.addEventListener('click',()=>{
         const bg=opt.dataset.bg;
@@ -419,34 +604,108 @@
       });
     });
 
-    // Initialize
-    function initTheme(){
-      const savedTheme=localStorage.getItem('valqmsTheme')||'green';
-      const savedBg=localStorage.getItem('valqmsBg')||'mesh';
-      document.documentElement.setAttribute('data-theme',savedTheme);
-      document.documentElement.setAttribute('data-bg',savedBg);
-    }
-    initTheme();
-
-    let assessmentResult={};
+    // Close dropdowns on outside click
+    document.addEventListener('click',()=>{
+      themeDropdown.classList.remove('active');
+      bgDropdown.classList.remove('active');
+    });
     
-    document.getElementById('assessRisk').addEventListener('click',()=>{
-      const gamp=parseInt(document.getElementById('gampCategory').value);
-      const impact=document.getElementById('businessImpact').value;
-      const gxp=document.getElementById('gxpData').value;
-      const eSig=document.getElementById('eSig').value;
-      const complexity=document.getElementById('complexity').value;
+    themeDropdown.addEventListener('click',e=>e.stopPropagation());
+    bgDropdown.addEventListener('click',e=>e.stopPropagation());
+
+    // Multi-step navigation
+    let currentStep = 1;
+    
+    function showStep(step) {
+      console.log('Showing step:', step); // Debug log
       
-      let riskScore=0;
-      if(gamp===5)riskScore+=30;else if(gamp===4)riskScore+=20;else riskScore+=10;
-      if(impact.includes('High'))riskScore+=30;else if(impact.includes('Medium'))riskScore+=20;else riskScore+=10;
-      if(gxp==='Yes')riskScore+=20;
-      if(eSig==='Yes')riskScore+=15;
-      if(complexity.includes('Complex'))riskScore+=25;else if(complexity.includes('Moderate'))riskScore+=15;else riskScore+=5;
+      // Hide all steps
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
       
-      let riskLevel='Low',riskClass='risk-low';
-      if(riskScore>=70){riskLevel='High';riskClass='risk-high'}
-      else if(riskScore>=40){riskLevel='Medium';riskClass='risk-medium'}
+      // Update progress bar
+      document.querySelectorAll('.progress-step').forEach((s, index) => {
+        s.classList.remove('active', 'completed');
+        if (index + 1 === step) {
+          s.classList.add('active');
+        } else if (index + 1 < step) {
+          s.classList.add('completed');
+        }
+      });
+      
+      // Show current step
+      const stepElement = document.querySelector(`.form-step[data-step="${step}"]`);
+      if (stepElement) {
+        stepElement.classList.add('active');
+        currentStep = step;
+        
+        // Scroll to top of form
+        stepElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        console.error('Step element not found:', step);
+      }
+    }
+    
+    function nextStep() {
+      console.log('Next step called, current:', currentStep);
+      if (currentStep < 4) {
+        showStep(currentStep + 1);
+      }
+    }
+    
+    function prevStep() {
+      console.log('Previous step called, current:', currentStep);
+      if (currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+    }
+
+    // Click on progress bar to navigate
+    document.querySelectorAll('.progress-step').forEach((step, index) => {
+      step.addEventListener('click', () => {
+        showStep(index + 1);
+      });
+    });
+
+    // Risk assessment
+    let assessmentResult = {};
+    
+    function performAssessment() {
+      console.log('Performing assessment...');
+      
+      const gamp = parseInt(document.getElementById('gampCategory').value);
+      const impact = document.getElementById('businessImpact').value;
+      const gxp = document.getElementById('gxpData').value;
+      const eSig = document.getElementById('eSig').value;
+      const complexity = document.getElementById('complexity').value;
+      
+      let riskScore = 0;
+      
+      // Calculate risk score
+      if(gamp===5) riskScore+=30;
+      else if(gamp===4) riskScore+=20;
+      else riskScore+=10;
+      
+      if(impact.includes('High') || impact.includes('Catastrophic')) riskScore+=30;
+      else if(impact.includes('Medium')) riskScore+=20;
+      else riskScore+=10;
+      
+      if(gxp.includes('Yes')) riskScore+=20;
+      if(eSig==='Yes') riskScore+=15;
+      
+      if(complexity.includes('Very Complex')) riskScore+=30;
+      else if(complexity.includes('Complex')) riskScore+=25;
+      else if(complexity.includes('Moderate')) riskScore+=15;
+      else riskScore+=5;
+      
+      // Determine risk level
+      let riskLevel='Low', riskClass='risk-low';
+      if(riskScore>=70){
+        riskLevel='High';
+        riskClass='risk-high';
+      } else if(riskScore>=40){
+        riskLevel='Medium';
+        riskClass='risk-medium';
+      }
       
       const strategies={
         Low:'Reduced validation: Focus on critical functions only. Vendor testing may be leveraged.',
@@ -460,35 +719,95 @@
         High:['Comprehensive IQ/OQ/PQ','Code review (if custom)','Security testing','Performance testing','Disaster recovery testing','Full regression suite','Independent QA review']
       };
       
-      assessmentResult={riskScore,riskLevel,riskClass,strategy:strategies[riskLevel],activities:activities[riskLevel]};
+      assessmentResult = {
+        riskScore,
+        riskLevel,
+        riskClass,
+        strategy: strategies[riskLevel],
+        activities: activities[riskLevel]
+      };
       
-      document.getElementById('riskLevel').innerHTML=`<div class="risk-badge ${riskClass}">Risk Level: ${riskLevel} (Score: ${riskScore}/120)</div>`;
-      document.getElementById('validationStrategy').innerHTML=`<p>${strategies[riskLevel]}</p>`;
-      document.getElementById('testActivities').innerHTML='<ul>'+activities[riskLevel].map(a=>'<li>'+a+'</li>').join('')+'</ul>';
-      document.getElementById('regulatoryConsiderations').innerHTML=gxp==='Yes'&&eSig==='Yes'?
-        '<p>This system requires compliance with <strong>FDA 21 CFR Part 11</strong> and <strong>EU Annex 11</strong>. Electronic signatures must be validated. Audit trails must be comprehensive and reviewed regularly.</p>':
-        '<p>Standard GxP validation requirements apply. Follow GAMP 5 guidelines and ICH Q9 risk management principles.</p>';
+      // Create results card
+      const resultsHTML = `
+        <div class="card" id="resultsCard" style="margin-top:32px">
+          <h3>📊 Risk Assessment Results</h3>
+          <div class="risk-badge ${riskClass}">Risk Level: ${riskLevel} (Score: ${riskScore}/120)</div>
+          
+          <div class="result-section">
+            <h4>Validation Strategy</h4>
+            <p>${strategies[riskLevel]}</p>
+          </div>
+          
+          <div class="result-section">
+            <h4>Required Test Activities</h4>
+            <ul>${activities[riskLevel].map(a=>'<li>'+a+'</li>').join('')}</ul>
+          </div>
+          
+          <div class="result-section">
+            <h4>Regulatory Considerations</h4>
+            <p>${gxp.includes('Yes')&&eSig==='Yes'?
+              'This system requires compliance with <strong>FDA 21 CFR Part 11</strong> and <strong>EU Annex 11</strong>. Electronic signatures must be validated. Audit trails must be comprehensive and reviewed regularly.':
+              'Standard GxP validation requirements apply. Follow GAMP 5 guidelines and ICH Q9 risk management principles.'}</p>
+          </div>
+          
+          <div class="btn-group">
+            <button class="btn" onclick="exportReport()"><span>📄</span><span>Export Report</span></button>
+            <button class="btn btn-secondary" onclick="showStep(1)"><span>↻</span><span>Start New Assessment</span></button>
+          </div>
+        </div>
+      `;
       
-      document.getElementById('resultsCard').style.display='block';
-      document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'start'});
-    });
+      // Remove existing results if any
+      const existingResults = document.getElementById('resultsCard');
+      if (existingResults) existingResults.remove();
+      
+      // Add new results
+      document.querySelector('.container').insertAdjacentHTML('beforeend', resultsHTML);
+      
+      // Scroll to results
+      setTimeout(() => {
+        document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
     
-    document.getElementById('exportReport').addEventListener('click',()=>{
-      const system=document.getElementById('systemName').value||'System';
-      const report=`RISK ASSESSMENT REPORT\nSystem: ${system}\nDate: ${new Date().toLocaleString()}\nCompliance: GAMP 5, ICH Q9\n\n`+
-        `RISK LEVEL: ${assessmentResult.riskLevel} (Score: ${assessmentResult.riskScore}/120)\n\n`+
-        `VALIDATION STRATEGY:\n${assessmentResult.strategy}\n\n`+
-        `REQUIRED TEST ACTIVITIES:\n${assessmentResult.activities.map((a,i)=>`${i+1}. ${a}`).join('\n')}\n\n`+
-        `RECOMMENDATIONS:\n- Follow risk-based validation approach\n- Document all test activities\n- Ensure traceability to requirements\n- Obtain QA approval before production use`;
+    function exportReport() {
+      const system = document.getElementById('systemName').value || 'System';
+      const timestamp = new Date().toLocaleString();
       
-      const blob=new Blob([report],{type:'text/plain'});
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;
-      a.download='Risk_Assessment_'+system.replace(/\s/g,'_')+'_'+new Date().toISOString().split('T')[0]+'.txt';
+      const report = `RISK ASSESSMENT REPORT
+========================================
+System: ${system}
+Date: ${timestamp}
+Compliance Framework: GAMP 5, ICH Q9
+
+RISK LEVEL: ${assessmentResult.riskLevel} (Score: ${assessmentResult.riskScore}/120)
+
+VALIDATION STRATEGY:
+${assessmentResult.strategy}
+
+REQUIRED TEST ACTIVITIES:
+${assessmentResult.activities.map((a,i)=>`${i+1}. ${a}`).join('\n')}
+
+RECOMMENDATIONS:
+- Follow risk-based validation approach
+- Document all test activities thoroughly
+- Ensure traceability to requirements
+- Obtain QA approval before production use
+- Regular review of validation status
+
+Generated by ValQMS Tools
+========================================`;
+      
+      const blob = new Blob([report], {type: 'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Risk_Assessment_${system.replace(/\s/g,'_')}_${new Date().toISOString().split('T')[0]}.txt`;
       a.click();
       URL.revokeObjectURL(url);
-    });
+    }
+    
+    console.log('Script loaded successfully');
   </script>
 </body>
 </html>
