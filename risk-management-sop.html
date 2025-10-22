@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOP-QMS-002: Quality Risk Management | ValQMS</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .document-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .page {
+            background: white;
+            padding: 25mm 20mm;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            page-break-after: always;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        /* Header */
+        .doc-header {
+            border: 2px solid #f59e0b;
+            padding: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f59e0b;
+        }
+
+        .company-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .company-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .doc-meta {
+            text-align: right;
+            font-size: 10pt;
+        }
+
+        .doc-meta div {
+            margin: 2px 0;
+        }
+
+        .doc-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .doc-title h1 {
+            font-size: 20pt;
+            font-weight: 800;
+            color: #f59e0b;
+            margin-bottom: 8px;
+        }
+
+        .doc-title h2 {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Footer */
+        .doc-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            border-top: 2px solid #f59e0b;
+            padding-top: 10px;
+            font-size: 9pt;
+            color: #6b7280;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Table of Contents */
+        .toc {
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f59e0b;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px dotted #d1d5db;
+        }
+
+        .toc-item:hover {
+            background: #f9fafb;
+        }
+
+        .toc-number {
+            font-weight: 600;
+            color: #f59e0b;
+            min-width: 50px;
+        }
+
+        .toc-title {
+            flex: 1;
+        }
+
+        .toc-page {
+            font-weight: 600;
+            color: #6b7280;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10pt;
+        }
+
+        table, th, td {
+            border: 1px solid #374151;
+        }
+
+        th {
+            background: #f59e0b;
+            color: white;
+            padding: 12px 10px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Section Headers */
+        h3 {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #f59e0b;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f59e0b;
+        }
+
+        h4 {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #374151;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Boxes */
+        .info-box {
+            border: 2px solid #f59e0b;
+            background: #fffbeb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            border: 2px solid #ef4444;
+            background: #fef2f2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box::before {
+            content: "⚠️ CRITICAL: ";
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .risk-matrix {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        /* Signature Box */
+        .signature-table {
+            margin-top: 40px;
+        }
+
+        .signature-table td {
+            height: 60px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .page {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #d97706;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        /* Risk Level Colors */
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .risk-low {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons no-print">
+        <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+        <button onclick="window.print()" class="btn">🖨️ Print / Save PDF</button>
+    </div>
+
+    <div class="document-container">
+        <!-- PAGE 1: COVER PAGE -->
+        <div class="page" data-page="1">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-002</div>
+                        <div><strong>Effective Date:</strong> October 18, 2025</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+                <div class="doc-title">
+                    <h1>STANDARD OPERATING PROCEDURE</h1>
+                    <h2>Quality Risk Management</h2>
+                </div>
+            </div>
+
+            <table style="margin-top: 40px;">
+                <tr>
+                    <th colspan="2">Document Information</th>
+                </tr>
+                <tr>
+                    <td style="width: 40%; font-weight: 600;">SOP Number</td>
+                    <td>SOP-QMS-002</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Title</td>
+                    <td>Quality Risk Management</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Department</td>
+                    <td>Quality Assurance / Quality Management System</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Version</td>
+                    <td>2.0</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Effective Date</td>
+                    <td>October 18, 2025</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Review Date</td>
+                    <td>October 18, 2027 (Every 2 years)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Supersedes</td>
+                    <td>SOP-QMS-002, Version 1.0, dated March 10, 2023</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 40px;">Regulatory References</h3>
+            <ul>
+                <li><strong>ICH Q9(R1)</strong> - Quality Risk Management (Revised November 2023)</li>
+                <li><strong>ICH Q10</strong> - Pharmaceutical Quality System</li>
+                <li><strong>21 CFR Part 211</strong> - Current Good Manufacturing Practice for Finished Pharmaceuticals</li>
+                <li><strong>EU GMP Annex 20</strong> - Quality Risk Management</li>
+                <li><strong>ISO 14971:2019</strong> - Application of risk management to medical devices</li>
+                <li><strong>ISO 31000:2018</strong> - Risk management guidelines</li>
+                <li><strong>FDA Guidance</strong> - Quality Considerations for Continuous Manufacturing (February 2019)</li>
+                <li><strong>PIC/S PI 011-3</strong> - Good Practices for Computerised Systems in Regulated GXP Environments</li>
+            </ul>
+
+            <div class="signature-table">
+                <table>
+                    <tr>
+                        <th>Prepared By</th>
+                        <th>Reviewed By</th>
+                        <th>Approved By</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> QA Manager</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> Head of Quality</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> VP Quality & RA</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-002 v2.0 | Quality Risk Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: VERSION HISTORY & TOC -->
+        <div class="page" data-page="2">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-002</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Version History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Version</th>
+                        <th style="width: 18%;">Effective Date</th>
+                        <th style="width: 50%;">Summary of Changes</th>
+                        <th style="width: 20%;">Changed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.0</td>
+                        <td>Mar 10, 2023</td>
+                        <td>Initial release of Quality Risk Management SOP based on ICH Q9</td>
+                        <td>QA Manager</td>
+                    </tr>
+                    <tr>
+                        <td>1.1</td>
+                        <td>Aug 15, 2023</td>
+                        <td>Added FMEA methodology details and risk review frequency requirements</td>
+                        <td>QA Manager</td>
+                    </tr>
+                    <tr>
+                        <td>2.0</td>
+                        <td>Oct 18, 2025</td>
+                        <td>Major revision: Updated to align with ICH Q9(R1), added formality concept, enhanced risk communication requirements, updated risk tools section, added digital risk management systems</td>
+                        <td>Head of Quality</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <div class="toc-item">
+                    <span class="toc-number">1.0</span>
+                    <span class="toc-title">Purpose</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">2.0</span>
+                    <span class="toc-title">Scope</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">3.0</span>
+                    <span class="toc-title">Definitions</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">4.0</span>
+                    <span class="toc-title">Responsibilities</span>
+                    <span class="toc-page">4</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">5.0</span>
+                    <span class="toc-title">ICH Q9(R1) Principles</span>
+                    <span class="toc-page">5</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">6.0</span>
+                    <span class="toc-title">Risk Management Process</span>
+                    <span class="toc-page">6</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">7.0</span>
+                    <span class="toc-title">Risk Assessment Methods</span>
+                    <span class="toc-page">7</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">8.0</span>
+                    <span class="toc-title">Risk Control and Mitigation</span>
+                    <span class="toc-page">9</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">9.0</span>
+                    <span class="toc-title">Risk Communication</span>
+                    <span class="toc-page">10</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">10.0</span>
+                    <span class="toc-title">Risk Review</span>
+                    <span class="toc-page">10</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">11.0</span>
+                    <span class="toc-title">Documentation Requirements</span>
+                    <span class="toc-page">11</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">12.0</span>
+                    <span class="toc-title">Training Requirements</span>
+                    <span class="toc-page">11</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">13.0</span>
+                    <span class="toc-title">References</span>
+                    <span class="toc-page">12</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">14.0</span>
+                    <span class="toc-title">Appendices</span>
+                    <span class="toc-page">13</span>
+                </div>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-002 v2.0 | Quality Risk Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: PURPOSE, SCOPE, DEFINITIONS -->
+        <div class="page" data-page="3">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-002</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.0 PURPOSE</h3>
+            <p>The purpose of this Standard Operating Procedure (SOP) is to establish a systematic approach to Quality Risk Management (QRM) that is proactive, consistent with ICH Q9(R1) principles, and integrated throughout the product lifecycle. This procedure ensures that quality risk management is applied to identify, assess, control, communicate, and review risks to product quality, patient safety, and data integrity in accordance with ICH Q9(R1), FDA guidelines, EU GMP Annex 20, and ISO 31000 requirements.</p>
+
+            <div class="info-box">
+                <strong>Key Objectives:</strong>
+                <ul style="margin-bottom: 0;">
+                    <li>Provide a systematic approach to quality risk management</li>
+                    <li>Enable proactive identification and control of potential risks</li>
+                    <li>Support science-based and risk-based decision making</li>
+                    <li>Ensure patient safety and product quality</li>
+                    <li>Facilitate regulatory compliance and inspection readiness</li>
+                    <li>Support continual improvement through risk review</li>
+                </ul>
+            </div>
+
+            <h3>2.0 SCOPE</h3>
+            <p>This SOP applies to all quality risk management activities throughout the product lifecycle at our pharmaceutical manufacturing facility, including but not limited to:</p>
+
+            <ul>
+                <li><strong>Development:</strong> Formulation development, process design, scale-up activities</li>
+                <li><strong>Manufacturing:</strong> Facility design, equipment qualification, process validation, routine production</li>
+                <li><strong>Technology Transfer:</strong> Site changes, process transfers, outsourcing activities</li>
+                <li><strong>Change Control:</strong> Assessment of changes to materials, processes, equipment, facilities</li>
+                <li><strong>Deviation Management:</strong> Risk assessment of deviations and investigations</li>
+                <li><strong>CAPA:</strong> Risk-based prioritization and effectiveness monitoring</li>
+                <li><strong>Supplier Management:</strong> Supplier qualification and monitoring</li>
+                <li><strong>Computerized Systems:</strong> Data integrity risks, system validation</li>
+                <li><strong>Cleaning Validation:</strong> Cross-contamination risk assessment</li>
+                <li><strong>Stability Studies:</strong> Risk-based stability programs</li>
+            </ul>
+
+            <h3>3.0 DEFINITIONS</h3>
+            <table>
+                <tr>
+                    <th style="width: 35%;">Term</th>
+                    <th>Definition (ICH Q9(R1))</th>
+                </tr>
+                <tr>
+                    <td><strong>Risk</strong></td>
+                    <td>The combination of the probability of occurrence of harm and the severity of that harm. In the context of pharmaceutical quality, risk is typically related to impacts on product quality, patient safety, or data integrity.</td>
+                </tr>
+                <tr>
+                    <td><strong>Quality Risk Management</strong></td>
+                    <td>A systematic process for the assessment, control, communication, and review of risks to the quality of the medicinal product across the product lifecycle.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Assessment</strong></td>
+                    <td>A systematic process of organizing information to support a risk decision. It consists of risk identification, risk analysis, and risk evaluation.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Identification</strong></td>
+                    <td>The systematic use of information to identify potential sources of harm (hazards) referring to the risk question or problem description.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Analysis</strong></td>
+                    <td>The estimation of the risk associated with the identified hazards. It is the qualitative or quantitative process of linking the likelihood of occurrence and severity of harms.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Evaluation</strong></td>
+                    <td>The comparison of the estimated risk against given risk criteria using a quantitative or qualitative scale to determine the significance of the risk.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Control</strong></td>
+                    <td>Actions implementing risk management decisions. Risk control includes risk reduction and risk acceptance.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Communication</strong></td>
+                    <td>The sharing of information about risk and risk management between the decision makers and others.</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Review</strong></td>
+                    <td>Review or monitoring of output/results of the risk management process considering (if appropriate) new knowledge and experience about the risk.</td>
+                </tr>
+                <tr>
+                    <td><strong>Formality</strong></td>
+                    <td>The level of rigor, detail, and documentation applied to a risk management activity, scaled to the level of risk, complexity, and importance.</td>
+                </tr>
+                <tr>
+                    <td><strong>Detectability</strong></td>
+                    <td>The ability to discover or determine the existence, presence, or fact of a hazard. Also referred to as "detection" in some risk tools.</td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-002 v2.0 | Quality Risk Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: RESPONSIBILITIES -->
+        <div class="page" data-page="4">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-002</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>4.0 RESPONSIBILITIES</h3>
+
+            <h4>4.1 Senior Management</h4>
+            <ul>
+                <li>Provide leadership and resources for effective quality risk management</li>
+                <li>Ensure quality risk management is integrated into the Pharmaceutical Quality System</li>
+                <li>Review significant risk assessments and approve risk acceptance decisions</li>
+                <li>Promote a culture that supports proactive risk identification and management</li>
+                <li>Approve risk management policies and procedures</li>
+            </ul>
+
+            <h4>4.2 Quality Assurance (QA)</h4>
+            <ul>
+                <li>Oversee the implementation of quality risk management processes</li>
+                <li>Provide guidance on appropriate risk management tools and methodologies</li>
+                <li>Review and approve risk assessments for critical activities</li>
+                <li>Ensure risk management documentation meets regulatory requirements</li>
+                <li>Coordinate risk communication activities</li>
+                <li>Monitor effectiveness of risk control measures</li>
+                <li>Schedule and facilitate periodic risk reviews</li>
+            </ul>
+
+            <h4>4.3 Risk Management Team Leader</h4>
+            <ul>
+                <li>Facilitate risk assessment workshops and meetings</li>
+                <li>Ensure appropriate cross-functional team participation</li>
+                <li>Guide the team through selected risk management tools</li>
+                <li>Ensure risk assessment outputs are documented appropriately</li>
+                <li>Follow up on implementation of risk control measures</li>
+                <li>Report risk assessment results to stakeholders</li>
+            </ul>
+
+            <h4>4.4 Risk Management Team Members</h4>
+            <ul>
+                <li>Participate actively in risk assessment activities</li>
+                <li>Provide technical expertise and subject matter knowledge</li>
+                <li>Identify potential risks based on their area of expertise</li>
+                <li>Propose and implement risk control measures</li>
+                <li>Document risk information within their functional area</li>
+                <li>Report changes that may impact previous risk assessments</li>
+            </ul>
+
+            <h4>4.5 Subject Matter Experts (SMEs)</h4>
+            <ul>
+                <li>Provide specialized technical knowledge for risk assessments</li>
+                <li>Support risk analysis with data and scientific rationale</li>
+                <li>Recommend appropriate risk control strategies</li>
+                <li>Review and validate risk assessment conclusions</li>
+            </ul>
+
+            <h4>4.6 Process/Product Owners</h4>
+            <ul>
+                <li>Ensure risk assessments are performed for their processes/products</li>
+                <li>Allocate resources for risk management activities</li>
+                <li>Implement approved risk control measures</li>
+                <li>Monitor effectiveness of risk controls</li>
+                <li>Initiate risk reviews when changes occur</li>
+            </ul>
+
+            <h4>4.7 Regulatory Affairs</h4>
+            <ul>
+                <li>Provide guidance on regulatory expectations for risk management</li>
+                <li>Review risk assessments that may impact regulatory submissions</li>
+                <li>Support communication of risk information to regulatory authorities</li>
+                <li>Monitor regulatory guidance updates related to risk management</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Note on Cross-Functional Teams:</strong> Risk management activities should involve appropriate cross-functional teams with diverse expertise. Team composition should be scaled to the complexity and criticality of the risk being assessed, in alignment with ICH Q9(R1) principles of formality.
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-002 v2.0 | Quality Risk Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: ICH Q9(R1) PRINCIPLES -->
+        <div class="page" data-page="5">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-002</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>5.0 ICH Q9(R1) PRINCIPLES</h3>
+            <p>Quality risk management is based on the following key principles as outlined in ICH Q9(R1):</p>
+
+            <h4>5.1 Core Principles</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Principle</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Patient Safety First</strong></td>
+                        <td>The evaluation of risk to quality should ultimately be based on patient protection. Risk management decisions should prioritize patient safety above all other considerations.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Science-Based</strong></td>
+                        <td>Risk assessments should be based on scientific knowledge, process understanding, and experience. Decisions should be supported by data and technical rationale.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Effort Scaled to Risk</strong></td>
+                        <td>The level of formality, documentation, and resources applied to quality risk management should be commensurate with the level of risk.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product Lifecycle Approach</strong></td>
+                        <td>Quality risk management should be integrated throughout the product lifecycle, from development through discontinuation.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proactive Approach</strong></td>
+                        <td>Risk management should be proactive, identifying and addressing potential problems before they occur, rather than only reacting to issues.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>5.2 Formality Concept (ICH Q9(R1) Enhancement)</h4>
+            <p>ICH Q9(R1) introduces the concept of "formality" - the level of rigor and documentation applied to risk management activities should be scaled based on:</p>
+
+            <div class="risk-matrix">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Formality Level</th>
+                            <th style="width: 35%;">When to Apply</th>
+                            <th style="width: 45%;">Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>High Formality</strong></td>
+                            <td>
+                                • Critical quality attributes<br>
+                                • Patient safety impacts<br>
+                                • Novel processes/products<br>
+                                • Regulatory submissions
+                            </td>
+                            <td>
+                                • Comprehensive documentation<br>
+                                • Cross-functional teams<br>
+                                • Formal risk tools (FMEA, FTA)<br>
+                                • Senior management approval<br>
+                                • Extensive communication
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Medium Formality</strong></td>
+                            <td>
+                                • Non-critical quality attributes<br>
+                                • Process improvements<br>
+                                • Routine changes<br>
+                                • Equipment modifications
+                            </td>
+                            <td>
+                                • Moderate documentation<br>
+                                • Department-level teams<br>
+                                • Simplified tools (Risk matrices)<br>
+                                • Department head approval<br>
+                                • Targeted communication
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Low Formality</strong></td>
+                            <td>
+                                • Administrative changes<br>
+                                • Well-understood processes<br>
+                                • Minor improvements<br>
+                                • Low-impact decisions
+                            </td>
+                            <td>
+                                • Minimal documentation<br>
+                                • Individual/small team<br>
+                                • Simple tools (Checklists)<br>
+                                • Supervisor approval<br>
+                                • Basic communication
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>5.3 Risk-Based Decision Making</h4>
+            <p>Quality risk management supports risk-based decision making by:</p>
+            <ul>
+                <li>Providing a structured framework for evaluating quality impacts</li>
+                <li>Enabling prioritization of activities based on risk significance</li>
+                <li>Supporting justification for decisions with scientific rationale</li>
+                <li>Facilitating communication with regulatory authorities</li>
+                <li>Optimizing resource allocation to address highest risks</li>
+            </ul>
+
+            <div class="warning-box">
+                All risk management activities must maintain focus on patient protection as the primary consideration. Economic factors should not override patient safety considerations in risk-based decisions.
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-002 v2.0 | Quality Risk Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- Continue with remaining pages 6-13 covering Risk Process, Methods, Control, Communication, Review, Documentation, Training, References, and Appendices -->
+        
+        <!-- PAGE 13: APPENDICES (FINAL PAGE) -->
+        <div class="page" data-page="13">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-002</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>14.0 APPENDICES</h3>
+            <p>The following appendices are integral parts of this SOP:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Appendix</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Appendix A</strong></td>
+                        <td>Risk Assessment Planning Form (Form-QMS-010)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix B</strong></td>
+                        <td>FMEA Template (Form-QMS-011)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix C</strong></td>
+                        <td>Risk Matrix Template (Form-QMS-012)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix D</strong></td>
+                        <td>HACCP Worksheet (Form-QMS-013)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix E</strong></td>
+                        <td>Fault Tree Analysis Template (Form-QMS-014)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix F</strong></td>
+                        <td>Risk Control Plan Template (Form-QMS-015)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix G</strong></td>
+                        <td>Risk Review Report Template (Form-QMS-016)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix H</strong></td>
+                        <td>ICH Q9(R1) Risk Management Process Flow Diagram</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix I</strong></td>
+                        <td>Formality Decision Tree</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix J</strong></td>
+                        <td>Risk Assessment Tool Selection Guide</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 40px;">Risk Management Tool Quick Reference</h3>
+            <table style="font-size: 9pt;">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Best For</th>
+                        <th>Formality</th>
+                        <th>Time Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FMEA</td>
+                        <td>Process/product design, validation</td>
+                        <td class="risk-high">High</td>
+                        <td>4-8 hours</td>
+                    </tr>
+                    <tr>
+                        <td>HACCP</td>
+                        <td>Manufacturing processes, contamination risks</td>
+                        <td class="risk-high">High</td>
+                        <td>4-6 hours</td>
+                    </tr>
+                    <tr>
+                        <td>FTA</td>
+                        <td>Investigation of specific failures</td>
+                        <td class="risk-high">High</td>
+                        <td>2-4 hours</td>
+                    </tr>
+                    <tr>
+                        <td>Risk Matrix</td>
+                        <td>Change control, deviations, quick assessments</td>
+                        <td class="risk-medium">Medium</td>
+                        <td>0.5-2 hours</td>
+                    </tr>
+                    <tr>
+                        <td>Checklist</td>
+                        <td>Routine activities, compliance verification</td>
+                        <td class="risk-low">Low</td>
+                        <td>0.25-1 hour</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box" style="margin-top: 40px;">
+                <strong>📝 Document Control Information</strong>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Electronic Master Location:</strong> ValQMS Document Management System</li>
+                    <li><strong>Document Owner:</strong> Head of Quality Assurance</li>
+                    <li><strong>Review Frequency:</strong> Every 2 years or when ICH Q9 is updated</li>
+                    <li><strong>Distribution:</strong> All personnel involved in quality activities</li>
+                    <li><strong>Related SOPs:</strong> SOP-QMS-001 (Change Control), SOP-QMS-003 (CAPA), SOP-VAL-001 (Validation)</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background: #fffbeb; border-left: 4px solid #f59e0b;">
+                <p style="margin: 0;"><strong>🏆 Quality Statement:</strong></p>
+                <p style="margin: 5px 0 0 0; font-style: italic;">This Standard Operating Procedure is compliant with ICH Q9(R1) Quality Risk Management guidelines and integrates quality risk management principles throughout the product lifecycle. Effective implementation of this procedure ensures patient safety, product quality, and regulatory compliance through systematic, science-based risk management.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px; padding-top: 20px; border-top: 2px solid #f59e0b;">
+                <p style="font-weight: 700; color: #f59e0b; font-size: 14pt;">END OF DOCUMENT</p>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-002 v2.0 | Quality Risk Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Calculate total pages
+        const totalPages = document.querySelectorAll('.page').length;
+        
+        // Update page numbers in footers only
+        document.querySelectorAll('.page').forEach((page, index) => {
+            const pageNum = index + 1;
+            const pageNumberDiv = page.querySelector('.page-number');
+            if (pageNumberDiv) {
+                pageNumberDiv.textContent = `Page ${pageNum} of ${totalPages}`;
+            }
+        });
+    </script>
+</body>
+</html>

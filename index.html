@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ValQMS — Simplify Validation. Strengthen Quality. Accelerate Compliance.</title>
+  <title>ValQMS</title>
   <meta name="description" content="Validation tools and QMS Procedures/Applications.">
   <link rel="icon" href="favicon.jpg?v=5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,11 +55,244 @@
     [data-bg="dark"] body{background:#0a0e1a;position:relative}
     [data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
 
-    [data-bg="blobs"] body {background: #0f172a;position: relative;overflow: hidden;}
+    [data-bg="blobs"] body {background: #0f172a;position: relative;}
     [data-bg="blobs"] body::before {content: '';position: fixed;top: -100px;left: -100px;width: 140%;height: 140%;background:radial-gradient(circle at 20% 30%, rgba(255, 0, 128, 0.25), transparent 40%),radial-gradient(circle at 70% 70%, rgba(0, 128, 255, 0.2), transparent 40%),radial-gradient(circle at 50% 50%, rgba(0, 255, 128, 0.15), transparent 30%);filter: blur(100px);animation: blobMove 20s infinite ease-in-out alternate;z-index: -1}
 
     [data-bg="mesh2"] body {background: #0f172a;position: relative;}
     [data-bg="mesh2"] body::before {content: '';position: fixed;top: 0;left: 0;width: 100%;height: 100%;background:radial-gradient(circle at 15% 60%, rgba(255, 0, 128, 0.12), transparent 50%),radial-gradient(circle at 85% 40%, rgba(0, 128, 255, 0.12), transparent 50%),radial-gradient(circle at 50% 90%, rgba(0, 255, 128, 0.1), transparent 50%);animation: mesh2Move 25s ease-in-out infinite alternate;z-index: -1}
+
+    [data-bg="aurora"] body{background:#f0f9ff;position:relative}
+    [data-bg="aurora"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(59,130,246,0.3) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(236,72,153,0.25) 0%, transparent 50%),radial-gradient(circle at 40% 20%, rgba(168,85,247,0.2) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
+
+    [data-bg="sunset"] body{background:linear-gradient(135deg, #fff5f5 0%, #ffe4e6 50%, #fef3c7 100%);position:relative}
+    [data-bg="sunset"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 70% 30%, rgba(251,113,133,0.2) 0%, transparent 60%);z-index:-1}
+
+    [data-bg="ocean"] body{background:linear-gradient(135deg, #ecfeff 0%, #e0f2fe 50%, #dbeafe 100%);position:relative}
+    [data-bg="ocean"] body::before{content:'';position:fixed;bottom:0;left:0;width:100%;height:400px;background:linear-gradient(180deg, transparent 0%, rgba(14,165,233,0.15) 100%);animation:waveMove 8s ease-in-out infinite;z-index:-1}
+
+    [data-bg="mint"] body{background:linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #d1fae5 100%);position:relative}
+    [data-bg="mint"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 40%, rgba(16,185,129,0.15) 0%, transparent 60%),radial-gradient(circle at 70% 70%, rgba(20,184,166,0.12) 0%, transparent 60%);z-index:-1}
+
+    [data-bg="pearl"] body{background:linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fde68a 100%);position:relative}
+    [data-bg="pearl"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 50% 50%, rgba(251,191,36,0.1) 0%, transparent 70%);z-index:-1}
+
+    [data-bg="lavender"] body{background:linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%);position:relative}
+    [data-bg="lavender"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 40% 60%, rgba(168,85,247,0.15) 0%, transparent 60%);animation:meshMove 20s ease-in-out infinite alternate;z-index:-1}
+
+    [data-bg="cosmic"] body{background:#000000;position:relative}
+    [data-bg="cosmic"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 10% 20%, rgba(139,92,246,0.3) 0%, transparent 40%),radial-gradient(circle at 90% 80%, rgba(236,72,153,0.25) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(59,130,246,0.2) 0%, transparent 50%);animation:blobMove 25s infinite ease-in-out alternate;z-index:-1}
+
+    [data-bg="neon"] body{background:#0a0118;position:relative}
+    [data-bg="neon"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 30%, rgba(236,72,153,0.4) 0%, transparent 40%),radial-gradient(circle at 80% 70%, rgba(59,130,246,0.35) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(168,85,247,0.3) 0%, transparent 50%);filter:blur(60px);animation:blobMove 20s infinite ease-in-out alternate;z-index:-1}
+
+    [data-bg="neon"] body{background:#0a0118;position:relative}
+    [data-bg="neon"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 30%, rgba(236,72,153,0.4) 0%, transparent 40%),radial-gradient(circle at 80% 70%, rgba(59,130,246,0.35) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(168,85,247,0.3) 0%, transparent 50%);filter:blur(60px);animation:blobMove 20s infinite ease-in-out alternate;z-index:-1}
+
+/* Light backgrounds - dark text - PASTE HERE */
+[data-bg="aurora"],
+[data-bg="sunset"],
+[data-bg="ocean"],
+[data-bg="mint"],
+[data-bg="pearl"],
+[data-bg="lavender"] {
+  --text: #0f172a;
+  --text-dim: #475569;
+  --surface: rgba(0,0,0,0.05);
+  --surface-hover: rgba(0,0,0,0.08);
+  --border: rgba(0,0,0,0.1);
+  --glass: rgba(0,0,0,0.03);
+}
+
+[data-bg="aurora"] h1,
+[data-bg="sunset"] h1,
+[data-bg="ocean"] h1,
+[data-bg="mint"] h1,
+[data-bg="pearl"] h1,
+[data-bg="lavender"] h1 {
+  background: linear-gradient(135deg, #0f172a 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-bg="aurora"] h2,
+[data-bg="sunset"] h2,
+[data-bg="ocean"] h2,
+[data-bg="mint"] h2,
+[data-bg="pearl"] h2,
+[data-bg="lavender"] h2 {
+  background: linear-gradient(135deg, #0f172a 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-bg="aurora"] .header-glass,
+[data-bg="sunset"] .header-glass,
+[data-bg="ocean"] .header-glass,
+[data-bg="mint"] .header-glass,
+[data-bg="pearl"] .header-glass,
+[data-bg="lavender"] .header-glass {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+[data-bg="aurora"] .tool-item,
+[data-bg="sunset"] .tool-item,
+[data-bg="ocean"] .tool-item,
+[data-bg="mint"] .tool-item,
+[data-bg="pearl"] .tool-item,
+[data-bg="lavender"] .tool-item,
+[data-bg="aurora"] .module-card,
+[data-bg="sunset"] .module-card,
+[data-bg="ocean"] .module-card,
+[data-bg="mint"] .module-card,
+[data-bg="pearl"] .module-card,
+[data-bg="lavender"] .module-card,
+[data-bg="aurora"] .app-card,
+[data-bg="sunset"] .app-card,
+[data-bg="ocean"] .app-card,
+[data-bg="mint"] .app-card,
+[data-bg="pearl"] .app-card,
+[data-bg="lavender"] .app-card,
+[data-bg="aurora"] .resource-card,
+[data-bg="sunset"] .resource-card,
+[data-bg="ocean"] .resource-card,
+[data-bg="mint"] .resource-card,
+[data-bg="pearl"] .resource-card,
+[data-bg="lavender"] .resource-card {
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+[data-bg="aurora"] footer,
+[data-bg="sunset"] footer,
+[data-bg="ocean"] footer,
+[data-bg="mint"] footer,
+[data-bg="pearl"] footer,
+[data-bg="lavender"] footer {
+  background: rgba(255,255,255,0.5);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Additional text elements for light backgrounds */
+[data-bg="aurora"] .section-head p,
+[data-bg="sunset"] .section-head p,
+[data-bg="ocean"] .section-head p,
+[data-bg="mint"] .section-head p,
+[data-bg="pearl"] .section-head p,
+[data-bg="lavender"] .section-head p {
+  color: #475569;
+}
+
+[data-bg="aurora"] .lead,
+[data-bg="sunset"] .lead,
+[data-bg="ocean"] .lead,
+[data-bg="mint"] .lead,
+[data-bg="pearl"] .lead,
+[data-bg="lavender"] .lead {
+  color: #475569;
+}
+
+[data-bg="aurora"] .pill,
+[data-bg="sunset"] .pill,
+[data-bg="ocean"] .pill,
+[data-bg="mint"] .pill,
+[data-bg="pearl"] .pill,
+[data-bg="lavender"] .pill {
+  color: #475569;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+[data-bg="aurora"] .tool-content p,
+[data-bg="sunset"] .tool-content p,
+[data-bg="ocean"] .tool-content p,
+[data-bg="mint"] .tool-content p,
+[data-bg="pearl"] .tool-content p,
+[data-bg="lavender"] .tool-content p,
+[data-bg="aurora"] .app-card p,
+[data-bg="sunset"] .app-card p,
+[data-bg="ocean"] .app-card p,
+[data-bg="mint"] .app-card p,
+[data-bg="pearl"] .app-card p,
+[data-bg="lavender"] .app-card p,
+[data-bg="aurora"] .module-card p,
+[data-bg="sunset"] .module-card p,
+[data-bg="ocean"] .module-card p,
+[data-bg="mint"] .module-card p,
+[data-bg="pearl"] .module-card p,
+[data-bg="lavender"] .module-card p {
+  color: #64748b;
+}
+
+[data-bg="aurora"] .tool-content h3,
+[data-bg="sunset"] .tool-content h3,
+[data-bg="ocean"] .tool-content h3,
+[data-bg="mint"] .tool-content h3,
+[data-bg="pearl"] .tool-content h3,
+[data-bg="lavender"] .tool-content h3,
+[data-bg="aurora"] .app-card h4,
+[data-bg="sunset"] .app-card h4,
+[data-bg="ocean"] .app-card h4,
+[data-bg="mint"] .app-card h4,
+[data-bg="pearl"] .app-card h4,
+[data-bg="lavender"] .app-card h4,
+[data-bg="aurora"] .module-card h4,
+[data-bg="sunset"] .module-card h4,
+[data-bg="ocean"] .module-card h4,
+[data-bg="mint"] .module-card h4,
+[data-bg="pearl"] .module-card h4,
+[data-bg="lavender"] .module-card h4 {
+  color: #0f172a;
+}
+
+[data-bg="aurora"] nav a,
+[data-bg="sunset"] nav a,
+[data-bg="ocean"] nav a,
+[data-bg="mint"] nav a,
+[data-bg="pearl"] nav a,
+[data-bg="lavender"] nav a {
+  color: #475569;
+}
+
+[data-bg="aurora"] nav a:hover,
+[data-bg="sunset"] nav a:hover,
+[data-bg="ocean"] nav a:hover,
+[data-bg="mint"] nav a:hover,
+[data-bg="pearl"] nav a:hover,
+[data-bg="lavender"] nav a:hover {
+  color: #0f172a;
+}
+
+/* Fix h2 headings for light backgrounds */
+[data-bg="aurora"] .section-head h2,
+[data-bg="sunset"] .section-head h2,
+[data-bg="ocean"] .section-head h2,
+[data-bg="mint"] .section-head h2,
+[data-bg="pearl"] .section-head h2,
+[data-bg="lavender"] .section-head h2 {
+  background: linear-gradient(135deg, #0f172a 0%, #475569 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Also fix h3 and h4 if they have gradients */
+[data-bg="aurora"] h3,
+[data-bg="sunset"] h3,
+[data-bg="ocean"] h3,
+[data-bg="mint"] h3,
+[data-bg="pearl"] h3,
+[data-bg="lavender"] h3,
+[data-bg="aurora"] h4,
+[data-bg="sunset"] h4,
+[data-bg="ocean"] h4,
+[data-bg="mint"] h4,
+[data-bg="pearl"] h4,
+[data-bg="lavender"] h4 {
+  color: #0f172a;
+}
 
     @keyframes mesh2Move {0% {transform: translate(0, 0);}100% {transform: translate(-50px, 40px);}}
     @keyframes blobMove {0%{transform: translate(0, 0);}100% {transform: translate(-50px, 50px);}}
@@ -97,6 +330,11 @@
     .bg-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
     .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
     .bg-dropdown.active{display:block}
+    .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;max-height:400px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
+    .bg-dropdown.active{display:block}
+    .bg-dropdown::-webkit-scrollbar{width:6px}
+    .bg-dropdown::-webkit-scrollbar-track{background:transparent}
+    .bg-dropdown::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
     .bg-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;font-weight:500}
     .bg-option:hover{background:var(--surface-hover)}
     .bg-preview{width:32px;height:32px;border-radius:8px;border:2px solid rgba(255,255,255,0.2)}
@@ -107,6 +345,14 @@
     .bg-preview.dark{background:#0a0e1a}
     .bg-preview.blobs {background: radial-gradient(circle, #ff0080 0%, transparent 40%),radial-gradient(circle, #0080ff 0%, transparent 40%);background-size: 80% 80%;}
     .bg-preview.mesh2 {background: radial-gradient(circle, rgba(255,0,128,0.3) 0%, transparent 50%),radial-gradient(circle, rgba(0,255,128,0.3) 0%, transparent 50%);}
+    .bg-preview.aurora{background:linear-gradient(135deg, #dbeafe 0%, #fce7f3 100%)}
+    .bg-preview.sunset{background:linear-gradient(135deg, #fff5f5 0%, #fef3c7 100%)}
+    .bg-preview.ocean{background:linear-gradient(135deg, #ecfeff 0%, #dbeafe 100%)}
+    .bg-preview.mint{background:linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%)}
+    .bg-preview.pearl{background:linear-gradient(135deg, #fefce8 0%, #fde68a 100%)}
+    .bg-preview.lavender{background:linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%)}
+    .bg-preview.cosmic{background:radial-gradient(circle, #8b5cf6 0%, #000 100%)}
+    .bg-preview.neon{background:radial-gradient(circle, #ec4899 0%, #0a0118 100%)}
 
     /* Theme Selector */
     .theme-selector{position:relative}
@@ -141,81 +387,81 @@
     .btn-login{padding:10px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s}
     .btn-login:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-glow)}
 
-/* User Menu - UPDATED TO MATCH OTHER BUTTONS */
-.user-menu{position:relative;display:none}
-.user-badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px 18px;
-  min-width:50px;
-  height:40px;
-  border-radius:12px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  color:var(--text);
-  font-weight:700;
-  font-size:14px;
-  cursor:pointer;
-  transition:all 0.3s;
-  letter-spacing:0.5px;
-}
-.user-badge:hover{
-  background:var(--surface-hover);
-  border-color:var(--accent);
-  color:var(--text);
-  transform:translateY(-2px);
-}
+    /* User Menu - UPDATED TO MATCH OTHER BUTTONS */
+    .user-menu{position:relative;display:none}
+    .user-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 18px;
+      min-width:50px;
+      height:40px;
+      border-radius:12px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      color:var(--text);
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      transition:all 0.3s;
+      letter-spacing:0.5px;
+    }
+    .user-badge:hover{
+      background:var(--surface-hover);
+      border-color:var(--accent);
+      color:var(--text);
+      transform:translateY(-2px);
+    }
 
 
     /* User Menu - FIXED */
-.user-dropdown{
-  position:absolute;
-  top:calc(100% + 12px);
-  right:0;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(20px);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:8px;
-  display:none;
-  min-width:160px;
-  z-index:2000;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3);
-}
+    .user-dropdown{
+      position:absolute;
+      top:calc(100% + 12px);
+      right:0;
+      background:rgba(255,255,255,0.05);
+      backdrop-filter:blur(20px);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:8px;
+      display:none;
+      min-width:160px;
+      z-index:2000;
+      box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    }
 
-.user-dropdown.active{
-  display:block;
-}
+    .user-dropdown.active{
+      display:block;
+    }
 
-.user-dropdown button{
-  display:block;
-  width:100%;
-  text-align:left;
-  background:transparent;
-  border:none;
-  border-radius:10px;
-  color:var(--text);
-  padding:12px 16px;
-  font-size:14px;
-  font-weight:500;
-  cursor:pointer;
-  transition:all 0.3s;
-  margin-bottom:4px;
-}
+    .user-dropdown button{
+      display:block;
+      width:100%;
+      text-align:left;
+      background:transparent;
+      border:none;
+      border-radius:10px;
+      color:var(--text);
+      padding:12px 16px;
+      font-size:14px;
+      font-weight:500;
+      cursor:pointer;
+      transition:all 0.3s;
+      margin-bottom:4px;
+    }
 
-.user-dropdown button:hover{
-  background:var(--surface-hover);
-}
+    .user-dropdown button:hover{
+      background:var(--surface-hover);
+    }
 
-.user-dropdown button:last-child{
-  margin-bottom:0;
-}
+    .user-dropdown button:last-child{
+      margin-bottom:0;
+    }
 
-.user-dropdown button:last-child:hover{
-  background:rgba(239,68,68,0.1);
-  color:#f87171;
-}
+    .user-dropdown button:last-child:hover{
+      background:rgba(239,68,68,0.1);
+      color:#f87171;
+    }
 
 
     /* Mobile Menu Toggle */
@@ -264,8 +510,111 @@
     .tool-arrow{font-size:28px;color:var(--accent);transition:all 0.4s;flex-shrink:0}
     .tool-item:hover .tool-arrow{transform:translateX(12px) scale(1.2)}
 
+    /* APP CARDS - Modern Application Style */
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+      margin-bottom: 60px;
+    }
+
+    .app-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .app-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
+    }
+
+    .app-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .app-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      transition: all 0.4s;
+    }
+
+    .app-card:hover .app-icon {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.5);
+    }
+
+    .app-icon svg {
+      color: #ffffff;
+    }
+
+    .app-card h4 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .app-card p {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .app-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: auto;
+    }
+
+    .app-badge.coming-soon {
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      color: var(--text-dim);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
     /* QMS Grid */
-    .qms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+    .qms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
     .module-card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:32px;transition:all 0.4s;position:relative;overflow:hidden}
     .module-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:5px;background:linear-gradient(90deg,var(--accent),var(--accent-bright));transform:scaleX(0);transform-origin:left;transition:transform 0.5s ease}
     .module-card:hover{transform:translateY(-8px);border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
@@ -276,8 +625,23 @@
 
     /* Resources Grid */
     .resources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
-    .resource-card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:32px;transition:all 0.4s}
+    .resource-card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:32px;transition:all 0.4s;position: relative;overflow: hidden;}
+    .resource-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+    }
     .resource-card:hover{border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,0.3);transform:translateY(-4px)}
+    .resource-card:hover::before {
+    transform: scaleX(1);
+    }
     .resource-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:20px;box-shadow:0 8px 20px var(--accent-glow)}
     .resource-card h3{font-size:20px;font-weight:700;margin-bottom:16px;letter-spacing:-0.3px}
     .resource-card ul{list-style:none;padding:0;font-size:14px;line-height:2.2;font-weight:300}
@@ -301,23 +665,380 @@
     .footer-socials a{width:36px;height:36px;border-radius:10px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);text-decoration:none;transition:all 0.3s}
     .footer-socials a:hover{background:var(--accent);color:#000;border-color:var(--accent);transform:translateY(-2px)}
 
-    /* Profile Panel */
-    #profilePanel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2000;backdrop-filter:blur(8px)}
-    .profile-content{max-width:420px;margin:80px auto;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:32px;box-shadow:0 12px 40px rgba(0,0,0,0.3);position:relative}
-    .close-btn{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
-    .close-btn:hover{color:var(--text);transform:rotate(90deg)}
-    .profile-content h2{font-size:24px;font-weight:800;margin-bottom:20px;color:var(--text)}
-    .profile-content label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
-    .profile-content input{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:#ffffff !important;font-size:14px;margin-bottom:20px;transition:all 0.3s}
-    .profile-content input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-    .profile-content input:disabled{opacity:0.5;cursor:not-allowed}
-    .btn-group{display:flex;gap:12px}
-    .btn{flex:1;padding:12px 24px;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s}
-    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;box-shadow:0 4px 16px var(--accent-glow)}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
-    .btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}
-    .btn-secondary:hover{background:var(--surface-hover)}
-    #profileMsg{min-height:20px;color:var(--text-dim);margin-bottom:20px;font-size:14px}
+    /* Project Management Icons */
+    .pm-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .pm-icon svg {
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+
+    .module-card:hover .pm-icon {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Individual PM Method Colors */
+    .pm-icon.csv-waterfall {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+
+    .pm-icon.agile-sprints {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .pm-icon.qualification {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    }
+
+    .pm-icon.v-model {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .pm-icon.hybrid {
+      background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    }
+
+    .pm-icon.kanban {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    }
+
+    .pm-icon.features {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    }
+
+    /* Module Tags */
+    .module-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      justify-content: center;
+    }
+
+    .module-tags .tag {
+      padding: 4px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #10b981;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Badge New */
+    .badge-new {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      margin-left: 12px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+    0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    }
+    50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+    }
+  }
+
+/* Feature Cards */
+.feature-card {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* Quick Actions */
+.pm-quick-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.pm-quick-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.pm-quick-actions .btn-primary {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: white;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.pm-quick-actions .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.6);
+}
+
+.pm-quick-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.pm-quick-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.pm-quick-actions svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pm-quick-actions {
+    flex-direction: column;
+  }
+  
+  .pm-quick-actions a {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .badge-new {
+    display: block;
+    margin-left: 0;
+    margin-top: 8px;
+    width: fit-content;
+  }
+}
+
+
+
+/* Profile Panel - MODERN REDESIGN */
+#profilePanel{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  z-index:2000;
+  backdrop-filter:blur(12px);
+  animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+.profile-content{
+  max-width:480px;
+  margin:80px auto;
+  background:linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  backdrop-filter:blur(40px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:28px;
+  padding:48px 40px;
+  box-shadow:0 20px 80px rgba(0,0,0,0.4);
+  position:relative;
+  animation:slideUp 0.4s ease;
+}
+
+@keyframes slideUp{
+  from{transform:translateY(40px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+.close-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  color:var(--text);
+  font-size:24px;
+  cursor:pointer;
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  transition:all 0.3s;
+}
+
+.close-btn:hover{
+  background:rgba(255,68,68,0.2);
+  border-color:#ef4444;
+  color:#ef4444;
+  transform:rotate(90deg);
+}
+
+.profile-header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:32px;
+}
+
+.profile-avatar{
+  width:80px;
+  height:80px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  font-weight:800;
+  color:#000;
+  margin-bottom:16px;
+  box-shadow:0 8px 32px var(--accent-glow);
+}
+
+.profile-content h2{
+  font-size:32px;
+  font-weight:900;
+  margin-bottom:12px;
+  color:var(--text);
+  letter-spacing:-1px;
+  text-align:center;
+}
+
+#profileMsg{
+  min-height:24px;
+  color:var(--text-dim);
+  margin-bottom:32px;
+  font-size:14px;
+  padding:8px 16px;
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+  text-align:center;
+}
+
+.profile-content>div:not(.profile-header):not(.btn-group){
+  margin-bottom:24px;
+}
+
+.profile-content label{
+  display:block;
+  font-size:12px;
+  color:var(--text-dim);
+  margin-bottom:8px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.profile-content input{
+  width:100%;
+  padding:14px 18px;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:14px;
+  background:rgba(255,255,255,0.08);
+  color:#ffffff !important;
+  font-size:15px;
+  transition:all 0.3s;
+  font-weight:500;
+}
+
+.profile-content input:focus{
+  outline:none;
+  border-color:var(--accent);
+  background:rgba(255,255,255,0.12);
+  box-shadow:0 0 0 4px var(--accent-dim), 0 4px 20px var(--accent-glow);
+  transform:translateY(-2px);
+}
+
+.profile-content input:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+  background:rgba(255,255,255,0.03);
+}
+
+.btn-group{
+  display:flex;
+  gap:16px;
+  margin-top:32px;
+}
+
+.btn{
+  flex:1;
+  padding:14px 28px;
+  border:none;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  letter-spacing:0.3px;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+  color:#000;
+  box-shadow:0 6px 24px var(--accent-glow);
+}
+
+.btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 32px var(--accent-glow);
+}
+
+.btn-primary:active{
+  transform:translateY(-1px);
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.2);
+  color:var(--text);
+}
+
+.btn-secondary:hover{
+  background:rgba(255,255,255,0.15);
+  transform:translateY(-2px);
+}
+
+@media(max-width:968px){
+  header{top:8px;padding:0 16px}
+  .header-glass{padding:0 20px;border-radius:16px}
+  .mobile-menu-btn{display:block}
+  nav{display:none}
+  .hero{padding:80px 0 60px}
+  h1{font-size:42px}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+  .profile-content{padding:32px 24px;margin:40px 16px}
+}
 
     @media(max-width:968px){
       header{top:8px;padding:0 16px}
@@ -330,8 +1051,8 @@
     }
   </style>
 </head>
-<body>
 
+<body>
   <!-- GLASSMORPHISM HEADER -->
   <header>
     <div class="header-glass">
@@ -341,13 +1062,14 @@
           <span>ValQMS</span>
         </a>
         
-        <nav id="mainNav">
-          <a href="#tools">Tools</a>
-          <a href="#qms">QMS Modules</a>
-          <a href="#QMS Procedures">QMS Procedures</a>
-          <a href="#resources">Resources</a>
-          <a href="#about">About</a>
-        </nav>
+    <nav id="mainNav">
+      <a href="#tools">Smart Tools</a>
+      <a href="#qms">QMS Applications</a>
+      <a href="#QMS Procedures">QMS Procedures</a>
+      <a href="#validation">GxP Validation & Project Managmement</a>
+      <a href="#resources">Resources</a>
+      <a href="#about">About</a>
+    </nav>
 
         <div class="header-controls">
           <!-- Background Selector -->
@@ -361,6 +1083,14 @@
               <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark Mode</span></div>
               <div class="bg-option" data-bg="blobs"><div class="bg-preview blobs"></div><span>Blob Motion</span></div>
               <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
+              <div class="bg-option" data-bg="aurora"><div class="bg-preview aurora"></div><span>Aurora Light</span></div>
+              <div class="bg-option" data-bg="sunset"><div class="bg-preview sunset"></div><span>Sunset Glow</span></div>
+              <div class="bg-option" data-bg="ocean"><div class="bg-preview ocean"></div><span>Ocean Breeze</span></div>
+              <div class="bg-option" data-bg="mint"><div class="bg-preview mint"></div><span>Mint Fresh</span></div>
+              <div class="bg-option" data-bg="pearl"><div class="bg-preview pearl"></div><span>Pearl Gold</span></div>
+              <div class="bg-option" data-bg="lavender"><div class="bg-preview lavender"></div><span>Lavender Dream</span></div>
+              <div class="bg-option" data-bg="cosmic"><div class="bg-preview cosmic"></div><span>Cosmic Dark</span></div>
+              <div class="bg-option" data-bg="neon"><div class="bg-preview neon"></div><span>Neon Nights</span></div>
             </div>
           </div>
 
@@ -388,14 +1118,14 @@
 
           <a class="btn-login" href="login.html" id="loginLink">Login</a>
 
-<!-- User Menu -->
-<div id="userMenu" class="user-menu">
-  <div id="userBadge" class="user-badge">U</div>
-  <div id="userDropdown" class="user-dropdown">
-    <button id="profileBtn">👤 My Profile</button>
-    <button id="logoutBtn">🚪 Logout</button>
-  </div>
-</div>
+    <!-- User Menu -->
+    <div id="userMenu" class="user-menu">
+      <div id="userBadge" class="user-badge">U</div>
+      <div id="userDropdown" class="user-dropdown">
+        <button id="profileBtn">👤 My Profile</button>
+        <button id="logoutBtn">🚪 Logout</button>
+      </div>
+    </div>
 
           <!-- Mobile Menu Button -->
           <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
@@ -412,17 +1142,15 @@
         <h1>Simplify Validation.<br>Strengthen Quality.<br>Accelerate Compliance.</h1>
         <p class="lead">ValQMS empowers Life Sciences organizations with various tools which aid in validation, automation, and regulatory compliance.</p>
         <div class="cta-group">
-          <a href="#tools" class="cta"><span>Explore Tools</span><span>→</span></a>
-          <a href="#resources" class="cta cta-secondary"><span>Regulatory Updates</span></a>
         </div>
       </div>
     </section>
 
-    <!-- Tools -->
+    <!-- Smart Tools -->
     <section id="tools">
       <div class="container">
         <div class="section-head">
-          <h2>Automation Tools</h2>
+          <h2>Smart Tools</h2>
           <p>Smart, compliant, and production-ready tools for validation documentation</p>
         </div>
         <div class="tools-scroll-wrapper">
@@ -433,64 +1161,96 @@
             <a href="AdvancedUserAcessMatrixTool.html" class="tool-item"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p></div><div class="tool-arrow">→</div></a>
             <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p></div><div class="tool-arrow">→</div></a>
             <a href="AdvancedRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p></div><div class="tool-arrow">→</div></a>
-
           </div>
         </div>
       </div>
     </section>
 
-<!-- QMS Modules -->
+<!-- QMS Applications -->
 <section id="qms">
   <div class="container">
     <div class="section-head">
-      <h2>Quality Management System Modules</h2>
-      <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
+      <h2>Quality Management System Applications</h2>
+      <p>Interactive pharmaceutical QMS applications aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
     </div>
 
-    <div class="qms-grid">
-      <a href="change-management.html" style="text-decoration:none; color:inherit;">
-        <div class="module-card">
-          <h4>📋 Change Control</h4>
-          <p>Manage pharmaceutical change requests with full GMP compliance</p>
+    <div class="app-grid">
+      <a href="change-management.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
         </div>
+        <h4>Change Control</h4>
+        <p>Manage pharmaceutical change requests with full GMP compliance</p>
+        <div class="app-badge">Application</div>
+      </a>
+
+      <a href="capa-tool.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+          </svg>
+        </div>
+        <h4>CAPA</h4>
+        <p>Plan, execute, and track corrective and preventive actions systematically</p>
+        <div class="app-badge">Application</div>
+      </a>
+
+      <a href="riskassessment-tool.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3v18h18"/>
+            <path d="M7 16l4-4 4 4 6-6"/>
+          </svg>
+        </div>
+        <h4>Risk Assessment</h4>
+        <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
+        <div class="app-badge">Application</div>
+      </a>
+
+      <a href="audit-inspection-tool.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #14b8a6, #2dd4bf);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </div>
+        <h4>Audit & Inspection</h4>
+        <p>Digital audit trails and inspection readiness with full documentation</p>
+        <div class="app-badge">Application</div>
+      </a>
+
+      <a href="training-tool.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+            <path d="M12 14l6.16-3.422A12 12 0 0121 14.667V18a2 2 0 01-2 2H5a2 2 0 01-2-2v-3.333a12 12 0 012.84-7.089L12 14z"/>
+          </svg>
+        </div>
+        <h4>Training</h4>
+        <p>Ensure training effectiveness tied to system and process changes</p>
+        <div class="app-badge">Application</div>
+      </a>
+
+      <a href="non-conformance-tool.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <h4>Non-Conformance</h4>
+        <p>Track and manage quality deviations and non-conforming products</p>
+        <div class="app-badge">Application</div>
       </a>
       
-      <a href="deviation-management.html" style="text-decoration:none; color:inherit;">
-        <div class="module-card">
-          <h4>📊 Deviation Management</h4>
-          <p>Record, analyze, and close deviations efficiently with root cause analysis</p>
-        </div>
-      </a>
-
-      <a href="capa-management.html" style="text-decoration:none; color:inherit;">
-        <div class="module-card">
-          <h4>🎯 CAPA Management</h4>
-          <p>Plan, execute, and track corrective and preventive actions systematically</p>
-        </div>
-      </a>
-
-      <a href="risk-management.html" style="text-decoration:none; color:inherit;">
-        <div class="module-card">
-          <h4>⚠️ Risk Management</h4>
-          <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
-        </div>
-      </a>
-
-      <a href="audit-inspection.html" style="text-decoration:none; color:inherit;">
-        <div class="module-card">
-          <h4>🔍 Audit & Inspection</h4>
-          <p>Digital audit trails and inspection readiness with full documentation</p>
-        </div>
-      </a>
-
-      <a href="training-management.html" style="text-decoration:none; color:inherit;">
-        <div class="module-card">
-          <h4>🎓 Training Management</h4>
-          <p>Ensure training effectiveness tied to system and process changes</p>
-        </div>
-      </a>
     </div>
-
+  </div>
 </section>
 
 <!-- QMS Procedures -->
@@ -500,103 +1260,100 @@
       <h2>Quality Management Procedures</h2>
       <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
     </div>
-
+    
     <div class="qms-grid">
-      <div class="module-card">
-        <h4>📋 Change Control</h4>
+      <div class="module-card" onclick="window.location.href='change-control-sop_2.html'" style="cursor: pointer;">
+        <h4>📋 Change Control SOP</h4>
         <p>Manage pharmaceutical change requests with full GMP compliance</p>
       </div>
-
-      <div class="module-card">
-        <h4>📊 Deviation Management</h4>
+      
+      <div class="module-card" onclick="window.location.href='deviation-management-sop.html'" style="cursor: pointer;">
+        <h4>📊 Deviation Management SOP</h4>
         <p>Record, analyze, and close deviations efficiently with root cause analysis</p>
       </div>
-
-      <div class="module-card">
-        <h4>🎯 CAPA Management</h4>
+     
+      <div class="module-card" onclick="window.location.href='capa-management-sop.html'" style="cursor: pointer;">
+        <h4>🎯 CAPA Management SOP</h4>
         <p>Plan, execute, and track corrective and preventive actions systematically</p>
       </div>
 
-      <div class="module-card">
-        <h4>⚠️ Risk Management</h4>
+      <div class="module-card" onclick="window.location.href='risk-management-sop.html'" style="cursor: pointer;">
+        <h4>⚠️ Risk Management SOP</h4>
         <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
       </div>
 
-      <div class="module-card">
+      <div class="module-card" onclick="window.location.href='audit-inspection-sop.html'" style="cursor: pointer;">
         <h4>🔍 Audit & Inspection</h4>
         <p>Digital audit trails and inspection readiness with full documentation</p>
       </div>
-
-      <div class="module-card">
-        <h4>🎓 Training Management</h4>
+      
+      <div class="module-card" onclick="window.location.href='Training-management-sop.html'" style="cursor: pointer;">
+        <h4>🎓 Training Management SOP</h4>
         <p>Ensure training effectiveness tied to system and process changes</p>
       </div>
-
-      <div class="module-card">
-        <h4>📄 Document Control</h4>
+      
+      <div class="module-card" onclick="window.location.href='document-management-sop.html'" style="cursor: pointer;">
+        <h4>📄 Document Management SOP</h4>
         <p>Manage creation, approval, distribution, revision, and retirement of QMS documents with version control</p>
       </div>
-
-      <div class="module-card">
-        <h4>📞 Complaint Management</h4>
+      
+      <div class="module-card" onclick="window.location.href='complaint-management-sop.html'" style="cursor: pointer;">
+        <h4>📞 Complaint Management SOP</h4>
         <p>Capture, log, investigate, and resolve customer complaints with trending analysis</p>
       </div>
-
-      <div class="module-card">
-        <h4>🏭 Supplier Management</h4>
+      
+      <div class="module-card" onclick="window.location.href='supplier-management-sop.html'" style="cursor: pointer;">
+        <h4>🏭 Supplier Management SOP</h4>
         <p>Qualify suppliers, monitor performance, and enforce quality agreements</p>
       </div>
-
-      <div class="module-card">
-        <h4>⚙️ Equipment Management</h4>
-        <p>Calibration, preventive maintenance, and qualification (IQ/OQ/PQ) for compliant production</p>
-      </div>
-
-      <div class="module-card">
-        <h4>🔄 Product Lifecycle Management</h4>
+      
+      <div class="module-card" onclick="window.location.href='productlifecycle-management-sop.html'" style="cursor: pointer;">
+        <h4>🔄 Product Lifecycle Management SOP</h4>
         <p>Oversee product flow from concept to distribution with batch review and QC testing</p>
       </div>
-
-      <div class="module-card">
-        <h4>📈 Management Review</h4>
-        <p>Conduct structured evaluations of QMS metrics and drive continual improvement</p>
-      </div>
-
-      <div class="module-card">
-        <h4>📦 Batch Record Management</h4>
-        <p>Maintain complete batch documentation and ensure GMP compliance</p>
-      </div>
-
-      <div class="module-card">
-        <h4>✅ Validation Management</h4>
+                 
+      <div class="module-card" onclick="window.location.href='validation-management-sop.html'" style="cursor: pointer;">
+        <h4>✅ Validation Management SOP</h4>
         <p>Execute IQ/OQ/PQ protocols and maintain validation lifecycle documentation</p>
       </div>
-
-      <div class="module-card">
-        <h4>❌ Non-Conformance Management</h4>
+      
+      <div class="module-card" onclick="window.location.href='Non-Conformance-management-sop.html'" style="cursor: pointer;">
+        <h4>❌ Non-Conformance Management SOP</h4>
         <p>Document, investigate, and resolve product and process non-conformances</p>
       </div>
-
-      <div class="module-card">
-        <h4>📋 Quality Planning</h4>
-        <p>Establish quality objectives, KPIs, and strategic quality initiatives</p>
-      </div>
-
-      <div class="module-card">
-        <h4>🧪 Laboratory Management</h4>
-        <p>Control testing, OOS investigations, method validation, and lab documentation</p>
-      </div>
-
-      <div class="module-card">
-        <h4>🌡️ Environmental Monitoring</h4>
-        <p>Track environmental conditions in manufacturing areas and ensure compliance</p>
-      </div>
+              
     </div>
   </div>
 </section>
 
 
+<!-- GxP Validation & Project Management -->
 
+<section id="validation">
+  <div class="container">
+    <div class="section-head">
+      <h2>GxP Validation & Project Management</h2>
+      <p>Manage validation and compliance projects with Agile, Waterfall, and Hybrid methodologies</p>
+    </div>
+
+        <div class="qms-grid" style="gap: 24px; margin-top: 0;">
+
+   
+      <div class="module-card" onclick="window.location.href='GxP Validation & Project Management Tool.html'" style="cursor: pointer;">
+        <h4>💻 End-to_end Validation & Project Managment</h4>
+        <p>Complete lifecycle validation for GxP computerized systems per FDA 21 CFR Part 11</p>
+      </div>
+                     
+     
+     <!-- <div class="module-card" onclick="window.location.href='RTMtool.html'" style="cursor: pointer;">
+        <h4>📊 Traceability Matrix</h4>
+        <p>Auto-link requirements to specifications, test scripts, and execution results with full audit trail</p>
+      </div> -->
+      
+    </div>
+    </div>
+  </div>
+</section>
 
     <!-- Resources -->
     <section id="resources">
@@ -633,22 +1390,22 @@
               <li>🌐 <a href="https://www.fda.gov/news-events/fda-newsroom" target="_blank">FDA Newsroom - Latest Updates</a></li>
               <li>🌐 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents" target="_blank">FDA Guidance Documents</a></li>
               <li>🌐 <a href="https://www.ema.europa.eu/en/news-events" target="_blank">EMA News & Events</a></li>
-  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines" target="_blank">EMA Scientific Guidelines</a></li>
-  <li>🌐 <a href="https://www.ich.org/page/news" target="_blank">ICH News & Updates</a></li>
-  <li>🌐 <a href="https://www.who.int/news-room" target="_blank">WHO News Room</a></li>
-  <li>🌐 <a href="https://www.picscheme.org/en/news" target="_blank">PIC/S News & Updates</a></li>
-  <li>🌐 <a href="https://www.fda.gov/drugs/drug-approvals-and-databases/drug-safety-communications" target="_blank">FDA Drug Safety Communications</a></li>
-  <li>🌐 <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/medical-device-recalls" target="_blank">FDA Medical Device Recalls</a></li>
-  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/pharmacovigilance" target="_blank">EMA Pharmacovigilance Updates</a></li>
-  <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters</a></li>
-  <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities" target="_blank">FDA Compliance Actions</a></li>
-  <li>🌐 <a href="https://www.ema.europa.eu/en/news-events/regulatory-updates" target="_blank">EMA Regulatory Updates</a></li>
-  <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/applications-submissions/guidance-documents.html" target="_blank">Health Canada Guidance</a></li>
-  <li>🌐 <a href="https://www.mhra.gov.uk/news-and-events/" target="_blank">MHRA News & Publications</a></li>
-  <li>🌐 <a href="https://www.tga.gov.au/news-and-events" target="_blank">TGA (Australia) News</a></li>
-  <li>🌐 <a href="https://www.pmda.go.jp/english/index.html" target="_blank">PMDA (Japan) Updates</a></li>
-  <li>🌐 <a href="https://cdsco.gov.in/opencms/opencms/en/Home/" target="_blank">CDSCO (India) - Central Drugs Standard Control</a></li>
-  <li>🌐 <a href="https://www.nmpa.gov.cn/en/" target="_blank">NMPA (China) News</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines" target="_blank">EMA Scientific Guidelines</a></li>
+              <li>🌐 <a href="https://www.ich.org/page/news" target="_blank">ICH News & Updates</a></li>
+              <li>🌐 <a href="https://www.who.int/news-room" target="_blank">WHO News Room</a></li>
+              <li>🌐 <a href="https://www.picscheme.org/en/news" target="_blank">PIC/S News & Updates</a></li>
+              <li>🌐 <a href="https://www.fda.gov/drugs/drug-approvals-and-databases/drug-safety-communications" target="_blank">FDA Drug Safety Communications</a></li>
+              <li>🌐 <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/medical-device-recalls" target="_blank">FDA Medical Device Recalls</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/pharmacovigilance" target="_blank">EMA Pharmacovigilance Updates</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities" target="_blank">FDA Compliance Actions</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu/en/news-events/regulatory-updates" target="_blank">EMA Regulatory Updates</a></li>
+              <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/applications-submissions/guidance-documents.html" target="_blank">Health Canada Guidance</a></li>
+              <li>🌐 <a href="https://www.mhra.gov.uk/news-and-events/" target="_blank">MHRA News & Publications</a></li>
+              <li>🌐 <a href="https://www.tga.gov.au/news-and-events" target="_blank">TGA (Australia) News</a></li>
+              <li>🌐 <a href="https://www.pmda.go.jp/english/index.html" target="_blank">PMDA (Japan) Updates</a></li>
+              <li>🌐 <a href="https://cdsco.gov.in/opencms/opencms/en/Home/" target="_blank">CDSCO (India) - Central Drugs Standard Control</a></li>
+              <li>🌐 <a href="https://www.nmpa.gov.cn/en/" target="_blank">NMPA (China) News</a></li>
             </ul>
           </div>
           <div class="resource-card">
@@ -659,26 +1416,26 @@
               <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-reports" target="_blank">FDA Establishment Inspection Reports (EIRs)</a></li>
               <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters Database</a></li>
               <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters" target="_blank">FDA Recent Warning Letters</a></li>
-  <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/untitled-letters" target="_blank">FDA Untitled Letters</a></li>
-  <li>🌐 <a href="https://www.accessdata.fda.gov/scripts/cder/clia/index.cfm" target="_blank">FDA Clinical Laboratory Improvement Amendments (CLIA)</a></li>
-  <li>🌐 <a href="https://datadashboard.fda.gov/ora/firmssearch.htm" target="_blank">FDA Inspection Classifications Database</a></li>
-  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/compliance/good-manufacturing-practice/inspection-database" target="_blank">EMA GMP Inspection Database</a></li>
-  <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/compliance/non-compliance" target="_blank">EMA Non-Compliance Reports</a></li>
-  <li>🌐 <a href="https://www.picscheme.org/en/inspection-reliance" target="_blank">PIC/S Inspection Reliance Database</a></li>
-  <li>🌐 <a href="https://www.mhra.gov.uk/inspection-and-enforcement/" target="_blank">MHRA Inspection Reports</a></li>
-  <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/inspections.html" target="_blank">Health Canada Inspection Reports</a></li>
-  <li>🌐 <a href="https://www.tga.gov.au/compliance-action" target="_blank">TGA Compliance Actions</a></li>
-  <li>🌐 <a href="https://www.who.int/teams/regulation-prequalification/inspection" target="_blank">WHO Inspection Reports</a></li>
-  <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/fda-warning-letters" target="_blank">GMP Compliance - FDA Warning Letters Analysis</a></li>
-   <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/responding-form-fda-483" target="_blank">FDA - Responding to Form 483</a></li>
-  <li>🌐 <a href="https://www.raps.org/news-and-articles/news-articles/how-to-respond-to-fda-warning-letter" target="_blank">RAPS - How to Respond to Warning Letters</a></li>
-  <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/warning-letter-response" target="_blank">GMP Compliance - Warning Letter Response Guide</a></li>
-  <li>🌐 <a href="https://www.ispe.org/pharmaceutical-engineering/ispeak/inspection-readiness-and-response" target="_blank">ISPE - Inspection Readiness & Response</a></li>
-  <li>🌐 <a href="https://www.pda.org/resources/regulatory-resources/inspection-remediation" target="_blank">PDA - Inspection & Remediation Resources</a></li>
-  <li>🌐 <a href="https://www.fda.gov/drugs/pharmaceutical-quality-resources/facts-about-current-good-manufacturing-practices-cgmps" target="_blank">FDA CGMP Change Control Findings</a></li>
-  <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/change-control" target="_blank">GMP Compliance - Change Control Violations</a></li>
-  <li>🌐 <a href="https://www.pharmaceutical-technology.com/features/change-control-common-inspection-findings/" target="_blank">Pharma Tech - Change Control Inspection Findings</a></li>
-  <li>🌐 <a href="https://www.in-pharmatechnologist.com/Article/Common-change-control-deficiencies-in-pharma" target="_blank">In-Pharma - Change Control Deficiencies</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/untitled-letters" target="_blank">FDA Untitled Letters</a></li>
+              <li>🌐 <a href="https://www.accessdata.fda.gov/scripts/cder/clia/index.cfm" target="_blank">FDA Clinical Laboratory Improvement Amendments (CLIA)</a></li>
+              <li>🌐 <a href="https://datadashboard.fda.gov/ora/firmssearch.htm" target="_blank">FDA Inspection Classifications Database</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/compliance/good-manufacturing-practice/inspection-database" target="_blank">EMA GMP Inspection Database</a></li>
+              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/compliance/non-compliance" target="_blank">EMA Non-Compliance Reports</a></li>
+              <li>🌐 <a href="https://www.picscheme.org/en/inspection-reliance" target="_blank">PIC/S Inspection Reliance Database</a></li>
+              <li>🌐 <a href="https://www.mhra.gov.uk/inspection-and-enforcement/" target="_blank">MHRA Inspection Reports</a></li>
+              <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/inspections.html" target="_blank">Health Canada Inspection Reports</a></li>
+              <li>🌐 <a href="https://www.tga.gov.au/compliance-action" target="_blank">TGA Compliance Actions</a></li>
+              <li>🌐 <a href="https://www.who.int/teams/regulation-prequalification/inspection" target="_blank">WHO Inspection Reports</a></li>
+              <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/fda-warning-letters" target="_blank">GMP Compliance - FDA Warning Letters Analysis</a></li>
+              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/responding-form-fda-483" target="_blank">FDA - Responding to Form 483</a></li>
+              <li>🌐 <a href="https://www.raps.org/news-and-articles/news-articles/how-to-respond-to-fda-warning-letter" target="_blank">RAPS - How to Respond to Warning Letters</a></li>
+              <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/warning-letter-response" target="_blank">GMP Compliance - Warning Letter Response Guide</a></li>
+              <li>🌐 <a href="https://www.ispe.org/pharmaceutical-engineering/ispeak/inspection-readiness-and-response" target="_blank">ISPE - Inspection Readiness & Response</a></li>
+              <li>🌐 <a href="https://www.pda.org/resources/regulatory-resources/inspection-remediation" target="_blank">PDA - Inspection & Remediation Resources</a></li>
+              <li>🌐 <a href="https://www.fda.gov/drugs/pharmaceutical-quality-resources/facts-about-current-good-manufacturing-practices-cgmps" target="_blank">FDA CGMP Change Control Findings</a></li>
+              <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/change-control" target="_blank">GMP Compliance - Change Control Violations</a></li>
+              <li>🌐 <a href="https://www.pharmaceutical-technology.com/features/change-control-common-inspection-findings/" target="_blank">Pharma Tech - Change Control Inspection Findings</a></li>
+              <li>🌐 <a href="https://www.in-pharmatechnologist.com/Article/Common-change-control-deficiencies-in-pharma" target="_blank">In-Pharma - Change Control Deficiencies</a></li>
             </ul>
           </div>
         </div>
@@ -713,15 +1470,16 @@
             </a>
             <p>Empowering Life Sciences organizations with browser-native advanced tools for validation, automation, and regulatory compliance.</p>
           </div>
-          <div class="footer-col">
-            <h5>Product</h5>
-            <ul>
-              <li><a href="#tools">Tools</a></li>
-              <li><a href="#qms">QMS</a></li>
-              <li><a href="qms-procedures">QMS Procedures</a></li>
-              <li><a href="#resources">Resources</a></li>
-            </ul>
-          </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#tools">Smart Tools</a></li>
+          <li><a href="#qms">QMS</a></li>
+          <li><a href="#qms-procedures">QMS Procedures</a></li>
+          <li><a href="#validation">Validation</a></li>
+          <li><a href="#resources">Resources</a></li>
+        </ul>
+      </div>
           <div class="footer-col">
             <h5>Company</h5>
             <ul>
@@ -744,44 +1502,48 @@
         <div class="footer-bottom">
           <p>© 2025 ValQMS. Built with ❤️ by validation experts</p>
           <div class="footer-socials">
-            <a href="#" title="Twitter">𝕏</a>
+           <!-- <a href="#" title="Twitter">𝕏</a> -->
             <a href="#" title="LinkedIn">in</a>
-            <a href="#" title="GitHub">{ }</a>
+           <!-- <a href="#" title="GitHub">{ }</a> -->
           </div>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Profile Panel -->
-  <div id="profilePanel">
-    <div class="profile-content">
-      <button class="close-btn" id="closeProfileBtn">×</button>
-      
+<!-- Profile Panel -->
+<div id="profilePanel">
+  <div class="profile-content">
+    <button class="close-btn" id="closeProfileBtn">×</button>
+    
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar">NK</div>
       <h2>My Profile</h2>
-      <p id="profileMsg"></p>
-      
-      <div>
-        <label>Full Name</label>
-        <input id="pf_full_name" type="text" placeholder="Your full name">
-      </div>
-      
-      <div>
-        <label>Email</label>
-        <input id="pf_email" type="email" placeholder="you@company.com" disabled>
-      </div>
-      
-      <div>
-        <label>Mobile Number</label>
-        <input id="pf_phone" type="tel" placeholder="XX-XXXXXXXXXX">
-      </div>
-      
-      <div class="btn-group">
-        <button id="saveProfileBtn" class="btn btn-primary">Save Changes</button>
-        <button class="btn btn-secondary" onclick="document.getElementById('profilePanel').style.display='none'">Close</button>
-      </div>
+    </div>
+    
+    <div id="profileMsg"></div>
+    
+    <div>
+      <label>Full Name</label>
+      <input id="pf_full_name" type="text" placeholder="Your full name">
+    </div>
+    
+    <div>
+      <label>Email</label>
+      <input id="pf_email" type="email" placeholder="you@company.com" disabled>
+    </div>
+    
+    <div>
+      <label>Mobile Number</label>
+      <input id="pf_phone" type="tel" placeholder="+91-XXXXXXXXXX">
+    </div>
+    
+    <div class="btn-group">
+      <button id="saveProfileBtn" class="btn btn-primary">Save Changes</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('profilePanel').style.display='none'">Cancel</button>
     </div>
   </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script type="module">
@@ -843,12 +1605,14 @@
   const themeBtn = document.getElementById('themeBtn');
   const themeDropdown = document.getElementById('themeDropdown');
 
-  if (bgBtn && bgDropdown) {
-    bgBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      bgDropdown.classList.toggle('active');
-      if (themeDropdown) themeDropdown.classList.remove('active');
-    });
+if (bgBtn && bgDropdown) {
+  bgBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (themeDropdown) {
+      themeDropdown.classList.remove('active');
+    }
+    bgDropdown.classList.toggle('active');
+  });
 
     document.querySelectorAll('.bg-option').forEach(opt => {
       opt.addEventListener('click', () => {
@@ -860,35 +1624,41 @@
     });
   }
 
-  // Theme selector
-  if (themeBtn && themeDropdown) {
-    themeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      themeDropdown.classList.toggle('active');
-      if (bgDropdown) bgDropdown.classList.remove('active');
-    });
-
-    document.querySelectorAll('.theme-option').forEach(opt => {
-      opt.addEventListener('click', () => {
-        const theme = opt.dataset.theme;
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('valqmsTheme', theme);
-        themeDropdown.classList.remove('active');
-      });
-    });
-  }
-
-  // Close dropdowns on outside click
-  document.addEventListener('click', () => {
-    if (bgDropdown) bgDropdown.classList.remove('active');
-    if (themeDropdown) themeDropdown.classList.remove('active');
-    const userDropdown = document.getElementById('userDropdown');
-    if (userDropdown) userDropdown.classList.remove('active');
+// Theme selector
+if (themeBtn && themeDropdown) {
+  themeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Close background dropdown if it's open
+    if (bgDropdown) {
+      bgDropdown.classList.remove('active');
+    }
+    // Toggle theme dropdown
+    themeDropdown.classList.toggle('active');
   });
 
-  // Prevent dropdown close when clicking inside
-  if (bgDropdown) bgDropdown.addEventListener('click', e => e.stopPropagation());
-  if (themeDropdown) themeDropdown.addEventListener('click', e => e.stopPropagation());
+  document.querySelectorAll('.theme-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const theme = opt.dataset.theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('valqmsTheme', theme);
+      themeDropdown.classList.remove('active');
+    });
+  });
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', () => {
+  if (bgDropdown) bgDropdown.classList.remove('active');
+  if (themeDropdown) themeDropdown.classList.remove('active');
+});
+
+// Prevent dropdown close when clicking inside
+if (bgDropdown) {
+  bgDropdown.addEventListener('click', (e) => e.stopPropagation());
+}
+if (themeDropdown) {
+  themeDropdown.addEventListener('click', (e) => e.stopPropagation());
+}
 
   // User menu setup
   const loginLink = document.getElementById('loginLink');
@@ -1047,6 +1817,12 @@
       if (fullNameInput) fullNameInput.value = profileData.full_name || '';
       if (emailInput) emailInput.value = profileData.email || user.email;
       if (phoneInput) phoneInput.value = profileData.phone || '';
+
+      // Update avatar
+      const profileAvatar = document.getElementById('profileAvatar');
+      if (profileAvatar && profileData.full_name) {
+        profileAvatar.textContent = getInitials(profileData.full_name);
+      }
 
       profileMsg.textContent = '';
     } catch (error) {

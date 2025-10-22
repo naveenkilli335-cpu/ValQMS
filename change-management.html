@@ -85,6 +85,44 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 .toast.show{transform:translateY(0);opacity:1}
 .toast.error{background:#ef4444;color:#fff}
 @media(max-width:768px){.charts-grid{grid-template-columns:1fr}.workflow-progress{flex-wrap:wrap;gap:20px}}
+
+/* Theme Colors */
+[data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.15);--accent-glow:rgba(16,185,129,0.4)}
+[data-theme="blue"]{--accent:#3b82f6;--accent-bright:#60a5fa;--accent-dim:rgba(59,130,246,0.15);--accent-glow:rgba(59,130,246,0.4)}
+[data-theme="purple"]{--accent:#8b5cf6;--accent-bright:#a78bfa;--accent-dim:rgba(139,92,246,0.15);--accent-glow:rgba(139,92,246,0.4)}
+[data-theme="orange"]{--accent:#f97316;--accent-bright:#fb923c;--accent-dim:rgba(249,115,22,0.15);--accent-glow:rgba(249,115,22,0.4)}
+
+/* Background Styles */
+[data-bg="mesh"] body{background:#0f172a;position:relative}
+[data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
+[data-bg="gradient"] body{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);position:relative}
+[data-bg="dark"] body{background:#0a0e1a;position:relative}
+[data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
+[data-bg="mesh2"] body{background:#0f172a;position:relative}
+[data-bg="mesh2"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 15% 60%, rgba(255,0,128,0.12), transparent 50%),radial-gradient(circle at 85% 40%, rgba(0,128,255,0.12), transparent 50%),radial-gradient(circle at 50% 90%, rgba(0,255,128,0.1), transparent 50%);animation:mesh2Move 25s ease-in-out infinite alternate;z-index:-1}
+
+@keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
+@keyframes mesh2Move{0%{transform:translate(0,0)}100%{transform:translate(-50px,40px)}}
+
+/* Selector Buttons */
+.bg-selector, .theme-selector{position:relative}
+.bg-btn, .theme-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
+.bg-btn:hover, .theme-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.bg-dropdown, .theme-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:180px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
+.bg-dropdown.active, .theme-dropdown.active{display:block}
+.bg-option, .theme-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;font-weight:500}
+.bg-option:hover, .theme-option:hover{background:var(--surface-hover)}
+.bg-preview, .theme-color{width:28px;height:28px;border-radius:8px;border:2px solid rgba(255,255,255,0.2)}
+.bg-preview.mesh{background:radial-gradient(circle, #10b981 0%, #6366f1 100%)}
+.bg-preview.gradient{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%)}
+.bg-preview.dark{background:#0a0e1a}
+.bg-preview.mesh2{background:radial-gradient(circle, rgba(255,0,128,0.3) 0%, transparent 50%),radial-gradient(circle, rgba(0,255,128,0.3) 0%, transparent 50%)}
+.theme-color.green{background:linear-gradient(135deg,#10b981,#34d399)}
+.theme-color.blue{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.theme-color.purple{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
+.theme-color.orange{background:linear-gradient(135deg,#f97316,#fb923c)}
+
+
 </style>
 </head>
 <body>
@@ -94,11 +132,34 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 <a href="change-management.html" class="logo">📊 Change Control Dashboard</a>
 <nav>
 <a href="change-management.html" class="active">Dashboard</a>
-<a href="#" onclick="showPage('changes')">Change Requests</a>
-<a href="#">Reports</a>
-<a href="#">Settings</a>
+<a href="change-management.html" onclick="alert('Change Requests feature coming soon')">Change Requests</a>
+<a href="change-management.html" onclick="alert('Reports feature coming soon')">Reports</a>
+<a href="change-management.html" onclick="alert('Settings feature coming soon')">Settings</a>
 <span style="color:var(--border);margin:0 8px">|</span>
-<a href="index.html" style="display:flex;align-items:center;gap:6px">
+
+<!-- Background Selector -->
+<div class="bg-selector" style="position:relative">
+  <button class="bg-btn" id="bgBtn" style="padding:8px 14px;font-size:12px" type="button"><span>🎨</span></button>
+  <div class="bg-dropdown" id="bgDropdown">
+    <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh</span></div>
+    <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Gradient</span></div>
+    <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark</span></div>
+    <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
+  </div>
+</div>
+
+<!-- Theme Selector -->
+<div class="theme-selector" style="position:relative">
+  <button class="theme-btn" id="themeBtn" style="padding:8px 14px;font-size:12px" type="button"><span>🎨</span></button>
+  <div class="theme-dropdown" id="themeDropdown">
+    <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
+    <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
+    <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
+    <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
+  </div>
+</div>
+
+<a href="index.html" style="display:flex;align-items:center;gap:6px;text-decoration:none">
 <span style="font-size:16px">🏠</span>
 <span>Home</span>
 </a>
@@ -267,180 +328,402 @@ const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=null;
 let statusChart,priorityChart;
 
+// Check authentication
 (async function checkAuth(){
-const {data:{session}}=await sb.auth.getSession();
-if(!session){window.location.href='login.html';return}
-currentUser=session.user;
-loadDashboard();
+    try {
+        const {data:{session}, error}=await sb.auth.getSession();
+        if(error) throw error;
+        
+        if(!session){
+            console.log('No session found, redirecting to login');
+            window.location.href='login.html';
+            return;
+        }
+        
+        currentUser=session.user;
+        console.log('User authenticated:', currentUser.email);
+        loadDashboard();
+    } catch(err) {
+        console.error('Auth check error:', err);
+        showToast('Authentication error: ' + err.message, 'error');
+        setTimeout(() => window.location.href='login.html', 2000);
+    }
 })();
 
+// Load dashboard data
 async function loadDashboard(){
-showLoading();
-try{
-const {data:changes,error}=await sb.from('change_requests').select('*').order('created_at',{ascending:false});
-if(error)throw error;
-
-document.getElementById('totalChanges').textContent=changes.length;
-document.getElementById('activeChanges').textContent=changes.filter(c=>c.workflow_stage&&!['Draft','Closed','Rejected'].includes(c.workflow_stage)).length;
-document.getElementById('pendingChanges').textContent=changes.filter(c=>c.workflow_stage==='CAB Review').length;
-const thisMonth=changes.filter(c=>c.workflow_stage==='Closed'&&new Date(c.closed_at).getMonth()===new Date().getMonth()).length;
-document.getElementById('completedChanges').textContent=thisMonth;
-
-renderCharts(changes);
-renderRecentChanges(changes.slice(0,5));
-hideLoading();
-}catch(error){
-console.error('Error:',error);
-showToast('Error loading dashboard','error');
-hideLoading();
+    showLoading();
+    try{
+        console.log('Loading dashboard data...');
+        
+        const {data:changes,error}=await sb
+            .from('change_requests')
+            .select('*')
+            .order('created_at',{ascending:false});
+        
+        if(error){
+            console.error('Supabase error:', error);
+            throw error;
+        }
+        
+        console.log('Loaded changes:', changes.length);
+        
+        // Update statistics
+        document.getElementById('totalChanges').textContent=changes.length;
+        
+        const activeChanges = changes.filter(c=>
+            c.workflow_stage && 
+            !['Draft','Closed','Rejected'].includes(c.workflow_stage)
+        );
+        document.getElementById('activeChanges').textContent=activeChanges.length;
+        
+        const pendingChanges = changes.filter(c=>c.workflow_stage==='CAB Review');
+        document.getElementById('pendingChanges').textContent=pendingChanges.length;
+        
+        const thisMonth=new Date().getMonth();
+        const thisYear=new Date().getFullYear();
+        const completedThisMonth = changes.filter(c=>{
+            if(!c.closed_at || c.workflow_stage !== 'Closed') return false;
+            const closedDate = new Date(c.closed_at);
+            return closedDate.getMonth()===thisMonth && closedDate.getFullYear()===thisYear;
+        });
+        document.getElementById('completedChanges').textContent=completedThisMonth.length;
+        
+        // Render charts and table
+        renderCharts(changes);
+        renderRecentChanges(changes.slice(0,10));
+        hideLoading();
+        
+        showToast('Dashboard loaded successfully', 'success');
+    }catch(error){
+        console.error('Dashboard load error:',error);
+        hideLoading();
+        
+        // Show user-friendly error message
+        const container=document.getElementById('changesContainer');
+        container.innerHTML=`
+            <div class="empty-state">
+                <h3>Error Loading Dashboard</h3>
+                <p style="color:var(--text-dim);margin-top:12px">
+                    ${error.message || 'Unable to load change requests'}
+                </p>
+                <p style="color:var(--text-dim);margin-top:8px;font-size:12px">
+                    Please ensure the database table is created and RLS policies are configured.
+                </p>
+                <button class="btn btn-sm" onclick="loadDashboard()" style="margin-top:20px">
+                    Retry
+                </button>
+            </div>
+        `;
+        
+        showToast('Error: ' + (error.message || 'Database connection failed'), 'error');
+    }
 }
-}
 
+// Render charts
 function renderCharts(changes){
-const statusCounts={};
-changes.forEach(c=>{
-const stage=c.workflow_stage||'Draft';
-statusCounts[stage]=(statusCounts[stage]||0)+1;
-});
-
-const priorityCounts={Low:0,Medium:0,High:0,Critical:0};
-changes.forEach(c=>{priorityCounts[c.priority||'Medium']++});
-
-const statusCtx=document.getElementById('statusChart').getContext('2d');
-if(statusChart)statusChart.destroy();
-statusChart=new Chart(statusCtx,{
-type:'bar',
-data:{
-labels:Object.keys(statusCounts),
-datasets:[{
-label:'Changes',
-data:Object.values(statusCounts),
-backgroundColor:'rgba(16,185,129,0.8)',
-borderColor:'#10b981',
-borderWidth:1
-}]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{display:false}},
-scales:{y:{beginAtZero:true,ticks:{color:'#94a3b8'}},x:{ticks:{color:'#94a3b8'}}}
+    if(!changes || changes.length === 0){
+        console.log('No changes to render charts');
+        return;
+    }
+    
+    // Count by status
+    const statusCounts={};
+    changes.forEach(c=>{
+        const stage=c.workflow_stage||'Draft';
+        statusCounts[stage]=(statusCounts[stage]||0)+1;
+    });
+    
+    // Count by priority
+    const priorityCounts={Low:0,Medium:0,High:0,Critical:0};
+    changes.forEach(c=>{
+        const priority = c.priority||'Medium';
+        if(priorityCounts.hasOwnProperty(priority)){
+            priorityCounts[priority]++;
+        }
+    });
+    
+    // Status Chart
+    const statusCtx=document.getElementById('statusChart')?.getContext('2d');
+    if(statusCtx){
+        if(statusChart)statusChart.destroy();
+        statusChart=new Chart(statusCtx,{
+            type:'bar',
+            data:{
+                labels:Object.keys(statusCounts),
+                datasets:[{
+                    label:'Changes',
+                    data:Object.values(statusCounts),
+                    backgroundColor:'rgba(16,185,129,0.8)',
+                    borderColor:'#10b981',
+                    borderWidth:1,
+                    borderRadius:8
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{
+                    legend:{display:false},
+                    tooltip:{
+                        backgroundColor:'rgba(15,23,42,0.9)',
+                        padding:12,
+                        titleColor:'#fff',
+                        bodyColor:'#94a3b8'
+                    }
+                },
+                scales:{
+                    y:{
+                        beginAtZero:true,
+                        ticks:{color:'#94a3b8'},
+                        grid:{color:'rgba(255,255,255,0.05)'}
+                    },
+                    x:{
+                        ticks:{color:'#94a3b8'},
+                        grid:{display:false}
+                    }
+                }
+            }
+        });
+    }
+    
+    // Priority Chart
+    const priorityCtx=document.getElementById('priorityChart')?.getContext('2d');
+    if(priorityCtx){
+        if(priorityChart)priorityChart.destroy();
+        priorityChart=new Chart(priorityCtx,{
+            type:'doughnut',
+            data:{
+                labels:['Low','Medium','High','Critical'],
+                datasets:[{
+                    data:[
+                        priorityCounts.Low,
+                        priorityCounts.Medium,
+                        priorityCounts.High,
+                        priorityCounts.Critical
+                    ],
+                    backgroundColor:['#10b981','#fb923c','#ef4444','#dc2626'],
+                    borderWidth:0
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{
+                    legend:{
+                        position:'right',
+                        labels:{color:'#94a3b8',padding:12}
+                    },
+                    tooltip:{
+                        backgroundColor:'rgba(15,23,42,0.9)',
+                        padding:12
+                    }
+                }
+            }
+        });
+    }
 }
-});
 
-const priorityCtx=document.getElementById('priorityChart').getContext('2d');
-if(priorityChart)priorityChart.destroy();
-priorityChart=new Chart(priorityCtx,{
-type:'doughnut',
-data:{
-labels:['Low','Medium','High','Critical'],
-datasets:[{
-data:[priorityCounts.Low,priorityCounts.Medium,priorityCounts.High,priorityCounts.Critical],
-backgroundColor:['#10b981','#fb923c','#ef4444','#dc2626'],
-borderWidth:0
-}]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{position:'right',labels:{color:'#94a3b8'}}}
-}
-});
-}
-
+// Render recent changes table
 function renderRecentChanges(changes){
-const container=document.getElementById('changesContainer');
-if(changes.length===0){
-container.innerHTML='<div class="empty-state">No changes found</div>';
-return;
-}
-let html='<table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Initiator</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
-changes.forEach(c=>{
-const statusBadge=c.workflow_stage?.toLowerCase().replace(/\s+/g,'-')||'draft';
-html+=`<tr>
-<td><strong>${c.change_number||'PENDING'}</strong></td>
-<td>${c.title}</td>
-<td><span class="badge ${statusBadge}">${c.workflow_stage||'Draft'}</span></td>
-<td><span class="badge ${(c.priority||'medium').toLowerCase()}">${c.priority||'Medium'}</span></td>
-<td>${c.initiator_name||'Unknown'}</td>
-<td>${new Date(c.created_at).toLocaleDateString()}</td>
-<td><button class="btn btn-sm btn-secondary" onclick="viewChange('${c.id}')">View Details</button></td>
-</tr>`;
-});
-html+='</tbody></table>';
-container.innerHTML=html;
+    const container=document.getElementById('changesContainer');
+    
+    if(!changes || changes.length===0){
+        container.innerHTML='<div class="empty-state">No change requests found. Click "New Change Request" to create one.</div>';
+        return;
+    }
+    
+    let html='<table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Initiator</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
+    
+    changes.forEach(c=>{
+        const statusBadge=(c.workflow_stage||'draft').toLowerCase().replace(/\s+/g,'-');
+        const priorityBadge=(c.priority||'medium').toLowerCase();
+        const createdDate = new Date(c.created_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        html+=`<tr>
+            <td><strong>${c.change_number||'PENDING'}</strong></td>
+            <td>${c.title||'Untitled'}</td>
+            <td><span class="badge ${statusBadge}">${c.workflow_stage||'Draft'}</span></td>
+            <td><span class="badge ${priorityBadge}">${c.priority||'Medium'}</span></td>
+            <td>${c.initiator_name||'Unknown'}</td>
+            <td>${createdDate}</td>
+            <td><button class="btn btn-sm btn-secondary" onclick="viewChange('${c.id}')">View</button></td>
+        </tr>`;
+    });
+    
+    html+='</tbody></table>';
+    container.innerHTML=html;
 }
 
+// Form submission
 document.getElementById('newChangeForm').addEventListener('submit',async(e)=>{
-e.preventDefault();
-const formData={
-title:document.getElementById('changeTitle').value,
-description:document.getElementById('changeDescription').value,
-change_type:document.getElementById('changeType').value,
-change_category:document.getElementById('changeCategory').value,
-department:document.getElementById('changeDepartment').value,
-priority:document.getElementById('changePriority').value,
-justification:document.getElementById('justification').value,
-proposed_implementation_date:document.getElementById('proposedDate').value||null,
-initiator_id:currentUser.id,
-initiator_name:currentUser.email.split('@')[0],
-workflow_stage:'Draft',
-status:'Draft',
-created_by:currentUser.id
-};
-try{
-const {data,error}=await sb.from('change_requests').insert([formData]).select().single();
-if(error)throw error;
-showToast('Change request created!','success');
-closeModal('newChangeModal');
-document.getElementById('newChangeForm').reset();
-loadDashboard();
-}catch(error){
-console.error('Error:',error);
-showToast('Error: '+error.message,'error');
-}
+    e.preventDefault();
+    
+    if(!currentUser){
+        showToast('User not authenticated','error');
+        return;
+    }
+    
+    const formData={
+        title:document.getElementById('changeTitle').value.trim(),
+        description:document.getElementById('changeDescription').value.trim(),
+        change_type:document.getElementById('changeType').value,
+        change_category:document.getElementById('changeCategory').value,
+        department:document.getElementById('changeDepartment').value,
+        priority:document.getElementById('changePriority').value,
+        justification:document.getElementById('justification').value.trim(),
+        proposed_implementation_date:document.getElementById('proposedDate').value||null,
+        initiator_id:currentUser.id,
+        initiator_name:currentUser.email.split('@')[0],
+        workflow_stage:'Draft',
+        status:'Draft',
+        created_by:currentUser.id
+    };
+    
+    try{
+        const {data,error}=await sb
+            .from('change_requests')
+            .insert([formData])
+            .select()
+            .single();
+        
+        if(error) throw error;
+        
+        showToast('Change request created successfully!','success');
+        closeModal('newChangeModal');
+        document.getElementById('newChangeForm').reset();
+        loadDashboard();
+    }catch(error){
+        console.error('Create change error:',error);
+        showToast('Error creating change: '+error.message,'error');
+    }
 });
 
+// View change details
 function viewChange(id){
-  window.location.href=`change-details.html?id=${id}`;
+    window.location.href=`change-details.html?id=${id}`;
 }
 
-
-
+// Modal functions
 function openNewChangeModal(){
-document.getElementById('newChangeModal').classList.add('active');
+    document.getElementById('newChangeModal').classList.add('active');
 }
 
 function closeModal(id){
-document.getElementById(id).classList.remove('active');
+    document.getElementById(id).classList.remove('active');
 }
 
+// Loading states
 function showLoading(){
-document.getElementById('loadingState').style.display='flex';
-document.getElementById('changesContainer').style.display='none';
+    const loadingEl = document.getElementById('loadingState');
+    const containerEl = document.getElementById('changesContainer');
+    if(loadingEl) loadingEl.style.display='flex';
+    if(containerEl) containerEl.style.display='none';
 }
 
 function hideLoading(){
-document.getElementById('loadingState').style.display='none';
-document.getElementById('changesContainer').style.display='';
+    const loadingEl = document.getElementById('loadingState');
+    const containerEl = document.getElementById('changesContainer');
+    if(loadingEl) loadingEl.style.display='none';
+    if(containerEl) containerEl.style.display='';
 }
 
+// Toast notifications
 function showToast(message,type='success'){
-const toast=document.getElementById('toast');
-toast.textContent=message;
-toast.className=`toast ${type} show`;
-setTimeout(()=>toast.classList.remove('show'),3000);
+    const toast=document.getElementById('toast');
+    if(!toast) return;
+    
+    toast.textContent=message;
+    toast.className=`toast ${type} show`;
+    
+    setTimeout(()=>{
+        toast.classList.remove('show');
+    },3000);
 }
 
+// Filter by status (placeholder)
 function filterByStatus(status){
-showToast('Filter: '+status,'success');
+    console.log('Filter by status:', status);
+    showToast('Filtering by: '+status,'success');
+    // TODO: Implement actual filtering
 }
 
+// Close modals on backdrop click
 document.querySelectorAll('.modal').forEach(modal=>{
-modal.addEventListener('click',(e)=>{
-if(e.target===modal)modal.classList.remove('active');
+    modal.addEventListener('click',(e)=>{
+        if(e.target===modal){
+            modal.classList.remove('active');
+        }
+    });
 });
-});
+
+// Initialize theme and background from localStorage
+const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+document.documentElement.setAttribute('data-theme', savedTheme);
+document.documentElement.setAttribute('data-bg', savedBg);
+
+// Wait for DOM to be ready
+setTimeout(() => {
+  // Background selector
+  const bgBtn = document.getElementById('bgBtn');
+  const bgDropdown = document.getElementById('bgDropdown');
+  const themeBtn = document.getElementById('themeBtn');
+  const themeDropdown = document.getElementById('themeDropdown');
+
+  if (bgBtn) {
+    bgBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      themeDropdown?.classList.remove('active');
+      bgDropdown.classList.toggle('active');
+    });
+  }
+
+  document.querySelectorAll('.bg-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const bg = opt.dataset.bg;
+      document.documentElement.setAttribute('data-bg', bg);
+      localStorage.setItem('valqmsBg', bg);
+      bgDropdown?.classList.remove('active');
+    });
+  });
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      bgDropdown?.classList.remove('active');
+      themeDropdown.classList.toggle('active');
+    });
+  }
+
+  document.querySelectorAll('.theme-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const theme = opt.dataset.theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('valqmsTheme', theme);
+      themeDropdown?.classList.remove('active');
+    });
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', (e) => {
+    if (e.target !== bgBtn && e.target !== themeBtn && !bgDropdown?.contains(e.target) && !themeDropdown?.contains(e.target)) {
+      bgDropdown?.classList.remove('active');
+      themeDropdown?.classList.remove('active');
+    }
+  });
+
+  bgDropdown?.addEventListener('click', (e) => e.stopPropagation());
+  themeDropdown?.addEventListener('click', (e) => e.stopPropagation());
+}, 100);
+
 </script>
+
 </body>
 </html>

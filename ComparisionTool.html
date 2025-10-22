@@ -388,8 +388,12 @@
       line-height:2;
       font-weight:300;
     }
-    .how-to-content li{margin-bottom:8px}
-    .how-to-content strong{color:var(--text);font-weight:600}
+.how-to-content li {
+  margin-bottom: 8px;
+  font-size: 15px; /* increased from 14px */
+  line-height: 1.8; /* increased from 2 */
+  color: #b4c3d8; /* lighter than current --text-dim */
+}
 
     /* Controls */
     .controls{
@@ -405,13 +409,11 @@
       gap:8px;
     }
 
-    label.small{
-      font-size:13px;
-      color:var(--text-dim);
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-    }
+label.small {
+  font-size: 14px; /* increased from 13px */
+  color: #cbd5e1; /* brighter than --text-dim */
+  font-weight: 600;
+}
 
     input[type=file]{
       padding:12px;

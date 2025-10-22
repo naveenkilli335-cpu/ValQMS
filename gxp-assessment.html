@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green" data-bg="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GxP Assessment - Validation Workflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    [data-theme="green"] { --accent: #10b981; --accent-bright: #34d399; --accent-dim: rgba(16,185,129,0.15); --accent-glow: rgba(16,185,129,0.4); }
+    [data-theme="cyan"] { --accent: #06b6d4; --accent-bright: #22d3ee; --accent-dim: rgba(6,182,212,0.15); --accent-glow: rgba(6,182,212,0.4); }
+    [data-theme="blue"] { --accent: #3b82f6; --accent-bright: #60a5fa; --accent-dim: rgba(59,130,246,0.15); --accent-glow: rgba(59,130,246,0.4); }
+    [data-theme="purple"] { --accent: #8b5cf6; --accent-bright: #a78bfa; --accent-dim: rgba(139,92,246,0.15); --accent-glow: rgba(139,92,246,0.4); }
+    
+    :root {
+      --text: #ffffff;
+      --text-dim: #94a3b8;
+      --surface: rgba(255,255,255,0.05);
+      --surface-hover: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.1);
+      --glass: rgba(255,255,255,0.03);
+    }
+    
+    [data-bg="dark"] body { background: #0a0e1a; }
+    [data-bg="mesh"] body { background: #0f172a; }
+    [data-bg="dots"] body { background: #0a0e27; }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    [data-bg="dark"] body::before {
+      background: radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);
+    }
+    
+    [data-bg="mesh"] body::before {
+      background: radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%);
+      animation: meshMove 15s ease-in-out infinite alternate;
+    }
+    
+    [data-bg="dots"] body::before {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    
+    @keyframes meshMove {
+      0% { transform: scale(1) rotate(0deg); }
+      100% { transform: scale(1.1) rotate(5deg); }
+    }
+    
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+    
+    /* Assessment Card */
+    .assessment-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 32px;
+    }
+    
+    .assessment-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+.assessment-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  background-clip: text;                    /* ✅ Add this line FIRST */
+  -webkit-background-clip: text;            /* Keep this for older browsers */
+  -webkit-text-fill-color: transparent;
+}
+    
+    .assessment-header p {
+      font-size: 16px;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Progress Steps */
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+    
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+    
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-bottom: 8px;
+      transition: all 0.3s;
+    }
+    
+    .progress-step.active .step-circle {
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      border-color: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+    
+    .progress-step.completed .step-circle {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+    }
+    
+    .step-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+    
+    .progress-step.active .step-label {
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    /* Question Card */
+    .question-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      transition: all 0.3s;
+    }
+    
+    .question-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    
+    .question-number {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    
+    .question-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    
+    .question-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    /* Radio Options */
+    .radio-options {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .radio-option {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .radio-option input[type="radio"] {
+      display: none;
+    }
+    
+    .radio-label {
+      display: block;
+      padding: 16px 24px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .radio-label:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+    
+    .radio-option input[type="radio"]:checked + .radio-label {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--text);
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+    
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    
+    .btn {
+      padding: 14px 32px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      color: #000;
+      box-shadow: 0 6px 24px var(--accent-glow);
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px var(--accent-glow);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+    }
+    
+    /* Result Card */
+    .result-card {
+      background: linear-gradient(135deg, var(--accent-dim), rgba(255,255,255,0.03));
+      border: 2px solid var(--accent);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .result-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    
+    .result-title {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    
+    .result-desc {
+      font-size: 16px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+    
+    .result-details {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+      text-align: left;
+    }
+    
+    .result-details h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    
+    .result-details ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .result-details li {
+      padding: 8px 0;
+      color: var(--text-dim);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .result-details li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+    }
+    
+    @media (max-width: 768px) {
+      .radio-options {
+        flex-direction: column;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      .progress-steps {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .progress-steps::before {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Assessment Header -->
+    <div class="assessment-header">
+      <h1>🔍 GxP System Assessment</h1>
+      <p>Determine if your system requires GxP validation based on regulatory requirements and risk assessment</p>
+    </div>
+    
+    
+    <!-- Assessment Questions -->
+    <div id="assessmentQuestions" class="assessment-card">
+      
+      <!-- Question 1 -->
+      <div class="question-card">
+        <div class="question-number">1</div>
+        <div class="question-text">Does this system impact product quality?</div>
+        <div class="question-desc">Systems that directly or indirectly affect the quality, safety, or efficacy of pharmaceutical products</div>
+        <div class="radio-options">
+          <div class="radio-option">
+            <input type="radio" id="q1_yes" name="q1" value="yes">
+            <label for="q1_yes" class="radio-label">✓ Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="q1_no" name="q1" value="no">
+            <label for="q1_no" class="radio-label">✗ No</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question 2 -->
+      <div class="question-card">
+        <div class="question-number">2</div>
+        <div class="question-text">Does this system impact patient safety?</div>
+        <div class="question-desc">Systems used in processes that could affect patient safety if they fail or provide incorrect data</div>
+        <div class="radio-options">
+          <div class="radio-option">
+            <input type="radio" id="q2_yes" name="q2" value="yes">
+            <label for="q2_yes" class="radio-label">✓ Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="q2_no" name="q2" value="no">
+            <label for="q2_no" class="radio-label">✗ No</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question 3 -->
+      <div class="question-card">
+        <div class="question-number">3</div>
+        <div class="question-text">Does this system create or maintain GxP records?</div>
+        <div class="question-desc">Systems that generate, modify, store, or archive electronic records subject to 21 CFR Part 11</div>
+        <div class="radio-options">
+          <div class="radio-option">
+            <input type="radio" id="q3_yes" name="q3" value="yes">
+            <label for="q3_yes" class="radio-label">✓ Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="q3_no" name="q3" value="no">
+            <label for="q3_no" class="radio-label">✗ No</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question 4 -->
+      <div class="question-card">
+        <div class="question-number">4</div>
+        <div class="question-text">Is this system used in regulated GxP processes?</div>
+        <div class="question-desc">Manufacturing, testing, distribution, or any process subject to GMP/GLP/GCP regulations</div>
+        <div class="radio-options">
+          <div class="radio-option">
+            <input type="radio" id="q4_yes" name="q4" value="yes">
+            <label for="q4_yes" class="radio-label">✓ Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="q4_no" name="q4" value="no">
+            <label for="q4_no" class="radio-label">✗ No</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question 5 -->
+      <div class="question-card">
+        <div class="question-number">5</div>
+        <div class="question-text">Does this system perform critical calculations or decisions?</div>
+        <div class="question-desc">Systems that calculate specifications, batch calculations, or make automated quality decisions</div>
+        <div class="radio-options">
+          <div class="radio-option">
+            <input type="radio" id="q5_yes" name="q5" value="yes">
+            <label for="q5_yes" class="radio-label">✓ Yes</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="q5_no" name="q5" value="no">
+            <label for="q5_no" class="radio-label">✗ No</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation Buttons -->
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="window.location.href='index.html'">← Back to Home</button>
+        <button class="btn btn-primary" id="evaluateBtn" onclick="evaluateAssessment()" disabled>Evaluate Assessment →</button>
+      </div>
+    </div>
+    
+    <!-- Result Section (Hidden initially) -->
+    <div id="assessmentResult" style="display: none;">
+      <div class="result-card">
+        <div class="result-icon" id="resultIcon">✅</div>
+        <div class="result-title" id="resultTitle">GxP Critical System</div>
+        <div class="result-desc" id="resultDesc">
+          Based on your responses, this system is classified as GxP-critical and requires full validation according to regulatory guidelines.
+        </div>
+        
+        <div class="result-details" id="resultDetails">
+          <h4>Assessment Summary:</h4>
+          <ul id="resultList"></ul>
+        </div>
+        
+        <div class="btn-group" style="margin-top: 32px;">
+          <button class="btn btn-secondary" onclick="resetAssessment()">← Retake Assessment</button>
+          <button class="btn btn-primary" id="proceedBtn" onclick="proceedToGAMP()">Continue to GAMP Selection →</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Initialize theme
+    const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
+    const savedBg = localStorage.getItem('valqmsBg') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute('data-bg', savedBg);
+    
+    // Initialize Supabase
+    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    let assessmentAnswers = {};
+    
+    // Enable evaluate button when all questions are answered
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        checkAllAnswered();
+      });
+    });
+    
+    function checkAllAnswered() {
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      const q3 = document.querySelector('input[name="q3"]:checked');
+      const q4 = document.querySelector('input[name="q4"]:checked');
+      const q5 = document.querySelector('input[name="q5"]:checked');
+      
+      const evaluateBtn = document.getElementById('evaluateBtn');
+      if (q1 && q2 && q3 && q4 && q5) {
+        evaluateBtn.disabled = false;
+      } else {
+        evaluateBtn.disabled = true;
+      }
+    }
+    
+    async function evaluateAssessment() {
+      // Collect answers
+      assessmentAnswers = {
+        q1_product_quality: document.querySelector('input[name="q1"]:checked')?.value === 'yes',
+        q2_patient_safety: document.querySelector('input[name="q2"]:checked')?.value === 'yes',
+        q3_gxp_records: document.querySelector('input[name="q3"]:checked')?.value === 'yes',
+        q4_gxp_process: document.querySelector('input[name="q4"]:checked')?.value === 'yes',
+        q5_critical_calculations: document.querySelector('input[name="q5"]:checked')?.value === 'yes'
+      };
+      
+      // Calculate score
+      const yesCount = Object.values(assessmentAnswers).filter(v => v === true).length;
+      const isGxP = yesCount >= 2; // If 2 or more "Yes" answers, it's GxP critical
+      
+      // Store result
+      const assessmentResult = {
+        is_gxp_critical: isGxP,
+        yes_count: yesCount,
+        answers: assessmentAnswers,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Store in sessionStorage for next step
+      sessionStorage.setItem('gxpAssessment', JSON.stringify(assessmentResult));
+      
+      // Show result
+      showResult(isGxP, yesCount);
+    }
+    
+function showResult(isGxP, yesCount) {
+    document.getElementById('assessmentQuestions').style.display = 'none';
+    document.getElementById('assessmentResult').style.display = 'block';
+    
+    const resultIcon = document.getElementById('resultIcon');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultDesc = document.getElementById('resultDesc');
+    const resultList = document.getElementById('resultList');
+    const proceedBtn = document.getElementById('proceedBtn');
+    
+    if (isGxP) {
+        resultIcon.textContent = '✅';
+        resultTitle.textContent = 'GxP Critical System';
+        resultDesc.innerHTML = `
+          Based on your responses (<strong>${yesCount} out of 5</strong> critical factors identified), 
+          this system is classified as <strong>GxP-critical</strong> and requires full validation 
+          according to FDA 21 CFR Part 11, EU GMP Annex 11, and GAMP 5 guidelines.
+        `;
+        
+        resultList.innerHTML = `
+          <li>Full Computer System Validation (CSV) required</li>
+          <li>Electronic records must comply with 21 CFR Part 11</li>
+          <li>Risk-based approach per GAMP 5 methodology</li>
+          <li>Comprehensive documentation and testing</li>
+          <li>Change control and periodic review required</li>
+        `;
+        
+        // Change button behavior based on whether it's a popup or standalone
+        if (window.opener && !window.opener.closed) {
+            proceedBtn.textContent = 'Send Result to Form →';
+        } else {
+            proceedBtn.textContent = 'Continue to GAMP Selection →';
+        }
+        
+    } else {
+        resultIcon.textContent = 'ℹ️';
+        resultTitle.textContent = 'Non-GxP System';
+        resultDesc.innerHTML = `
+          Based on your responses (<strong>${yesCount} out of 5</strong> factors), 
+          this system is classified as <strong>non-GxP</strong>. 
+          While full validation may not be required, basic IT controls and documentation are recommended.
+        `;
+        
+        resultList.innerHTML = `
+          <li>Minimal validation documentation required</li>
+          <li>Standard IT security and backup procedures</li>
+          <li>Basic change control and testing</li>
+          <li>User training documentation</li>
+          <li>System maintenance records</li>
+        `;
+        
+        // Change button behavior based on whether it's a popup or standalone
+        if (window.opener && !window.opener.closed) {
+            proceedBtn.textContent = 'Send Result to Form →';
+        } else {
+            proceedBtn.textContent = 'View Minimal Requirements →';
+        }
+    }
+    
+    // Update progress
+    document.getElementById('step1Indicator').classList.add('completed');
+}
+
+    
+    function resetAssessment() {
+      document.getElementById('assessmentQuestions').style.display = 'block';
+      document.getElementById('assessmentResult').style.display = 'none';
+      document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+      document.getElementById('evaluateBtn').disabled = true;
+      document.getElementById('step1Indicator').classList.remove('completed');
+    }
+    
+function proceedToGAMP() {
+    const assessment = JSON.parse(sessionStorage.getItem('gxpAssessment'));
+    
+    // Check if opened from the main tool (as a popup)
+    if (window.opener && !window.opener.closed) {
+        // Send result back to parent window
+        window.opener.postMessage({
+            type: 'gxpAssessmentComplete',
+            result: assessment
+        }, window.location.origin);
+        
+        // Show closing message
+        document.body.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; text-align: center; flex-direction: column; gap: 20px;">
+                <div style="font-size: 48px;">✅</div>
+                <h2>Assessment Complete!</h2>
+                <p style="color: var(--text-dim);">Your GxP classification has been sent to the project form.</p>
+                <p style="color: var(--text-dim); font-size: 14px;">This window will close automatically...</p>
+            </div>
+        `;
+        
+        // Close the popup after 2 seconds
+        setTimeout(() => {
+            window.close();
+        }, 2000);
+    } else {
+        // If not a popup, navigate to GAMP assessment (standalone mode)
+        if (assessment.is_gxp_critical) {
+            window.location.href = 'gamp-category-assessment.html';
+        } else {
+            window.location.href = 'validation-workflow.html?gxp=noncritical';
+        }
+    }
+}
+
+  </script>
+</body>
+</html>

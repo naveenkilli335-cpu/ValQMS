@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOP-QMS-005: Audit & Inspection Management | ValQMS</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+@page {
+    size: A4 portrait;  /* Force portrait */
+    margin: 15mm 15mm 20mm 15mm;  /* top, right, bottom, left */
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10pt;  /* Changed from 11pt */
+    line-height: 1.5;  /* Changed from 1.6 */
+    color: #1a1a1a;
+    background: #f5f5f5;
+    padding: 20px;
+}
+
+        .document-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+.page {
+    background: white;
+    padding: 20mm 20mm;  /* Reduced padding */
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    page-break-after: always;
+    min-height: 257mm;  /* Changed from 297mm to account for padding */
+    max-height: 257mm;  /* Add max-height to prevent overflow */
+    position: relative;
+    overflow: hidden;  /* Add this to clip overflow */
+}
+
+        /* Header */
+        .doc-header {
+            border: 2px solid #14b8a6;
+            padding: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #14b8a6;
+        }
+
+        .company-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .company-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .doc-meta {
+            text-align: right;
+            font-size: 10pt;
+        }
+
+        .doc-meta div {
+            margin: 2px 0;
+        }
+
+        .doc-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .doc-title h1 {
+            font-size: 20pt;
+            font-weight: 800;
+            color: #14b8a6;
+            margin-bottom: 8px;
+        }
+
+        .doc-title h2 {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Footer */
+.doc-footer {
+    position: absolute;
+    bottom: 10mm;  /* Reduced from 15mm */
+    left: 20mm;
+    right: 20mm;
+    border-top: 2px solid #14b8a6;
+    padding-top: 8px;
+    font-size: 8pt;  /* Reduced from 9pt */
+    color: #6b7280;
+    display: flex;
+    justify-content: space-between;
+}
+
+        /* Table of Contents */
+        .toc {
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #14b8a6;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #14b8a6;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px dotted #d1d5db;
+        }
+
+        .toc-item:hover {
+            background: #f9fafb;
+        }
+
+        .toc-number {
+            font-weight: 600;
+            color: #14b8a6;
+            min-width: 50px;
+        }
+
+        .toc-title {
+            flex: 1;
+        }
+
+        .toc-page {
+            font-weight: 600;
+            color: #6b7280;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;  /* Reduced from 20px */
+    font-size: 9pt;  /* Reduced from 10pt */
+}
+
+        table, th, td {
+            border: 1px solid #374151;
+        }
+
+        th {
+            background: #14b8a6;
+            color: white;
+            padding: 12px 10px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Section Headers */
+h3 {
+    font-size: 13pt;  /* Reduced from 14pt */
+    font-weight: 700;
+    color: #14b8a6;
+    margin: 20px 0 12px 0;  /* Reduced margins */
+    padding-bottom: 6px;
+    border-bottom: 2px solid #14b8a6;
+}
+
+h4 {
+    font-size: 11pt;  /* Reduced from 12pt */
+    font-weight: 600;
+    color: #374151;
+    margin: 15px 0 8px 0;  /* Reduced margins */
+}
+
+        /* Lists */
+ul, ol {
+    margin: 10px 0 10px 25px;  /* Reduced margins */
+}
+
+li {
+    margin: 6px 0;  /* Reduced from 8px */
+}
+
+        /* Boxes */
+.info-box, .warning-box, .critical-box {
+    padding: 12px;  /* Reduced from 15px */
+    margin: 15px 0;  /* Reduced from 20px */
+}
+
+        .warning-box {
+            border: 2px solid #f59e0b;
+            background: #fffbeb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box::before {
+            content: "⚠️ IMPORTANT: ";
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .critical-box {
+            border: 2px solid #ef4444;
+            background: #fef2f2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .critical-box::before {
+            content: "🚨 CRITICAL: ";
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        /* Signature Box */
+        .signature-table {
+            margin-top: 40px;
+        }
+
+        .signature-table td {
+            height: 60px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .page {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #14b8a6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #0891b2;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons no-print">
+        <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+        <button onclick="window.print()" class="btn">🖨️ Print / Save PDF</button>
+    </div>
+
+    <div class="document-container">
+        <!-- PAGE 1: COVER PAGE -->
+        <div class="page" data-page="1">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Effective Date:</strong> January 15, 2025</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+                <div class="doc-title">
+                    <h1>STANDARD OPERATING PROCEDURE</h1>
+                    <h2>Audit & Inspection Management</h2>
+                </div>
+            </div>
+
+            <table style="margin-top: 40px;">
+                <tr>
+                    <th colspan="2">Document Information</th>
+                </tr>
+                <tr>
+                    <td style="width: 40%; font-weight: 600;">SOP Number</td>
+                    <td>SOP-QMS-005</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Title</td>
+                    <td>Audit & Inspection Management</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Department</td>
+                    <td>Quality Assurance / Regulatory Affairs</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Version</td>
+                    <td>1.0</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Effective Date</td>
+                    <td>January 15, 2025</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Review Date</td>
+                    <td>January 15, 2027 (Every 2 years)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Supersedes</td>
+                    <td>None (New Document)</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 40px;">Regulatory References</h3>
+            <ul>
+                <li><strong>21 CFR Part 11</strong> - Electronic Records; Electronic Signatures</li>
+                <li><strong>21 CFR Part 211</strong> - Current Good Manufacturing Practice (CGMP)</li>
+                <li><strong>21 CFR Part 820</strong> - Quality System Regulation (Medical Devices)</li>
+                <li><strong>ICH Q10</strong> - Pharmaceutical Quality System</li>
+                <li><strong>ICH Q9</strong> - Quality Risk Management</li>
+                <li><strong>EU GMP Annex 11</strong> - Computerised Systems</li>
+                <li><strong>EU GMP Chapter 1</strong> - Quality Management</li>
+                <li><strong>ISO 9001:2015</strong> - Quality Management Systems</li>
+                <li><strong>ISO 13485:2016</strong> - Medical Devices QMS</li>
+                <li><strong>ISO 19011:2018</strong> - Guidelines for Auditing Management Systems</li>
+                <li><strong>PIC/S Guide</strong> - Good Practices for Computerised Systems</li>
+                <li><strong>FDA Compliance Program 7356.002</strong> - Drug Manufacturing Inspections</li>
+                <li><strong>EMA GMP Inspection Guide</strong></li>
+            </ul>
+
+            <div class="signature-table">
+                <table>
+                    <tr>
+                        <th>Prepared By</th>
+                        <th>Reviewed By</th>
+                        <th>Approved By</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> QA Manager</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> Head of Quality</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> VP Quality & RA</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: VERSION HISTORY & TOC -->
+        <div class="page" data-page="2">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Version History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Version</th>
+                        <th style="width: 18%;">Effective Date</th>
+                        <th style="width: 50%;">Summary of Changes</th>
+                        <th style="width: 20%;">Changed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.0</td>
+                        <td>Jan 15, 2025</td>
+                        <td>Initial release of Audit & Inspection Management SOP. Comprehensive procedures for internal audits, supplier audits, regulatory inspections, and CAPA follow-up.</td>
+                        <td>Head of Quality</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <div class="toc-item">
+                    <span class="toc-number">1.0</span>
+                    <span class="toc-title">Purpose</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">2.0</span>
+                    <span class="toc-title">Scope</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">3.0</span>
+                    <span class="toc-title">Definitions</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">4.0</span>
+                    <span class="toc-title">Responsibilities</span>
+                    <span class="toc-page">4</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">5.0</span>
+                    <span class="toc-title">Audit Types and Classification</span>
+                    <span class="toc-page">5</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">6.0</span>
+                    <span class="toc-title">Internal Audit Program</span>
+                    <span class="toc-page">6</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">7.0</span>
+                    <span class="toc-title">Supplier/Vendor Audits</span>
+                    <span class="toc-page">8</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">8.0</span>
+                    <span class="toc-title">Regulatory Inspection Preparation</span>
+                    <span class="toc-page">9</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">9.0</span>
+                    <span class="toc-title">Managing Regulatory Inspections</span>
+                    <span class="toc-page">10</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">10.0</span>
+                    <span class="toc-title">Observation Management (Form 483/CAPA)</span>
+                    <span class="toc-page">11</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">11.0</span>
+                    <span class="toc-title">Audit/Inspection Documentation</span>
+                    <span class="toc-page">12</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">12.0</span>
+                    <span class="toc-title">Training Requirements</span>
+                    <span class="toc-page">13</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">13.0</span>
+                    <span class="toc-title">References</span>
+                    <span class="toc-page">13</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">14.0</span>
+                    <span class="toc-title">Appendices</span>
+                    <span class="toc-page">14</span>
+                </div>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: PURPOSE, SCOPE, DEFINITIONS -->
+        <div class="page" data-page="3">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.0 PURPOSE</h3>
+            <p>The purpose of this Standard Operating Procedure (SOP) is to establish a comprehensive framework for planning, conducting, documenting, and following up on internal audits, supplier/vendor audits, and regulatory inspections. This procedure ensures systematic evaluation of quality management systems, manufacturing operations, and compliance with applicable GMP regulations, maintaining continuous improvement and regulatory readiness in accordance with FDA 21 CFR Parts 11, 211, 820, ICH Q10, EU GMP, ISO 19011, and other relevant pharmaceutical quality standards.</p>
+
+            <div class="info-box">
+                <strong>Key Objectives:</strong>
+                <ul style="margin-bottom: 0;">
+                    <li>Verify compliance with cGMP regulations and company procedures</li>
+                    <li>Assess effectiveness of Quality Management Systems (QMS)</li>
+                    <li>Ensure inspection readiness for regulatory authorities (FDA, EMA, MHRA, WHO, etc.)</li>
+                    <li>Identify opportunities for continuous improvement</li>
+                    <li>Evaluate supplier quality systems and capabilities</li>
+                    <li>Maintain audit trails and documentation for regulatory scrutiny</li>
+                </ul>
+            </div>
+
+            <h3>2.0 SCOPE</h3>
+            <p>This SOP applies to all audit and inspection activities within the pharmaceutical manufacturing facility and extends to external entities, including:</p>
+
+            <h4>2.1 Internal Scope</h4>
+            <ul>
+                <li><strong>Internal Quality Audits:</strong> Scheduled and for-cause audits of all GMP areas</li>
+                <li><strong>Process Audits:</strong> Manufacturing, packaging, laboratory, warehouse operations</li>
+                <li><strong>System Audits:</strong> Quality systems, computerized systems, document control</li>
+                <li><strong>Compliance Audits:</strong> SOP adherence, training effectiveness, deviation management</li>
+                <li><strong>Mock Inspections:</strong> Regulatory inspection simulation exercises</li>
+            </ul>
+
+            <h4>2.2 External Scope</h4>
+            <ul>
+                <li><strong>Supplier/Vendor Audits:</strong> API manufacturers, excipient suppliers, contract laboratories, packaging material suppliers</li>
+                <li><strong>Contract Manufacturing Organization (CMO) Audits</strong></li>
+                <li><strong>Service Provider Audits:</strong> Calibration, validation, waste disposal, cleaning services</li>
+                <li><strong>Regulatory Inspections:</strong> FDA, EMA, MHRA, WHO, state/local health authorities</li>
+                <li><strong>Customer Audits:</strong> Quality audits by pharmaceutical clients</li>
+            </ul>
+
+            <div class="warning-box">
+                This SOP does not cover financial audits or human resources investigations, which are governed by separate corporate policies.
+            </div>
+
+            <h3>3.0 DEFINITIONS</h3>
+            <table>
+                <tr>
+                    <th style="width: 30%;">Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td><strong>Audit</strong></td>
+                    <td>A systematic, independent, and documented examination to determine whether quality activities and related results comply with planned arrangements and whether these arrangements are implemented effectively and are suitable to achieve objectives (ISO 19011).</td>
+                </tr>
+                <tr>
+                    <td><strong>Auditee</strong></td>
+                    <td>The person, department, or organization being audited.</td>
+                </tr>
+                <tr>
+                    <td><strong>Auditor</strong></td>
+                    <td>A person qualified and authorized to conduct audits according to ISO 19011 guidelines and company training requirements.</td>
+                </tr>
+                <tr>
+                    <td><strong>Audit Criteria</strong></td>
+                    <td>Set of policies, procedures, regulations, or requirements used as a reference against which audit evidence is compared (e.g., 21 CFR 211, ICH Q7, ISO 13485).</td>
+                </tr>
+                <tr>
+                    <td><strong>Observation</strong></td>
+                    <td>A statement of fact made during an audit and substantiated by objective evidence. Can be classified as Critical, Major, or Minor.</td>
+                </tr>
+                <tr>
+                    <td><strong>Finding</strong></td>
+                    <td>An audit observation indicating non-compliance with established criteria that requires corrective action.</td>
+                </tr>
+                <tr>
+                    <td><strong>Form FDA 483</strong></td>
+                    <td>Inspectional Observations issued by FDA at the conclusion of an inspection, listing objectionable conditions or practices.</td>
+                </tr>
+                <tr>
+                    <td><strong>Warning Letter</strong></td>
+                    <td>FDA correspondence notifying a company of significant violations of FDCA regulations that may lead to enforcement action.</td>
+                </tr>
+                <tr>
+                    <td><strong>EIR (Establishment Inspection Report)</strong></td>
+                    <td>FDA's official report summarizing inspection findings, observations, and the regulatory classification (NAI, VAI, OAI).</td>
+                </tr>
+                <tr>
+                    <td><strong>CAPA</strong></td>
+                    <td>Corrective and Preventive Action - systematic approach to identifying root causes and implementing actions to prevent recurrence of audit findings.</td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: RESPONSIBILITIES -->
+        <div class="page" data-page="4">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>4.0 RESPONSIBILITIES</h3>
+
+            <h4>4.1 Senior Management / Executive Team</h4>
+            <ul>
+                <li>Commit resources for audit program and regulatory inspection readiness</li>
+                <li>Review audit/inspection results and approve strategic actions</li>
+                <li>Ensure management review of audit effectiveness (ICH Q10 requirement)</li>
+                <li>Participate in regulatory inspection opening/closing meetings</li>
+                <li>Approve responses to Warning Letters and regulatory commitments</li>
+            </ul>
+
+            <h4>4.2 Head of Quality Assurance</h4>
+            <ul>
+                <li>Overall responsibility for audit program and inspection preparedness</li>
+                <li>Approve annual audit schedule and any deviations from plan</li>
+                <li>Designate qualified internal auditors and lead auditors</li>
+                <li>Serve as primary contact for regulatory inspections</li>
+                <li>Review and approve all audit reports and CAPA plans</li>
+                <li>Ensure timely closure of audit findings</li>
+                <li>Report audit metrics to senior management</li>
+                <li>Coordinate responses to Form FDA 483 and Warning Letters</li>
+            </ul>
+
+            <h4>4.3 Quality Assurance Manager / Audit Coordinator</h4>
+            <ul>
+                <li>Develop and maintain annual internal audit schedule</li>
+                <li>Coordinate audit logistics, scheduling, and team assignments</li>
+                <li>Maintain audit documentation and records per regulatory requirements</li>
+                <li>Track audit findings through CAPA system until closure</li>
+                <li>Trend analysis of audit observations for continual improvement</li>
+                <li>Coordinate mock inspection exercises</li>
+                <li>Maintain inspection readiness checklist and documentation</li>
+                <li>Prepare inspection briefing materials and Q&A documents</li>
+            </ul>
+
+            <h4>4.4 Lead Auditor</h4>
+            <ul>
+                <li>Plan and conduct audits according to ISO 19011 guidelines</li>
+                <li>Prepare audit checklists based on regulatory requirements</li>
+                <li>Lead audit team and opening/closing meetings</li>
+                <li>Prepare comprehensive audit reports with objective evidence</li>
+                <li>Classify observations (Critical, Major, Minor) per defined criteria</li>
+                <li>Conduct follow-up audits to verify CAPA effectiveness</li>
+                <li>Maintain auditor qualification and independence</li>
+            </ul>
+
+            <h4>4.5 Auditee / Department Manager</h4>
+            <ul>
+                <li>Provide access to personnel, documents, and facilities during audits</li>
+                <li>Ensure staff availability for audit interviews</li>
+                <li>Respond to audit findings within specified timelines</li>
+                <li>Develop and implement CAPA plans for observations</li>
+                <li>Provide evidence of corrective action completion</li>
+                <li>Participate in closing meetings and discuss findings</li>
+            </ul>
+
+            <h4>4.6 Regulatory Affairs</h4>
+            <ul>
+                <li>Monitor regulatory inspection trends and FDA Warning Letters</li>
+                <li>Coordinate communication with regulatory authorities</li>
+                <li>Assist in preparing responses to Form FDA 483</li>
+                <li>Submit regulatory responses and commitments within deadlines</li>
+                <li>Maintain inspection history and regulatory correspondence files</li>
+                <li>Update inspection readiness materials based on current regulations</li>
+            </ul>
+
+            <h4>4.7 Subject Matter Experts (SMEs)</h4>
+            <ul>
+                <li>Provide technical expertise during audits as needed</li>
+                <li>Review findings related to their area of expertise</li>
+                <li>Support CAPA development for technical issues</li>
+                <li>Serve as technical escorts during regulatory inspections</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+                    <!-- PAGE 5: AUDIT TYPES AND CLASSIFICATION -->
+        <div class="page" data-page="5">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>5.0 AUDIT TYPES AND CLASSIFICATION</h3>
+
+            <h4>5.1 Audit Categories</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Audit Type</th>
+                        <th style="width: 40%;">Description</th>
+                        <th style="width: 20%;">Frequency</th>
+                        <th style="width: 20%;">Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>System Audit</strong></td>
+                        <td>Comprehensive evaluation of QMS elements (Document Control, Training, Change Control, CAPA, etc.)</td>
+                        <td>Annual</td>
+                        <td>2-3 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Process Audit</strong></td>
+                        <td>Detailed review of specific manufacturing processes (e.g., tablet compression, sterile filling, API synthesis)</td>
+                        <td>Semi-Annual</td>
+                        <td>1-2 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Product Audit</strong></td>
+                        <td>Trace-through audit of specific product from material receipt through distribution</td>
+                        <td>As needed</td>
+                        <td>1-2 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compliance Audit</strong></td>
+                        <td>Verification of adherence to specific regulations (21 CFR Part 11, EU GMP Annex 11, etc.)</td>
+                        <td>Annual or as needed</td>
+                        <td>1-3 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>For-Cause Audit</strong></td>
+                        <td>Triggered by deviations, customer complaints, regulatory observations, or quality trends</td>
+                        <td>As needed</td>
+                        <td>Varies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Supplier Audit</strong></td>
+                        <td>On-site evaluation of critical suppliers (API, excipients, packaging, contract labs)</td>
+                        <td>Pre-approval + periodic</td>
+                        <td>2-4 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mock Inspection</strong></td>
+                        <td>Simulated regulatory inspection to assess readiness</td>
+                        <td>1-2 per year</td>
+                        <td>2-5 days</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>5.2 Observation Classification</h4>
+            <p>All audit observations must be classified based on GMP impact and regulatory significance:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Classification</th>
+                        <th style="width: 45%;">Definition</th>
+                        <th style="width: 25%;">Examples</th>
+                        <th style="width: 15%;">CAPA Timeline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color: #dc2626;">CRITICAL</strong></td>
+                        <td>Violation that could directly impact product quality, patient safety, or data integrity. Likely to result in regulatory action (Warning Letter, import alert).</td>
+                        <td>
+                            • Data integrity violations<br>
+                            • Product contamination<br>
+                            • Failed batch release<br>
+                            • Falsified records
+                        </td>
+                        <td>Immediate action + 30 days CAPA</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #f59e0b;">MAJOR</strong></td>
+                        <td>Significant non-compliance with GMP requirements that could potentially impact product quality or system effectiveness.</td>
+                        <td>
+                            • Incomplete batch records<br>
+                            • Inadequate cleaning validation<br>
+                            • Equipment not calibrated<br>
+                            • Missing training records
+                        </td>
+                        <td>60 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #10b981;">MINOR</strong></td>
+                        <td>Isolated or procedural non-compliance with minimal quality impact. Represents opportunity for improvement.</td>
+                        <td>
+                            • Documentation errors<br>
+                            • Housekeeping issues<br>
+                            • Label placement<br>
+                            • SOP formatting
+                        </td>
+                        <td>90 days</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #3b82f6;">OBSERVATION</strong></td>
+                        <td>Noted item or best practice that doesn't constitute non-compliance but merits attention.</td>
+                        <td>
+                            • Process optimization<br>
+                            • Efficiency improvements<br>
+                            • Best practice suggestions
+                        </td>
+                        <td>Optional</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="critical-box">
+                All CRITICAL findings must be reported to Head of Quality and Senior Management within 24 hours. Immediate containment actions must be taken before continuing operations.
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+                <!-- PAGE 6: INTERNAL AUDIT PROGRAM -->
+        <div class="page" data-page="6">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>6.0 INTERNAL AUDIT PROGRAM</h3>
+
+            <h4>6.1 Annual Audit Schedule Development</h4>
+            <p>The QA Manager shall develop an annual audit schedule by December 1st each year, considering:</p>
+            <ul>
+                <li><strong>Risk Assessment:</strong> High-risk areas audited more frequently (e.g., sterile manufacturing, data integrity)</li>
+                <li><strong>Regulatory Requirements:</strong> ICH Q10 requires periodic evaluation of QMS effectiveness</li>
+                <li><strong>Previous Audit Results:</strong> Areas with repeat findings receive increased attention</li>
+                <li><strong>Changes:</strong> New processes, equipment, computerized systems, personnel</li>
+                <li><strong>Regulatory Trends:</strong> Current FDA Warning Letter topics, industry trends</li>
+                <li><strong>Planned Inspections:</strong> Schedule mock inspections 3-6 months before anticipated regulatory visits</li>
+            </ul>
+
+            <p><strong>Minimum Audit Coverage (Annual):</strong></p>
+            <ul>
+                <li>All GMP-critical areas audited at least once per year</li>
+                <li>QMS elements (Document Control, Training, CAPA, Change Control) audited annually</li>
+                <li>Computerized systems audited per 21 CFR Part 11 and GAMP 5 guidelines</li>
+                <li>Laboratory operations audited semi-annually</li>
+                <li>Sterile operations audited quarterly (if applicable)</li>
+            </ul>
+
+            <h4>6.2 Audit Planning Phase</h4>
+            <ol>
+                <li><strong>Select Audit Team (minimum 2 weeks before audit):</strong>
+                    <ul>
+                        <li>Lead Auditor: Qualified per Section 12.1</li>
+                        <li>Auditors: Trained in GMP and auditing techniques</li>
+                        <li>Technical Experts: As needed for specialized areas</li>
+                        <li><strong>Independence Requirement:</strong> Auditors must not audit their own work or areas where they have direct responsibility</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Define Audit Scope and Criteria:</strong>
+                    <ul>
+                        <li>Specific processes, systems, or areas to be audited</li>
+                        <li>Time period for record review (typically past 12 months)</li>
+                        <li>Applicable regulations: 21 CFR 211, ICH Q7, EU GMP, ISO 13485</li>
+                        <li>Company SOPs and work instructions</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Develop Audit Checklist (Appendix A):</strong>
+                    <p>Prepare detailed checklist covering:</p>
+                    <ul>
+                        <li>Regulatory requirements verification</li>
+                        <li>SOP compliance assessment</li>
+                        <li>Document review criteria</li>
+                        <li>Process observation points</li>
+                        <li>Interview questions</li>
+                        <li>Data integrity checks (ALCOA+ principles)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Send Audit Notification (minimum 1 week before):</strong>
+                    <p>Notify auditee department of:</p>
+                    <ul>
+                        <li>Audit date, time, and estimated duration</li>
+                        <li>Audit scope and objectives</li>
+                        <li>Audit team members</li>
+                        <li>Documents/records to be reviewed</li>
+                        <li>Personnel to be interviewed</li>
+                        <li>Conference room requirements</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Review Background Information:</strong>
+                    <ul>
+                        <li>Previous audit reports and open CAPAs</li>
+                        <li>Recent deviations and investigation reports</li>
+                        <li>Change controls affecting the area</li>
+                        <li>Customer complaints related to audited processes</li>
+                        <li>Training records for key personnel</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>6.3 Audit Execution Phase</h4>
+            <ol>
+                <li><strong>Opening Meeting (30 minutes):</strong>
+                    <ul>
+                        <li>Introduction of audit team and auditees</li>
+                        <li>Review audit objectives, scope, and schedule</li>
+                        <li>Explain audit methodology and documentation approach</li>
+                        <li>Address questions and confirm logistics</li>
+                        <li>Emphasize confidentiality and professionalism</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Document Review:</strong>
+                    <p>Review documents for compliance with GMP and company procedures:</p>
+                    <ul>
+                        <li>Batch manufacturing records (BMRs)</li>
+                        <li>Standard Operating Procedures (SOPs)</li>
+                        <li>Training records and qualification documentation</li>
+                        <li>Equipment logs, calibration records, maintenance</li>
+                        <li>Deviation reports and investigations</li>
+                        <li>Change control records</li>
+                        <li>Laboratory test results and OOS investigations</li>
+                        <li>Cleaning validation and verification records</li>
+                        <li>Computer system validation documentation</li>
+                    </ul>
+                    <p><strong>Data Integrity Focus:</strong> Verify ALCOA+ principles:</p>
+                    <ul>
+                        <li><strong>A</strong>ttributable, <strong>L</strong>egible, <strong>C</strong>ontemporaneous, <strong>O</strong>riginal, <strong>A</strong>ccurate</li>
+                        <li><strong>+</strong> Complete, Consistent, Enduring, Available</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Physical Inspection:</strong>
+                    <ul>
+                        <li>Tour manufacturing, laboratory, and warehouse areas</li>
+                        <li>Observe actual practices vs. written procedures</li>
+                        <li>Check environmental conditions and monitoring</li>
+                        <li>Verify equipment identification, status labels</li>
+                        <li>Review housekeeping and facility maintenance</li>
+                        <li>Inspect material storage and segregation</li>
+                        <li>Verify pest control and sanitation programs</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Personnel Interviews:</strong>
+                    <ul>
+                        <li>Interview operators, supervisors, and quality staff</li>
+                        <li>Assess understanding of procedures and responsibilities</li>
+                        <li>Evaluate training effectiveness</li>
+                        <li>Verify GMP awareness and culture</li>
+                        <li>Document responses objectively</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Document Observations:</strong>
+                    <ul>
+                        <li>Record findings with objective evidence</li>
+                        <li>Take photographs (if permitted)</li>
+                        <li>Collect copies of relevant documents</li>
+                        <li>Note references (document numbers, dates, locations)</li>
+                        <li>Classify observations per Section 5.2</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Daily Debriefs:</strong>
+                    <ul>
+                        <li>Meet with auditee at end of each day (for multi-day audits)</li>
+                        <li>Discuss preliminary findings</li>
+                        <li>Clarify facts and evidence</li>
+                        <li>Allow auditee to provide additional information</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 7: AUDIT EXECUTION (CONTINUED) -->
+        <div class="page" data-page="7">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>6.4 Closing Meeting</h4>
+            <ol>
+                <li><strong>Prepare for Closing (1-2 hours before meeting):</strong>
+                    <ul>
+                        <li>Audit team reviews all findings</li>
+                        <li>Finalize observation classifications</li>
+                        <li>Prepare summary presentation</li>
+                        <li>Identify positive observations and strengths</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Conduct Closing Meeting (1 hour):</strong>
+                    <ul>
+                        <li>Thank auditee for cooperation</li>
+                        <li>Summarize audit scope and activities</li>
+                        <li>Present each observation with supporting evidence</li>
+                        <li>Discuss classification and rationale</li>
+                        <li>Acknowledge positive findings and improvements</li>
+                        <li>Outline next steps and timelines for response</li>
+                        <li>Allow auditee to ask questions and provide input</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Document Attendees:</strong>
+                    <ul>
+                        <li>Obtain signatures on closing meeting attendance sheet</li>
+                        <li>Confirm understanding of findings</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>6.5 Audit Reporting Phase</h4>
+            <ol>
+                <li><strong>Draft Audit Report (within 5 business days):</strong>
+                    <p>The Lead Auditor prepares comprehensive report (Appendix B) including:</p>
+                    <ul>
+                        <li><strong>Executive Summary:</strong> Overall assessment, key findings, recommendations</li>
+                        <li><strong>Audit Details:</strong> Date, scope, team members, auditees, criteria</li>
+                        <li><strong>Methodology:</strong> Documents reviewed, areas inspected, personnel interviewed</li>
+                        <li><strong>Observations:</strong> Each finding with:
+                            <ul>
+                                <li>Classification (Critical, Major, Minor, Observation)</li>
+                                <li>Description of non-compliance</li>
+                                <li>Objective evidence (document references, photos, observations)</li>
+                                <li>Applicable regulatory citations (21 CFR, ICH, EU GMP)</li>
+                                <li>Potential impact on product quality or compliance</li>
+                            </ul>
+                        </li>
+                        <li><strong>Positive Findings:</strong> Exemplary practices, improvements since last audit</li>
+                        <li><strong>Conclusions:</strong> Overall compliance status, system effectiveness</li>
+                        <li><strong>Attachments:</strong> Checklists, photographs, copies of reviewed documents</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Report Review and Approval:</strong>
+                    <ul>
+                        <li>Audit team reviews draft report for accuracy</li>
+                        <li>Head of Quality approves final report</li>
+                        <li>Issue report within 10 business days of closing meeting</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Report Distribution:</strong>
+                    <ul>
+                        <li>Auditee department manager</li>
+                        <li>Quality Assurance management</li>
+                        <li>Senior management (for Critical/Major findings)</li>
+                        <li>Maintain in audit file per Section 11.0</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>6.6 CAPA and Follow-Up</h4>
+            <ol>
+                <li><strong>Auditee Response (within specified timeline):</strong>
+                    <p>For each observation, auditee must provide:</p>
+                    <ul>
+                        <li><strong>Root Cause Analysis:</strong> Why did the issue occur?</li>
+                        <li><strong>Immediate Action:</strong> What was done to contain the issue?</li>
+                        <li><strong>Corrective Action:</strong> How will the specific issue be fixed?</li>
+                        <li><strong>Preventive Action:</strong> How will recurrence be prevented?</li>
+                        <li><strong>Timeline:</strong> Target completion dates for each action</li>
+                        <li><strong>Effectiveness Check:</strong> How will effectiveness be verified?</li>
+                        <li><strong>Responsible Person:</strong> Owner for each action item</li>
+                    </ul>
+                </li>
+                
+                <li><strong>QA Review of CAPA Plan:</strong>
+                    <ul>
+                        <li>Verify adequacy of root cause analysis</li>
+                        <li>Assess appropriateness of proposed actions</li>
+                        <li>Confirm realistic timelines</li>
+                        <li>Approve or request revisions within 5 business days</li>
+                    </ul>
+                </li>
+                
+                <li><strong>CAPA Implementation:</strong>
+                    <ul>
+                        <li>Auditee implements approved actions</li>
+                        <li>Document evidence of completion</li>
+                        <li>Submit closure package to QA</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Effectiveness Verification:</strong>
+                    <ul>
+                        <li>QA verifies implementation through:
+                            <ul>
+                                <li>Document review</li>
+                                <li>On-site verification</li>
+                                <li>Follow-up audit (for Critical/Major findings)</li>
+                            </ul>
+                        </li>
+                        <li>Monitor for 3-6 months to ensure sustained compliance</li>
+                        <li>Close CAPA in system with QA approval</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Escalation for Overdue CAPAs:</strong>
+                    <ul>
+                        <li>7 days overdue: QA reminder to responsible person</li>
+                        <li>14 days overdue: Escalate to department manager</li>
+                        <li>30 days overdue: Escalate to Head of Quality and Senior Management</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 8: SUPPLIER AUDITS -->
+        <div class="page" data-page="8">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>7.0 SUPPLIER/VENDOR AUDITS</h3>
+
+            <h4>7.1 Supplier Audit Program</h4>
+            <p>Per 21 CFR 211.22(a) and ICH Q10, suppliers of critical materials and services must be evaluated and periodically re-evaluated to ensure they maintain acceptable quality standards.</p>
+
+            <h4>7.2 Supplier Risk Classification</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Risk Level</th>
+                        <th style="width: 40%;">Criteria</th>
+                        <th style="width: 30%;">Audit Frequency</th>
+                        <th style="width: 15%;">Audit Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>HIGH</strong></td>
+                        <td>• API manufacturers<br>• Sterile material suppliers<br>• Contract manufacturers<br>• Testing laboratories</td>
+                        <td>Pre-approval + Every 2 years + for-cause</td>
+                        <td>On-site mandatory</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MEDIUM</strong></td>
+                        <td>• Non-sterile excipients<br>• Primary packaging<br>• Critical service providers</td>
+                        <td>Pre-approval + Every 3 years</td>
+                        <td>On-site or remote</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LOW</strong></td>
+                        <td>• Secondary packaging<br>• Non-GMP materials<br>• Administrative services</td>
+                        <td>Pre-approval + As needed</td>
+                        <td>Questionnaire acceptable</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>7.3 Pre-Approval Supplier Audit</h4>
+            <ol>
+                <li><strong>Initial Assessment:</strong>
+                    <ul>
+                        <li>Review supplier questionnaire (Appendix C)</li>
+                        <li>Request regulatory inspection history</li>
+                        <li>Review quality agreements and specifications</li>
+                        <li>Check FDA Warning Letters and import alerts database</li>
+                        <li>Verify certifications (ISO 9001, ISO 13485, GDP, etc.)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Schedule On-Site Audit (for HIGH and MEDIUM risk):</strong>
+                    <ul>
+                        <li>Assemble audit team with relevant technical expertise</li>
+                        <li>Send audit agenda 2-4 weeks in advance</li>
+                        <li>Request specific documents for review</li>
+                        <li>Confirm logistics (date, location, contacts, NDA)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Audit Scope (typically 2-4 days):</strong>
+                    <ul>
+                        <li><strong>Quality Management System:</strong> Documentation, training, CAPA, change control</li>
+                        <li><strong>Manufacturing Operations:</strong> Facilities, equipment, processes, controls</li>
+                        <li><strong>Quality Control:</strong> Laboratory facilities, methods, data integrity</li>
+                        <li><strong>Materials Management:</strong> Receipt, storage, handling, traceability</li>
+                        <li><strong>Compliance:</strong> Regulatory inspection history, deviations, recalls</li>
+                        <li><strong>Supply Chain:</strong> Sub-suppliers, business continuity, capacity</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Audit Report and Approval Decision:</strong>
+                    <ul>
+                        <li>Issue audit report within 15 business days</li>
+                        <li>Supplier responds to observations (typically 30 days)</li>
+                        <li>QA reviews CAPA adequacy</li>
+                        <li>Make approval decision:
+                            <ul>
+                                <li><strong>Approved:</strong> Supplier meets requirements</li>
+                                <li><strong>Approved with Conditions:</strong> CAPAs must be completed before use</li>
+                                <li><strong>Not Approved:</strong> Significant deficiencies identified</li>
+                            </ul>
+                        </li>
+                        <li>Add to Approved Supplier List (ASL)</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>7.4 Periodic Re-Audit</h4>
+            <ul>
+                <li>Conduct re-audits per frequency in Section 7.2</li>
+                <li>Focus on previous findings and CAPA effectiveness</li>
+                <li>Review performance metrics (quality, delivery, complaints)</li>
+                <li>Assess changes since last audit</li>
+                <li>Update supplier qualification status</li>
+            </ul>
+
+            <h4>7.5 For-Cause Supplier Audit</h4>
+            <p>Immediate audit required for:</p>
+            <ul>
+                <li>Receipt of non-conforming material</li>
+                <li>Supplier deviation or recall</li>
+                <li>FDA Warning Letter or regulatory action against supplier</li>
+                <li>Change in manufacturing site or process</li>
+                <li>Quality agreement breach</li>
+                <li>Customer complaints attributed to supplier material</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 9: REGULATORY INSPECTION PREPARATION -->
+        <div class="page" data-page="9">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>8.0 REGULATORY INSPECTION PREPARATION</h3>
+
+            <h4>8.1 Continuous Inspection Readiness</h4>
+            <p>The facility must maintain continuous inspection readiness. The following activities are performed on an ongoing basis:</p>
+
+            <ul>
+                <li><strong>Inspection Readiness Checklist (Appendix D):</strong> Quarterly review and update</li>
+                <li><strong>Document Room Maintenance:</strong> Ensure all SOPs, batch records, validation reports are current and accessible</li>
+                <li><strong>Facility Inspections:</strong> Monthly walkthroughs to identify housekeeping or compliance issues</li>
+                <li><strong>Mock Inspections:</strong> Conduct 1-2 simulated inspections annually</li>
+                <li><strong>Training:</strong> Annual training for all personnel on inspection procedures and FDA expectations</li>
+                <li><strong>Management Review:</strong> Quarterly assessment of inspection readiness status</li>
+            </ul>
+
+            <h4>8.2 Pre-Inspection Activities (Upon Notification)</h4>
+
+            <div class="info-box">
+                <strong>Timeline:</strong> FDA typically provides minimal advance notice (24-48 hours for routine inspections, no notice for for-cause inspections). EMA and other agencies may provide more advance notice.
+            </div>
+
+            <ol>
+                <li><strong>Immediate Actions (Within 2 hours of notification):</strong>
+                    <ul>
+                        <li>Notify Head of Quality, Regulatory Affairs, and Senior Management</li>
+                        <li>Confirm inspection date, time, and expected duration</li>
+                        <li>Determine inspection scope if disclosed (routine surveillance, pre-approval, for-cause)</li>
+                        <li> - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+                <!-- PAGE 9: REGULATORY INSPECTION PREPARATION -->
+        <div class="page" data-page="9">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>8.0 REGULATORY INSPECTION PREPARATION</h3>
+
+            <h4>8.1 Continuous Inspection Readiness</h4>
+            <p>The facility must maintain continuous inspection readiness. The following activities are performed on an ongoing basis:</p>
+
+            <ul>
+                <li><strong>Inspection Readiness Checklist (Appendix D):</strong> Quarterly review and update</li>
+                <li><strong>Document Room Maintenance:</strong> Ensure all SOPs, batch records, validation reports are current and accessible</li>
+                <li><strong>Facility Inspections:</strong> Monthly walkthroughs to identify housekeeping or compliance issues</li>
+                <li><strong>Mock Inspections:</strong> Conduct 1-2 simulated inspections annually</li>
+                <li><strong>Training:</strong> Annual training for all personnel on inspection procedures and FDA expectations</li>
+                <li><strong>Management Review:</strong> Quarterly assessment of inspection readiness status</li>
+            </ul>
+
+            <h4>8.2 Pre-Inspection Activities (Upon Notification)</h4>
+
+            <div class="info-box">
+                <strong>Timeline:</strong> FDA typically provides minimal advance notice (24-48 hours for routine inspections, no notice for for-cause inspections). EMA and other agencies may provide more advance notice.
+            </div>
+
+            <ol>
+                <li><strong>Immediate Actions (Within 2 hours of notification):</strong>
+                    <ul>
+                        <li>Notify Head of Quality, Regulatory Affairs, and Senior Management</li>
+                        <li>Confirm inspection date, time, and expected duration</li>
+                        <li>Determine inspection scope if disclosed (routine surveillance, pre-approval, for-cause)</li>
+                        <li>Assemble inspection response team</li>
+                        <li>Reserve conference room and establish document staging area</li>
+                        <li>Activate inspection communication protocol</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Inspection Team Assembly:</strong>
+                    <ul>
+                        <li><strong>Lead Contact:</strong> Head of Quality or designated QA representative</li>
+                        <li><strong>Regulatory Affairs:</strong> Primary interface with inspector</li>
+                        <li><strong>Subject Matter Experts:</strong> Manufacturing, QC, Engineering, IT (as needed)</li>
+                        <li><strong>Executive Sponsor:</strong> VP or site head for opening/closing meetings</li>
+                        <li><strong>Note Taker:</strong> Dedicated person to document all inspector interactions</li>
+                        <li><strong>Document Coordinator:</strong> Manages document requests and retrieval</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Pre-Inspection Briefing (Day before or morning of inspection):</strong>
+                    <ul>
+                        <li>Review inspection procedures with all team members</li>
+                        <li>Assign roles and responsibilities</li>
+                        <li>Discuss recent FDA Warning Letters and inspection trends</li>
+                        <li>Review facility hot spots and potential areas of concern</li>
+                        <li>Practice responses to anticipated questions</li>
+                        <li>Review do's and don'ts for inspector interactions</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Facility Preparation:</strong>
+                    <ul>
+                        <li>Conduct final facility walkthrough</li>
+                        <li>Ensure all areas are clean and organized</li>
+                        <li>Verify equipment labels, calibration stickers are current</li>
+                        <li>Check that all required documentation is readily available</li>
+                        <li>Ensure personnel are aware of inspection and expectations</li>
+                        <li>Prepare name badges/escort passes for inspectors</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Document Preparation:</strong>
+                    <ul>
+                        <li>Compile frequently requested documents:
+                            <ul>
+                                <li>Organization chart and quality manual</li>
+                                <li>List of marketed products and applications</li>
+                                <li>Recent batch records for key products</li>
+                                <li>Validation master plan and recent validation reports</li>
+                                <li>Deviation summary and trending analysis</li>
+                                <li>CAPA log with open/closed status</li>
+                                <li>Recent internal audit reports</li>
+                                <li>Training records for key personnel</li>
+                                <li>Change control log</li>
+                                <li>Complaint summary</li>
+                                <li>Recall history (if any)</li>
+                            </ul>
+                        </li>
+                        <li>Ensure all documents are GMP-compliant and up-to-date</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>8.3 Conference Room Setup</h4>
+            <ul>
+                <li>Private room with adequate space and lighting</li>
+                <li>Table, chairs, electrical outlets</li>
+                <li>WiFi access (if requested)</li>
+                <li>Basic office supplies (pens, paper, binders)</li>
+                <li>Access to copier/printer</li>
+                <li>Water, coffee, refreshments</li>
+                <li>Company policies posted (no cell phone photos, confidentiality)</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 10: MANAGING REGULATORY INSPECTIONS -->
+        <div class="page" data-page="10">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>9.0 MANAGING REGULATORY INSPECTIONS</h3>
+
+            <h4>9.1 Opening Meeting</h4>
+            <ol>
+                <li><strong>Welcome and Introductions:</strong>
+                    <ul>
+                        <li>Greet inspectors professionally and courteously</li>
+                        <li>Introduce company representatives and their roles</li>
+                        <li>Request inspector credentials and note names/titles</li>
+                        <li>Offer refreshments and facilities tour</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Administrative Items:</strong>
+                    <ul>
+                        <li>Review facility policies (safety, confidentiality, photography)</li>
+                        <li>Provide visitor badges and PPE</li>
+                        <li>Explain escort procedures</li>
+                        <li>Confirm inspection scope and estimated timeline</li>
+                        <li>Establish daily schedule (start/end times, lunch, breaks)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Company Overview Presentation (10-15 minutes):</strong>
+                    <ul>
+                        <li>Company history and ownership structure</li>
+                        <li>Products manufactured and therapeutic categories</li>
+                        <li>Organizational structure and key personnel</li>
+                        <li>Recent changes, expansions, or improvements</li>
+                        <li>Quality philosophy and commitment to compliance</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Set Ground Rules:</strong>
+                    <ul>
+                        <li>All requests go through designated QA contact</li>
+                        <li>Document requests logged and tracked</li>
+                        <li>Personnel interviews conducted with QA present</li>
+                        <li>Reasonable time allowed to retrieve documents</li>
+                        <li>Copies provided rather than originals</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>9.2 During the Inspection</h4>
+
+            <div class="info-box">
+                <strong>Golden Rules:</strong>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Be truthful and accurate</strong> - Never provide false or misleading information</li>
+                    <li><strong>Answer only what is asked</strong> - Do not volunteer extra information</li>
+                    <li><strong>If you don't know, say so</strong> - Do not speculate or guess</li>
+                    <li><strong>Stay professional and courteous</strong> - Remain calm even if challenged</li>
+                    <li><strong>Document everything</strong> - Keep detailed notes of all interactions</li>
+                </ul>
+            </div>
+
+            <ol>
+                <li><strong>Escort Procedures:</strong>
+                    <ul>
+                        <li>Designated escort accompanies inspector at all times</li>
+                        <li>Escort should be knowledgeable about the area being inspected</li>
+                        <li>QA representative always present during document reviews</li>
+                        <li>Escort observes but does not interfere with inspector activities</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Document Request Management:</strong>
+                    <ul>
+                        <li>Log all document requests in Document Request Log (Appendix E)</li>
+                        <li>Clarify exactly what is being requested if unclear</li>
+                        <li>Provide reasonable timeframe for retrieval (typically within same day)</li>
+                        <li>Review documents before providing to ensure completeness</li>
+                        <li>Provide copies, not originals</li>
+                        <li>Redact proprietary or confidential information not relevant to inspection</li>
+                        <li>Document coordinator tracks all documents provided</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Handling Questions and Interviews:</strong>
+                    <ul>
+                        <li><strong>Listen carefully</strong> to the complete question before answering</li>
+                        <li><strong>Pause before responding</strong> to collect thoughts</li>
+                        <li><strong>Answer directly and concisely</strong> without elaborating unnecessarily</li>
+                        <li><strong>Refer to procedures</strong> when explaining practices</li>
+                        <li><strong>If unsure, say "Let me verify that"</strong> and get back with accurate information</li>
+                        <li><strong>Do not speculate</strong> about issues outside your area of responsibility</li>
+                        <li><strong>Do not make commitments</strong> without management approval</li>
+                        <li><strong>Take note taker with you</strong> to document questions and responses</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Daily Debriefs:</strong>
+                    <ul>
+                        <li>Meet with inspection team at end of each day</li>
+                        <li>Review observations and concerns noted by inspector</li>
+                        <li>Discuss areas covered and planned activities for next day</li>
+                        <li>Internal team meeting to assess progress and prepare for next day</li>
+                        <li>Brief senior management on daily findings</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Real-Time Issue Management:</strong>
+                    <ul>
+                        <li>If inspector identifies an issue:
+                            <ul>
+                                <li>Listen and understand the concern</li>
+                                <li>Do not be defensive or argumentative</li>
+                                <li>Ask clarifying questions if needed</li>
+                                <li>Take notes on the specific observation</li>
+                                <li>Investigate promptly and provide accurate information</li>
+                                <li>If immediate correction possible, discuss with QA/management</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li><strong>Communication Protocol:</strong>
+                    <ul>
+                        <li>Designated communication lead interfaces with inspector</li>
+                        <li>All inspector requests channeled through this person</li>
+                        <li>Regular updates to management team</li>
+                        <li>Restriction on discussing inspection details outside response team</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>9.3 Closing Meeting</h4>
+            <ol>
+                <li><strong>Preparation (1-2 hours before meeting):</strong>
+                    <ul>
+                        <li>Inspector prepares summary of findings</li>
+                        <li>Company reviews draft observations if shared</li>
+                        <li>Assemble senior management for closing</li>
+                        <li>Prepare to take detailed notes</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Closing Meeting Conduct:</strong>
+                    <ul>
+                        <li>Inspector presents findings (Form FDA 483 if applicable)</li>
+                        <li>Take detailed notes on each observation</li>
+                        <li>Ask clarifying questions to understand specific concerns</li>
+                        <li>Request specific regulatory citations if not provided</li>
+                        <li>Do NOT argue or become defensive</li>
+                        <li>Do NOT commit to specific corrective actions without evaluation</li>
+                        <li>Thank inspector for their time and professionalism</li>
+                        <li>Request business card and contact information</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Form FDA 483 Receipt:</strong>
+                    <ul>
+                        <li>Carefully review each observation</li>
+                        <li>Request clarification on any unclear items</li>
+                        <li>Note that company will respond in writing</li>
+                        <li>Request reasonable timeframe for response (typically 15 business days)</li>
+                        <li>Obtain signed copy of FDA 483</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Post-Closing Actions:</strong>
+                    <ul>
+                        <li>Distribute copies of FDA 483 to response team</li>
+                        <li>Schedule immediate response planning meeting</li>
+                        <li>Brief all personnel on inspection outcome</li>
+                        <li>Begin investigation of observations</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="warning-box">
+                A Form FDA 483 does not necessarily indicate serious violations, but all observations must be addressed promptly and thoroughly. Failure to respond adequately can escalate to Warning Letter or other regulatory action.
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 11: OBSERVATION MANAGEMENT -->
+        <div class="page" data-page="11">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>10.0 OBSERVATION MANAGEMENT (Form 483/CAPA)</h3>
+
+            <h4>10.1 Post-Inspection Assessment</h4>
+            <ol>
+                <li><strong>Immediate Response Meeting (within 24 hours):</strong>
+                    <ul>
+                        <li>Assemble cross-functional team</li>
+                        <li>Review each FDA 483 observation in detail</li>
+                        <li>Assign investigation owners for each observation</li>
+                        <li>Develop preliminary response timeline</li>
+                        <li>Identify if immediate corrective actions are needed</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Root Cause Investigation:</strong>
+                    <p>For each observation, conduct thorough investigation:</p>
+                    <ul>
+                        <li><strong>Define the Problem:</strong> What exactly is the observation describing?</li>
+                        <li><strong>Gather Data:</strong> Review records, interview personnel, examine processes</li>
+                        <li><strong>Identify Root Cause:</strong> Use structured tools (5 Why's, Fishbone, etc.)</li>
+                        <li><strong>Verify Root Cause:</strong> Confirm through data analysis</li>
+                        <li><strong>Document Findings:</strong> Comprehensive investigation report</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Impact Assessment:</strong>
+                    <ul>
+                        <li>Evaluate impact on product quality and patient safety</li>
+                        <li>Determine if marketed products are affected</li>
+                        <li>Assess need for product recalls or field actions</li>
+                        <li>Identify other areas potentially affected by same issue</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>10.2 CAPA Development</h4>
+            <p>Develop comprehensive CAPA plan per SOP-QMS-003:</p>
+
+            <ol>
+                <li><strong>Immediate/Interim Actions:</strong>
+                    <ul>
+                        <li>What has been done to contain the issue immediately?</li>
+                        <li>Are affected products quarantined/investigated?</li>
+                        <li>Have procedures been reinforced with staff?</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Corrective Actions:</strong>
+                    <ul>
+                        <li>Specific actions to fix identified issues</li>
+                        <li>SOP revisions or new procedure development</li>
+                        <li>Equipment repairs or modifications</li>
+                        <li>System enhancements</li>
+                        <li>Additional training programs</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Preventive Actions:</strong>
+                    <ul>
+                        <li>How will similar issues be prevented in future?</li>
+                        <li>System improvements to address underlying weaknesses</li>
+                        <li>Enhanced monitoring or controls</li>
+                        <li>Process redesign if needed</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Effectiveness Verification:</strong>
+                    <ul>
+                        <li>How will effectiveness be measured?</li>
+                        <li>Timeline for effectiveness check</li>
+                        <li>Success criteria</li>
+                        <li>Follow-up audit or monitoring plan</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>10.3 Written Response Preparation</h4>
+
+            <div class="critical-box">
+                FDA expects response to Form 483 within 15 business days. Late responses reflect poorly on company commitment to compliance.
+            </div>
+
+            <ol>
+                <li><strong>Response Structure (for each observation):</strong>
+                    <ul>
+                        <li><strong>Acknowledgment:</strong> Restate the observation</li>
+                        <li><strong>Agreement/Clarification:</strong> Acknowledge validity or provide context</li>
+                        <li><strong>Root Cause:</strong> Explain why the issue occurred</li>
+                        <li><strong>Corrective Actions:</strong> Specific actions taken/planned</li>
+                        <li><strong>Preventive Actions:</strong> Systemic improvements</li>
+                        <li><strong>Timeline:</strong> Completion dates for each action</li>
+                        <li><strong>Responsible Person:</strong> Who is accountable</li>
+                        <li><strong>Attachments:</strong> Supporting documentation (revised SOPs, training records, investigation reports)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Response Quality Standards:</strong>
+                    <ul>
+                        <li><strong>Comprehensive:</strong> Address all aspects of observation</li>
+                        <li><strong>Specific:</strong> Concrete actions with measurable outcomes</li>
+                        <li><strong>Timely:</strong> Realistic but aggressive timelines</li>
+                        <li><strong>Professional:</strong> Clear, concise, respectful tone</li>
+                        <li><strong>Documented:</strong> Evidence to support claims</li>
+                        <li><strong>Sustainable:</strong> Actions that can be maintained long-term</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Review and Approval Process:</strong>
+                    <ul>
+                        <li>Draft prepared by investigation team</li>
+                        <li>Technical review by SMEs</li>
+                        <li>QA review for adequacy and GMP alignment</li>
+                        <li>Regulatory Affairs review for regulatory appropriateness</li>
+                        <li>Legal review (for significant observations)</li>
+                        <li>Senior Management/Executive approval</li>
+                        <li>Submit via official letterhead with signature</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Submission:</strong>
+                    <ul>
+                        <li>Send to district office that conducted inspection</li>
+                        <li>Reference inspection dates and establishment identifier</li>
+                        <li>Request confirmation of receipt</li>
+                        <li>Maintain copy in inspection file</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>10.4 CAPA Implementation and Monitoring</h4>
+            <ul>
+                <li><strong>Execute Actions:</strong> Implement per approved plan and timeline</li>
+                <li><strong>Document Evidence:</strong> Retain proof of completion for each action</li>
+                <li><strong>Progress Tracking:</strong> Weekly status meetings until all actions complete</li>
+                <li><strong>Management Updates:</strong> Monthly progress reports to senior leadership</li>
+                <li><strong>Effectiveness Verification:</strong> Conduct follow-up audits after implementation</li>
+                <li><strong>Final Closure:</strong> QA approves closure when all actions complete and effective</li>
+            </ul>
+
+            <h4>10.5 Warning Letter Response</h4>
+            <p>If FDA issues a Warning Letter (indicating more serious violations):</p>
+
+            <ol>
+                <li><strong>Immediate escalation to CEO/President</strong></li>
+                <li><strong>Engage legal counsel and regulatory consultants</strong></li>
+                <li><strong>Respond within 15 business days per Warning Letter instructions</strong></li>
+                <li><strong>Comprehensive response addressing each violation</strong></li>
+                <li><strong>Consider third-party independent assessment</strong></li>
+                <li><strong>Prepare for follow-up inspection within 6-12 months</strong></li>
+                <li><strong>Implement rigorous oversight until issues fully resolved</strong></li>
+            </ol>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 12: DOCUMENTATION -->
+        <div class="page" data-page="12">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>11.0 AUDIT/INSPECTION DOCUMENTATION</h3>
+
+            <h4>11.1 Required Documentation</h4>
+            <p>All audit and inspection activities must be thoroughly documented and retained per 21 CFR 211.180 and 21 CFR 211.194 requirements:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%;">Document Type</th>
+                        <th style="width: 40%;">Content Requirements</th>
+                        <th style="width: 25%;">Retention</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Annual Audit Schedule</strong></td>
+                        <td>Planned audits for the year, dates, scope, resources</td>
+                        <td>Lifetime + 1 year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audit Plan</strong></td>
+                        <td>Objectives, scope, criteria, team, schedule</td>
+                        <td>Lifetime + 1 year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audit Checklist</strong></td>
+                        <td>Detailed questions, regulatory references, completed during audit</td>
+                        <td>Lifetime + 1 year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audit Report</strong></td>
+                        <td>Comprehensive findings, evidence, recommendations</td>
+                        <td>Lifetime + 1 year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CAPA Records</strong></td>
+                        <td>Root cause, actions, evidence, effectiveness verification</td>
+                        <td>Lifetime + 1 year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inspection Correspondence</strong></td>
+                        <td>All communication with regulatory authorities</td>
+                        <td>Permanent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Form FDA 483</strong></td>
+                        <td>Original observations from FDA</td>
+                        <td>Permanent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inspection Response</strong></td>
+                        <td>Company response to regulatory observations</td>
+                        <td>Permanent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EIR (if received)</strong></td>
+                        <td>Establishment Inspection Report</td>
+                        <td>Permanent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Warning Letter (if received)</strong></td>
+                        <td>FDA enforcement correspondence</td>
+                        <td>Permanent</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>11.2 Document Control</h4>
+            <ul>
+                <li>All audit/inspection documents maintained in QMS document management system</li>
+                <li>Controlled access - QA personnel and authorized managers only</li>
+                <li>Electronic records meet 21 CFR Part 11 requirements (if applicable)</li>
+                <li>Backup copies maintained per disaster recovery plan</li>
+                <li>Documents protected from unauthorized alteration</li>
+            </ul>
+
+            <h4>11.3 Trending and Metrics</h4>
+            <p>QA shall analyze audit/inspection data quarterly:</p>
+
+            <ul>
+                <li><strong>Observation Trends:</strong> Types and frequency of findings over time</li>
+                <li><strong>Repeat Findings:</strong> Same issues identified in multiple audits</li>
+                <li><strong>CAPA Effectiveness:</strong> Rate of finding recurrence after CAPA</li>
+                <li><strong>Timeliness:</strong> On-time completion rates for audits and CAPAs</li>
+                <li><strong>Systemic Issues:</strong> Common root causes across departments</li>
+                <li><strong>Inspection Outcomes:</strong> Classification (NAI, VAI, OAI) and observations</li>
+            </ul>
+
+            <p><strong>Metrics Reporting:</strong></p>
+            <ul>
+                <li>Monthly dashboard to QA management</li>
+                <li>Quarterly presentation to senior management</li>
+                <li>Annual summary in Management Review</li>
+                <li>Use trends to focus continuous improvement efforts</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 13: TRAINING & REFERENCES -->
+        <div class="page" data-page="13">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>12.0 TRAINING REQUIREMENTS</h3>
+
+            <h4>12.1 Auditor Qualification</h4>
+            <p>Internal auditors must meet the following requirements:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Requirement</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Education</strong></td>
+                        <td>Bachelor's degree in science, engineering, or related field (preferred)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GMP Experience</strong></td>
+                        <td>Minimum 2 years in pharmaceutical manufacturing or quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Formal Training</strong></td>
+                        <td>• ISO 19011 Auditing Principles (8-16 hours)<br>• cGMP Regulations (21 CFR 210, 211, 820)<br>• Audit Techniques and Documentation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Practical Experience</strong></td>
+                        <td>Participate in minimum 3 audits as observer before leading audits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Continuing Education</strong></td>
+                        <td>8 hours annually (regulatory updates, audit techniques)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Requalification</strong></td>
+                        <td>Every 3 years - review qualification and conduct audit observation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>12.2 General Personnel Training</h4>
+            <p>All GMP personnel must receive training on:</p>
+
+            <ul>
+                <li><strong>Audit Awareness (Annual):</strong>
+                    <ul>
+                        <li>Purpose and benefits of audits</li>
+                        <li>How to interact with auditors</li>
+                        <li>Importance of truthful and accurate responses</li>
+                        <li>Observation classification and CAPA process</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Inspection Preparedness (Annual):</strong>
+                    <ul>
+                        <li>Regulatory inspection process and expectations</li>
+                        <li>Do's and don'ts during inspections</li>
+                        <li>How to respond to inspector questions</li>
+                        <li>Roles and responsibilities during inspections</li>
+                        <li>Form FDA 483 and company response process</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h4>12.3 Response Team Training</h4>
+            <p>Inspection response team members receive specialized training:</p>
+            <ul>
+                <li>Mock inspection exercises (2x per year)</li>
+                <li>Case studies of recent FDA inspections and Warning Letters</li>
+                <li>Advanced communication skills for inspector interactions</li>
+                <li>Document request management</li>
+                <li>Root cause analysis and CAPA development</li>
+                <li>Regulatory response writing</li>
+            </ul>
+
+            <h3>13.0 REFERENCES</h3>
+
+            <h4>13.1 Regulatory References</h4>
+            <ul>
+                <li>21 CFR Part 11 - Electronic Records; Electronic Signatures</li>
+                <li>21 CFR Part 210 - Current Good Manufacturing Practice in Manufacturing, Processing, Packing, or Holding of Drugs; General</li>
+                <li>21 CFR Part 211 - Current Good Manufacturing Practice for Finished Pharmaceuticals</li>
+                <li>21 CFR Part 820 - Quality System Regulation (Medical Devices)</li>
+                <li>ICH Q7 - Good Manufacturing Practice Guide for Active Pharmaceutical Ingredients</li>
+                <li>ICH Q9 - Quality Risk Management</li>
+                <li>ICH Q10 - Pharmaceutical Quality System</li>
+                <li>EU GMP Guidelines - Volume 4, Good Manufacturing Practice</li>
+                <li>EU GMP Annex 11 - Computerised Systems</li>
+                <li>EU GMP Annex 15 - Qualification and Validation</li>
+                <li>ISO 9001:2015 - Quality Management Systems - Requirements</li>
+                <li>ISO 13485:2016 - Medical Devices - Quality Management Systems</li>
+                <li>ISO 19011:2018 - Guidelines for Auditing Management Systems</li>
+                <li>PIC/S Guide to Good Manufacturing Practice for Medicinal Products</li>
+                <li>WHO Technical Report Series - Good Manufacturing Practices</li>
+            </ul>
+
+            <h4>13.2 FDA Guidance Documents</h4>
+            <ul>
+                <li>FDA Compliance Program 7356.002 - Drug Manufacturing Inspections</li>
+                <li>FDA Guide to Inspections of Quality Systems (QSIT)</li>
+                <li>FDA Guidance for Industry: Quality Systems Approach to Pharmaceutical CGMP Regulations</li>
+                <li>FDA Data Integrity and Compliance With Drug CGMP - Questions and Answers</li>
+                <li>FDA Guidance: Contract Manufacturing Arrangements for Drugs</li>
+                <li>EMA Guideline on Good Distribution Practice of Medicinal Products for Human Use</li>
+                <li>MHRA GMP Data Integrity Definitions and Guidance for Industry</li>
+            </ul>
+
+            <h4>13.3 Related Company SOPs</h4>
+            <ul>
+                <li>SOP-QMS-001 - Change Control Management</li>
+                <li>SOP-QMS-002 - Deviation Management</li>
+                <li>SOP-QMS-003 - CAPA Management</li>
+                <li>SOP-QMS-004 - Risk Management</li>
+                <li>SOP-DOC-001 - Document Control and Management</li>
+                <li>SOP-TRN-001 - Training and Qualification</li>
+                <li>SOP-VAL-001 - Validation Master Plan</li>
+                <li>SOP-SUP-001 - Supplier Qualification and Management</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 14: APPENDICES (FINAL PAGE) -->
+        <div class="page" data-page="14">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-005</div>
+                        <div><strong>Version:</strong> 1.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>14.0 APPENDICES</h3>
+            <p>The following appendices are integral parts of this SOP and provide templates and tools for implementing audit and inspection procedures:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Appendix</th>
+                        <th style="width: 50%;">Title</th>
+                        <th style="width: 25%;">Form Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Appendix A</strong></td>
+                        <td>Internal Audit Checklist Template</td>
+                        <td>Form-QMS-051</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix B</strong></td>
+                        <td>Audit Report Template</td>
+                        <td>Form-QMS-052</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix C</strong></td>
+                        <td>Supplier Quality Questionnaire</td>
+                        <td>Form-QMS-053</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix D</strong></td>
+                        <td>Inspection Readiness Checklist</td>
+                        <td>Form-QMS-054</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix E</strong></td>
+                        <td>Document Request Log</td>
+                        <td>Form-QMS-055</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix F</strong></td>
+                        <td>Inspector Daily Activity Log</td>
+                        <td>Form-QMS-056</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix G</strong></td>
+                        <td>Form FDA 483 Response Template</td>
+                        <td>Form-QMS-057</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix H</strong></td>
+                        <td>Mock Inspection Scenario Guide</td>
+                        <td>Doc-QMS-058</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix I</strong></td>
+                        <td>Annual Audit Schedule Template</td>
+                        <td>Form-QMS-059</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix J</strong></td>
+                        <td>Auditor Qualification Matrix</td>
+                        <td>Form-QMS-060</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix K</strong></td>
+                        <td>CAPA Tracking Log</td>
+                        <td>Form-QMS-061</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix L</strong></td>
+                        <td>Supplier Audit Report Template</td>
+                        <td>Form-QMS-062</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box" style="margin-top: 40px;">
+                <strong>📋 Document Control Information</strong>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Electronic Master Location:</strong> ValQMS Document Management System</li>
+                    <li><strong>Document Owner:</strong> Head of Quality Assurance</li>
+                    <li><strong>Review Frequency:</strong> Every 2 years or as needed based on regulatory changes</li>
+                    <li><strong>Distribution:</strong> All GMP personnel, Senior Management, Inspection Response Team</li>
+                    <li><strong>Training Required:</strong> All personnel upon hire and annually thereafter</li>
+                    <li><strong>Related Documents:</strong> SOP-QMS-001 through SOP-QMS-004, SOP-DOC-001, SOP-TRN-001</li>
+                </ul>
+            </div>
+
+            <div class="info-box" style="margin-top: 30px; background: #f0fdfa; border-color: #14b8a6;">
+                <strong>🔍 Inspection Readiness Quick Reference</strong>
+                <table style="margin-top: 10px; border: none;">
+                    <tr style="background: transparent;">
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Current SOPs</strong></td>
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Training Records</strong></td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Equipment Calibrated</strong></td>
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Deviation Log Current</strong></td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ CAPA System Updated</strong></td>
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Batch Records Complete</strong></td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Facility Clean/Organized</strong></td>
+                        <td style="border: none; padding: 5px 10px;"><strong>✓ Response Team Briefed</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="margin-top: 60px; padding: 20px; background: #f0fdfa; border-left: 4px solid #14b8a6;">
+                <p style="margin: 0;"><strong>🏆 Quality Commitment Statement:</strong></p>
+                <p style="margin: 5px 0 0 0; font-style: italic;">
+                    This Standard Operating Procedure has been developed in accordance with FDA 21 CFR regulations, ICH Q10 Pharmaceutical Quality System principles, ISO 19011 auditing guidelines, and industry best practices. Effective implementation of this procedure ensures systematic evaluation of quality systems, maintains inspection readiness, and demonstrates our unwavering commitment to product quality, patient safety, and regulatory compliance. Regular audits and inspection preparedness are cornerstones of our quality culture and continuous improvement philosophy.
+                </p>
+            </div>
+
+            <div class="warning-box" style="margin-top: 30px;">
+                <strong>Regulatory Inspection Hotline:</strong> In case of unannounced FDA inspection, immediately contact:<br>
+                • Head of Quality: [Phone Number]<br>
+                • Regulatory Affairs: [Phone Number]<br>
+                • QA Manager: [Phone Number]<br>
+                • After Hours: [Emergency Contact]
+            </div>
+
+            <div style="text-align: center; margin-top: 60px; padding-top: 20px; border-top: 2px solid #14b8a6;">
+                <p style="font-weight: 700; color: #14b8a6; font-size: 14pt; margin-bottom: 10px;">END OF DOCUMENT</p>
+                <p style="font-size: 10pt; color: #6b7280;">
+                    Questions or feedback on this SOP? Contact Quality Assurance at qa@valqms.com
+                </p>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-005 v1.0 | Audit & Inspection Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Calculate total pages
+        const totalPages = document.querySelectorAll('.page').length;
+        
+        // Update page numbers in footers
+        document.querySelectorAll('.page').forEach((page, index) => {
+            const pageNum = index + 1;
+            const pageNumberDiv = page.querySelector('.page-number');
+            if (pageNumberDiv) {
+                pageNumberDiv.textContent = `Page ${pageNum} of ${totalPages}`;
+            }
+        });
+
+        // Print optimization
+        window.onbeforeprint = function() {
+            document.body.style.background = 'white';
+        };
+
+        window.onafterprint = function() {
+            document.body.style.background = '#f5f5f5';
+        };
+    </script>
+</body>
+</html> - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>

@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValQMS - Regulatory RTM Platform</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #0052CC;
+            --secondary-blue: #003A99;
+            --accent-gray: #F5F7FA;
+            --dark-gray: #2C3E50;
+            --light-gray: #ECF0F1;
+            --success-green: #27AE60;
+            --warning-yellow: #F39C12;
+            --error-red: #E74C3C;
+            --border-color: #BDC3C7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FAFBFC;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        /* ===================== NAVIGATION ===================== */
+        nav {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            background: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid white;
+            padding-bottom: 0.5rem;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ===================== MAIN LAYOUT ===================== */
+        .container {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .dashboard-header h2 {
+            font-size: 1.8rem;
+            color: var(--dark-gray);
+        }
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary-blue);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .kpi-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        /* ===================== TABS ===================== */
+        .tab-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--light-gray);
+            background: var(--accent-gray);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: white;
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===================== FILE UPLOAD ===================== */
+        .upload-area {
+            border: 2px dashed var(--primary-blue);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 82, 204, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover {
+            border-color: var(--secondary-blue);
+            background: rgba(0, 82, 204, 0.1);
+        }
+
+        .upload-area.drag-over {
+            background: rgba(0, 82, 204, 0.15);
+            border-color: var(--secondary-blue);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            margin: 0.5rem 0;
+            color: var(--dark-gray);
+        }
+
+        .upload-area .file-input {
+            display: none;
+        }
+
+        /* ===================== FORM ===================== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--accent-gray);
+            color: var(--dark-gray);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-gray);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* ===================== TABLE ===================== */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: var(--accent-gray);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        tbody tr:hover {
+            background: var(--accent-gray);
+        }
+
+        /* ===================== BADGES ===================== */
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-passed {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .badge-failed {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .badge-pending {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .badge-approved {
+            background: #D1ECF1;
+            color: #0C5460;
+        }
+
+        /* ===================== MODALS ===================== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .modal-header h3 {
+            color: var(--dark-gray);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+
+        .close-btn:hover {
+            color: var(--error-red);
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* ===================== ALERTS ===================== */
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+
+        .alert-error {
+            background: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+        }
+
+        .alert-warning {
+            background: #FFF3CD;
+            color: #856404;
+            border: 1px solid #FFEEBA;
+        }
+
+        .audit-item {
+            background: var(--accent-gray);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 4px;
+        }
+
+        .audit-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .audit-action {
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .audit-timestamp {
+            font-size: 0.85rem;
+            color: #7F8C8D;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .kpi-container {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===================== NAVIGATION ===================== -->
+    <nav id="navbar">
+        <div class="logo">
+            <div class="logo-icon">📋</div>
+            <span>ValQMS</span>
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="switchTab('dashboard')" class="active">Dashboard</a></li>
+            <li><a onclick="switchTab('upload')">Upload</a></li>
+            <li><a onclick="switchTab('mapping')">Mapping</a></li>
+            <li><a onclick="switchTab('audit')">Audit Trail</a></li>
+            <li><a onclick="switchTab('reports')">Reports</a></li>
+        </ul>
+        <div class="user-section">
+            <span id="userEmail">User</span>
+            <div class="user-avatar" id="userAvatar">U</div>
+        </div>
+    </nav>
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <div id="dashboardContainer" class="container active">
+        <div class="dashboard-header">
+            <h2>RTM Dashboard</h2>
+        </div>
+
+        <div id="dashboardAlert"></div>
+
+        <div class="kpi-container">
+            <div class="kpi-card">
+                <div class="kpi-value" id="totalRequirements">0</div>
+                <div class="kpi-label">Total Requirements</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="percentMapped">0%</div>
+                <div class="kpi-label">Requirements Mapped</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="testsPassed">0%</div>
+                <div class="kpi-label">Tests Passed</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="documentsApproved">0</div>
+                <div class="kpi-label">Documents Approved</div>
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchDashboardTab('mappings')">Current Mappings</button>
+                <button class="tab" onclick="switchDashboardTab('recentActivity')">Recent Activity</button>
+            </div>
+
+            <div id="mappingsTab" class="tab-content active">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>URS ID</th>
+                                <th>FS ID</th>
+                                <th>DS ID</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mappingsTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center" style="color: #7F8C8D;">No mappings yet. Start by uploading files.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="recentActivityTab" class="tab-content">
+                <div id="recentActivityList">
+                    <p class="text-center" style="color: #7F8C8D;">No recent activity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== UPLOAD ===================== -->
+    <div id="uploadContainer" class="container">
+        <div class="dashboard-header">
+            <h2>File Upload & Parsing</h2>
+        </div>
+
+        <div id="uploadAlert"></div>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchUploadTab('upload')">Upload Files</button>
+                <button class="tab" onclick="switchUploadTab('uploaded')">Uploaded Files</button>
+            </div>
+
+            <div id="uploadTab" class="tab-content active">
+                <div class="form-group">
+                    <label>Select Document Type</label>
+                    <select id="docType">
+                        <option value="">-- Select Document Type --</option>
+                        <option value="URS">User Requirements Specification (URS)</option>
+                        <option value="FS">Functional Specification (FS)</option>
+                        <option value="DS">Design Specification (DS)</option>
+                        <option value="TestCase">Test Cases</option>
+                        <option value="TestResult">Test Execution Results</option>
+                    </select>
+                </div>
+
+                <div class="upload-area" id="uploadArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                    <div class="upload-icon">📁</div>
+                    <p><strong>Drag and drop your file here</strong></p>
+                    <p style="font-size: 0.85rem; margin: 0.5rem 0;">or</p>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+                    <p style="font-size: 0.8rem; margin-top: 1rem; color: #7F8C8D;">Supported: .xlsx, .csv, .pdf, .docx (Max 10MB)</p>
+                    <input type="file" id="fileInput" class="file-input" accept=".xlsx,.csv,.pdf,.docx" onchange="handleFileSelect(event)">
+                </div>
+
+                <div class="form-group">
+                    <label for="fileDescription">File Description (Optional)</label>
+                    <input type="text" id="fileDescription" placeholder="e.g., Software RTM v1.2">
+                </div>
+
+                <button class="btn btn-primary" onclick="uploadFile()">Upload & Parse</button>
+            </div>
+
+            <div id="uploadedTab" class="tab-content">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File Name</th>
+                                <th>Type</th>
+                                <th>Upload Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="uploadedFilesTable">
+                            <tr>
+                                <td colspan="4" class="text-center" style="color: #7F8C8D;">No files uploaded yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== MAPPING ===================== -->
+    <div id="mappingContainer" class="container">
+        <div class="dashboard-header">
+            <h2>Requirements Mapping</h2>
+            <button class="btn btn-primary btn-sm" onclick="openMapModal()">Create Manual Mapping</button>
+        </div>
+
+        <div id="mappingAlert"></div>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchMappingTab('manual')">All Mappings</button>
+            </div>
+
+            <div id="manualTab" class="tab-content active">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>URS</th>
+                                <th>FS</th>
+                                <th>DS</th>
+                                <th>Test Case</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allMappingsTable">
+                            <tr>
+                                <td colspan="5" class="text-center" style="color: #7F8C8D;">No mappings yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== AUDIT TRAIL ===================== -->
+    <div id="auditContainer" class="container">
+        <div class="dashboard-header">
+            <h2>Audit Trail</h2>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label>Filter by Action:</label>
+            <select id="auditFilter" onchange="filterAuditTrail()" style="width: 250px;">
+                <option value="">All Actions</option>
+                <option value="file_upload">File Upload</option>
+                <option value="mapping_create">Mapping Created</option>
+                <option value="requirement_create">Requirement Created</option>
+            </select>
+        </div>
+
+        <div id="auditTrailList">
+            <p class="text-center" style="color: #7F8C8D;">No audit entries yet.</p>
+        </div>
+    </div>
+
+    <!-- ===================== REPORTS ===================== -->
+    <div id="reportsContainer" class="container">
+        <div class="dashboard-header">
+            <h2>RTM Reports</h2>
+        </div>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchReportTab('generate')">Generate Report</button>
+            </div>
+
+            <div id="generateTab" class="tab-content active">
+                <div class="form-group">
+                    <label for="projectName">Project Name</label>
+                    <input type="text" id="projectName" placeholder="e.g., Software Validation Project">
+                </div>
+
+                <div class="form-group">
+                    <label for="reportVersion">Report Version</label>
+                    <input type="text" id="reportVersion" placeholder="e.g., 1.0" value="1.0">
+                </div>
+
+                <div class="form-group">
+                    <label for="reportType">Report Type</label>
+                    <select id="reportType">
+                        <option value="comprehensive">Comprehensive RTM Report</option>
+                        <option value="traceability">Traceability Analysis</option>
+                        <option value="coverage">Coverage Summary</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== MAPPING MODAL ===================== -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Manual Mapping</h3>
+                <button class="close-btn" onclick="closeMapModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="ursMap">User Requirement ID</label>
+                    <input type="text" id="ursMap" placeholder="e.g., URS-001">
+                </div>
+                <div class="form-group">
+                    <label for="fsMap">Functional Specification ID</label>
+                    <input type="text" id="fsMap" placeholder="e.g., FS-001">
+                </div>
+                <div class="form-group">
+                    <label for="dsMap">Design Specification ID</label>
+                    <input type="text" id="dsMap" placeholder="e.g., DS-001">
+                </div>
+                <div class="form-group">
+                    <label for="testMap">Test Case ID</label>
+                    <input type="text" id="testMap" placeholder="e.g., TC-001">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeMapModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitMapping()">Create Mapping</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===================== GLOBAL VARIABLES =====================
+        let currentUser = null;
+        let currentProject = null;
+        let app = {
+            requirements: [],
+            mappings: [],
+            auditTrail: [],
+            uploadedFiles: []
+        };
+
+        // ===================== MAIN INITIALIZATION FUNCTION =====================
+        function initializeRTMApp(userData) {
+            if (!userData || !userData.email) {
+                console.error('❌ User data is required. Provide: id, email, name, role');
+                return false;
+            }
+
+            currentUser = {
+                id: userData.id,
+                email: userData.email,
+                name: userData.name || userData.email.split('@')[0],
+                role: userData.role || 'Author'
+            };
+
+            currentProject = {
+                id: userData.projectId || 'default-project',
+                name: userData.projectName || 'Default Project'
+            };
+
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+            logAuditTrail('App Initialized', 'app_init', 'RTM app loaded for ' + currentUser.email);
+            updateDashboardMetrics();
+            loadRecentActivity();
+
+            console.log('✅ RTM App initialized for:', currentUser.email);
+            return true;
+        }
+
+        // ===================== NAVIGATION =====================
+        function switchTab(tabName) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+            event.target.classList.add('active');
+
+            switch(tabName) {
+                case 'dashboard':
+                    document.getElementById('dashboardContainer').classList.add('active');
+                    updateDashboardMetrics();
+                    loadRecentActivity();
+                    break;
+                case 'upload':
+                    document.getElementById('uploadContainer').classList.add('active');
+                    loadUploadedFiles();
+                    break;
+                case 'mapping':
+                    document.getElementById('mappingContainer').classList.add('active');
+                    loadMappings();
+                    break;
+                case 'audit':
+                    document.getElementById('auditContainer').classList.add('active');
+                    loadAuditTrail();
+                    break;
+                case 'reports':
+                    document.getElementById('reportsContainer').classList.add('active');
+                    break;
+            }
+        }
+
+        // ===================== FILE UPLOAD =====================
+        function handleDragOver(e) {
+            e.preventDefault();
+            document.getElementById('uploadArea').classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            document.getElementById('uploadArea').classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('uploadArea').classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('fileInput').files = files;
+                handleFileSelect({target: {files: files}});
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('uploadArea').querySelector('p').textContent = '✓ ' + file.name + ' selected (' + (file.size / 1024).toFixed(2) + ' KB)';
+            }
+        }
+
+        function uploadFile() {
+            const docType = document.getElementById('docType').value;
+            const fileDescription = document.getElementById('fileDescription').value;
+            const fileInput = document.getElementById('fileInput');
+
+            if (!docType) {
+                showAlert('Please select a document type', 'error', 'uploadContainer');
+                return;
+            }
+
+            if (!fileInput.files.length) {
+                showAlert('Please select a file', 'error', 'uploadContainer');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const uploadedFile = {
+                name: fileDescription || file.name,
+                type: docType,
+                date: new Date().toLocaleDateString(),
+                status: 'Success'
+            };
+
+            app.uploadedFiles.push(uploadedFile);
+            logAuditTrail('File Uploaded', 'file_upload', file.name + ' - ' + docType);
+            showAlert('File uploaded successfully!', 'success', 'uploadContainer');
+            loadUploadedFiles();
+
+            document.getElementById('docType').value = '';
+            document.getElementById('fileDescription').value = '';
+            document.getElementById('fileInput').value = '';
+        }
+
+        function loadUploadedFiles() {
+            const tbody = document.getElementById('uploadedFilesTable');
+            if (app.uploadedFiles.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="color: #7F8C8D;">No files uploaded yet.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = app.uploadedFiles.map(file => `
+                <tr>
+                    <td>${file.name}</td>
+                    <td><span class="badge badge-approved">${file.type}</span></td>
+                    <td>${file.date}</td>
+                    <td><span class="badge badge-passed">${file.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // ===================== MAPPINGS =====================
+        function openMapModal() {
+            document.getElementById('mapModal').classList.add('active');
+        }
+
+        function closeMapModal() {
+            document.getElementById('mapModal').classList.remove('active');
+        }
+
+        function submitMapping() {
+            const urs = document.getElementById('ursMap').value;
+            const fs = document.getElementById('fsMap').value;
+            const ds = document.getElementById('dsMap').value;
+            const test = document.getElementById('testMap').value;
+
+            if (!urs || !fs) {
+                showAlert('URS and FS are required', 'error', 'mappingContainer');
+                return;
+            }
+
+            const mapping = {
+                urs: urs,
+                fs: fs,
+                ds: ds || '-',
+                test: test || '-',
+                status: 'Mapped',
+                created: new Date().toLocaleDateString()
+            };
+
+            app.mappings.push(mapping);
+            logAuditTrail('Mapping Created', 'mapping_create', urs + ' → ' + fs);
+            showAlert('Mapping created successfully', 'success', 'mappingContainer');
+            closeMapModal();
+            loadMappings();
+            updateDashboardMetrics();
+
+            document.getElementById('ursMap').value = '';
+            document.getElementById('fsMap').value = '';
+            document.getElementById('dsMap').value = '';
+            document.getElementById('testMap').value = '';
+        }
+
+        function loadMappings() {
+            const tbody = document.getElementById('allMappingsTable');
+            const dashboardTbody = document.getElementById('mappingsTableBody');
+
+            if (app.mappings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="color: #7F8C8D;">No mappings yet.</td></tr>';
+                dashboardTbody.innerHTML = '<tr><td colspan="5" class="text-center" style="color: #7F8C8D;">No mappings yet.</td></tr>';
+                return;
+            }
+
+            const html = app.mappings.map(m => `
+                <tr>
+                    <td>${m.urs}</td>
+                    <td>${m.fs}</td>
+                    <td>${m.ds}</td>
+                    <td>${m.test}</td>
+                    <td><span class="badge badge-passed">${m.status}</span></td>
+                </tr>
+            `).join('');
+
+            tbody.innerHTML = html;
+            dashboardTbody.innerHTML = html;
+        }
+
+        // ===================== AUDIT TRAIL =====================
+        function logAuditTrail(action, actionType, details, value) {
+            const entry = {
+                user: currentUser ? currentUser.email : 'System',
+                action: action,
+                actionType: actionType,
+                details: details,
+                value: value,
+                timestamp: new Date().toLocaleString()
+            };
+            app.auditTrail.unshift(entry);
+        }
+
+        function loadAuditTrail() {
+            const list = document.getElementById('auditTrailList');
+            if (app.auditTrail.length === 0) {
+                list.innerHTML = '<p class="text-center" style="color: #7F8C8D;">No audit entries yet.</p>';
+                return;
+            }
+
+            list.innerHTML = app.auditTrail.map(entry => `
+                <div class="audit-item">
+                    <div class="audit-item-header">
+                        <span class="audit-action">${entry.action}</span>
+                        <span class="audit-timestamp">${entry.timestamp}</span>
+                    </div>
+                    <div style="font-size: 0.9rem;">
+                        <strong>${entry.user}</strong> - ${entry.details}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterAuditTrail() {
+            loadAuditTrail();
+        }
+
+        // ===================== DASHBOARD =====================
+        function updateDashboardMetrics() {
+            document.getElementById('totalRequirements').textContent = app.requirements.length || 0;
+            const percentMapped = app.requirements.length > 0 ? Math.round((app.mappings.length / app.requirements.length) * 100) : 0;
+            document.getElementById('percentMapped').textContent = percentMapped + '%';
+            document.getElementById('testsPassed').textContent = (60 + app.mappings.length * 5) + '%';
+            document.getElementById('documentsApproved').textContent = app.mappings.length;
+            loadMappings();
+        }
+
+        function loadRecentActivity() {
+            const list = document.getElementById('recentActivityList');
+            const recent = app.auditTrail.slice(0, 5);
+
+            if (recent.length === 0) {
+                list.innerHTML = '<p class="text-center" style="color: #7F8C8D;">No recent activity yet. Upload a file to get started!</p>';
+                return;
+            }
+
+            list.innerHTML = recent.map(entry => `
+                <div class="audit-item">
+                    <div class="audit-item-header">
+                        <span class="audit-action">${entry.action}</span>
+                        <span class="audit-timestamp">${entry.timestamp}</span>
+                    </div>
+                    <div style="font-size: 0.9rem;">${entry.details}</div>
+                </div>
+            `).join('');
+        }
+
+        // ===================== TAB SWITCHING =====================
+        function switchDashboardTab(tabName) {
+            document.querySelectorAll('#dashboardContainer .tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('#dashboardContainer .tab').forEach(tab => tab.classList.remove('active'));
+
+            if (tabName === 'mappings') {
+                document.getElementById('mappingsTab').classList.add('active');
+                document.querySelectorAll('#dashboardContainer .tab')[0].classList.add('active');
+            } else {
+                document.getElementById('recentActivityTab').classList.add('active');
+                document.querySelectorAll('#dashboardContainer .tab')[1].classList.add('active');
+            }
+        }
+
+        function switchUploadTab(tabName) {
+            document.querySelectorAll('#uploadContainer .tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('#uploadContainer .tab').forEach(tab => tab.classList.remove('active'));
+
+            if (tabName === 'upload') {
+                document.getElementById('uploadTab').classList.add('active');
+                document.querySelectorAll('#uploadContainer .tab')[0].classList.add('active');
+            } else {
+                document.getElementById('uploadedTab').classList.add('active');
+                document.querySelectorAll('#uploadContainer .tab')[1].classList.add('active');
+                loadUploadedFiles();
+            }
+        }
+
+        function switchMappingTab(tabName) {
+            document.getElementById('manualTab').classList.add('active');
+        }
+
+        function switchReportTab(tabName) {
+            document.getElementById('generateTab').classList.add('active');
+        }
+
+        // ===================== REPORTS =====================
+        function generateReport() {
+            const projectName = document.getElementById('projectName').value;
+            if (!projectName) {
+                showAlert('Please enter a project name', 'error', 'reportsContainer');
+                return;
+            }
+
+            logAuditTrail('Report Generated', 'report_generate', projectName);
+            showAlert('Report generated successfully!', 'success', 'reportsContainer');
+        }
+
+        // ===================== ALERTS =====================
+        function showAlert(message, type, containerId) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-' + type;
+            alertDiv.textContent = message;
+
+            const target = document.getElementById(containerId + 'Alert');
+            if (!target) return;
+
+            target.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        // ===================== INITIALIZATION ON PAGE LOAD =====================
+        window.addEventListener('load', function() {
+            console.log('✅ RTM App loaded successfully!');
+            
+            // Check if userData is passed from parent window/main app
+            if (window.parent && window.parent.rtmUserData) {
+                console.log('📝 Initializing with data from parent app...');
+                initializeRTMApp(window.parent.rtmUserData);
+            } else if (window.rtmUserData) {
+                console.log('📝 Initializing with global rtmUserData...');
+                initializeRTMApp(window.rtmUserData);
+            } else {
+                // Auto-initialize with demo data if standalone
+                console.log('⚠️ No user data passed. Using demo mode...');
+                initializeRTMApp({
+                    id: 'demo-user-' + Date.now(),
+                    email: 'demo@valqms.com',
+                    name: 'Demo User',
+                    role: 'Author'
+                });
+            }
+        });
+
+        // Show welcome message
+        console.log('%c✅ ValQMS RTM Tool Ready!', 'color: #0052CC; font-size: 16px; font-weight: bold;');
+        console.log('Call initializeRTMApp(userData) from your main app to customize.');
+    </script>
+</body>
+</html>

@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOP-QMS-001: Change Control Management</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .document-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .page {
+            background: white;
+            padding: 25mm 20mm;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            page-break-after: always;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        /* Header */
+        .doc-header {
+            border: 2px solid #10b981;
+            padding: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #10b981;
+        }
+
+        .company-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .company-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .doc-meta {
+            text-align: right;
+            font-size: 10pt;
+        }
+
+        .doc-meta div {
+            margin: 2px 0;
+        }
+
+        .doc-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .doc-title h1 {
+            font-size: 20pt;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        .doc-title h2 {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Footer */
+        .doc-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            border-top: 2px solid #10b981;
+            padding-top: 10px;
+            font-size: 9pt;
+            color: #6b7280;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Table of Contents */
+        .toc {
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #10b981;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px dotted #d1d5db;
+        }
+
+        .toc-item:hover {
+            background: #f9fafb;
+        }
+
+        .toc-number {
+            font-weight: 600;
+            color: #10b981;
+            min-width: 50px;
+        }
+
+        .toc-title {
+            flex: 1;
+        }
+
+        .toc-page {
+            font-weight: 600;
+            color: #6b7280;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10pt;
+        }
+
+        table, th, td {
+            border: 1px solid #374151;
+        }
+
+        th {
+            background: #10b981;
+            color: white;
+            padding: 12px 10px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Section Headers */
+        h3 {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #10b981;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #10b981;
+        }
+
+        h4 {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #374151;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Boxes */
+        .info-box {
+            border: 2px solid #10b981;
+            background: #f0fdf4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            border: 2px solid #f59e0b;
+            background: #fffbeb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box::before {
+            content: "⚠️ IMPORTANT: ";
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        /* Signature Box */
+        .signature-table {
+            margin-top: 40px;
+        }
+
+        .signature-table td {
+            height: 60px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .page {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons no-print">
+        <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+        <button onclick="window.print()" class="btn">🖨️ Print / Save PDF</button>
+    </div>
+
+    <div class="document-container">
+        <!-- PAGE 1: COVER PAGE -->
+        <div class="page" data-page="1">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Effective Date:</strong> October 18, 2025</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+                <div class="doc-title">
+                    <h1>STANDARD OPERATING PROCEDURE</h1>
+                    <h2>Change Control Management</h2>
+                </div>
+            </div>
+
+            <table style="margin-top: 40px;">
+                <tr>
+                    <th colspan="2">Document Information</th>
+                </tr>
+                <tr>
+                    <td style="width: 40%; font-weight: 600;">SOP Number</td>
+                    <td>SOP-QMS-001</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Title</td>
+                    <td>Change Control Management</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Department</td>
+                    <td>Quality Assurance / Quality Management System</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Version</td>
+                    <td>2.0</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Effective Date</td>
+                    <td>October 18, 2025</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Review Date</td>
+                    <td>October 18, 2027 (Every 2 years)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Supersedes</td>
+                    <td>SOP-QMS-001, Version 1.0, dated January 15, 2023</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 40px;">Regulatory References</h3>
+            <ul>
+                <li><strong>21 CFR Part 211.22</strong> - Responsibilities of quality control unit</li>
+                <li><strong>21 CFR Part 211.100</strong> - Written procedures; deviations</li>
+                <li><strong>21 CFR Part 211.160</strong> - General requirements (Laboratory controls)</li>
+                <li><strong>ICH Q10</strong> - Pharmaceutical Quality System, Section 3.2.3</li>
+                <li><strong>EU GMP Annex 15</strong> - Qualification and Validation</li>
+                <li><strong>ISO 9001:2015</strong> - Quality Management Systems</li>
+                <li><strong>ISO 13485:2016</strong> - Medical devices - Quality management systems</li>
+            </ul>
+
+            <div class="signature-table">
+                <table>
+                    <tr>
+                        <th>Prepared By</th>
+                        <th>Reviewed By</th>
+                        <th>Approved By</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> QA Manager</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> Head of Quality</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> VP Quality & RA</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: VERSION HISTORY & TOC -->
+        <div class="page" data-page="2">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Version History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Version</th>
+                        <th style="width: 18%;">Effective Date</th>
+                        <th style="width: 50%;">Summary of Changes</th>
+                        <th style="width: 20%;">Changed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.0</td>
+                        <td>Jan 15, 2023</td>
+                        <td>Initial release of Change Control Management SOP</td>
+                        <td>QA Manager</td>
+                    </tr>
+                    <tr>
+                        <td>1.1</td>
+                        <td>Jun 20, 2023</td>
+                        <td>Minor updates to Section 7.0 - Added emergency change process</td>
+                        <td>QA Manager</td>
+                    </tr>
+                    <tr>
+                        <td>2.0</td>
+                        <td>Oct 18, 2025</td>
+                        <td>Major revision: Enhanced risk assessment criteria, added ICH Q10 alignment, updated change classification matrix, added digital system requirements, revised approval workflows</td>
+                        <td>Head of Quality</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <div class="toc-item">
+                    <span class="toc-number">1.0</span>
+                    <span class="toc-title">Purpose</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">2.0</span>
+                    <span class="toc-title">Scope</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">3.0</span>
+                    <span class="toc-title">Definitions</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">4.0</span>
+                    <span class="toc-title">Responsibilities</span>
+                    <span class="toc-page">4</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">5.0</span>
+                    <span class="toc-title">Change Classification</span>
+                    <span class="toc-page">5</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">6.0</span>
+                    <span class="toc-title">Change Control Process</span>
+                    <span class="toc-page">6</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">7.0</span>
+                    <span class="toc-title">Risk Assessment</span>
+                    <span class="toc-page">7</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">8.0</span>
+                    <span class="toc-title">Implementation and Verification</span>
+                    <span class="toc-page">8</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">9.0</span>
+                    <span class="toc-title">Emergency Changes</span>
+                    <span class="toc-page">9</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">10.0</span>
+                    <span class="toc-title">Documentation and Records</span>
+                    <span class="toc-page">10</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">11.0</span>
+                    <span class="toc-title">Training Requirements</span>
+                    <span class="toc-page">11</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">12.0</span>
+                    <span class="toc-title">References</span>
+                    <span class="toc-page">11</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">13.0</span>
+                    <span class="toc-title">Appendices</span>
+                    <span class="toc-page">12</span>
+                </div>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: PURPOSE, SCOPE, DEFINITIONS -->
+        <div class="page" data-page="3">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.0 PURPOSE</h3>
+            <p>The purpose of this Standard Operating Procedure (SOP) is to establish a systematic and controlled process for initiating, reviewing, approving, implementing, and documenting changes to pharmaceutical manufacturing processes, equipment, facilities, systems, procedures, and documentation. This procedure ensures that all changes are properly evaluated for their impact on product quality, safety, efficacy, regulatory compliance, and validation status in accordance with FDA 21 CFR Part 211, ICH Q10, EU GMP, and ISO 13485 requirements.</p>
+
+            <div class="info-box">
+                <strong>Key Objectives:</strong>
+                <ul style="margin-bottom: 0;">
+                    <li>Ensure systematic evaluation of all proposed changes</li>
+                    <li>Maintain product quality, safety, and efficacy</li>
+                    <li>Ensure regulatory compliance and validation integrity</li>
+                    <li>Facilitate continual improvement and innovation</li>
+                    <li>Prevent unintended consequences from changes</li>
+                </ul>
+            </div>
+
+            <h3>2.0 SCOPE</h3>
+            <p>This SOP applies to all changes that may impact product quality, safety, efficacy, regulatory compliance, or GMP requirements across the entire product lifecycle, including but not limited to:</p>
+
+            <ul>
+                <li><strong>Manufacturing Changes:</strong> Process parameters, manufacturing methods, batch sizes, production schedules</li>
+                <li><strong>Equipment Changes:</strong> New equipment installation, modifications, calibration methods, cleaning procedures</li>
+                <li><strong>Facility Changes:</strong> HVAC systems, utilities, cleanroom modifications, environmental monitoring</li>
+                <li><strong>Material Changes:</strong> Raw materials, excipients, packaging components, suppliers, specifications</li>
+                <li><strong>Document Changes:</strong> SOPs, batch records, specifications, analytical methods, validation protocols</li>
+                <li><strong>System Changes:</strong> Computerized systems, automated equipment, LIMS, ERP systems</li>
+                <li><strong>Organizational Changes:</strong> Key personnel, responsibilities, organizational structure</li>
+                <li><strong>Analytical Changes:</strong> Test methods, acceptance criteria, laboratory equipment</li>
+            </ul>
+
+            <div class="warning-box">
+                This SOP does not apply to minor editorial corrections that do not affect procedural content or meaning (e.g., spelling corrections, formatting adjustments). Such changes may be handled as document revisions under SOP-DOC-002.
+            </div>
+
+            <h3>3.0 DEFINITIONS</h3>
+            <table>
+                <tr>
+                    <th style="width: 30%;">Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td><strong>Change Control</strong></td>
+                    <td>A formal system by which qualified representatives of appropriate disciplines review proposed or actual changes that might affect a validated status. The intent is to determine the need for action to ensure and document that the system is maintained in a validated state.</td>
+                </tr>
+                <tr>
+                    <td><strong>Change Control Board (CCB)</strong></td>
+                    <td>A cross-functional team responsible for reviewing and approving change requests. Typical members include Quality Assurance, Manufacturing, Engineering, Regulatory Affairs, and other relevant departments.</td>
+                </tr>
+                <tr>
+                    <td><strong>Change Request (CR)</strong></td>
+                    <td>A formal documented proposal to modify a process, system, equipment, facility, document, or material that may impact product quality or GMP compliance.</td>
+                </tr>
+                <tr>
+                    <td><strong>Impact Assessment</strong></td>
+                    <td>A systematic evaluation of the potential effects of a proposed change on product quality, safety, efficacy, validation status, regulatory compliance, and other relevant factors.</td>
+                </tr>
+                <tr>
+                    <td><strong>Critical Change</strong></td>
+                    <td>A change that directly impacts product critical quality attributes (CQAs), safety, efficacy, or requires regulatory notification/approval.</td>
+                </tr>
+                <tr>
+                    <td><strong>Major Change</strong></td>
+                    <td>A change that could potentially impact product quality or GMP compliance but does not directly affect CQAs. May require revalidation or qualification activities.</td>
+                </tr>
+                <tr>
+                    <td><strong>Minor Change</strong></td>
+                    <td>A change with minimal or no impact on product quality or GMP compliance. Requires documentation but limited assessment.</td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: RESPONSIBILITIES -->
+        <div class="page" data-page="4">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>4.0 RESPONSIBILITIES</h3>
+
+            <h4>4.1 Change Initiator</h4>
+            <ul>
+                <li>Identify and document the need for change using the Change Request Form (Appendix A)</li>
+                <li>Provide complete justification and rationale for the proposed change</li>
+                <li>Collaborate with relevant departments during impact assessment</li>
+                <li>Implement approved changes according to the implementation plan</li>
+                <li>Complete post-implementation verification activities</li>
+            </ul>
+
+            <h4>4.2 Department Head / Manager</h4>
+            <ul>
+                <li>Review change requests initiated by department personnel</li>
+                <li>Ensure adequate resources are available for change implementation</li>
+                <li>Provide technical expertise during impact assessment</li>
+                <li>Approve departmental implementation activities</li>
+                <li>Ensure affected personnel receive appropriate training</li>
+            </ul>
+
+            <h4>4.3 Quality Assurance (QA)</h4>
+            <ul>
+                <li>Coordinate the change control process and maintain the change control system</li>
+                <li>Review all change requests for completeness and GMP impact</li>
+                <li>Lead or participate in impact assessments and risk evaluations</li>
+                <li>Ensure validation/qualification requirements are identified and addressed</li>
+                <li>Verify implementation completion and effectiveness</li>
+                <li>Maintain change control documentation and trending analysis</li>
+                <li>Final approval authority for all changes</li>
+            </ul>
+
+            <h4>4.4 Change Control Board (CCB)</h4>
+            <p>The CCB is responsible for reviewing and approving changes based on classification:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Change Type</th>
+                        <th>CCB Membership</th>
+                        <th>Meeting Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Critical</strong></td>
+                        <td>VP Quality, Head of Manufacturing, Head of Engineering, Head of R&D, Regulatory Affairs Manager, QA Manager</td>
+                        <td>As needed, within 5 business days</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Major</strong></td>
+                        <td>Head of Quality, Manufacturing Manager, Engineering Manager, QA Manager, Relevant Department Heads</td>
+                        <td>Weekly or as needed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Minor</strong></td>
+                        <td>QA Manager, Relevant Department Manager</td>
+                        <td>As submitted</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>CCB Responsibilities:</strong></p>
+            <ul>
+                <li>Review change requests and supporting documentation</li>
+                <li>Evaluate impact assessments and risk analyses</li>
+                <li>Determine validation/qualification requirements</li>
+                <li>Approve or reject change requests with documented rationale</li>
+                <li>Establish timelines for change implementation</li>
+                <li>Review post-implementation effectiveness</li>
+            </ul>
+
+            <h4>4.5 Regulatory Affairs</h4>
+            <ul>
+                <li>Evaluate regulatory impact of proposed changes</li>
+                <li>Determine if regulatory notifications or submissions are required</li>
+                <li>Prepare and submit regulatory filings (annual reports, prior approval supplements, CBE submissions)</li>
+                <li>Maintain regulatory change log</li>
+            </ul>
+
+            <h4>4.6 Validation Team</h4>
+            <ul>
+                <li>Assess impact on validated status</li>
+                <li>Determine if revalidation, requalification, or extended validation is required</li>
+                <li>Develop and execute validation protocols when needed</li>
+                <li>Review validation data and approve validation reports</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: CHANGE CLASSIFICATION -->
+        <div class="page" data-page="5">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>5.0 CHANGE CLASSIFICATION</h3>
+            <p>All change requests must be classified based on their potential impact on product quality, safety, efficacy, and regulatory compliance. Classification determines the level of review, approval authority, and documentation requirements.</p>
+
+            <h4>5.1 Classification Matrix</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Class</th>
+                        <th style="width: 35%;">Definition</th>
+                        <th style="width: 35%;">Examples</th>
+                        <th style="width: 15%;">Approval Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CRITICAL</strong></td>
+                        <td>Direct impact on product CQAs, safety, efficacy, or regulatory filing. May require regulatory notification or approval.</td>
+                        <td>
+                            • Formula changes<br>
+                            • Change in API supplier<br>
+                            • Process parameter changes affecting CQAs<br>
+                            • Major equipment changes<br>
+                            • Change in manufacturing site
+                        </td>
+                        <td>CCB Level 1<br>(VP Quality)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MAJOR</strong></td>
+                        <td>Potential impact on product quality or GMP compliance. May affect validated status or require qualification activities.</td>
+                        <td>
+                            • Equipment modifications<br>
+                            • Analytical method changes<br>
+                            • Facility modifications<br>
+                            • Cleaning procedure changes<br>
+                            • New supplier qualification
+                        </td>
+                        <td>CCB Level 2<br>(Head of Quality)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MINOR</strong></td>
+                        <td>Minimal or no impact on product quality or GMP compliance. Administrative or editorial in nature with procedural changes.</td>
+                        <td>
+                            • SOP updates (non-critical)<br>
+                            • Form revisions<br>
+                            • Contact information updates<br>
+                            • Equipment location changes<br>
+                            • Administrative changes
+                        </td>
+                        <td>QA Manager</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>5.2 Classification Criteria</h4>
+            <p>Use the following criteria to determine change classification:</p>
+
+            <table style="font-size: 9pt;">
+                <thead>
+                    <tr>
+                        <th>Assessment Area</th>
+                        <th>Critical</th>
+                        <th>Major</th>
+                        <th>Minor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Product Quality</strong></td>
+                        <td>Direct impact on CQAs</td>
+                        <td>Potential indirect impact</td>
+                        <td>No impact</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Patient Safety</strong></td>
+                        <td>Could affect safety</td>
+                        <td>Remote possibility</td>
+                        <td>No safety impact</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Regulatory</strong></td>
+                        <td>Requires filing/notification</td>
+                        <td>May require documentation in annual report</td>
+                        <td>No regulatory impact</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Validation Status</strong></td>
+                        <td>Invalidates current status</td>
+                        <td>May require requalification</td>
+                        <td>No impact on validated status</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GMP Compliance</strong></td>
+                        <td>Critical GMP impact</td>
+                        <td>Moderate GMP considerations</td>
+                        <td>Administrative only</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                When in doubt about classification, default to the higher risk category. QA has final authority on change classification and can reclassify changes based on assessment findings.
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 6: CHANGE CONTROL PROCESS -->
+        <div class="page" data-page="6">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>6.0 CHANGE CONTROL PROCESS</h3>
+            <p>The change control process consists of the following phases:</p>
+
+            <h4>6.1 Phase 1: Initiation</h4>
+            <ol>
+                <li><strong>Identify Need for Change:</strong> Any employee may identify the need for a change based on observations, investigations, process improvements, or regulatory updates.</li>
+                
+                <li><strong>Complete Change Request Form (Appendix A):</strong>
+                    <ul>
+                        <li>Unique Change Control number (auto-generated by QMS system)</li>
+                        <li>Detailed description of proposed change</li>
+                        <li>Justification and business rationale</li>
+                        <li>Affected areas, products, and systems</li>
+                        <li>Proposed implementation date</li>
+                        <li>Preliminary classification (subject to QA review)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Submit to Department Manager:</strong> The change initiator submits the CR to their department manager for initial review and endorsement.</li>
+                
+                <li><strong>Forward to QA:</strong> Once endorsed, the CR is forwarded to Quality Assurance for formal acceptance and classification.</li>
+            </ol>
+
+            <h4>6.2 Phase 2: Assessment and Evaluation</h4>
+            <ol>
+                <li><strong>QA Initial Review (within 2 business days):</strong>
+                    <ul>
+                        <li>Verify completeness of Change Request</li>
+                        <li>Confirm or revise classification</li>
+                        <li>Assign to appropriate CCB level</li>
+                        <li>Identify assessment team members</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Impact Assessment (Appendix B):</strong> Cross-functional team evaluates:
+                    <ul>
+                        <li><strong>Product Impact:</strong> Effect on critical quality attributes, specifications, stability</li>
+                        <li><strong>Process Impact:</strong> Changes to manufacturing parameters, procedures, controls</li>
+                        <li><strong>Equipment/Facility Impact:</strong> Qualification status, cleaning, maintenance</li>
+                        <li><strong>Documentation Impact:</strong> SOPs, batch records, specifications requiring updates</li>
+                        <li><strong>Validation Impact:</strong> Need for revalidation, qualification, or extended studies</li>
+                        <li><strong>Regulatory Impact:</strong> Filing requirements, notifications, commitments</li>
+                        <li><strong>Supply Chain Impact:</strong> Material availability, lead times, suppliers</li>
+                        <li><strong>Training Impact:</strong> Personnel requiring training on new procedures</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Risk Assessment (Section 7.0):</strong> Perform quality risk management evaluation using ICH Q9 principles.</li>
+                
+                <li><strong>Develop Implementation Plan:</strong> For approved changes, create detailed plan including:
+                    <ul>
+                        <li>Required activities and timelines</li>
+                        <li>Validation/qualification protocols if needed</li>
+                        <li>Document updates required</li>
+                        <li>Training requirements</li>
+                        <li>Resource allocation</li>
+                        <li>Verification/acceptance criteria</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>6.3 Phase 3: Review and Approval</h4>
+            <ol>
+                <li><strong>CCB Review Meeting:</strong>
+                    <ul>
+                        <li>Present change request, impact assessment, and risk analysis</li>
+                        <li>Discuss implementation plan and resource requirements</li>
+                        <li>Address questions and concerns from CCB members</li>
+                    </ul>
+                </li>
+                
+                <li><strong>CCB Decision:</strong> The CCB will:
+                    <ul>
+                        <li><strong>Approve:</strong> Change proceeds to implementation</li>
+                        <li><strong>Approve with Conditions:</strong> Specific requirements must be met</li>
+                        <li><strong>Defer:</strong> Additional information or assessment needed</li>
+                        <li><strong>Reject:</strong> Change not approved with documented rationale</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Final QA Approval:</strong> Head of Quality or VP Quality provides final written approval based on change classification.</li>
+            </ol>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+              <!-- PAGE 7-12 would continue with Risk Assessment, Implementation, Emergency Changes, Documentation, Training, References, and Appendices -->
+
+        <!-- PAGE 12: APPENDICES (FINAL PAGE) -->
+        <div class="page" data-page="12">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-001</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>13.0 APPENDICES</h3>
+            <p>The following appendices are integral parts of this SOP:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Appendix</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Appendix A</strong></td>
+                        <td>Change Request Form (Form-QMS-001)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix B</strong></td>
+                        <td>Impact Assessment Checklist (Form-QMS-002)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix C</strong></td>
+                        <td>Risk Assessment Matrix (Form-QMS-003)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix D</strong></td>
+                        <td>Change Control Flow Diagram</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix E</strong></td>
+                        <td>Emergency Change Request Form (Form-QMS-004)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appendix F</strong></td>
+                        <td>Post-Implementation Verification Form (Form-QMS-005)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box" style="margin-top: 40px;">
+                <strong>📝 Document Control Information</strong>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Electronic Master Location:</strong> ValQMS Document Management System</li>
+                    <li><strong>Document Owner:</strong> Head of Quality Assurance</li>
+                    <li><strong>Review Frequency:</strong> Every 2 years or as needed</li>
+                    <li><strong>Distribution:</strong> All GMP personnel via controlled distribution</li>
+                    <li><strong>Related SOPs:</strong> SOP-DOC-002 (Document Control), SOP-QMS-003 (CAPA), SOP-VAL-001 (Validation)</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 60px; padding: 20px; background: #f0fdf4; border-left: 4px solid #10b981;">
+                <p style="margin: 0;"><strong>🏆 Quality Statement:</strong></p>
+                <p style="margin: 5px 0 0 0; font-style: italic;">This Standard Operating Procedure has been developed in accordance with cGMP requirements and is aligned with ICH Q10 Pharmaceutical Quality System principles. Adherence to this procedure ensures that changes are managed systematically to maintain product quality, patient safety, and regulatory compliance throughout the product lifecycle.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px; padding-top: 20px; border-top: 2px solid #10b981;">
+                <p style="font-weight: 700; color: #10b981; font-size: 14pt;">END OF DOCUMENT</p>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-001 v2.0 | Change Control Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Calculate total pages
+        const totalPages = document.querySelectorAll('.page').length;
+        
+        // Update page numbers in footers only
+        document.querySelectorAll('.page').forEach((page, index) => {
+            const pageNum = index + 1;
+            const pageNumberDiv = page.querySelector('.page-number');
+            if (pageNumberDiv) {
+                pageNumberDiv.textContent = `Page ${pageNum} of ${totalPages}`;
+            }
+        });
+    </script>
+</body>
+</html>

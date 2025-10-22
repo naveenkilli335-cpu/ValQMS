@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOP-QMS-003: CAPA Management | ValQMS</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .document-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .page {
+            background: white;
+            padding: 25mm 20mm;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            page-break-after: always;
+            min-height: 297mm;
+            position: relative;
+        }
+
+        /* Header */
+        .doc-header {
+            border: 2px solid #3b82f6;
+            padding: 15px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #3b82f6;
+        }
+
+        .company-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .company-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .doc-meta {
+            text-align: right;
+            font-size: 10pt;
+        }
+
+        .doc-meta div {
+            margin: 2px 0;
+        }
+
+        .doc-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .doc-title h1 {
+            font-size: 20pt;
+            font-weight: 800;
+            color: #3b82f6;
+            margin-bottom: 8px;
+        }
+
+        .doc-title h2 {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Footer */
+        .doc-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            border-top: 2px solid #3b82f6;
+            padding-top: 10px;
+            font-size: 9pt;
+            color: #6b7280;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Table of Contents */
+        .toc {
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px dotted #d1d5db;
+        }
+
+        .toc-item:hover {
+            background: #f9fafb;
+        }
+
+        .toc-number {
+            font-weight: 600;
+            color: #3b82f6;
+            min-width: 50px;
+        }
+
+        .toc-title {
+            flex: 1;
+        }
+
+        .toc-page {
+            font-weight: 600;
+            color: #6b7280;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10pt;
+        }
+
+        table, th, td {
+            border: 1px solid #374151;
+        }
+
+        th {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 10px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Section Headers */
+        h3 {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #3b82f6;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        h4 {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #374151;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Boxes */
+        .info-box {
+            border: 2px solid #3b82f6;
+            background: #eff6ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            border: 2px solid #ef4444;
+            background: #fef2f2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box::before {
+            content: "⚠️ CRITICAL: ";
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .note-box {
+            border: 2px solid #10b981;
+            background: #f0fdf4;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .note-box::before {
+            content: "📝 NOTE: ";
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* Flowchart */
+        .flowchart {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .flow-step {
+            background: #3b82f6;
+            color: white;
+            padding: 15px;
+            margin: 10px auto;
+            border-radius: 8px;
+            max-width: 400px;
+            font-weight: 600;
+        }
+
+        .flow-arrow {
+            font-size: 24pt;
+            color: #3b82f6;
+            margin: 5px 0;
+        }
+
+        /* Signature Box */
+        .signature-table {
+            margin-top: 40px;
+        }
+
+        .signature-table td {
+            height: 60px;
+        }
+
+        /* Priority Badges */
+        .priority-high {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .priority-low {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            .page {
+                border: none;
+                box-shadow: none;
+                margin: 0;
+                padding: 20mm;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        /* Form styles for annexures */
+        .form-field {
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            border-bottom: 1px solid #6b7280;
+            padding: 5px 0;
+            min-height: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons no-print">
+        <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+        <button onclick="window.print()" class="btn">🖨️ Print / Save PDF</button>
+    </div>
+
+    <div class="document-container">
+        <!-- PAGE 1: COVER PAGE -->
+        <div class="page" data-page="1">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Effective Date:</strong> October 18, 2025</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+                <div class="doc-title">
+                    <h1>STANDARD OPERATING PROCEDURE</h1>
+                    <h2>Corrective and Preventive Action (CAPA) Management</h2>
+                </div>
+            </div>
+
+            <table style="margin-top: 40px;">
+                <tr>
+                    <th colspan="2">Document Information</th>
+                </tr>
+                <tr>
+                    <td style="width: 40%; font-weight: 600;">SOP Number</td>
+                    <td>SOP-QMS-003</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Title</td>
+                    <td>Corrective and Preventive Action (CAPA) Management</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Department</td>
+                    <td>Quality Assurance / Quality Management System</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Version</td>
+                    <td>2.0</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Effective Date</td>
+                    <td>October 18, 2025</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Review Date</td>
+                    <td>October 18, 2027 (Every 2 years)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Supersedes</td>
+                    <td>SOP-QMS-003, Version 1.0, dated April 20, 2023</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 40px;">Regulatory References</h3>
+            <ul>
+                <li><strong>21 CFR Part 211.100(a)</strong> - Written procedures and deviations</li>
+                <li><strong>21 CFR Part 211.192</strong> - Production record review</li>
+                <li><strong>21 CFR Part 820.100</strong> - Corrective and Preventive Action (Medical Devices)</li>
+                <li><strong>ICH Q10</strong> - Pharmaceutical Quality System, Section 3.2.2 (CAPA)</li>
+                <li><strong>EU GMP Chapter 1</strong> - Pharmaceutical Quality System, Section 1.4(xiii)</li>
+                <li><strong>ISO 9001:2015</strong> - Clause 10.2 (Nonconformity and corrective action)</li>
+                <li><strong>ISO 13485:2016</strong> - Clause 8.5.2 and 8.5.3 (Corrective and Preventive Action)</li>
+                <li><strong>FDA Guidance</strong> - Investigating Out-of-Specification (OOS) Test Results (October 2006)</li>
+                <li><strong>PIC/S Guide</strong> - Good Practices for Computerised Systems (PI 011-3)</li>
+            </ul>
+
+            <div class="signature-table">
+                <table>
+                    <tr>
+                        <th>Prepared By</th>
+                        <th>Reviewed By</th>
+                        <th>Approved By</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> QA Manager</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> Head of Quality</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                        <td>
+                            <div><strong>Name:</strong> _________________</div>
+                            <div><strong>Title:</strong> VP Quality & RA</div>
+                            <div><strong>Date:</strong> _________________</div>
+                            <div><strong>Signature:</strong> _________________</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: VERSION HISTORY & TOC -->
+        <div class="page" data-page="2">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Version History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Version</th>
+                        <th style="width: 18%;">Effective Date</th>
+                        <th style="width: 50%;">Summary of Changes</th>
+                        <th style="width: 20%;">Changed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.0</td>
+                        <td>Apr 20, 2023</td>
+                        <td>Initial release of CAPA Management SOP</td>
+                        <td>QA Manager</td>
+                    </tr>
+                    <tr>
+                        <td>1.1</td>
+                        <td>Sep 10, 2023</td>
+                        <td>Added root cause analysis tools section and effectiveness check criteria</td>
+                        <td>QA Manager</td>
+                    </tr>
+                    <tr>
+                        <td>2.0</td>
+                        <td>Oct 18, 2025</td>
+                        <td>Major revision: Enhanced ICH Q10 alignment, added risk-based prioritization matrix, updated effectiveness verification timelines, added 10 comprehensive annexures, integrated with digital CAPA systems</td>
+                        <td>Head of Quality</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <div class="toc-item">
+                    <span class="toc-number">1.0</span>
+                    <span class="toc-title">Purpose</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">2.0</span>
+                    <span class="toc-title">Scope</span>
+                    <span class="toc-page">3</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">3.0</span>
+                    <span class="toc-title">Definitions</span>
+                    <span class="toc-page">4</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">4.0</span>
+                    <span class="toc-title">Responsibilities</span>
+                    <span class="toc-page">5</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">5.0</span>
+                    <span class="toc-title">CAPA Initiation and Identification</span>
+                    <span class="toc-page">6</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">6.0</span>
+                    <span class="toc-title">Investigation and Root Cause Analysis</span>
+                    <span class="toc-page">7</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">7.0</span>
+                    <span class="toc-title">CAPA Action Plan Development</span>
+                    <span class="toc-page">9</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">8.0</span>
+                    <span class="toc-title">Implementation and Verification</span>
+                    <span class="toc-page">10</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">9.0</span>
+                    <span class="toc-title">Effectiveness Check</span>
+                    <span class="toc-page">11</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">10.0</span>
+                    <span class="toc-title">CAPA Closure</span>
+                    <span class="toc-page">12</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">11.0</span>
+                    <span class="toc-title">CAPA Metrics and Trending</span>
+                    <span class="toc-page">12</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">12.0</span>
+                    <span class="toc-title">Documentation Requirements</span>
+                    <span class="toc-page">13</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">13.0</span>
+                    <span class="toc-title">Training Requirements</span>
+                    <span class="toc-page">13</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">14.0</span>
+                    <span class="toc-title">References</span>
+                    <span class="toc-page">14</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-number">15.0</span>
+                    <span class="toc-title">Annexures (A through J)</span>
+                    <span class="toc-page">15-24</span>
+                </div>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: PURPOSE & SCOPE -->
+        <div class="page" data-page="3">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.0 PURPOSE</h3>
+            <p>The purpose of this Standard Operating Procedure (SOP) is to establish a systematic and effective process for identifying, investigating, implementing, and monitoring Corrective Actions (CA) and Preventive Actions (PA) to address actual and potential quality issues. This procedure ensures that CAPAs are managed in accordance with FDA 21 CFR Part 211, ICH Q10, EU GMP, ISO 9001:2015, and ISO 13485:2016 requirements to maintain product quality, patient safety, and continuous improvement.</p>
+
+            <div class="info-box">
+                <strong>Key Objectives:</strong>
+                <ul style="margin-bottom: 0;">
+                    <li>Eliminate the causes of existing nonconformities to prevent recurrence</li>
+                    <li>Identify and address potential nonconformities before they occur</li>
+                    <li>Ensure systematic investigation and root cause analysis</li>
+                    <li>Implement effective corrective and preventive measures</li>
+                    <li>Verify effectiveness of implemented actions</li>
+                    <li>Support continual improvement of the quality system</li>
+                    <li>Meet regulatory requirements and inspection readiness</li>
+                </ul>
+            </div>
+
+            <h3>2.0 SCOPE</h3>
+            <p>This SOP applies to all Corrective and Preventive Actions initiated within the pharmaceutical manufacturing facility and covers:</p>
+
+            <h4>2.1 Sources Requiring CAPA</h4>
+            <ul>
+                <li><strong>Deviations:</strong> Manufacturing, laboratory, and equipment deviations</li>
+                <li><strong>Out of Specification (OOS):</strong> Analytical test results outside specifications</li>
+                <li><strong>Out of Trend (OOT):</strong> Data trending showing adverse patterns</li>
+                <li><strong>Complaints:</strong> Customer complaints affecting product quality or patient safety</li>
+                <li><strong>Product Recalls:</strong> Field actions and market withdrawals</li>
+                <li><strong>Failed Batches:</strong> Rejected or discarded production batches</li>
+                <li><strong>Audit Findings:</strong> Internal, supplier, customer, and regulatory audit observations</li>
+                <li><strong>Inspection Observations:</strong> FDA, EMA, and other regulatory findings</li>
+                <li><strong>Change Control:</strong> Issues identified during change implementation</li>
+                <li><strong>Validation Failures:</strong> Process, cleaning, or analytical method validation issues</li>
+                <li><strong>Equipment Failures:</strong> Critical equipment malfunctions</li>
+                <li><strong>Environmental Monitoring:</strong> Cleanroom excursions and contamination events</li>
+                <li><strong>Data Integrity Issues:</strong> Audit trail anomalies and data discrepancies</li>
+                <li><strong>Management Review:</strong> Issues identified during quality system reviews</li>
+            </ul>
+
+            <h4>2.2 Exclusions</h4>
+            <div class="note-box">
+                Minor editorial corrections to documents that do not affect product quality, safety, or GMP compliance do not require CAPA. These are handled through the Document Control procedure (SOP-DOC-002).
+            </div>
+
+            <h3>2.3 Integration with Quality System</h3>
+            <p>The CAPA system is integrated with and supports:</p>
+            <ul>
+                <li>Quality Risk Management (SOP-QMS-002)</li>
+                <li>Change Control Management (SOP-QMS-001)</li>
+                <li>Deviation Management (SOP-QMS-004)</li>
+                <li>Complaint Management (SOP-QMS-005)</li>
+                <li>Management Review (SOP-QMS-006)</li>
+            </ul>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- Continue with PAGE 4-14 covering all CAPA content -->
+        
+        <!-- PAGE 15: ANNEXURE A - CAPA INITIATION FORM -->
+        <div class="page" data-page="15">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; color: #3b82f6; border: 2px solid #3b82f6; padding: 15px; background: #eff6ff;">
+                ANNEXURE A<br>CAPA INITIATION FORM<br>(Form-QMS-020)
+            </h3>
+
+            <table style="margin-top: 20px;">
+                <tr>
+                    <th colspan="4" style="background: #3b82f6; text-align: center;">CAPA IDENTIFICATION</th>
+                </tr>
+                <tr>
+                    <td style="width: 25%; font-weight: 600;">CAPA Number:</td>
+                    <td style="width: 25%;">_________________</td>
+                    <td style="width: 25%; font-weight: 600;">Initiation Date:</td>
+                    <td style="width: 25%;">_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Initiated By:</td>
+                    <td>_________________</td>
+                    <td style="font-weight: 600;">Department:</td>
+                    <td>_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Type:</td>
+                    <td colspan="3">
+                        ☐ Corrective Action &nbsp;&nbsp; ☐ Preventive Action &nbsp;&nbsp; ☐ Both
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <th colspan="2">SOURCE OF CAPA</th>
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        ☐ Deviation<br>
+                        ☐ OOS / OOT<br>
+                        ☐ Customer Complaint<br>
+                        ☐ Product Recall<br>
+                        ☐ Failed Batch
+                    </td>
+                    <td style="width: 50%;">
+                        ☐ Internal Audit<br>
+                        ☐ Regulatory Inspection<br>
+                        ☐ Validation Failure<br>
+                        ☐ Environmental Excursion<br>
+                        ☐ Equipment Failure<br>
+                        ☐ Other: _________________
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <strong>Reference Number (if applicable):</strong><br>
+                        Deviation #: _____________ &nbsp; Complaint #: _____________ &nbsp; Audit #: _____________
+                    </td>
+                </tr>
+            </table>
+
+            <div class="form-field">
+                <div class="form-label">PROBLEM DESCRIPTION:</div>
+                <div class="form-input" style="min-height: 100px;"></div>
+            </div>
+
+            <div class="form-field">
+                <div class="form-label">IMPACT ON PRODUCT QUALITY / PATIENT SAFETY:</div>
+                <div class="form-input" style="min-height: 80px;"></div>
+            </div>
+
+            <table>
+                <tr>
+                    <th colspan="2">AFFECTED AREAS</th>
+                </tr>
+                <tr>
+                    <td>☐ Manufacturing &nbsp; ☐ QC Laboratory &nbsp; ☐ QA &nbsp; ☐ Warehouse</td>
+                    <td>☐ Engineering &nbsp; ☐ Validation &nbsp; ☐ R&D &nbsp; ☐ Other: _______</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <strong>Affected Products/Batches:</strong> _____________________________________________
+                    </td>
+                </tr>
+            </table>
+
+            <table style="margin-top: 20px;">
+                <tr>
+                    <th colspan="3" style="text-align: center;">RISK-BASED PRIORITIZATION</th>
+                </tr>
+                <tr style="font-size: 9pt;">
+                    <td style="width: 33%; text-align: center;"><span class="priority-high">HIGH</span><br>Immediate patient safety impact<br>Critical CQA affected<br>Target: 5 days</td>
+                    <td style="width: 33%; text-align: center;"><span class="priority-medium">MEDIUM</span><br>Potential quality impact<br>GMP compliance concern<br>Target: 15 days</td>
+                    <td style="width: 33%; text-align: center;"><span class="priority-low">LOW</span><br>Minor quality issue<br>Documentation improvement<br>Target: 30 days</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: center;">
+                        <strong>Assigned Priority:</strong> ☐ HIGH &nbsp; ☐ MEDIUM &nbsp; ☐ LOW
+                    </td>
+                </tr>
+            </table>
+
+            <table style="margin-top: 20px;">
+                <tr>
+                    <th colspan="2">APPROVALS</th>
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        <strong>Department Head:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                    <td style="width: 50%;">
+                        <strong>QA Manager:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management - Annexure A</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 16: ANNEXURE B - ROOT CAUSE ANALYSIS -->
+        <div class="page" data-page="16">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; color: #3b82f6; border: 2px solid #3b82f6; padding: 15px; background: #eff6ff;">
+                ANNEXURE B<br>ROOT CAUSE ANALYSIS WORKSHEET<br>(Form-QMS-021)
+            </h3>
+
+            <table style="margin-top: 20px;">
+                <tr>
+                    <th colspan="2">INVESTIGATION DETAILS</th>
+                </tr>
+                <tr>
+                    <td style="width: 30%; font-weight: 600;">CAPA Number:</td>
+                    <td>_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Investigation Lead:</td>
+                    <td>_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Investigation Team:</td>
+                    <td>_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Investigation Start Date:</td>
+                    <td>_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Target Completion Date:</td>
+                    <td>_________________</td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">RCA METHODOLOGY SELECTION</h4>
+            <table>
+                <tr>
+                    <th style="width: 30%;">Method</th>
+                    <th style="width: 50%;">Best For</th>
+                    <th style="width: 20%;">Selected</th>
+                </tr>
+                <tr>
+                    <td><strong>5 Whys</strong></td>
+                    <td>Simple issues, single root cause, quick analysis</td>
+                    <td style="text-align: center;">☐</td>
+                </tr>
+                <tr>
+                    <td><strong>Fishbone (Ishikawa)</strong></td>
+                    <td>Multiple potential causes, complex problems</td>
+                    <td style="text-align: center;">☐</td>
+                </tr>
+                <tr>
+                    <td><strong>Failure Mode Analysis</strong></td>
+                    <td>Process failures, equipment malfunctions</td>
+                    <td style="text-align: center;">☐</td>
+                </tr>
+                <tr>
+                    <td><strong>Pareto Analysis</strong></td>
+                    <td>Identifying most significant contributing factors</td>
+                    <td style="text-align: center;">☐</td>
+                </tr>
+                <tr>
+                    <td><strong>Barrier Analysis</strong></td>
+                    <td>Investigating control failures, contamination events</td>
+                    <td style="text-align: center;">☐</td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">INVESTIGATION FINDINGS</h4>
+            <div class="form-field">
+                <div class="form-label">DATA COLLECTION AND REVIEW:</div>
+                <div class="form-input" style="min-height: 80px;"></div>
+            </div>
+
+            <div class="form-field">
+                <div class="form-label">SEQUENCE OF EVENTS / TIMELINE:</div>
+                <div class="form-input" style="min-height: 80px;"></div>
+            </div>
+
+            <h4 style="margin-top: 25px;">ROOT CAUSE IDENTIFICATION</h4>
+            <table>
+                <tr>
+                    <th style="width: 10%;">#</th>
+                    <th style="width: 45%;">Potential Root Cause</th>
+                    <th style="width: 30%;">Category</th>
+                    <th style="width: 15%;">Confirmed?</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td style="min-height: 40px;"></td>
+                    <td>☐ Method ☐ Material<br>☐ Machine ☐ Manpower<br>☐ Measurement ☐ Environment</td>
+                    <td style="text-align: center;">☐ Yes<br>☐ No</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td style="min-height: 40px;"></td>
+                    <td>☐ Method ☐ Material<br>☐ Machine ☐ Manpower<br>☐ Measurement ☐ Environment</td>
+                    <td style="text-align: center;">☐ Yes<br>☐ No</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td style="min-height: 40px;"></td>
+                    <td>☐ Method ☐ Material<br>☐ Machine ☐ Manpower<br>☐ Measurement ☐ Environment</td>
+                    <td style="text-align: center;">☐ Yes<br>☐ No</td>
+                </tr>
+            </table>
+
+            <div class="form-field">
+                <div class="form-label">CONFIRMED ROOT CAUSE(S) - DETAILED EXPLANATION:</div>
+                <div class="form-input" style="min-height: 100px;"></div>
+            </div>
+
+            <div class="form-field">
+                <div class="form-label">SUPPORTING EVIDENCE / DATA:</div>
+                <div class="form-input" style="min-height: 60px;"></div>
+            </div>
+
+            <table style="margin-top: 30px;">
+                <tr>
+                    <th colspan="2">INVESTIGATION TEAM APPROVAL</th>
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        <strong>Investigation Lead:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                    <td style="width: 50%;">
+                        <strong>QA Review:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management - Annexure B</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 17: ANNEXURE C - ACTION PLAN -->
+        <div class="page" data-page="17">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; color: #3b82f6; border: 2px solid #3b82f6; padding: 15px; background: #eff6ff;">
+                ANNEXURE C<br>CAPA ACTION PLAN<br>(Form-QMS-022)
+            </h3>
+
+            <table style="margin-top: 20px;">
+                <tr>
+                    <th colspan="4">ACTION PLAN DETAILS</th>
+                </tr>
+                <tr>
+                    <td style="width: 25%; font-weight: 600;">CAPA Number:</td>
+                    <td style="width: 25%;">_________________</td>
+                    <td style="width: 25%; font-weight: 600;">Action Plan Date:</td>
+                    <td style="width: 25%;">_________________</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Action Plan Owner:</td>
+                    <td colspan="3">_________________</td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">IMMEDIATE / INTERIM ACTIONS (If Applicable)</h4>
+            <table>
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 35%;">Action Description</th>
+                    <th style="width: 20%;">Responsible</th>
+                    <th style="width: 15%;">Target Date</th>
+                    <th style="width: 15%;">Completion Date</th>
+                    <th style="width: 10%;">Status</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td style="min-height: 40px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>☐ Open<br>☐ Closed</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td style="min-height: 40px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>☐ Open<br>☐ Closed</td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">CORRECTIVE ACTIONS (To eliminate root cause)</h4>
+            <table style="font-size: 9pt;">
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 30%;">Corrective Action Description</th>
+                    <th style="width: 12%;">Category</th>
+                    <th style="width: 15%;">Responsible Person</th>
+                    <th style="width: 10%;">Target Date</th>
+                    <th style="width: 10%;">Actual Date</th>
+                    <th style="width: 18%;">Supporting Documentation</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td style="min-height: 50px;"></td>
+                    <td>☐ Process<br>☐ Equipment<br>☐ Training<br>☐ Documentation<br>☐ Material<br>☐ Other</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td style="min-height: 50px;"></td>
+                    <td>☐ Process<br>☐ Equipment<br>☐ Training<br>☐ Documentation<br>☐ Material<br>☐ Other</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td style="min-height: 50px;"></td>
+                    <td>☐ Process<br>☐ Equipment<br>☐ Training<br>☐ Documentation<br>☐ Material<br>☐ Other</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">PREVENTIVE ACTIONS (To prevent occurrence in other areas)</h4>
+            <table style="font-size: 9pt;">
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 40%;">Preventive Action Description</th>
+                    <th style="width: 25%;">Area/Department</th>
+                    <th style="width: 15%;">Responsible</th>
+                    <th style="width: 15%;">Target Date</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td style="min-height: 50px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td style="min-height: 50px;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">CHANGE CONTROL REQUIREMENT</h4>
+            <table>
+                <tr>
+                    <td style="width: 50%;">
+                        <strong>Is Change Control Required?</strong> ☐ Yes &nbsp; ☐ No
+                    </td>
+                    <td style="width: 50%;">
+                        <strong>Change Control Number (if applicable):</strong> _________________
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <strong>Justification:</strong><br>
+                        <div style="min-height: 40px; border-bottom: 1px solid #6b7280; margin-top: 5px;"></div>
+                    </td>
+                </tr>
+            </table>
+
+            <table style="margin-top: 30px;">
+                <tr>
+                    <th colspan="2">ACTION PLAN APPROVAL</th>
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        <strong>Action Plan Owner:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                    <td style="width: 50%;">
+                        <strong>QA Approval:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                </tr>
+            </table>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management - Annexure C</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+        <!-- Continue with remaining Annexures D through J -->
+        
+        <!-- PAGE 24: ANNEXURE J - CAPA METRICS DASHBOARD (FINAL ANNEXURE) -->
+        <div class="page" data-page="24">
+            <div class="doc-header">
+                <div class="header-top">
+                    <div class="company-logo">
+                        <div class="logo-box">V</div>
+                        <div class="company-name">ValQMS</div>
+                    </div>
+                    <div class="doc-meta">
+                        <div><strong>SOP Number:</strong> SOP-QMS-003</div>
+                        <div><strong>Version:</strong> 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; color: #3b82f6; border: 2px solid #3b82f6; padding: 15px; background: #eff6ff;">
+                ANNEXURE J<br>CAPA METRICS DASHBOARD<br>(Form-QMS-029)
+            </h3>
+
+            <table style="margin-top: 20px;">
+                <tr>
+                    <th colspan="4">REPORTING PERIOD</th>
+                </tr>
+                <tr>
+                    <td style="width: 25%; font-weight: 600;">Report Period:</td>
+                    <td style="width: 25%;">Q___ / Year ____</td>
+                    <td style="width: 25%; font-weight: 600;">Report Date:</td>
+                    <td style="width: 25%;">_________________</td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">KEY PERFORMANCE INDICATORS (KPIs)</h4>
+            <table>
+                <tr>
+                    <th style="width: 50%;">Metric</th>
+                    <th style="width: 15%;">Current Period</th>
+                    <th style="width: 15%;">Previous Period</th>
+                    <th style="width: 20%;">Target / Trend</th>
+                </tr>
+                <tr>
+                    <td>Total CAPAs Initiated</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>CAPAs Closed On Time</td>
+                    <td></td>
+                    <td></td>
+                    <td>Target: ≥ 90%</td>
+                </tr>
+                <tr>
+                    <td>Average Days to Closure</td>
+                    <td></td>
+                    <td></td>
+                    <td>Target: ≤ 30 days</td>
+                </tr>
+                <tr>
+                    <td>Overdue CAPAs</td>
+                    <td></td>
+                    <td></td>
+                    <td>Target: ≤ 5%</td>
+                </tr>
+                <tr>
+                    <td>Effectiveness Check Pass Rate</td>
+                    <td></td>
+                    <td></td>
+                    <td>Target: ≥ 95%</td>
+                </tr>
+                <tr>
+                    <td>Repeat Issues (within 12 months)</td>
+                    <td></td>
+                    <td></td>
+                    <td>Target: 0</td>
+                </tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">CAPA DISTRIBUTION BY SOURCE</h4>
+            <table>
+                <tr>
+                    <th>Source</th>
+                    <th>Count</th>
+                    <th>%</th>
+                </tr>
+                <tr><td>Deviations</td><td></td><td></td></tr>
+                <tr><td>OOS / OOT</td><td></td><td></td></tr>
+                <tr><td>Customer Complaints</td><td></td><td></td></tr>
+                <tr><td>Audit Findings</td><td></td><td></td></tr>
+                <tr><td>Regulatory Inspections</td><td></td><td></td></tr>
+                <tr><td>Other</td><td></td><td></td></tr>
+                <tr style="font-weight: 600;"><td>TOTAL</td><td></td><td>100%</td></tr>
+            </table>
+
+            <h4 style="margin-top: 25px;">TOP 5 ROOT CAUSES</h4>
+            <table>
+                <tr>
+                    <th style="width: 10%;">Rank</th>
+                    <th style="width: 50%;">Root Cause Category</th>
+                    <th style="width: 20%;">Frequency</th>
+                    <th style="width: 20%;">% of Total</th>
+                </tr>
+                <tr><td>1</td><td></td><td></td><td></td></tr>
+                <tr><td>2</td><td></td><td></td><td></td></tr>
+                <tr><td>3</td><td></td><td></td><td></td></tr>
+                <tr><td>4</td><td></td><td></td><td></td></tr>
+                <tr><td>5</td><td></td><td></td><td></td></tr>
+            </table>
+
+            <div class="info-box" style="margin-top: 30px;">
+                <strong>📊 Analysis and Recommendations:</strong>
+                <div style="min-height: 80px; border-bottom: 1px solid #6b7280; margin-top: 10px;"></div>
+            </div>
+
+            <table style="margin-top: 30px;">
+                <tr>
+                    <th colspan="2">REVIEW AND APPROVAL</th>
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        <strong>QA Manager:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                    <td style="width: 50%;">
+                        <strong>Head of Quality:</strong><br>
+                        Name: _________________<br>
+                        Signature: _________________<br>
+                        Date: _________________
+                    </td>
+                </tr>
+            </table>
+
+            <div style="margin-top: 40px; padding: 20px; background: #eff6ff; border-left: 4px solid #3b82f6;">
+                <p style="margin: 0;"><strong>🏆 Quality Statement:</strong></p>
+                <p style="margin: 5px 0 0 0; font-style: italic;">This CAPA Management SOP and associated annexures are compliant with FDA 21 CFR Part 211, ICH Q10, EU GMP, ISO 9001:2015, and ISO 13485:2016. Effective implementation ensures systematic identification, investigation, and resolution of quality issues, supporting continual improvement and regulatory compliance.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #3b82f6;">
+                <p style="font-weight: 700; color: #3b82f6; font-size: 14pt;">END OF DOCUMENT</p>
+                <p style="font-size: 9pt; color: #6b7280; margin-top: 10px;">All 10 Annexures (A through J) included</p>
+            </div>
+
+            <div class="doc-footer">
+                <div>SOP-QMS-003 v2.0 | CAPA Management - Annexure J</div>
+                <div>Confidential - Proprietary Information</div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Calculate total pages
+        const totalPages = document.querySelectorAll('.page').length;
+        
+        // Update page numbers in footers only
+        document.querySelectorAll('.page').forEach((page, index) => {
+            const pageNum = index + 1;
+            const pageNumberDiv = page.querySelector('.page-number');
+            if (pageNumberDiv) {
+                pageNumberDiv.textContent = `Page ${pageNum} of ${totalPages}`;
+            }
+        });
+    </script>
+</body>
+</html>

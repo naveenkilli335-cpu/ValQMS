@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Conformance Management | ValQMS</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Dashboard Cards */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .stat-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .badge-critical { background: #fee2e2; color: #991b1b; }
+        .badge-major { background: #fef3c7; color: #92400e; }
+        .badge-minor { background: #dbeafe; color: #1e40af; }
+
+        /* Main Content */
+        .content-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #ef4444;
+            border-bottom-color: #ef4444;
+        }
+
+        .tab:hover {
+            color: #ef4444;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: #ef4444;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #ef4444;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-open { background: #dbeafe; color: #1e40af; }
+        .status-investigation { background: #fef3c7; color: #92400e; }
+        .status-action { background: #fed7aa; color: #9a3412; }
+        .status-effectiveness { background: #e9d5ff; color: #6b21a8; }
+        .status-closed { background: #d1fae5; color: #065f46; }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .action-btn.view { background: #dbeafe; color: #1e40af; }
+        .action-btn.edit { background: #fef3c7; color: #92400e; }
+        .action-btn.history { background: #e9d5ff; color: #6b21a8; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-box">NC</div>
+                <div class="logo-text">Non-Conformance Management</div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="location.href='index.html'">← Back to Home</button>
+                <button class="btn btn-primary" onclick="openNewNCModal()">+ New NC Report</button>
+            </div>
+        </div>
+
+        <!-- Alert -->
+        <div id="alert" class="alert"></div>
+
+        <!-- Dashboard Stats -->
+        <div class="dashboard">
+            <div class="stat-card">
+                <div class="stat-label">Total NCs</div>
+                <div class="stat-value" id="totalNCs">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Open</div>
+                <div class="stat-value" id="openNCs">0</div>
+                <span class="stat-badge badge-critical">Requires Action</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Under Investigation</div>
+                <div class="stat-value" id="investigationNCs">0</div>
+                <span class="stat-badge badge-major">In Progress</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Closed This Month</div>
+                <div class="stat-value" id="closedNCs">0</div>
+                <span class="stat-badge badge-minor">Completed</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('list')">NC List</button>
+                <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+                <button class="tab" onclick="switchTab('reports')">Reports</button>
+            </div>
+
+            <!-- NC List Tab -->
+            <div id="listTab" class="tab-content active">
+                <div class="table-container">
+                    <table id="ncTable">
+                        <thead>
+                            <tr>
+                                <th>NC Number</th>
+                                <th>Title</th>
+                                <th>Source</th>
+                                <th>Severity</th>
+                                <th>Status</th>
+                                <th>Initiated Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ncTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                                    Loading non-conformances...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div id="analyticsTab" class="tab-content">
+                <h3>Analytics Dashboard (Coming Soon)</h3>
+                <p>Charts and trends will be displayed here.</p>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="tab-content">
+                <h3>Reports (Coming Soon)</h3>
+                <p>Generate and download reports.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- New/Edit NC Modal -->
+    <div id="ncModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">New Non-Conformance Report</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <form id="ncForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label required">Title</label>
+                        <input type="text" class="form-input" id="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Source</label>
+                        <select class="form-select" id="source" required>
+                            <option value="">Select Source</option>
+                            <option value="Production">Production</option>
+                            <option value="Quality Control">Quality Control</option>
+                            <option value="Customer Complaint">Customer Complaint</option>
+                            <option value="Internal Audit">Internal Audit</option>
+                            <option value="Regulatory Inspection">Regulatory Inspection</option>
+                            <option value="Supplier">Supplier</option>
+                            <option value="Environmental Monitoring">Environmental Monitoring</option>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Documentation">Documentation</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Severity</label>
+                        <select class="form-select" id="severity" required>
+                            <option value="">Select Severity</option>
+                            <option value="Critical">Critical - Patient Safety Risk</option>
+                            <option value="Major">Major - Quality Impact</option>
+                            <option value="Minor">Minor - Documentation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Department</label>
+                        <select class="form-select" id="department" required>
+                            <option value="">Select Department</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="Quality Assurance">Quality Assurance</option>
+                            <option value="Quality Control">Quality Control</option>
+                            <option value="Warehouse">Warehouse</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="R&D">R&D</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Affected Product</label>
+                        <input type="text" class="form-input" id="affectedProduct">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Affected Batch</label>
+                        <input type="text" class="form-input" id="affectedBatch">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label required">Description</label>
+                        <textarea class="form-textarea" id="description" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Initiated By</label>
+                        <input type="text" class="form-input" id="initiatedBy" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Target Closure Date</label>
+                        <input type="date" class="form-input" id="targetClosureDate" required>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit NC Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Audit Trail Modal -->
+    <div id="auditModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Audit Trail</h2>
+                <button class="close-btn" onclick="closeAuditModal()">&times;</button>
+            </div>
+            <div id="auditContent">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date/Time</th>
+                            <th>Action</th>
+                            <th>Field Changed</th>
+                            <th>Changed By</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // **REPLACE WITH YOUR SUPABASE CREDENTIALS**
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardStats();
+            loadNCList();
+            setMinDate();
+        });
+
+        function setMinDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('targetClosureDate').setAttribute('min', today);
+        }
+
+        // Load Dashboard Statistics
+        async function loadDashboardStats() {
+            try {
+                const { data, error } = await supabase
+                    .from('non_conformances')
+                    .select('status, initiated_date');
+
+                if (error) throw error;
+
+                const total = data.length;
+                const open = data.filter(nc => nc.status === 'Open').length;
+                const investigation = data.filter(nc => nc.status === 'Under Investigation').length;
+                
+                const currentMonth = new Date().getMonth();
+                const closedThisMonth = data.filter(nc => {
+                    if (nc.status === 'Closed' && nc.initiated_date) {
+                        const ncMonth = new Date(nc.initiated_date).getMonth();
+                        return ncMonth === currentMonth;
+                    }
+                    return false;
+                }).length;
+
+                document.getElementById('totalNCs').textContent = total;
+                document.getElementById('openNCs').textContent = open;
+                document.getElementById('investigationNCs').textContent = investigation;
+                document.getElementById('closedNCs').textContent = closedThisMonth;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load NC List
+        async function loadNCList() {
+            try {
+                const { data, error } = await supabase
+                    .from('non_conformances')
+                    .select('*')
+                    .order('initiated_date', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('ncTableBody');
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                                No non-conformances found. Click "New NC Report" to create one.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = data.map(nc => `
+                    <tr>
+                        <td><strong>${nc.nc_number}</strong></td>
+                        <td>${nc.title}</td>
+                        <td>${nc.source}</td>
+                        <td><span class="stat-badge badge-${nc.severity.toLowerCase()}">${nc.severity}</span></td>
+                        <td><span class="status-badge status-${getStatusClass(nc.status)}">${nc.status}</span></td>
+                        <td>${new Date(nc.initiated_date).toLocaleDateString()}</td>
+                        <td>
+                            <button class="action-btn view" onclick="viewNC('${nc.id}')">View</button>
+                            <button class="action-btn history" onclick="viewAuditTrail('${nc.id}')">History</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading NC list:', error);
+                showAlert('Error loading non-conformances', 'error');
+            }
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                'Open': 'open',
+                'Under Investigation': 'investigation',
+                'Action Pending': 'action',
+                'Effectiveness Check': 'effectiveness',
+                'Closed': 'closed'
+            };
+            return map[status] || 'open';
+        }
+
+        // Generate NC Number
+        async function generateNCNumber() {
+            const year = new Date().getFullYear();
+            const { data, error } = await supabase
+                .from('non_conformances')
+                .select('nc_number')
+                .like('nc_number', `NC-${year}-%`)
+                .order('nc_number', { ascending: false })
+                .limit(1);
+
+            if (error) {
+                console.error('Error generating NC number:', error);
+                return `NC-${year}-0001`;
+            }
+
+            if (data.length === 0) {
+                return `NC-${year}-0001`;
+            }
+
+            const lastNumber = parseInt(data[0].nc_number.split('-')[2]);
+            const newNumber = (lastNumber + 1).toString().padStart(4, '0');
+            return `NC-${year}-${newNumber}`;
+        }
+
+        // Open New NC Modal
+        function openNewNCModal() {
+            document.getElementById('ncModal').classList.add('active');
+            document.getElementById('modalTitle').textContent = 'New Non-Conformance Report';
+            document.getElementById('ncForm').reset();
+        }
+
+        function closeModal() {
+            document.getElementById('ncModal').classList.remove('active');
+        }
+
+        // Submit NC Form
+        document.getElementById('ncForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                const ncNumber = await generateNCNumber();
+                const formData = {
+                    nc_number: ncNumber,
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    source: document.getElementById('source').value,
+                    severity: document.getElementById('severity').value,
+                    department: document.getElementById('department').value,
+                    affected_product: document.getElementById('affectedProduct').value,
+                    affected_batch: document.getElementById('affectedBatch').value,
+                    initiated_by: document.getElementById('initiatedBy').value,
+                    target_closure_date: document.getElementById('targetClosureDate').value,
+                    status: 'Open'
+                };
+
+                const { data, error } = await supabase
+                    .from('non_conformances')
+                    .insert([formData])
+                    .select();
+
+                if (error) throw error;
+
+                // Create audit trail entry
+                await createAuditEntry(data[0].id, 'NC Created', null, null, null, formData.initiated_by, 'Initial NC report created');
+
+                showAlert('Non-conformance created successfully!', 'success');
+                closeModal();
+                loadDashboardStats();
+                loadNCList();
+            } catch (error) {
+                console.error('Error creating NC:', error);
+                showAlert('Error creating non-conformance', 'error');
+            }
+        });
+
+        // Create Audit Trail Entry
+        async function createAuditEntry(ncId, action, fieldChanged, oldValue, newValue, changedBy, comments) {
+            try {
+                await supabase
+                    .from('audit_trail')
+                    .insert([{
+                        nc_id: ncId,
+                        action: action,
+                        field_changed: fieldChanged,
+                        old_value: oldValue,
+                        new_value: newValue,
+                        changed_by: changedBy,
+                        comments: comments
+                    }]);
+            } catch (error) {
+                console.error('Error creating audit entry:', error);
+            }
+        }
+
+        // View Audit Trail
+        async function viewAuditTrail(ncId) {
+            try {
+                const { data, error } = await supabase
+                    .from('audit_trail')
+                    .select('*')
+                    .eq('nc_id', ncId)
+                    .order('changed_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('auditTableBody');
+                tbody.innerHTML = data.map(entry => `
+                    <tr>
+                        <td>${new Date(entry.changed_at).toLocaleString()}</td>
+                        <td>${entry.action}</td>
+                        <td>${entry.field_changed || '-'}</td>
+                        <td>${entry.changed_by}</td>
+                        <td>${entry.comments || ''}</td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('auditModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading audit trail:', error);
+                showAlert('Error loading audit trail', 'error');
+            }
+        }
+
+        function closeAuditModal() {
+            document.getElementById('auditModal').classList.remove('active');
+        }
+
+        // View NC (Placeholder)
+        function viewNC(id) {
+            alert('View/Edit functionality will open detailed NC form. NC ID: ' + id);
+            // Implement full view/edit modal here
+        }
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Show Alert
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert ${type} active`;
+            
+            setTimeout(() => {
+                alert.classList.remove('active');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

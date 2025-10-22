@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co;">
+    <title>Deviation Management System - FDA 21 CFR Part 11 Compliant</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Login Screen */
+        .login-container {
+            max-width: 450px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .login-container h2 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--text-muted);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        tr:hover {
+            background: var(--bg);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-draft { background: #e2e8f0; color: #475569; }
+        .badge-submitted { background: #dbeafe; color: #1e40af; }
+        .badge-approved { background: #d1fae5; color: #065f46; }
+        .badge-rejected { background: #fee2e2; color: #991b1b; }
+        .badge-critical { background: #fecaca; color: #991b1b; }
+        .badge-major { background: #fed7aa; color: #92400e; }
+        .badge-minor { background: #fef3c7; color: #78350f; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        /* Audit Trail */
+        .audit-entry {
+            padding: 15px;
+            border-left: 3px solid var(--primary);
+            background: var(--bg);
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+
+        .audit-entry-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .audit-entry-details {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* File upload */
+        .file-upload {
+            border: 2px dashed var(--border);
+            padding: 30px;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--bg);
+        }
+
+        .file-list {
+            margin-top: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: var(--bg);
+            margin-bottom: 5px;
+            border-radius: 6px;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid var(--success);
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid var(--danger);
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #78350f;
+            border-left: 4px solid var(--warning);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Compliance notice */
+        .compliance-notice {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .signature-box {
+            background: #fffbeb;
+            border: 2px solid var(--warning);
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .signature-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen - Initially hidden, shown only if no session -->
+        <div id="loginScreen" class="login-container hidden">
+            <h2>🔐 Deviation Management System</h2>
+            <div class="compliance-notice">
+                <span>🛡️</span>
+                <span>21 CFR Part 11 & EU Annex 11 Compliant System</span>
+            </div>
+            <div id="loginError" class="alert alert-error hidden"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="your.email@company.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+            <p style="margin-top: 20px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                All access attempts are logged and monitored.<br>
+                Session timeout: 30 minutes
+            </p>
+        </div>
+
+        <!-- Main Application -->
+        <div id="mainApp" class="hidden">
+            <div class="container">
+                <div class="header">
+                    <div>
+                        <h1>📋 Deviation Management System</h1>
+                        <p style="color: var(--text-muted); font-size: 14px;">21 CFR Part 11 Compliant</p>
+                    </div>
+                    <div class="user-info">
+                        <span id="userName" style="font-weight: 500;"></span>
+                        <button onclick="logout()" class="btn-secondary">Logout</button>
+                    </div>
+                </div>
+
+                <div class="compliance-notice">
+                    <span>⚠️</span>
+                    <span>All actions are recorded with electronic signatures and audit trails. Time synchronized with NTP: <span id="currentTime"></span> (UTC)</span>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('dashboard')">Dashboard</button>
+                    <button class="tab" onclick="showTab('create')">Create Deviation</button>
+                    <button class="tab" onclick="showTab('list')">My Deviations</button>
+                    <button class="tab" onclick="showTab('approvals')">Pending Approvals</button>
+                    <button class="tab" onclick="showTab('audit')">Audit Trail</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="dashboardTab" class="tab-content">
+                    <div class="grid">
+                        <div class="card">
+                            <h3>📊 Statistics</h3>
+                            <div id="stats">Loading...</div>
+                        </div>
+                        <div class="card">
+                            <h3>⏰ Upcoming Due Dates</h3>
+                            <div id="upcomingDue">Loading...</div>
+                        </div>
+                        <div class="card">
+                            <h3>🔔 Recent Activity</h3>
+                            <div id="recentActivity">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Deviation Tab -->
+                <div id="createTab" class="tab-content hidden">
+                    <div class="card">
+                        <h3>Create New Deviation</h3>
+                        <div id="createMessage" class="hidden"></div>
+                        <form id="deviationForm">
+                            <div class="grid">
+                                <div class="form-group">
+                                    <label for="title">Title *</label>
+                                    <input type="text" id="title" required maxlength="500">
+                                </div>
+                                <div class="form-group">
+                                    <label for="severity">Severity *</label>
+                                    <select id="severity" required>
+                                        <option value="">Select severity</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Major">Major</option>
+                                        <option value="Minor">Minor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description *</label>
+                                <textarea id="description" required rows="4" placeholder="Detailed description of the deviation"></textarea>
+                            </div>
+                            <div class="grid">
+                                <div class="form-group">
+                                    <label for="category">Category *</label>
+                                    <select id="category" required>
+                                        <option value="">Select category</option>
+                                        <option value="Equipment">Equipment</option>
+                                        <option value="Process">Process</option>
+                                        <option value="Material">Material</option>
+                                        <option value="Documentation">Documentation</option>
+                                        <option value="Environmental">Environmental</option>
+                                        <option value="Personnel">Personnel</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="detectedDate">Detected Date *</label>
+                                    <input type="datetime-local" id="detectedDate" required>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="form-group">
+                                    <label for="productName">Product Name</label>
+                                    <input type="text" id="productName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="batchNumber">Batch Number</label>
+                                    <input type="text" id="batchNumber">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="areaDepartment">Area/Department *</label>
+                                <input type="text" id="areaDepartment" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="immediateAction">Immediate Action Taken</label>
+                                <textarea id="immediateAction" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Attachments</label>
+                                <div class="file-upload" id="fileUpload">
+                                    <p>📎 Click to upload files or drag and drop</p>
+                                    <p style="font-size: 12px; color: var(--text-muted);">Max 50MB. Allowed: PDF, DOCX, XLSX, JPG, PNG</p>
+                                    <input type="file" id="fileInput" multiple hidden>
+                                </div>
+                                <div id="fileList" class="file-list"></div>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                                <button type="button" onclick="saveDraft()" class="btn-secondary">Save as Draft</button>
+                                <button type="submit" class="btn-primary">Submit for Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Deviations List Tab -->
+                <div id="listTab" class="tab-content hidden">
+                    <div class="card">
+                        <h3>My Deviations</h3>
+                        <div class="table-container">
+                            <table id="deviationsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Number</th>
+                                        <th>Title</th>
+                                        <th>Severity</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="deviationsBody">
+                                    <tr><td colspan="7" style="text-align: center;">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approvals Tab -->
+                <div id="approvalsTab" class="tab-content hidden">
+                    <div class="card">
+                        <h3>Pending Approvals</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Deviation</th>
+                                        <th>Title</th>
+                                        <th>Step</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="approvalsBody">
+                                    <tr><td colspan="5" style="text-align: center;">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Trail Tab -->
+                <div id="auditTab" class="tab-content hidden">
+                    <div class="card">
+                        <h3>Audit Trail Viewer</h3>
+                        <div class="alert alert-warning">
+                            <strong>21 CFR Part 11 Compliance:</strong> This audit trail is immutable and records all system activities including user ID, timestamps (UTC & local), IP addresses, and action details.
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="auditSearch">Search Audit Events</label>
+                            <input type="text" id="auditSearch" placeholder="Search by user, action, or entity...">
+                        </div>
+
+                        <div id="auditTrail">
+                            Loading audit trail...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- E-Signature Modal -->
+        <div id="signatureModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>🖊️ Electronic Signature Required</h3>
+                    <button class="close-btn" onclick="closeSignatureModal()">&times;</button>
+                </div>
+                <div class="alert alert-warning">
+                    <strong>21 CFR Part 11 Requirement:</strong> Your signature will be recorded with printed name, timestamp, unique ID, and IP address.
+                </div>
+                <form id="signatureForm">
+                    <input type="hidden" id="signatureEntityType">
+                    <input type="hidden" id="signatureEntityId">
+                    <input type="hidden" id="signatureAction">
+                    
+                    <div class="form-group">
+                        <label for="signatureName">Printed Name (Auto-filled)</label>
+                        <input type="text" id="signatureName" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="signatureMeaning">Signature Meaning *</label>
+                        <select id="signatureMeaning" required>
+                            <option value="">Select meaning</option>
+                            <option value="Approved by">Approved by</option>
+                            <option value="Reviewed by">Reviewed by</option>
+                            <option value="Rejected by">Rejected by</option>
+                            <option value="Closed by">Closed by</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="signatureReason">Reason for Signing *</label>
+                        <textarea id="signatureReason" required rows="3" placeholder="Provide reason for this action"></textarea>
+                    </div>
+                    <div class="signature-box">
+                        <div class="form-group">
+                            <label for="signaturePassword">Re-authenticate with Password *</label>
+                            <input type="password" id="signaturePassword" required placeholder="Enter your password">
+                        </div>
+                        <div class="signature-info">
+                            ℹ️ By signing, you confirm the authenticity and accuracy of this action. Your signature will be cryptographically secured and permanently recorded.
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" onclick="closeSignatureModal()" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-success">Sign & Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Deviation Detail Modal -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content" style="max-width: 800px;">
+                <div class="modal-header">
+                    <h3 id="detailTitle">Deviation Details</h3>
+                    <button class="close-btn" onclick="closeDetailModal()">&times;</button>
+                </div>
+                <div id="detailContent">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUser = null;
+        let sessionTimeout = null;
+        const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+        // ============================================
+// ============================================
+// INITIALIZATION
+// ============================================
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check if user is already logged in FIRST
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session) {
+        console.log('Existing session found:', session.user.email);
+        await handleLoginSuccess(session.user);
+    } else {
+        // Show login screen only if no session
+        document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    // Setup event listeners
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    document.getElementById('deviationForm').addEventListener('submit', handleSubmitDeviation);
+    document.getElementById('signatureForm').addEventListener('submit', handleSignature);
+    document.getElementById('fileUpload').addEventListener('click', () => document.getElementById('fileInput').click());
+    document.getElementById('fileInput').addEventListener('change', handleFileSelection);
+    document.getElementById('auditSearch').addEventListener('input', debounce(searchAudit, 300));
+
+    // Listen for auth state changes
+    supabase.auth.onAuthStateChange((event, session) => {
+        console.log('Auth state changed:', event);
+        if (event === 'SIGNED_IN' && session) {
+            handleLoginSuccess(session.user);
+        } else if (event === 'SIGNED_OUT') {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+        }
+    });
+
+    // Update time display
+    setInterval(updateTimeDisplay, 1000);
+    updateTimeDisplay();
+
+    // Reset session timeout on user activity
+    document.addEventListener('click', resetSessionTimeout);
+    document.addEventListener('keypress', resetSessionTimeout);
+});
+
+
+        // ============================================
+        // AUTHENTICATION
+        // ============================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            try {
+                // Log authentication attempt
+                await logAuditEvent({
+                    entity_type: 'authentication',
+                    entity_id: null,
+                    action: 'LOGIN_ATTEMPT',
+                    metadata: { email }
+                });
+
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+                if (error) throw error;
+
+                await handleLoginSuccess(data.user);
+                
+            } catch (error) {
+                errorDiv.textContent = `Login failed: ${error.message}. All failed attempts are logged.`;
+                errorDiv.classList.remove('hidden');
+                
+                await logAuditEvent({
+                    entity_type: 'authentication',
+                    entity_id: null,
+                    action: 'LOGIN_FAILED',
+                    metadata: { email, error: error.message }
+                });
+            }
+        }
+
+async function handleLoginSuccess(user) {
+    currentUser = user;
+
+    try {
+        // Fetch user profile
+        const { data: profile, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+        if (profileError) {
+            console.error('Profile fetch error:', profileError);
+            // If profile doesn't exist, you might want to create one or show error
+            if (profileError.code === 'PGRST116') {
+                alert('User profile not found. Please contact administrator to set up your account.');
+                await logout();
+                return;
+            }
+        }
+
+        if (profile) {
+            currentUser.profile = profile;
+            document.getElementById('userName').textContent = profile.full_name;
+        } else {
+            // Fallback to email if no profile
+            document.getElementById('userName').textContent = user.email;
+        }
+
+        // Log successful login
+        await logAuditEvent({
+            entity_type: 'authentication',
+            entity_id: user.id,
+            action: 'LOGIN_SUCCESS',
+            metadata: { email: user.email }
+        });
+
+        // Update last login timestamp
+        if (profile) {
+            await supabase
+                .from('user_profiles')
+                .update({ last_login_at: new Date().toISOString() })
+                .eq('id', user.id);
+        }
+
+        // Hide login screen, show main app
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+
+        // Start session timeout
+        resetSessionTimeout();
+
+        // Load initial data
+        await loadDashboard();
+        
+        console.log('Login successful, main app displayed');
+
+    } catch (error) {
+        console.error('Login success handler error:', error);
+        alert('Error loading user data: ' + error.message);
+    }
+}
+
+
+        async function logout() {
+            await logAuditEvent({
+                entity_type: 'authentication',
+                entity_id: currentUser?.id,
+                action: 'LOGOUT',
+                metadata: {}
+            });
+
+            await supabase.auth.signOut();
+            
+            clearTimeout(sessionTimeout);
+            currentUser = null;
+            
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginForm').reset();
+        }
+
+        function resetSessionTimeout() {
+            clearTimeout(sessionTimeout);
+            sessionTimeout = setTimeout(() => {
+                alert('Your session has expired due to inactivity. Please login again.');
+                logout();
+            }, SESSION_TIMEOUT_MS);
+        }
+
+        // ============================================
+        // TAB NAVIGATION
+        // ============================================
+        function showTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.add('hidden'));
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+
+            // Load tab-specific data
+            switch(tabName) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'list':
+                    loadDeviationsList();
+                    break;
+                case 'approvals':
+                    loadPendingApprovals();
+                    break;
+                case 'audit':
+                    loadAuditTrail();
+                    break;
+            }
+        }
+
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        async function loadDashboard() {
+            try {
+                // Load statistics
+                const { data: deviations } = await supabase
+                    .from('deviations')
+                    .select('current_state, severity')
+                    .or(`created_by.eq.${currentUser.id},assigned_to.eq.${currentUser.id}`);
+
+                const stats = {
+                    total: deviations?.length || 0,
+                    draft: deviations?.filter(d => d.current_state === 'Draft').length || 0,
+                    submitted: deviations?.filter(d => d.current_state === 'Submitted').length || 0,
+                    closed: deviations?.filter(d => d.current_state === 'Closed').length || 0
+                };
+
+                document.getElementById('stats').innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; font-weight: bold; color: var(--primary);">${stats.total}</div>
+                            <div style="color: var(--text-muted);">Total</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; font-weight: bold; color: var(--warning);">${stats.draft}</div>
+                            <div style="color: var(--text-muted);">Draft</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; font-weight: bold; color: var(--primary);">${stats.submitted}</div>
+                            <div style="color: var(--text-muted);">Submitted</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 32px; font-weight: bold; color: var(--success);">${stats.closed}</div>
+                            <div style="color: var(--text-muted);">Closed</div>
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Dashboard load error:', error);
+            }
+        }
+
+        // ============================================
+        // CREATE DEVIATION
+        // ============================================
+        let selectedFiles = [];
+
+        function handleFileSelection(e) {
+            const files = Array.from(e.target.files);
+            selectedFiles = [...selectedFiles, ...files];
+            displayFileList();
+        }
+
+        function displayFileList() {
+            const fileListDiv = document.getElementById('fileList');
+            fileListDiv.innerHTML = selectedFiles.map((file, index) => `
+                <div class="file-item">
+                    <span>📄 ${file.name} (${formatFileSize(file.size)})</span>
+                    <button type="button" onclick="removeFile(${index})" style="background: none; border: none; color: var(--danger); cursor: pointer;">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            displayFileList();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        async function saveDraft() {
+            await submitDeviation('Draft');
+        }
+
+        async function handleSubmitDeviation(e) {
+            e.preventDefault();
+            await submitDeviation('Submitted');
+        }
+
+        async function submitDeviation(status) {
+            const messageDiv = document.getElementById('createMessage');
+            
+            try {
+                const deviationData = {
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    severity: document.getElementById('severity').value,
+                    category: document.getElementById('category').value,
+                    detected_date: document.getElementById('detectedDate').value,
+                    product_name: document.getElementById('productName').value || null,
+                    batch_number: document.getElementById('batchNumber').value || null,
+                    area_department: document.getElementById('areaDepartment').value,
+                    immediate_action: document.getElementById('immediateAction').value || null,
+                    current_state: status,
+                    detected_by: currentUser.id,
+                    created_by: currentUser.id,
+                    submitted_at: status === 'Submitted' ? new Date().toISOString() : null,
+                    submitted_by: status === 'Submitted' ? currentUser.id : null
+                };
+
+                const { data: deviation, error } = await supabase
+                    .from('deviations')
+                    .insert([deviationData])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                // Upload attachments
+                if (selectedFiles.length > 0) {
+                    await uploadAttachments(deviation.id);
+                }
+
+                // Log audit event
+                await logAuditEvent({
+                    entity_type: 'deviation',
+                    entity_id: deviation.id,
+                    action: status === 'Draft' ? 'CREATE' : 'SUBMIT',
+                    new_value: JSON.stringify(deviationData),
+                    metadata: { deviation_number: deviation.deviation_number }
+                });
+
+                messageDiv.className = 'alert alert-success';
+                messageDiv.textContent = `Deviation ${deviation.deviation_number} ${status === 'Draft' ? 'saved as draft' : 'submitted'} successfully!`;
+                messageDiv.classList.remove('hidden');
+
+                document.getElementById('deviationForm').reset();
+                selectedFiles = [];
+                displayFileList();
+
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                    showTab('list');
+                }, 2000);
+
+            } catch (error) {
+                messageDiv.className = 'alert alert-error';
+                messageDiv.textContent = `Error: ${error.message}`;
+                messageDiv.classList.remove('hidden');
+            }
+        }
+
+        async function uploadAttachments(deviationId) {
+            for (const file of selectedFiles) {
+                try {
+                    // Calculate file hash
+                    const fileHash = await calculateFileHash(file);
+                    
+                    // Generate unique filename
+                    const timestamp = Date.now();
+                    const randomId = Math.random().toString(36).substring(7);
+                    const extension = file.name.split('.').pop();
+                    const storagePath = `deviations/${deviationId}/${timestamp}-${randomId}.${extension}`;
+
+                    // Upload to Supabase Storage
+                    const { error: uploadError } = await supabase.storage
+                        .from('attachments')
+                        .upload(storagePath, file);
+
+                    if (uploadError) throw uploadError;
+
+                    // Record in attachments table
+                    await supabase.from('attachments').insert([{
+                        deviation_id: deviationId,
+                        filename: storagePath,
+                        original_filename: file.name,
+                        file_size: file.size,
+                        mime_type: file.type,
+                        storage_path: storagePath,
+                        file_hash: fileHash,
+                        uploaded_by: currentUser.id
+                    }]);
+
+                } catch (error) {
+                    console.error('File upload error:', error);
+                }
+            }
+        }
+
+        async function calculateFileHash(file) {
+            const buffer = await file.arrayBuffer();
+            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // ============================================
+        // DEVIATIONS LIST
+        // ============================================
+        async function loadDeviationsList() {
+            try {
+                const { data: deviations, error } = await supabase
+                    .from('deviations')
+                    .select('*')
+                    .or(`created_by.eq.${currentUser.id},assigned_to.eq.${currentUser.id}`)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('deviationsBody');
+                
+                if (!deviations || deviations.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No deviations found</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = deviations.map(dev => `
+                    <tr>
+                        <td><strong>${dev.deviation_number}</strong></td>
+                        <td>${dev.title}</td>
+                        <td><span class="badge badge-${dev.severity.toLowerCase()}">${dev.severity}</span></td>
+                        <td><span class="badge badge-${dev.current_state.toLowerCase().replace(' ', '-')}">${dev.current_state}</span></td>
+                        <td>${formatDate(dev.created_at)}</td>
+                        <td>${dev.due_date ? formatDate(dev.due_date) : '-'}</td>
+                        <td>
+                            <button onclick="viewDeviation('${dev.id}')" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Load deviations error:', error);
+            }
+        }
+
+        async function viewDeviation(deviationId) {
+            try {
+                const { data: deviation, error } = await supabase
+                    .from('deviations')
+                    .select(`
+                        *,
+                        created_by_profile:user_profiles!deviations_created_by_fkey(full_name),
+                        assigned_to_profile:user_profiles!deviations_assigned_to_fkey(full_name)
+                    `)
+                    .eq('id', deviationId)
+                    .single();
+
+                if (error) throw error;
+
+                // Log READ action
+                await logAuditEvent({
+                    entity_type: 'deviation',
+                    entity_id: deviationId,
+                    action: 'READ',
+                    metadata: { deviation_number: deviation.deviation_number }
+                });
+
+                const detailContent = document.getElementById('detailContent');
+                detailContent.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <h4>${deviation.deviation_number}</h4>
+                        <p style="color: var(--text-muted);">${deviation.title}</p>
+                    </div>
+                    <div class="grid">
+                        <div><strong>Severity:</strong> <span class="badge badge-${deviation.severity.toLowerCase()}">${deviation.severity}</span></div>
+                        <div><strong>Status:</strong> <span class="badge badge-${deviation.current_state.toLowerCase()}">${deviation.current_state}</span></div>
+                        <div><strong>Category:</strong> ${deviation.category}</div>
+                        <div><strong>Detected:</strong> ${formatDate(deviation.detected_date)}</div>
+                    </div>
+                    <hr style="margin: 20px 0;">
+                    <div>
+                        <strong>Description:</strong>
+                        <p>${deviation.description}</p>
+                    </div>
+                    ${deviation.immediate_action ? `
+                        <div>
+                            <strong>Immediate Action:</strong>
+                            <p>${deviation.immediate_action}</p>
+                        </div>
+                    ` : ''}
+                    <hr style="margin: 20px 0;">
+                    <div class="grid">
+                        <div><strong>Created By:</strong> ${deviation.created_by_profile?.full_name || 'Unknown'}</div>
+                        <div><strong>Created At:</strong> ${formatDateTime(deviation.created_at)}</div>
+                    </div>
+                `;
+
+                document.getElementById('detailModal').classList.add('active');
+
+            } catch (error) {
+                console.error('View deviation error:', error);
+            }
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // ============================================
+        // APPROVALS & E-SIGNATURE
+        // ============================================
+        async function loadPendingApprovals() {
+            try {
+                const { data: approvals, error } = await supabase
+                    .from('approvals')
+                    .select(`
+                        *,
+                        deviation:deviations(deviation_number, title, severity)
+                    `)
+                    .eq('approver_id', currentUser.id)
+                    .eq('approval_status', 'Pending')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('approvalsBody');
+                
+                if (!approvals || approvals.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No pending approvals</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = approvals.map(appr => `
+                    <tr>
+                        <td><strong>${appr.deviation.deviation_number}</strong></td>
+                        <td>${appr.deviation.title}</td>
+                        <td>${appr.approval_step}</td>
+                        <td>${appr.due_date ? formatDate(appr.due_date) : '-'}</td>
+                        <td>
+                            <button onclick="approveAction('${appr.id}', '${appr.deviation_id}')" class="btn-success" style="padding: 6px 12px; font-size: 12px; margin-right: 5px;">Approve</button>
+                            <button onclick="rejectAction('${appr.id}', '${appr.deviation_id}')" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error('Load approvals error:', error);
+            }
+        }
+
+        function approveAction(approvalId, deviationId) {
+            showSignatureModal('approval', approvalId, 'APPROVE');
+        }
+
+        function rejectAction(approvalId, deviationId) {
+            showSignatureModal('approval', approvalId, 'REJECT');
+        }
+
+        function showSignatureModal(entityType, entityId, action) {
+            document.getElementById('signatureEntityType').value = entityType;
+            document.getElementById('signatureEntityId').value = entityId;
+            document.getElementById('signatureAction').value = action;
+            document.getElementById('signatureName').value = currentUser.profile?.full_name || '';
+            document.getElementById('signatureMeaning').value = action === 'APPROVE' ? 'Approved by' : 'Rejected by';
+            
+            document.getElementById('signatureModal').classList.add('active');
+        }
+
+        function closeSignatureModal() {
+            document.getElementById('signatureModal').classList.remove('active');
+            document.getElementById('signatureForm').reset();
+        }
+
+        async function handleSignature(e) {
+            e.preventDefault();
+            
+            const entityType = document.getElementById('signatureEntityType').value;
+            const entityId = document.getElementById('signatureEntityId').value;
+            const action = document.getElementById('signatureAction').value;
+            const meaning = document.getElementById('signatureMeaning').value;
+            const reason = document.getElementById('signatureReason').value;
+            const password = document.getElementById('signaturePassword').value;
+
+            try {
+                // Re-authenticate user
+                const { error: authError } = await supabase.auth.signInWithPassword({
+                    email: currentUser.email,
+                    password: password
+                });
+
+                if (authError) throw new Error('Authentication failed. Invalid password.');
+
+                const authTimestamp = new Date().toISOString();
+
+                // Create electronic signature record
+                const signatureData = {
+                    user_id: currentUser.id,
+                    printed_name: currentUser.profile.full_name,
+                    employee_id: currentUser.profile.employee_id,
+                    action_type: action,
+                    entity_type: entityType,
+                    entity_id: entityId,
+                    signing_reason: reason,
+                    signature_meaning: meaning,
+                    timestamp_utc: new Date().toISOString(),
+                    timestamp_local: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    timezone: 'Asia/Kolkata',
+                    authentication_method: 'password',
+                    authentication_timestamp: authTimestamp,
+                    session_id: (await supabase.auth.getSession()).data.session?.access_token
+                };
+
+                const { data: signature, error: sigError } = await supabase
+                    .from('audit_e_signatures')
+                    .insert([signatureData])
+                    .select()
+                    .single();
+
+                if (sigError) throw sigError;
+
+                // Update approval record
+                await supabase
+                    .from('approvals')
+                    .update({
+                        approval_status: action === 'APPROVE' ? 'Approved' : 'Rejected',
+                        decision_date: new Date().toISOString(),
+                        comments: reason,
+                        signature_id: signature.id
+                    })
+                    .eq('id', entityId);
+
+                // Log audit event
+                await logAuditEvent({
+                    entity_type: entityType,
+                    entity_id: entityId,
+                    action: action,
+                    reason: reason,
+                    metadata: { 
+                        signature_id: signature.signature_id,
+                        meaning: meaning
+                    }
+                });
+
+                alert(`Action ${action === 'APPROVE' ? 'approved' : 'rejected'} successfully with electronic signature.`);
+                closeSignatureModal();
+                loadPendingApprovals();
+
+            } catch (error) {
+                alert(`Signature error: ${error.message}`);
+            }
+        }
+
+        // ============================================
+        // AUDIT TRAIL
+        // ============================================
+        async function loadAuditTrail(searchTerm = '') {
+            try {
+                let query = supabase
+                    .from('audit_events')
+                    .select('*')
+                    .order('timestamp_utc', { ascending: false })
+                    .limit(100);
+
+                if (searchTerm) {
+                    query = query.or(`user_full_name.ilike.%${searchTerm}%,action.ilike.%${searchTerm}%,entity_type.ilike.%${searchTerm}%`);
+                }
+
+                const { data: events, error } = await query;
+
+                if (error) throw error;
+
+                const auditDiv = document.getElementById('auditTrail');
+                
+                if (!events || events.length === 0) {
+                    auditDiv.innerHTML = '<p>No audit events found.</p>';
+                    return;
+                }
+
+                auditDiv.innerHTML = events.map(event => `
+                    <div class="audit-entry">
+                        <div class="audit-entry-header">
+                            <span><strong>${event.action}</strong> on ${event.entity_type}</span>
+                            <span style="color: var(--text-muted);">${formatDateTime(event.timestamp_utc)} UTC</span>
+                        </div>
+                        <div class="audit-entry-details">
+                            <p><strong>User:</strong> ${event.user_full_name} (${event.user_employee_id})</p>
+                            <p><strong>IP Address:</strong> ${event.ip_address || 'N/A'}</p>
+                            <p><strong>Local Time:</strong> ${event.timestamp_local} (${event.timezone})</p>
+                            ${event.reason ? `<p><strong>Reason:</strong> ${event.reason}</p>` : ''}
+                            ${event.field_name ? `<p><strong>Field:</strong> ${event.field_name}</p>` : ''}
+                            <p><strong>Checksum:</strong> <code style="font-size: 11px;">${event.checksum}</code></p>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Load audit trail error:', error);
+            }
+        }
+
+        function searchAudit(e) {
+            loadAuditTrail(e.target.value);
+        }
+
+        // ============================================
+        // AUDIT LOGGING HELPER
+        // ============================================
+        async function logAuditEvent(eventData) {
+            try {
+                const auditRecord = {
+                    entity_type: eventData.entity_type,
+                    entity_id: eventData.entity_id,
+                    action: eventData.action,
+                    user_id: currentUser?.id || null,
+                    user_full_name: currentUser?.profile?.full_name || 'System',
+                    user_employee_id: currentUser?.profile?.employee_id || 'SYSTEM',
+                    timestamp_utc: new Date().toISOString(),
+                    timestamp_local: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    timezone: 'Asia/Kolkata',
+                    field_name: eventData.field_name || null,
+                    old_value: eventData.old_value || null,
+                    new_value: eventData.new_value || null,
+                    reason: eventData.reason || null,
+                    metadata: eventData.metadata || {}
+                };
+
+                // Note: In production, this would be inserted via a secure server-side function
+                // to prevent client-side manipulation
+                await supabase.rpc('insert_audit_event_secure', auditRecord);
+
+            } catch (error) {
+                console.error('Audit logging error:', error);
+            }
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function formatDateTime(dateString) {
+            if (!dateString) return '-';
+            return new Date(dateString).toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function updateTimeDisplay() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toISOString().substring(0, 19) + 'Z';
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html>

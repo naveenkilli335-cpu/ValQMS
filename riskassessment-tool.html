@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment Management | ValQMS</title>
+    <link rel="icon" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .stat-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .badge-critical { background: #fee2e2; color: #991b1b; }
+        .badge-high { background: #fed7aa; color: #9a3412; }
+        .badge-medium { background: #fef3c7; color: #92400e; }
+        .badge-low { background: #d1fae5; color: #065f46; }
+
+        /* Main Content */
+        .content-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #f59e0b;
+            border-bottom-color: #f59e0b;
+        }
+
+        .tab:hover {
+            color: #f59e0b;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: #ef4444;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-draft { background: #f3f4f6; color: #6b7280; }
+        .status-review { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-progress { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #e9d5ff; color: #6b21a8; }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .risk-critical { background: #fee2e2; color: #991b1b; }
+        .risk-high { background: #fed7aa; color: #9a3412; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-low { background: #d1fae5; color: #065f46; }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .action-btn.view { background: #dbeafe; color: #1e40af; }
+        .action-btn.edit { background: #fef3c7; color: #92400e; }
+        .action-btn.history { background: #e9d5ff; color: #6b21a8; }
+        .action-btn.add { background: #d1fae5; color: #065f46; }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 1000px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .info-box h4 {
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        /* RPN Calculator */
+        .rpn-calculator {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .rpn-result {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .rpn-value {
+            font-size: 48px;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        .rpn-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        /* Rating Guide */
+        .rating-guide {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .rating-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .rating-card h5 {
+            color: #f59e0b;
+            margin-bottom: 10px;
+        }
+
+        .rating-scale {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .rating-guide {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-box">RA</div>
+                <div>
+                    <div class="logo-text">Risk Assessment Management</div>
+                    <div class="logo-subtitle">ICH Q9(R1) Quality Risk Management</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="location.href='index.html'">← Back to Home</button>
+                <button class="btn btn-primary" onclick="openNewRAModal()">+ New Risk Assessment</button>
+            </div>
+        </div>
+
+        <!-- Alert -->
+        <div id="alert" class="alert"></div>
+
+        <!-- Dashboard Stats -->
+        <div class="dashboard">
+            <div class="stat-card">
+                <div class="stat-label">Total Assessments</div>
+                <div class="stat-value" id="totalRA">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Critical Risks</div>
+                <div class="stat-value" id="criticalRisks">0</div>
+                <span class="stat-badge badge-critical">RPN ≥ 200</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">High Risks</div>
+                <div class="stat-value" id="highRisks">0</div>
+                <span class="stat-badge badge-high">RPN 100-199</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Actions</div>
+                <div class="stat-value" id="pendingActions">0</div>
+                <span class="stat-badge badge-medium">Requires Mitigation</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('assessments')">Risk Assessments</button>
+                <button class="tab" onclick="switchTab('riskItems')">Risk Register</button>
+                <button class="tab" onclick="switchTab('tools')">Risk Tools</button>
+                <button class="tab" onclick="switchTab('reports')">Reports</button>
+            </div>
+
+            <!-- Risk Assessments Tab -->
+            <div id="assessmentsTab" class="tab-content active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Risk Assessment List</h3>
+                </div>
+
+                <div class="table-container">
+                    <table id="raTable">
+                        <thead>
+                            <tr>
+                                <th>RA Number</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Risk Level</th>
+                                <th>Status</th>
+                                <th>Initiated Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="raTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">
+                                    Loading risk assessments...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Risk Items Tab -->
+            <div id="riskItemsTab" class="tab-content">
+                <h3>Risk Register (Coming Soon)</h3>
+                <p>All risk items from all assessments will be displayed here with filtering options.</p>
+            </div>
+
+            <!-- Risk Tools Tab -->
+            <div id="toolsTab" class="tab-content">
+                <h3>ICH Q9 Risk Assessment Tools</h3>
+                <div class="info-box">
+                    <h4>📋 Risk Management Tools (ICH Q9(R1))</h4>
+                    <p><strong>Available Tools:</strong> FMEA, HACCP, HAZOP, Risk Ranking, Preliminary Hazard Analysis</p>
+                    <p><strong>RPN Calculation:</strong> Severity × Occurrence × Detection (Scale 1-10 each)</p>
+                    <p><strong>Risk Levels:</strong> Critical (RPN ≥200), High (100-199), Medium (40-99), Low (<40)</p>
+                </div>
+
+                <div class="rating-guide">
+                    <div class="rating-card">
+                        <h5>Severity (S)</h5>
+                        <div class="rating-scale">
+                            <strong>10:</strong> Hazardous - Patient safety risk<br>
+                            <strong>8-9:</strong> Major - Product quality impact<br>
+                            <strong>5-7:</strong> Moderate - Minor quality impact<br>
+                            <strong>3-4:</strong> Minor - Detectable deviation<br>
+                            <strong>1-2:</strong> Negligible - No significant impact
+                        </div>
+                    </div>
+                    <div class="rating-card">
+                        <h5>Occurrence (O)</h5>
+                        <div class="rating-scale">
+                            <strong>10:</strong> Very High - Almost inevitable<br>
+                            <strong>8-9:</strong> High - Frequent failures<br>
+                            <strong>5-7:</strong> Moderate - Occasional failures<br>
+                            <strong>3-4:</strong> Low - Rare failures<br>
+                            <strong>1-2:</strong> Remote - Highly unlikely
+                        </div>
+                    </div>
+                    <div class="rating-card">
+                        <h5>Detection (D)</h5>
+                        <div class="rating-scale">
+                            <strong>10:</strong> Cannot detect - No controls<br>
+                            <strong>8-9:</strong> Very Low - Minimal detection<br>
+                            <strong>5-7:</strong> Moderate - Some controls exist<br>
+                            <strong>3-4:</strong> High - Good detection methods<br>
+                            <strong>1-2:</strong> Very High - Almost certain detection
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="tab-content">
+                <h3>Risk Reports & Analytics (Coming Soon)</h3>
+                <p>Generate compliance reports, risk trend analysis, and effectiveness metrics.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Risk Assessment Modal -->
+    <div id="raModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">New Risk Assessment</h2>
+                <button class="close-btn" onclick="closeRAModal()">&times;</button>
+            </div>
+            
+            <form id="raForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label class="form-label required">Assessment Title</label>
+                        <input type="text" class="form-input" id="raTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Assessment Type</label>
+                        <select class="form-select" id="raType" required>
+                            <option value="">Select Type</option>
+                            <option value="FMEA">FMEA (Failure Mode & Effects Analysis)</option>
+                            <option value="HACCP">HACCP (Hazard Analysis & Critical Control Points)</option>
+                            <option value="HAZOP">HAZOP (Hazard & Operability Study)</option>
+                            <option value="Risk Ranking">Risk Ranking & Filtering</option>
+                            <option value="Preliminary Hazard Analysis">Preliminary Hazard Analysis</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Category</label>
+                        <select class="form-select" id="raCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Process">Process Risk</option>
+                            <option value="Product">Product Risk</option>
+                            <option value="Equipment">Equipment Risk</option>
+                            <option value="Facility">Facility Risk</option>
+                            <option value="Material">Material Risk</option>
+                            <option value="Utility">Utility Risk</option>
+                            <option value="Cleaning">Cleaning Validation</option>
+                            <option value="Validation">Process Validation</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Process Area</label>
+                        <input type="text" class="form-input" id="raProcessArea" placeholder="e.g., Tablet Manufacturing">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-input" id="raProduct" placeholder="e.g., Product A Tablets">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label required">Description</label>
+                        <textarea class="form-textarea" id="raDescription" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Initiated By</label>
+                        <input type="text" class="form-input" id="raInitiatedBy" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Review Date</label>
+                        <input type="date" class="form-input" id="raReviewDate">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeRAModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Risk Assessment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Risk Item Modal -->
+    <div id="riskItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Risk Item (FMEA)</h2>
+                <button class="close-btn" onclick="closeRiskItemModal()">&times;</button>
+            </div>
+            
+            <form id="riskItemForm">
+                <input type="hidden" id="riskItemRAId">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Process Step</label>
+                        <input type="text" class="form-input" id="processStep">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required">Item Number</label>
+                        <input type="text" class="form-input" id="itemNumber" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label required">Potential Failure Mode</label>
+                        <textarea class="form-textarea" id="failureMode" required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label required">Potential Effects</label>
+                        <textarea class="form-textarea" id="effects" required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Potential Causes</label>
+                        <textarea class="form-textarea" id="causes"></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Current Controls</label>
+                        <textarea class="form-textarea" id="controls"></textarea>
+                    </div>
+                </div>
+
+                <div class="rpn-calculator">
+                    <h4 style="margin-bottom: 15px; color: #92400e;">RPN Calculator</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label required">Severity (S)</label>
+                            <input type="number" class="form-input" id="severity" min="1" max="10" required onchange="calculateRPN()">
+                            <small style="color: #6b7280;">1 (Negligible) - 10 (Hazardous)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">Occurrence (O)</label>
+                            <input type="number" class="form-input" id="occurrence" min="1" max="10" required onchange="calculateRPN()">
+                            <small style="color: #6b7280;">1 (Remote) - 10 (Very High)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">Detection (D)</label>
+                            <input type="number" class="form-input" id="detection" min="1" max="10" required onchange="calculateRPN()">
+                            <small style="color: #6b7280;">1 (Very High) - 10 (Cannot Detect)</small>
+                        </div>
+                    </div>
+
+                    <div class="rpn-result">
+                        <div class="rpn-label">Risk Priority Number (RPN)</div>
+                        <div class="rpn-value" id="rpnDisplay">0</div>
+                        <div class="rpn-label" id="riskLevelDisplay">Risk Level: -</div>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-top: 20px;">
+                    <div class="form-group full-width">
+                        <label class="form-label">Recommended Actions</label>
+                        <textarea class="form-textarea" id="recommendedActions"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Responsibility</label>
+                        <input type="text" class="form-input" id="responsibility">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Target Date</label>
+                        <input type="date" class="form-input" id="targetDate">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeRiskItemModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Risk Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Audit Trail Modal -->
+    <div id="auditModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Audit Trail</h2>
+                <button class="close-btn" onclick="closeAuditModal()">&times;</button>
+            </div>
+            <div id="auditContent">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date/Time</th>
+                            <th>Action</th>
+                            <th>Field Changed</th>
+                            <th>Changed By</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // **REPLACE WITH YOUR SUPABASE CREDENTIALS**
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardStats();
+            loadRiskAssessments();
+        });
+
+        // Calculate RPN
+        function calculateRPN() {
+            const severity = parseInt(document.getElementById('severity').value) || 0;
+            const occurrence = parseInt(document.getElementById('occurrence').value) || 0;
+            const detection = parseInt(document.getElementById('detection').value) || 0;
+            
+            const rpn = severity * occurrence * detection;
+            document.getElementById('rpnDisplay').textContent = rpn;
+            
+            let riskLevel = 'Low';
+            if (rpn >= 200) riskLevel = 'Critical';
+            else if (rpn >= 100) riskLevel = 'High';
+            else if (rpn >= 40) riskLevel = 'Medium';
+            
+            document.getElementById('riskLevelDisplay').textContent = `Risk Level: ${riskLevel}`;
+        }
+
+        // Load Dashboard Statistics
+        async function loadDashboardStats() {
+            try {
+                const { data: assessments } = await supabase.from('risk_assessments').select('*');
+                const { data: items } = await supabase.from('risk_items').select('rpn, status');
+
+                const totalRA = assessments?.length || 0;
+                const criticalRisks = items?.filter(i => i.rpn >= 200).length || 0;
+                const highRisks = items?.filter(i => i.rpn >= 100 && i.rpn < 200).length || 0;
+                const pendingActions = items?.filter(i => i.status === 'Open' || i.status === 'In Progress').length || 0;
+
+                document.getElementById('totalRA').textContent = totalRA;
+                document.getElementById('criticalRisks').textContent = criticalRisks;
+                document.getElementById('highRisks').textContent = highRisks;
+                document.getElementById('pendingActions').textContent = pendingActions;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load Risk Assessments
+        async function loadRiskAssessments() {
+            try {
+                const { data, error } = await supabase
+                    .from('risk_assessments')
+                    .select('*')
+                    .order('initiated_date', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('raTableBody');
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">No risk assessments found. Click "New Risk Assessment" to create one.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = data.map(ra => `
+                    <tr>
+                        <td><strong>${ra.ra_number}</strong></td>
+                        <td>${ra.title}</td>
+                        <td><span class="status-badge status-draft">${ra.assessment_type}</span></td>
+                        <td>${ra.category}</td>
+                        <td><span class="risk-badge risk-${(ra.risk_level || 'low').toLowerCase()}">${ra.risk_level || 'TBD'}</span></td>
+                        <td><span class="status-badge status-${getStatusClass(ra.status)}">${ra.status}</span></td>
+                        <td>${new Date(ra.initiated_date).toLocaleDateString()}</td>
+                        <td>
+                            <button class="action-btn view" onclick="viewRA('${ra.id}')">View</button>
+                            <button class="action-btn add" onclick="addRiskItem('${ra.id}')">Add Risk</button>
+                            <button class="action-btn history" onclick="viewAuditTrail('${ra.id}')">History</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading risk assessments:', error);
+                showAlert('Error loading risk assessments', 'error');
+            }
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                'Draft': 'draft',
+                'Under Review': 'review',
+                'Approved': 'approved',
+                'In Progress': 'progress',
+                'Completed': 'completed'
+            };
+            return map[status] || 'draft';
+        }
+
+        // Generate RA Number
+        async function generateRANumber() {
+            const year = new Date().getFullYear();
+            const { data, error } = await supabase
+                .from('risk_assessments')
+                .select('ra_number')
+                .like('ra_number', `RA-${year}-%`)
+                .order('ra_number', { ascending: false })
+                .limit(1);
+
+            if (error || data.length === 0) {
+                return `RA-${year}-0001`;
+            }
+
+            const lastNumber = parseInt(data[0].ra_number.split('-')[2]);
+            const newNumber = (lastNumber + 1).toString().padStart(4, '0');
+            return `RA-${year}-${newNumber}`;
+        }
+
+        // RA Form Submit
+        document.getElementById('raForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                const raNumber = await generateRANumber();
+                const formData = {
+                    ra_number: raNumber,
+                    title: document.getElementById('raTitle').value,
+                    description: document.getElementById('raDescription').value,
+                    assessment_type: document.getElementById('raType').value,
+                    category: document.getElementById('raCategory').value,
+                    process_area: document.getElementById('raProcessArea').value,
+                    product_name: document.getElementById('raProduct').value,
+                    initiated_by: document.getElementById('raInitiatedBy').value,
+                    review_date: document.getElementById('raReviewDate').value,
+                    status: 'Draft'
+                };
+
+                const { data, error } = await supabase
+                    .from('risk_assessments')
+                    .insert([formData])
+                    .select();
+
+                if (error) throw error;
+
+                await createAuditEntry(data[0].id, 'Risk Assessment Created', null, null, null, formData.initiated_by, 'Initial risk assessment created');
+
+                showAlert('Risk assessment created successfully!', 'success');
+                closeRAModal();
+                loadDashboardStats();
+                loadRiskAssessments();
+            } catch (error) {
+                console.error('Error creating risk assessment:', error);
+                showAlert('Error creating risk assessment', 'error');
+            }
+        });
+
+        // Risk Item Form Submit
+        document.getElementById('riskItemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            try {
+                const formData = {
+                    ra_id: document.getElementById('riskItemRAId').value,
+                    item_number: document.getElementById('itemNumber').value,
+                    process_step: document.getElementById('processStep').value,
+                    potential_failure_mode: document.getElementById('failureMode').value,
+                    potential_effects: document.getElementById('effects').value,
+                    potential_causes: document.getElementById('causes').value,
+                    current_controls: document.getElementById('controls').value,
+                    severity: parseInt(document.getElementById('severity').value),
+                    occurrence: parseInt(document.getElementById('occurrence').value),
+                    detection: parseInt(document.getElementById('detection').value),
+                    recommended_actions: document.getElementById('recommendedActions').value,
+                    responsibility: document.getElementById('responsibility').value,
+                    target_date: document.getElementById('targetDate').value,
+                    status: 'Open'
+                };
+
+                const { data, error } = await supabase
+                    .from('risk_items')
+                    .insert([formData])
+                    .select();
+
+                if (error) throw error;
+
+                showAlert('Risk item added successfully!', 'success');
+                closeRiskItemModal();
+                loadDashboardStats();
+            } catch (error) {
+                console.error('Error adding risk item:', error);
+                showAlert('Error adding risk item', 'error');
+            }
+        });
+
+        // Create Audit Trail Entry
+        async function createAuditEntry(raId, action, fieldChanged, oldValue, newValue, changedBy, comments) {
+            try {
+                await supabase.from('risk_audit_trail').insert([{
+                    ra_id: raId,
+                    action: action,
+                    field_changed: fieldChanged,
+                    old_value: oldValue,
+                    new_value: newValue,
+                    changed_by: changedBy,
+                    comments: comments
+                }]);
+            } catch (error) {
+                console.error('Error creating audit entry:', error);
+            }
+        }
+
+        // View Audit Trail
+        async function viewAuditTrail(raId) {
+            try {
+                const { data, error } = await supabase
+                    .from('risk_audit_trail')
+                    .select('*')
+                    .eq('ra_id', raId)
+                    .order('changed_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('auditTableBody');
+                tbody.innerHTML = data.map(entry => `
+                    <tr>
+                        <td>${new Date(entry.changed_at).toLocaleString()}</td>
+                        <td>${entry.action}</td>
+                        <td>${entry.field_changed || '-'}</td>
+                        <td>${entry.changed_by}</td>
+                        <td>${entry.comments || ''}</td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('auditModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading audit trail:', error);
+                showAlert('Error loading audit trail', 'error');
+            }
+        }
+
+        // Modal Functions
+        function openNewRAModal() { document.getElementById('raModal').classList.add('active'); }
+        function closeRAModal() { document.getElementById('raModal').classList.remove('active'); document.getElementById('raForm').reset(); }
+        
+        function addRiskItem(raId) {
+            document.getElementById('riskItemRAId').value = raId;
+            document.getElementById('riskItemModal').classList.add('active');
+        }
+        function closeRiskItemModal() { 
+            document.getElementById('riskItemModal').classList.remove('active'); 
+            document.getElementById('riskItemForm').reset();
+            document.getElementById('rpnDisplay').textContent = '0';
+            document.getElementById('riskLevelDisplay').textContent = 'Risk Level: -';
+        }
+        
+        function closeAuditModal() { document.getElementById('auditModal').classList.remove('active'); }
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Show Alert
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert ${type} active`;
+            setTimeout(() => alert.classList.remove('active'), 5000);
+        }
+
+        // Placeholder functions
+        function viewRA(id) { alert('View detailed risk assessment: ' + id); }
+    </script>
+</body>
+</html>
