@@ -9,56 +9,72 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    :root {
-      --accent: #10b981;
-      --accent-bright: #34d399;
-      --accent-dim: rgba(16,185,129,0.15);
-      --text: #ffffff;
-      --text-dim: #94a3b8;
-      --surface: rgba(255,255,255,0.05);
-      --surface-hover: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.1);
-    }
+:root {
+  /* Softer, more refined palette */
+  --accent: #0ea474;
+  --accent-bright: #0d9469;
+  --accent-dim: rgba(14,164,116,0.06);
+  --text: #18181b;              /* Deeper, richer black */
+  --text-dim: #28282a;          /* Softer gray */
+  --text-lighter: #a1a1aa;      /* Even lighter for subtle text */
+  --surface: #fafafa;           /* Slightly warmer white */
+  --surface-hover: #f4f4f5;     
+  --border: #e4e4e7;            /* Much softer border */
+  --border-light: #f4f4f5;      /* Ultra-light border */
+  --glass: #ffffff;
+  
+  /* 21st.dev shadow system */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02), 
+               0 0 0 0.75px rgba(0, 0, 0, 0.03);
+  
+  --shadow-md: 0 3px 6px -1.5px rgba(0, 0, 0, 0.01), 
+               0 6px 12px -3px rgba(0, 0, 0, 0.02), 
+               0 32px 56px -12px rgba(0, 0, 0, 0.02),
+               0 0 0 0.75px rgba(0, 0, 0, 0.04);
+  
+  --shadow-hover: 0 3px 6px -1.5px rgba(0, 0, 0, 0.01), 
+                  0 6px 12px -3px rgba(0, 0, 0, 0.02), 
+                  0 32px 56px -12px rgba(0, 0, 0, 0.06),
+                  0 0 0 0.75px rgba(0, 0, 0, 0.04);
+}
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: #0a0e1a;
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #092b47;          /* White background */
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(16,185,129,0.05) 0%, transparent 70%);
-      z-index: -1;
-      pointer-events: none;
-    }
+body::before {
+  /* Remove or hide the dark gradient overlay */
+  display: none;
+}
 
     .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
 
     /* Header */
-    header {
-      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 20px 30px;
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      position: sticky;
-      top: 12px;
-      z-index: 100;
-    }
+header {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: sticky;
+  top: 12px;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s ease;
+}
+
+header:hover {
+  box-shadow: var(--shadow-hover);
+}
 
     .logo {
       display: flex;
@@ -98,20 +114,33 @@
       align-items: center;
     }
 
-    .control-btn {
-      padding: 10px 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.control-btn {
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.control-btn:hover {
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
 
     .control-btn:hover {
       background: var(--surface-hover);
@@ -216,29 +245,37 @@
 
 .form-input, .form-select, .form-textarea {
   width: 100%;
-  padding: 12px 14px;
+  padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #18181b !important;  /* Force dark text color */
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Specific styling for select dropdowns */
 .form-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #ffffff !important;
+  color: #18181b !important;
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2310b981' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
 }
 
 /* Dropdown option styling - CRITICAL FIX */
 .form-select option {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  padding: 10px;
-  font-size: 14px;
+  color: #18181b !important;
+  background: #ffffff !important;
+  padding: 8px 12px;
 }
 
 .form-select option:hover {
@@ -246,10 +283,10 @@
   color: #10b981 !important;
 }
 
+.form-select:focus option:checked,
 .form-select option:checked {
-  background: #0f172a !important;
-  background-color: #0f172a !important;
-  color: #34d399 !important;
+  background: #f3f4f6 !important;
+  color: #18181b !important;
 }
 
 .form-select option:focus {
@@ -276,9 +313,10 @@ select option:checked {
 
 /* Placeholder styling */
 .form-input::placeholder,
+.form-select::placeholder,
 .form-textarea::placeholder {
-  color: var(--text-dim);
-  opacity: 0.6;
+  color: #a1a1aa;  /* Light gray placeholder */
+  opacity: 1;
 }
 
 .form-input:focus,
@@ -326,7 +364,7 @@ select option:checked {
 }
 
 .form-select option:hover {
-  background: #334155;
+  background: #dee0e3;
 }
 
 .form-select optgroup {
@@ -614,20 +652,27 @@ select option:checked {
 
 /* Modal shell */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(4px);
-  align-items: center;
-  justify-content: center;
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
 }
-.modal.active { display: flex !important; }
+
+
+.modal.active {
+    display: flex !important;
+}
 
 /* Modal content */
 .modal-content {
-  background: linear-gradient(135deg, rgba(20,20,35,0.98), rgba(10,15,30,0.98));
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 28px;
@@ -665,10 +710,34 @@ select option:checked {
   margin-bottom: 16px;
 }
 
-    .modal-title {
-      font-size: 24px;
-      font-weight: 800;
-    }
+.modal-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* Fix modal form text colors */
+.modal-content .form-input,
+.modal-content .form-select,
+.modal-content .form-textarea {
+  color: #18181b !important;
+  background: #ffffff;
+}
+
+.modal-content .form-label {
+  color: #18181b !important;
+}
+
+.modal-content label {
+  color: #18181b !important;
+}
+
+.modal-content h2,
+.modal-content h3,
+.modal-content p,
+.modal-content div {
+  color: #18181b;
+}
 
     .close-btn {
       background: none;
@@ -868,6 +937,113 @@ select option:checked {
   100% { transform: rotate(360deg); }
 }
 
+/* Fix Applications tab visibility */
+#applications {
+    min-height: 400px;
+    background: #fafafa;
+}
+
+#applications .card {
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    padding: 30px !important;
+    border-radius: 20px !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+#applications .card h2,
+#applications .card p {
+    color: var(--text) !important;
+}
+
+/* Make sure tab content shows when active */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block !important;
+}
+
+/* ========================================
+   FIX: Text Visibility for All Dark Tabs
+   ======================================== */
+
+/* Make all tab content cards have white background and dark text */
+.tab-content .card,
+#deliverables,
+#requirements,
+#testing,
+#RTM,
+#agile {
+    background: #ffffff !important;
+}
+
+/* Ensure all text elements are dark and visible */
+.tab-content h1,
+.tab-content h2,
+.tab-content h3,
+.tab-content p,
+.tab-content div,
+.tab-content label,
+.tab-content span,
+.tab-content li {
+    color: #18181b !important;
+}
+
+/* Fix for card containers specifically */
+#deliverables .card,
+#requirements .card,
+#testing .card,
+#RTM .card,
+#agile .card {
+    background: #575555 !important;
+    border: 1px solid #e4e4e7 !important;
+    border-radius: 16px !important;
+}
+
+/* Fix all headings in these tabs */
+#deliverables h2,
+#deliverables h3,
+#deliverables p,
+#requirements h2,
+#requirements h3,
+#requirements p,
+#testing h2,
+#testing h3,
+#testing p,
+#RTM h2,
+#RTM h3,
+#RTM p,
+#agile h2,
+#agile h3,
+#agile p {
+    color: #18181b !important;
+}
+
+/* Fix select dropdowns */
+.tab-content select,
+.tab-content input[type="text"],
+.tab-content input[type="date"],
+.tab-content textarea {
+    background: #ffffff !important;
+    color: #18181b !important;
+    border: 1px solid #e4e4e7 !important;
+}
+
+/* Fix for empty state text */
+.tab-content .card div[style*="text-align: center"] {
+    color: #6b7280 !important;
+}
+
+/* Fix table text if present */
+.tab-content table th,
+.tab-content table td {
+    color: #18181b !important;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -952,29 +1128,8 @@ select option:checked {
         </div>
     </div>
 
-    <!-- Applications Tab -->
-<div id="applications" class="tab-content">
-    <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <div>
-                <h2>Applications & Systems</h2>
-                <p>Manage all GxP systems and their validation projects</p>
-            </div>
-                <div style="display: flex; gap: 12px;">
-        <button class="btn btn-secondary" onclick="openVersionManagement()">📋 Versions</button>
-        <button class="btn btn-primary" onclick="openNewApplicationModal()">+ New Application</button>
-    </div>
-            <button class="btn btn-primary" onclick="openNewApplicationModal()">+ New Application</button>
-        </div>
-
-        <div id="applicationsContainer">
-            <div style="text-align: center; padding: 40px; color: var(--text-dim);">Loading applications...</div>
-        </div>
-    </div>
-</div>
-
-    <!-- Recent Activity & Charts -->
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px;">
+    <!-- Dashboard Content Section -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px; margin-bottom: 24px;">
         <!-- Recent Projects -->
         <div class="card">
             <h2 style="font-size: 20px; margin-bottom: 20px;">Recent Projects</h2>
@@ -984,7 +1139,7 @@ select option:checked {
                 </div>
             </div>
         </div>
-
+        
         <!-- Quick Stats -->
         <div class="card">
             <h2 style="font-size: 20px; margin-bottom: 20px;">Deliverables Status</h2>
@@ -1004,7 +1159,7 @@ select option:checked {
                 <!-- Will be populated by JavaScript -->
             </div>
         </div>
-
+        
         <div class="card">
             <h2 style="font-size: 20px; margin-bottom: 20px;">Project Status</h2>
             <div id="statusDistribution" style="display: grid; gap: 12px;">
@@ -1019,52 +1174,75 @@ select option:checked {
         <p>Create a new validation project and auto-generate all required deliverables based on GAMP classification.</p>
         <button class="btn btn-primary" onclick="openNewProjectModal()">Start New Project</button>
     </div>
+    
+</div> <!-- ✅ CLOSE DASHBOARD TAB HERE -->
+
+
+<!-- Applications Tab -->
+<div id="applications" class="tab-content">
+  <div class="card" style="background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div>
+        <h2 style="margin:0;">Applications & Systems</h2>
+        <p style="margin:4px 0 0; color:#6b7280;">Manage all GxP systems and their validation projects</p>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="openVersionManagement()">📋 Versions</button>
+        <button class="btn btn-primary" onclick="openNewApplicationModal()">+ New Application</button>
+      </div>
+    </div>
+
+    <div id="applicationsContainer">
+      <div style="text-align:center; padding:40px; color:#6b7280;">Loading applications...</div>
+    </div>
+  </div>
 </div>
 
 
-    <!-- Projects Tab -->
-    <div id="projects" class="tab-content">
-      <div class="card">
-        <h2>Validation Projects</h2>
-        <p>All validation projects with auto-generated deliverables and phase tracking</p>
-        
-        <table class="projects-table" id="projectsTable">
-          <thead>
-            <tr>
-              <th>Project ID</th>
-              <th>System Name</th>
-              <th>GAMP</th>
-              <th>Status</th>
-              <th>Progress</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="projectsTableBody">
-            <tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-dim);">No projects yet. Create one to get started.</td></tr>
-          </tbody>
-        </table>
-      </div>
+<!-- Projects Tab -->
+<div id="projects" class="tab-content">
+  <div class="card">
+    <h2>Validation Projects</h2>
+    <p>All validation projects with auto-generated deliverables and phase tracking</p>
+    
+    <table class="projects-table" id="projectsTable">
+      <thead>
+        <tr>
+          <th>Project ID</th>
+          <th>System Name</th>
+          <th>GAMP</th>
+          <th>Status</th>
+          <th>Progress</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="projectsTableBody">
+        <tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-dim);">No projects yet. Create one to get started.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Deliverables Tab -->
+<div id="deliverables" class="tab-content">
+  <div class="card">
+    <h2>Validation Deliverables (Phase-Wise)</h2>
+    <p>Manage deliverables by validation phase. Add new or remove with justification.</p>
+    
+    <select class="form-input" id="projectSelector" onchange="loadProjectDeliverables()" style="margin-top: 20px;">
+      <option value="">Select a project...</option>
+    </select>
+
+    <div id="phasesContainer" style="margin-top: 30px;"></div>
+
+    <div style="margin-top: 30px;">
+      <button class="btn btn-primary" onclick="openAddDeliverableModal()" id="addDelBtn" style="display: none;">
+        ➕ Add New Deliverable
+      </button>
     </div>
+  </div>
+</div>
 
-    <!-- Deliverables Tab -->
-    <div id="deliverables" class="tab-content">
-      <div class="card">
-        <h2>Validation Deliverables (Phase-Wise)</h2>
-        <p>Manage deliverables by validation phase. Add new or remove with justification.</p>
-        
-        <select class="form-input" id="projectSelector" onchange="loadProjectDeliverables()" style="margin-top: 20px;">
-          <option value="">Select a project...</option>
-        </select>
-
-        <div id="phasesContainer" style="margin-top: 30px;"></div>
-
-        <div style="margin-top: 30px;">
-          <button class="btn btn-primary" onclick="openAddDeliverableModal()" id="addDelBtn" style="display: none;">
-            ➕ Add New Deliverable
-          </button>
-        </div>
-      </div>
-    </div>
 
 
 <!-- Requirements Tab -->
@@ -1485,6 +1663,12 @@ select option:checked {
       <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">✨ Auto-generated based on requirement type</div>
     </div>
 
+
+
+
+
+
+    
     <!-- Requirement Type -->
     <div class="form-group">
       <label class="form-label required">Requirement Type</label>
@@ -1567,6 +1751,16 @@ select option:checked {
         </select>
       </div>
 
+      <div class="form-group">
+        <label class="form-label required">GxP Impact</label>
+        <select class="form-select" id="reqGxpImpact">
+          <option value="">Select Impact</option>
+          <option value="Direct">Direct - Critical GxP system</option>
+          <option value="Indirect">Indirect - Supports GxP processes</option>
+          <option value="None">None - No GxP impact</option>
+        </select>
+      </div>
+    </div>
 
     <!-- Regulatory References -->
     <div class="form-group">
@@ -1624,41 +1818,69 @@ select option:checked {
   </div>
 </div>
 
-<!-- View/Edit Requirement Modal -->
 <div id="viewRequirementModal" class="modal">
-  <div class="modal-content" style="max-width: 900px;">
+  <div class="modal-content" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
     <div class="modal-header">
-      <h2 class="modal-title" id="viewReqTitle">Requirement Details</h2>
+      <h2 id="viewReqTitle">Requirement Details</h2>
       <button class="close-btn" onclick="closeViewRequirementModal()">&times;</button>
     </div>
-
-    <div id="viewReqContent"></div>
-
-    <!-- Test Cases Section -->
-    <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--border);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-size: 18px; font-weight: 700;">🔗 Linked Test Cases (Traceability)</h3>
-        <button class="btn btn-primary" onclick="openLinkTestCaseModal()" style="font-size: 12px; padding: 8px 16px;">
-          ➕ Link Test Case
+    
+    <div class="modal-body">
+      <!-- Action Buttons at Top -->
+      <div style="display: flex; gap: 12px; margin-bottom: 20px; padding: 12px; background: #f9fafb; border-radius: 8px;">
+        <button class="btn btn-primary" onclick="openEditRequirementModal()" style="flex: 1;">
+          ✏️ Edit Requirement
+        </button>
+        <button class="btn btn-secondary" onclick="toggleAuditTrail()" style="flex: 1;">
+          📋 View Audit Trail
+        </button>
+        <button class="btn btn-secondary" onclick="exportRequirementPDF()" style="flex: 1;">
+          📄 Export PDF
         </button>
       </div>
-      
-      <div style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 12px; color: #93c5fd;">
-        <strong>Traceability Note:</strong> Each requirement must be verified by at least one test case (IQ/OQ/PQ/UAT) to ensure compliance.
-      </div>
 
-      <div id="linkedTestCases" style="display: flex; flex-direction: column; gap: 12px;">
-        <div style="text-align: center; padding: 20px; color: var(--text-dim); background: var(--surface); border-radius: 12px;">
-          No test cases linked yet. Click "Link Test Case" to add traceability.
+
+      <div id="viewReqContent"></div>
+
+            <!-- Audit Trail Section (Initially Hidden) -->
+      <div id="auditTrailSection" style="display: none; margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--border);">
+        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">📋 Audit Trail</h3>
+        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 12px;">
+          <strong>Compliance Note:</strong> All changes are tracked per 21 CFR Part 11 requirements for audit trails.
+        </div>
+        <div id="auditTrailContent">
+          <div style="text-align: center; padding: 20px; color: var(--text-dim);">
+            Loading audit trail...
+          </div>
         </div>
       </div>
-    </div>
 
-    <button class="btn btn-secondary" onclick="closeViewRequirementModal()" style="margin-top: 30px; width: 100%;">Close</button>
+      <!-- Test Cases Section -->
+      <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--border);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 18px; font-weight: 700;">🔗 Linked Test Cases (Traceability)</h3>
+          <button class="btn btn-primary" onclick="openLinkTestCaseModal()" style="font-size: 12px; padding: 8px 16px;">
+            ➕ Link Test Case
+          </button>
+        </div>
+        
+        <div style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 12px; color: #93c5fd;">
+          <strong>Traceability Note:</strong> Each requirement must be verified by at least one test case (IQ/OQ/PQ/UAT) to ensure compliance.
+        </div>
+
+        <div id="linkedTestCases" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="text-align: center; padding: 20px; color: var(--text-dim); background: var(--surface); border-radius: 12px;">
+            No test cases linked yet. Click "Link Test Case" to add traceability.
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="closeViewRequirementModal()" style="margin-top: 30px; width: 100%;">Close</button>
+    </div>
   </div>
 </div>
 
-<!-- Link Test Case Modal -->
+<!-- Link Test Case Modal - FIXED VERSION -->
 <div id="linkTestCaseModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -1711,185 +1933,586 @@ select option:checked {
       <button class="btn btn-secondary" onclick="closeLinkTestCaseModal()">Cancel</button>
       <button class="btn btn-primary" onclick="confirmLinkTestCase()">Link Test Case</button>
     </div>
-
-
-
-      <div class="step-indicator">
-        <div class="step-dot active" id="step1Dot"></div>
-        <div class="step-dot" id="step2Dot"></div>
-        <div class="step-dot" id="step3Dot"></div>
-      </div>
-
-      <!-- Step 1: Basic Info -->
-      <div id="step1" class="wizard-step active">
-        <h3>Step 1: Project Information</h3>
-        
-        <div class="form-group">
-          <label class="form-label required">Project Name</label>
-          <input type="text" class="form-input" id="projectName" placeholder="e.g., LIMS System Validation">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label required">System Name</label>
-          <input type="text" class="form-input" id="systemName" placeholder="e.g., Waters LIMS XYZ">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">System Description</label>
-          <textarea class="form-textarea" id="systemDescription" placeholder="Brief description of the system"></textarea>
-        </div>
-
-<div class="form-group">
-  <label class="form-label required">Project Type</label>
-  <select class="form-select" id="projectType">
-    <option value="">Select Type</option>
-    <option value="New System">New Implementation</option>
-    <option value="Upgrade">System Upgrade</option>
-    <option value="Migration">Migration</option>
-    <option value="Retirement">Retirement</option>
-    <option value="Periodic Review">Periodic Review</option>
-  </select>
+  </div>
 </div>
+<!-- ✅ IMPORTANT: Link Test Case Modal properly closed above -->
 
-<!-- GxP Impact Field with Assessment Button -->
-<div class="form-group">
-    <label class="form-label required">GxP Impact</label>
-    <div style="display: flex; gap: 12px;">
-        <select class="form-select" id="gxpImpact" required style="flex: 1;">
-            <option value="">Select Impact</option>
-            <option value="GxP Critical">GxP Critical</option>
-            <option value="GxP Non-Critical">GxP Non-Critical</option>
-            <option value="Non-GxP">Non-GxP</option>
-        </select>
-        <button type="button" class="btn" onclick="openGxPAssessment()" 
-                style="background: linear-gradient(135deg, #3b82f6, #60a5fa); color: white; white-space: nowrap; padding: 12px 20px; font-size: 14px;">
-            🔍 Run Assessment
-        </button>
+
+<!-- Edit Requirement Modal -->
+<div id="editRequirementModal" class="modal">
+  <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+    <div class="modal-header">
+      <h2 class="modal-title">✏️ Edit Requirement</h2>
+      <button class="close-btn" onclick="closeEditRequirementModal()">&times;</button>
     </div>
-    <small style="color: var(--text-dim); font-size: 12px; margin-top: 4px; display: block;">
-        Not sure about GxP classification? Run our guided 5-question assessment
-    </small>
-</div>
 
-        <div class="form-group">
-          <label class="form-label">Vendor/Supplier</label>
-          <input type="text" class="form-input" id="vendor" placeholder="e.g., Waters Corporation">
-        </div>
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 16px; border-radius: 12px; margin-bottom: 24px; font-size: 13px;">
+      <strong>⚠️ Change Control:</strong> All edits will be logged in the audit trail with timestamp and user information per 21 CFR Part 11.
+    </div>
 
-        <div style="display: flex; gap: 12px; margin-top: 30px;">
-          <button class="btn btn-secondary" onclick="closeProjectModal()">Cancel</button>
-          <button class="btn btn-primary" style="flex: 1;" onclick="goToStep2()">Next: GAMP Assessment →</button>
-        </div>
+    <!-- Requirement ID (Read-only) -->
+    <div class="form-group">
+      <label class="form-label">Requirement ID</label>
+      <input type="text" class="form-input" id="editReqId" readonly style="background: rgba(255,255,255,0.02); cursor: not-allowed;">
+    </div>
+
+    <!-- Requirement Type -->
+    <div class="form-group">
+      <label class="form-label required">Requirement Type</label>
+      <select class="form-select" id="editReqType">
+        <option value="">Select Type</option>
+        <option value="Functional">Functional (FR)</option>
+        <option value="Non-Functional">Non-Functional (NFR)</option>
+        <option value="Data Integrity">Data Integrity (DI)</option>
+        <option value="Security">Security (SEC)</option>
+        <option value="Audit Trail">Audit Trail (AT)</option>
+        <option value="Electronic Signature">Electronic Signature (ES)</option>
+        <option value="Interface">Interface (INT)</option>
+        <option value="Performance">Performance (PERF)</option>
+        <option value="Regulatory">Regulatory Compliance (REG)</option>
+      </select>
+    </div>
+
+    <!-- Category and Priority -->
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label required">Category</label>
+        <select class="form-select" id="editReqCategory">
+          <option value="">Select Category</option>
+          <option value="User Interface">User Interface</option>
+          <option value="System Functionality">System Functionality</option>
+          <option value="Data Management">Data Management</option>
+          <option value="Security & Access">Security & Access Control</option>
+          <option value="Audit & Compliance">Audit Trail & Compliance</option>
+          <option value="Integration">System Integration</option>
+          <option value="Reporting">Reporting & Analytics</option>
+          <option value="Validation">Validation & Testing</option>
+          <option value="Business Process">Business Process</option>
+        </select>
       </div>
 
-      <!-- Step 2: GAMP Assessment -->
-      <div id="step2" class="wizard-step">
-        <h3>Step 2: GAMP 5 Category Assessment</h3>
-        
-        <div style="background: var(--accent-dim); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;">
-          <strong>Answer the following questions to auto-classify your system:</strong>
-        </div>
+      <div class="form-group">
+        <label class="form-label required">Priority (MoSCoW)</label>
+        <select class="form-select" id="editReqPriority">
+          <option value="">Select Priority</option>
+          <option value="Critical">Critical - Must Have</option>
+          <option value="High">High - Should Have</option>
+          <option value="Medium">Medium - Could Have</option>
+          <option value="Low">Low - Won't Have Now</option>
+        </select>
+      </div>
+    </div>
 
-        <div class="checkbox-group">
-          <div class="checkbox-item">
-            <input type="checkbox" id="isInfrastructure" onchange="updateGAMPPreview()">
-            <label for="isInfrastructure">Is this infrastructure software? (OS, Database, Middleware)</label>
-          </div>
+    <!-- Requirement Statement -->
+    <div class="form-group">
+      <label class="form-label required">Requirement Statement</label>
+      <textarea class="form-textarea" id="editReqDescription" rows="4"></textarea>
+    </div>
 
-          <div class="checkbox-item">
-            <input type="checkbox" id="isCOTS" onchange="updateGAMPPreview()">
-            <label for="isCOTS">Is this COTS software used without modification?</label>
-          </div>
-
-          <div class="checkbox-item">
-            <input type="checkbox" id="isConfigurable" onchange="updateGAMPPreview()">
-            <label for="isConfigurable">Does it require configuration? (LIMS, MES, ERP)</label>
-          </div>
-
-          <div class="checkbox-item">
-            <input type="checkbox" id="hasCustomCode" onchange="updateGAMPPreview()">
-            <label for="hasCustomCode">Does it have custom code, scripts, or macros?</label>
-          </div>
-
-          <div class="checkbox-item">
-            <input type="checkbox" id="isCustomDeveloped" onchange="updateGAMPPreview()">
-            <label for="isCustomDeveloped">Is this custom-developed software?</label>
-          </div>
-        </div>
-
-        <div id="gampResult" style="background: var(--accent-dim); border: 1px solid var(--accent); padding: 20px; border-radius: 12px; margin-top: 20px; display: none;">
-          <div style="text-align: center;">
-            <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 8px;">RECOMMENDED GAMP CATEGORY</div>
-            <div style="font-size: 32px; font-weight: 800; color: var(--accent); margin: 12px 0;">
-              <span id="gampCategoryText">GAMP3</span>
-            </div>
-            <div style="font-size: 13px; color: var(--text-dim);" id="gampDescText">Classified as standard product</div>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 12px; margin-top: 30px;">
-          <button class="btn btn-secondary" onclick="goToStep1()">← Back</button>
-          <button class="btn btn-primary" style="flex: 1;" onclick="goToStep3()">Next: Methodology →</button>
-        </div>
+    <!-- Rationale and Acceptance Criteria -->
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label required">Rationale / Business Justification</label>
+        <textarea class="form-textarea" id="editReqRationale" rows="3"></textarea>
       </div>
 
-      <!-- Step 3: Methodology & Timeline -->
-      <div id="step3" class="wizard-step">
-        <h3>Step 3: Methodology & Timeline</h3>
-        
-<div class="form-group">
-  <label class="form-label required">Methodology</label>
-  <select class="form-select" id="methodology">
-    <option value="">Select Methodology</option>
-    <option value="Waterfall">Waterfall</option>
-    <option value="V-Model">V-Model</option>
-    <option value="Agile">Agile</option>
-    <option value="Hybrid - Agile Dev + Waterfall Val">Hybrid (Agile Dev + Waterfall Validation)</option>
-  </select>
-</div>
+      <div class="form-group">
+        <label class="form-label required">Acceptance Criteria</label>
+        <textarea class="form-textarea" id="editReqAcceptance" rows="3"></textarea>
+      </div>
+    </div>
 
-          <div class="form-group">
-            <label class="form-label">Agile Framework</label>
-            <select class="form-select" id="agileFramework">
-              <option value="N/A">N/A</option>
-              <option value="Scrum">Scrum</option>
-              <option value="Kanban">Kanban</option>
-              <option value="SAFe">SAFe</option>
-            </select>
-          </div>
+    <!-- Risk and GxP Impact -->
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label required">Risk Level</label>
+        <select class="form-select" id="editReqRisk">
+          <option value="High">High - Direct impact on patient safety/data integrity</option>
+          <option value="Medium">Medium - Indirect impact requiring controls</option>
+          <option value="Low">Low - Minimal impact with existing controls</option>
+        </select>
+      </div>
 
-          <div class="form-group">
-            <label class="form-label">Start Date</label>
-            <input type="date" class="form-input" id="startDate">
-          </div>
+      <div class="form-group">
+        <label class="form-label required">GxP Impact</label>
+        <select class="form-select" id="editReqGxpImpact">
+          <option value="">Select Impact</option>
+          <option value="Direct">Direct - Critical GxP system</option>
+          <option value="Indirect">Indirect - Supports GxP processes</option>
+          <option value="None">None - No GxP impact</option>
+        </select>
+      </div>
+    </div>
 
-          <div class="form-group">
-            <label class="form-label">Go-Live Date</label>
-            <input type="date" class="form-input" id="goLiveDate">
-          </div>
+    <!-- Additional Details -->
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Source Document Reference</label>
+        <input type="text" class="form-input" id="editReqSource">
+      </div>
 
-          <div class="form-group">
-            <label class="form-label">Validation Lead</label>
-            <input type="text" class="form-input" id="validationLead" placeholder="Name">
-          </div>
+      <div class="form-group">
+        <label class="form-label required">Requirement Owner</label>
+        <input type="text" class="form-input" id="editReqOwner">
+      </div>
+    </div>
 
-          <div class="form-group">
-            <label class="form-label">System Owner</label>
-            <input type="text" class="form-input" id="systemOwner" placeholder="Name">
-          </div>
+    <!-- Comments -->
+    <div class="form-group">
+      <label class="form-label">Additional Comments / Notes</label>
+      <textarea class="form-textarea" id="editReqComments" rows="2"></textarea>
+    </div>
+
+    <!-- Change Reason (Required for Audit Trail) -->
+    <div class="form-group">
+      <label class="form-label required">Change Reason (For Audit Trail)</label>
+      <textarea class="form-textarea" id="editChangeReason" placeholder="Explain why this requirement is being modified..." rows="3" required></textarea>
+      <small style="color: var(--text-dim); font-size: 12px;">This will be recorded in the audit trail for compliance purposes.</small>
+    </div>
+
+    <!-- Electronic Signature -->
+    <div class="form-group">
+      <label class="form-label">Electronic Signature Confirmation</label>
+      <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+        <div style="font-size: 12px; color: #3b82f6; margin-bottom: 4px;">
+          <strong>Signed by:</strong> <span id="currentUserEmail">Loading...</span>
         </div>
-
-        <div style="display: flex; gap: 12px; margin-top: 30px;">
-          <button class="btn btn-secondary" onclick="goToStep2()">← Back</button>
-          <button class="btn btn-primary" style="flex: 1;" onclick="createProject()">Create Project & Generate Deliverables</button>
+        <div style="font-size: 11px; color: #6b7280;">
+          Per 21 CFR Part 11, this change will be electronically signed with your authenticated user credentials.
         </div>
       </div>
+      <input type="text" class="form-input" id="editUserName" placeholder="Enter your name to confirm (optional)">
+      <small style="color: var(--text-dim); font-size: 12px;">Your email and user ID will be recorded automatically.</small>
+    </div>
+
+
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 12px; margin-top: 30px;">
+      <button class="btn btn-secondary" onclick="closeEditRequirementModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmEditRequirement()" style="flex: 1;">
+        ✓ Save Changes & Update Audit Trail
+      </button>
     </div>
   </div>
-
-  <div id="loadingOverlay" class="loading-overlay">
-  <div class="loading-spinner"></div>
 </div>
+ 
+
+<!-- Sprint Modal -->
+<div id="sprintModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Create New Sprint</h2>
+            <button class="close-btn" onclick="closeSprintModal()">&times;</button>
+        </div>
+
+        <form id="sprintForm" onsubmit="createSprint(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Sprint Number</label>
+                    <input type="number" class="form-input" id="sprintNumber" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Sprint Name</label>
+                    <input type="text" class="form-input" id="sprintName" placeholder="e.g., Sprint 1 - User Management" required>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label">Sprint Goal</label>
+                    <textarea class="form-textarea" id="sprintGoal" placeholder="What will be achieved in this sprint?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Start Date</label>
+                    <input type="date" class="form-input" id="sprintStartDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">End Date</label>
+                    <input type="date" class="form-input" id="sprintEndDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Planned Story Points</label>
+                    <input type="number" class="form-input" id="plannedStoryPoints" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="sprintStatus">
+                        <option value="Planned">Planned</option>
+                        <option value="Active">Active</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button type="button" class="btn btn-secondary" onclick="closeSprintModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Create Sprint</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- New Test Suite Modal -->
+<div id="testSuiteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Create Test Suite</h2>
+            <button class="close-btn" onclick="closeTestSuiteModal()">&times;</button>
+        </div>
+
+        <form id="testSuiteForm" onsubmit="createTestSuite(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Test Suite ID</label>
+                    <input type="text" class="form-input" id="testSuiteId" placeholder="e.g., TS-IQ-001" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Test Type</label>
+                    <select class="form-select" id="testType" required>
+                        <option value="">Select Type</option>
+                        <option value="IQ">IQ - Installation Qualification</option>
+                        <option value="OQ">OQ - Operational Qualification</option>
+                        <option value="PQ">PQ - Performance Qualification</option>
+                        <option value="UAT">UAT - User Acceptance Testing</option>
+                        <option value="SIT">SIT - System Integration Testing</option>
+                        <option value="Regression">Regression Testing</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label required">Test Suite Name</label>
+                    <input type="text" class="form-input" id="testSuiteName" placeholder="e.g., System Hardware Installation Verification" required>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label">Test Objective</label>
+                    <textarea class="form-textarea" id="testObjective" placeholder="What is the purpose of this test suite?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Assigned To</label>
+                    <input type="text" class="form-input" id="testAssignedTo" placeholder="Test Lead Name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Planned Execution Date</label>
+                    <input type="date" class="form-input" id="testPlannedDate">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button type="button" class="btn btn-secondary" onclick="closeTestSuiteModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Create Test Suite</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Test Case to Suite Modal -->
+<div id="addTestCaseModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Add Test Case</h2>
+            <button class="close-btn" onclick="closeAddTestCaseModal()">&times;</button>
+        </div>
+
+        <form id="testCaseForm" onsubmit="addTestCase(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Test Case ID</label>
+                    <input type="text" class="form-input" id="tcId" placeholder="e.g., TC-IQ-001" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Link to Requirement</label>
+                    <select class="form-select" id="tcRequirement" required>
+                        <option value="">Select Requirement</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label required">Test Case Title</label>
+                    <input type="text" class="form-input" id="tcTitle" placeholder="e.g., Verify power supply installation" required>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label required">Test Procedure</label>
+                    <textarea class="form-textarea" id="tcProcedure" placeholder="Step-by-step procedure..." required></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label required">Expected Result</label>
+                    <textarea class="form-textarea" id="tcExpected" placeholder="What should happen..." required></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button type="button" class="btn btn-secondary" onclick="closeAddTestCaseModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Add Test Case</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Execute Test Case Modal -->
+<div id="executeTestModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Execute Test Case</h2>
+            <button class="close-btn" onclick="closeExecuteTestModal()">&times;</button>
+        </div>
+
+        <div id="executeTestContent">
+            <!-- Will be populated dynamically -->
+        </div>
+
+        <form id="executeTestForm" onsubmit="saveTestExecution(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Test Result</label>
+                    <select class="form-select" id="testResult" required onchange="toggleDeviationFields()">
+                        <option value="">Select Result</option>
+                        <option value="Pass">Pass</option>
+                        <option value="Fail">Fail</option>
+                        <option value="N/A">N/A</option>
+                        <option value="Blocked">Blocked</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">Executed By</label>
+                    <input type="text" class="form-input" id="executedBy" placeholder="Your name" required>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label">Actual Result</label>
+                    <textarea class="form-textarea" id="actualResult" placeholder="What actually happened..."></textarea>
+                </div>
+
+                <div id="deviationFields" style="display: none; grid-column: 1 / -1;">
+                    <div class="form-group">
+                        <label class="form-label">Deviation Number</label>
+                        <input type="text" class="form-input" id="deviationNumber" placeholder="e.g., DEV-2025-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deviation Justification</label>
+                        <textarea class="form-textarea" id="deviationJustification" placeholder="Explain the deviation..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button type="button" class="btn btn-secondary" onclick="closeExecuteTestModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Save Execution</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- New Application Modal -->
+<div id="applicationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">New Application/System</h2>
+            <button class="close-btn" onclick="closeApplicationModal()">&times;</button>
+        </div>
+
+        <form id="applicationForm" onsubmit="createApplication(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Application Name</label>
+                    <input type="text" class="form-input" id="appName" placeholder="e.g., LabWare LIMS" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Application Code</label>
+                    <input type="text" class="form-input" id="appCode" placeholder="e.g., LIMS-LAB">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">System Type</label>
+                    <select class="form-select" id="appSystemType">
+                        <option value="">Select Type</option>
+                        <option value="LIMS">LIMS</option>
+                        <option value="ERP">ERP (SAP, Oracle)</option>
+                        <option value="MES">MES</option>
+                        <option value="QMS">QMS</option>
+                        <option value="EDMS">EDMS</option>
+                        <option value="Chromatography">Chromatography Data System</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Vendor Name</label>
+                    <input type="text" class="form-input" id="appVendor" placeholder="e.g., LabWare Inc.">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Current Version</label>
+                    <input type="text" class="form-input" id="appVersion" placeholder="e.g., v8.5">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">System Owner</label>
+                    <input type="text" class="form-input" id="appOwner" placeholder="Business owner name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Business Unit</label>
+                    <input type="text" class="form-input" id="appBusinessUnit" placeholder="e.g., QC Lab">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">GxP Impact</label>
+                  <select class="form-select" id="appGxpImpact">
+                      <option value="">Select Impact</option>
+                      <option value="Direct">Direct - Affects product quality/patient safety</option>
+                      <option value="Indirect">Indirect - Supports GxP processes</option>
+                      <option value="None">None - No GxP impact</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                    <label class="form-label">System Description</label>
+                    <textarea class="form-textarea" id="appDescription" placeholder="Brief description of the system purpose..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Installation Date</label>
+                    <input type="date" class="form-input" id="appInstallDate">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Go-Live Date</label>
+                    <input type="date" class="form-input" id="appGoLiveDate">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button type="button" class="btn btn-secondary" onclick="closeApplicationModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Create Application</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Version Management Modal -->
+<div id="versionManagementModal" class="modal">
+    <div class="modal-content" style="max-width: 1200px;">
+        <div class="modal-header">
+            <h2 class="modal-title">📋 Version Management</h2>
+            <button class="close-btn" onclick="closeVersionManagement()">&times;</button>
+        </div>
+        
+        <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+            <select id="versionAppFilter" class="form-select" onchange="filterVersionsByApp()" style="flex: 1;">
+                <option value="">All Applications</option>
+            </select>
+            <button class="btn btn-primary" onclick="openNewVersionModal()">+ New Version</button>
+        </div>
+        
+        <div id="versionsListContainer">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Version</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Go-Live Date</th>
+                        <th>Projects</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="versionsTableBody">
+                    <tr><td colspan="7" style="text-align: center; padding: 40px;">Loading versions...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- New Version Modal -->
+<div id="newVersionModal" class="modal">
+    <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-header">
+            <h2 class="modal-title">➕ New Version</h2>
+            <button class="close-btn" onclick="closeNewVersionModal()">&times;</button>
+        </div>
+        
+        <form id="versionForm" onsubmit="event.preventDefault(); createVersion();">
+            <div class="form-group">
+                <label class="form-label required">Application</label>
+                <select class="form-select" id="versionAppId" required>
+                    <option value="">Select Application</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Version Number</label>
+                <input type="text" class="form-input" id="versionNumber" placeholder="e.g., 8.5.1" pattern="^\d+\.\d+(\.\d+)?$" required>
+                <small style="color: var(--text-dim); font-size: 12px;">Format: MAJOR.MINOR or MAJOR.MINOR.PATCH (e.g., 8.5 or 8.5.1)</small>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label required">Version Type</label>
+                <select class="form-select" id="versionType" required onchange="updateValidationApproach()">
+                    <option value="">Select Type</option>
+                    <option value="Major">Major Release (Breaking changes)</option>
+                    <option value="Minor">Minor Release (New features)</option>
+                    <option value="Patch">Patch (Bug fixes)</option>
+                    <option value="Configuration">Configuration Only</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Validation Approach</label>
+                <select class="form-select" id="validationApproach">
+                    <option value="">Select Approach</option>
+                    <option value="Full CSV">Full CSV (IQ/OQ/PQ)</option>
+                    <option value="Partial Validation">Partial Validation (Risk-based OQ/PQ)</option>
+                    <option value="Impact Assessment">Impact Assessment + Testing</option>
+                    <option value="Configuration OQ">Configuration OQ Only</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Release Date</label>
+                <input type="date" class="form-input" id="releaseDate">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Planned Go-Live Date</label>
+                <input type="date" class="form-input" id="goLiveDate">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Change Description</label>
+                <textarea class="form-input" id="changeDescription" rows="4" placeholder="Describe what changed in this version..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="isProduction">
+                    <span>Mark as Production Version</span>
+                </label>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="closeNewVersionModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Create Version</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
   <script>
     // ========== STATE MANAGEMENT ==========
@@ -1910,6 +2533,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateDashboard();
   loadApplications();
 });
+
+// Store current user information
+let currentUser = null;
+
+// Get current user on page load
+async function getCurrentUser() {
+    try {
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
+        if (error) throw error;
+        currentUser = user;
+        console.log('Current user:', currentUser);
+        return user;
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        return null;
+    }
+}
+
+// Call this when page loads
+getCurrentUser();
 
 
     // ========== STORAGE ==========
@@ -2264,7 +2907,7 @@ async function renderProjects(projects) {
                 <td>
                     <div style="font-weight: 600; font-family: monospace; font-size: 12px;">${proj.project_number || 'N/A'}</div>
                     <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">
-                        ${proj.application_id ? `📱 ${appName}` : '⚠️ ${appName}'}
+                        ${proj.application_id ? `📱 ${appName}` : '⚠️ No Application'}
                     </div>
                 </td>
                 <td>${proj.system_name || 'N/A'}</td>
@@ -2572,90 +3215,106 @@ function toggleRequirementsView(view) {
 }
 
 async function loadProjectRequirements() {
-  const selector = document.getElementById('reqProjectSelector');
-  const projectId = selector.value;
-  
-  if (!projectId) {
-    document.getElementById('requirementsContainer').innerHTML = `
-      <div style="text-align: center; padding: 40px; color: var(--text-dim);">
-        Select a project to manage requirements
-      </div>`;
-    document.getElementById('rtmContainer').innerHTML = `
-      <div style="text-align: center; padding: 40px; color: var(--text-dim);">
-        Select a project to view traceability matrix
-      </div>`;
-    document.getElementById('reqViewToggle').style.display = 'none';
-    return;
-  }
-  
-  selectedProjectForReq = projectId;
-  
-  try {
-const { data: requirements, error } = await supabaseClient
-  .from('requirements')
-  .select('*')
-  .eq('project_id', projectId)          // FIXED
-  .order('created_at', { ascending: false });  // FIXED
-
-if (error) { console.error(error); throw error; }
-
-const proj = projects.find(p => p.id === projectId);
-if (proj) {
-  proj.requirements = (requirements || []).map(req => ({
-    id: req.id,
-    reqId: req.requirement_id,                   // FIXED
-    type: req.requirement_type,                  // FIXED
-    category: req.category,
-    priority: req.priority,
-    description: req.requirement_description,    // FIXED
-    rationale: req.rationale,
-    acceptance: req.acceptance_criteria,         // FIXED
-    risk: req.risk_level,                        // FIXED
-    gxpImpact: req.gxp_impact,                   // FIXED
-    source: req.source,
-    owner: req.owner,
-    comments: req.comments,
-    regulatoryRefs: req.regulatory_refs || [],   // FIXED
-    createdAt: req.created_at,                   // FIXED
-    createdBy: req.created_by,                   // FIXED
-    testCases: [],
-    status: req.status,
-    gxpRelevant: req.gxp_relevant                // FIXED
-  }));
-}
-document.getElementById('reqViewToggle').style.display = 'flex';
-renderRequirements(proj);
-if (currentReqView === 'rtm') loadRTM();
-
+    const selector = document.getElementById('reqProjectSelector');
+    const projectId = selector.value;
     
-  } catch (error) {
-    console.error('Error loading requirements:', error);
-    
-    // Show empty state with "Add First Requirement" button
-    const proj = projects.find(p => p.id === projectId);
-    if (proj) {
-      if (!proj.requirements) proj.requirements = [];
-      document.getElementById('reqViewToggle').style.display = 'flex';
-      renderRequirements(proj);
+    if (!projectId) {
+        document.getElementById('requirementsContainer').innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-dim);">
+                Select a project to manage requirements
+            </div>`;
+        document.getElementById('rtmContainer').innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-dim);">
+                Select a project to view traceability matrix
+            </div>`;
+        document.getElementById('reqViewToggle').style.display = 'none';
+        return;
     }
-  }
+    
+    selectedProjectForReq = projectId;
+    
+    try {
+        // ✅ Using correct column name: project_id
+        const { data: requirements, error } = await supabaseClient
+            .from('requirements')
+            .select('*')
+            .eq('project_id', projectId)  // ✅ Correct!
+            .order('created_at', { ascending: false });
+        
+        if (error) {
+            console.error('Error loading requirements:', error);
+            throw error;
+        }
+        
+        console.log('Loaded requirements:', requirements);
+        
+        // Find project and assign requirements
+        const proj = projects.find(p => p.id === projectId);
+        
+        if (proj) {
+            // Map database fields to application format
+            proj.requirements = (requirements || []).map(req => ({
+                id: req.id,
+                reqId: req.requirement_id,
+                type: req.requirement_type || req.type || 'Functional',
+                category: req.category || 'General',
+                priority: req.priority || 'Medium',
+                description: req.requirement_description || req.requirement_title || '',
+                rationale: req.rationale || '',
+                acceptance: req.acceptance_criteria || '',
+                risk: req.risk_level || 'Medium',
+                gxpImpact: req.gxp_impact || 'Direct',
+                source: req.source || '',
+                owner: req.owner || '',
+                comments: req.comments || '',
+                regulatoryRefs: req.regulatory_refs || [],
+                createdAt: req.created_at,
+                createdBy: req.created_by || 'System',
+                testCases: [],
+                status: req.status || 'Draft',
+                gxpRelevant: req.gxp_relevant !== false
+            }));
+            
+            document.getElementById('reqViewToggle').style.display = 'flex';
+            renderRequirements(proj);
+            
+            if (currentReqView === 'rtm') {
+                loadRTM();
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error loading requirements:', error);
+        showAlert(`Failed to load requirements: ${error.message}`, 'error');
+        
+        // Show empty state
+        const proj = projects.find(p => p.id === projectId);
+        if (proj) {
+            if (!proj.requirements) proj.requirements = [];
+            document.getElementById('reqViewToggle').style.display = 'flex';
+            renderRequirements(proj);
+        }
+    }
 }
+
+
 
 
 function renderRequirements(proj) {
-  const container = document.getElementById('requirementsContainer');
-  
-  if (!proj.requirements || proj.requirements.length === 0) {
-    container.innerHTML = `
-      <div style="text-align: center; padding: 60px 20px;">
-        <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
-        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Requirements Defined</div>
-        <div style="color: var(--text-dim); margin-bottom: 24px;">Start by adding user requirements for traceability and compliance</div>
-        <button class="btn btn-primary" onclick="openAddRequirementModal()">✨ Add First Requirement</button>
-      </div>
-    `;
-    return;
-  }
+    const container = document.getElementById('requirementsContainer');
+    
+    try {
+        if (!proj.requirements || proj.requirements.length === 0) {
+            // Show empty state
+            container.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Requirements Defined</div>
+                    <div style="color: var(--text-dim); margin-bottom: 24px;">Start by adding user requirements for traceability and compliance</div>
+                    <button class="btn btn-primary" onclick="openAddRequirementModal()">📝 Add First Requirement</button>
+                </div>`;
+            return;
+        }
 
   // Summary Statistics
   const totalReqs = proj.requirements.length;
@@ -2718,7 +3377,7 @@ function renderRequirements(proj) {
         <div class="deliverable-item" onclick="viewRequirement('${proj.id}', '${req.id}')" style="cursor: pointer;">
           <div class="deliverable-info" style="flex: 1;">
             <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
-              <div style="padding: 6px 12px; background: var(--accent); color: #000; border-radius: 8px; font-weight: 800; font-size: 12px;">${req.id}</div>
+              <div style="padding: 6px 12px; background: var(--accent); color: #000; border-radius: 8px; font-weight: 800; font-size: 12px;">${req.requirement_id || req.id}</div>
               <div class="deliverable-title" style="flex: 1;">${req.description.substring(0, 120)}${req.description.length > 120 ? '...' : ''}</div>
             </div>
             <div class="deliverable-meta" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
@@ -2755,6 +3414,18 @@ function renderRequirements(proj) {
   `;
   
   container.innerHTML = html;
+
+
+    } catch (error) {
+        console.error('Error rendering requirements:', error);
+        container.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #ef4444;">
+                <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                <div style="font-weight: 600; margin-bottom: 8px;">Error Displaying Requirements</div>
+                <div style="color: var(--text-dim); margin-bottom: 16px;">${error.message}</div>
+                <button class="btn btn-primary" onclick="loadProjectRequirements()">Retry</button>
+            </div>`;
+    }
 }
 
 // ========== AUTO-GENERATE REQUIREMENT ID ==========
@@ -2804,70 +3475,105 @@ async function generateRequirementIdFromSupabase() {
   }
 }
 
-async function openAddRequirementModal() {
-  // Ensure a project is selected
-  if (!selectedProjectForReq) {
-    const selector = document.getElementById('reqProjectSelector');
-    if (selector && selector.value) {
-      selectedProjectForReq = selector.value;
-    } else {
-      showAlert('Please select a project first', 'error');
-      return;
+function openAddRequirementModal() {
+    // Close any other open modals first
+    closeViewRequirementModal();
+    
+    // Check if a project is selected
+    if (!selectedProjectForReq) {
+        const selector = document.getElementById('reqProjectSelector');
+        if (selector && selector.value) {
+            selectedProjectForReq = selector.value;
+        } else {
+            showAlert('Please select a project first', 'error');
+            return;
+        }
     }
-  }
-
-  // Reset form fields
-  document.getElementById('reqType').value = '';
-  document.getElementById('reqCategory').value = '';
-  document.getElementById('reqPriority').value = '';
-  document.getElementById('reqDescription').value = '';
-  document.getElementById('reqRationale').value = '';
-  document.getElementById('reqAcceptance').value = '';
-  document.getElementById('reqRisk').value = 'Medium';
-  document.getElementById('reqGxpImpact').value = 'Direct';
-  document.getElementById('reqSource').value = '';
-  document.getElementById('reqOwner').value = '';
-  document.getElementById('reqComments').value = '';
-
-  // Uncheck regulatory references
-  const refs = ['ref21cfr11', 'refannex11', 'refgamp5', 'refich', 'refalcoa'];
-  refs.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.checked = false;
-  });
-
-  // Set Requirement ID field to show it will be auto-generated
-  const reqIdEl = document.getElementById('reqId');
-  if (reqIdEl) {
-    reqIdEl.value = 'Will be auto-generated';
-    reqIdEl.readOnly = true;
-    reqIdEl.style.background = 'rgba(255,255,255,0.02)';
-    reqIdEl.style.cursor = 'not-allowed';
-  }
-
-  // Show modal
-  const modal = document.getElementById('addRequirementModal');
-  if (!modal) {
-    showAlert('Error: Modal not found. Please refresh the page.', 'error');
-    return;
-  }
-  modal.classList.add('active');
-  modal.style.display = 'flex';
-  
-  // Scroll to top of modal
-  setTimeout(() => {
-    const mc = modal.querySelector('.modal-content');
-    if (mc) mc.scrollTop = 0;
-  }, 50);
+    
+    // Clear form
+    document.getElementById('reqType').value = '';
+    document.getElementById('reqCategory').value = '';
+    document.getElementById('reqPriority').value = '';
+    document.getElementById('reqDescription').value = '';
+    document.getElementById('reqRationale').value = '';
+    document.getElementById('reqAcceptance').value = '';
+    document.getElementById('reqRisk').value = 'Medium';
+    document.getElementById('reqGxpImpact').value = 'Direct';
+    document.getElementById('reqSource').value = '';
+    document.getElementById('reqOwner').value = '';
+    document.getElementById('reqComments').value = '';
+    
+    // Uncheck regulatory references
+    const refCheckboxes = ['ref21cfr11', 'refannex11', 'refgamp5', 'refich', 'refalcoa'];
+    refCheckboxes.forEach(id => {
+        const checkbox = document.getElementById(id);
+        if (checkbox) checkbox.checked = false;
+    });
+    
+    // Show modal
+    const modal = document.getElementById('addRequirementModal');
+    if (!modal) {
+        console.error('addRequirementModal not found in DOM');
+        showAlert('Error: Modal not found. Please refresh the page.', 'error');
+        return;
+    }
+    
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+    
+    // Scroll modal content to top
+    setTimeout(() => {
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) modalContent.scrollTop = 0;
+    }, 50);
 }
+
 
 function closeAddRequirementModal() {
     const modal = document.getElementById('addRequirementModal');
     if (modal) {
         modal.classList.remove('active');
-        modal.style.display = 'none';  // Add this line
+        modal.style.display = 'none';
     }
+    
+    // Clear form fields
+    const form = document.getElementById('addRequirementForm');
+    if (form) {
+        form.reset();
+    }
+    
+    // Clear any specific fields
+    document.getElementById('reqType').value = '';
+    document.getElementById('reqCategory').value = '';
+    document.getElementById('reqPriority').value = '';
+    document.getElementById('reqDescription').value = '';
+    document.getElementById('reqRationale').value = '';
+    document.getElementById('reqAcceptance').value = '';
+    document.getElementById('reqRisk').value = 'Medium';
+    document.getElementById('reqGxpImpact').value = 'Direct';
+    document.getElementById('reqSource').value = '';
+    document.getElementById('reqOwner').value = '';
+    document.getElementById('reqComments').value = '';
+    
+    // Uncheck all regulatory reference checkboxes
+    const refCheckboxes = ['ref21cfr11', 'refannex11', 'refgamp5', 'refich', 'refalcoa'];
+    refCheckboxes.forEach(id => {
+        const checkbox = document.getElementById(id);
+        if (checkbox) checkbox.checked = false;
+    });
 }
+
+
+function closeViewRequirementModal() {
+    const modal = document.getElementById('viewRequirementModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+    }
+    currentRequirementForLink = null;
+    currentViewedRequirement = { projectId: null, reqId: null }; // ADD THIS LINE
+}
+
 
 
 function updateRequirementIdPrefix() {
@@ -2901,224 +3607,761 @@ function updateRequirementIdPrefix() {
 }
 
 async function confirmAddRequirement() {
-  const projectId = selectedProjectForReq;
-  const reqType = document.getElementById('reqType').value;
-  const category = document.getElementById('reqCategory').value;
-  const priority = document.getElementById('reqPriority').value;
-  const description = document.getElementById('reqDescription').value.trim();
-  const rationale = document.getElementById('reqRationale').value.trim();
-  const acceptance = document.getElementById('reqAcceptance').value.trim();
-  const risk = document.getElementById('reqRisk').value;
-  const gxpImpact = document.getElementById('reqGxpImpact').value;
-  const source = document.getElementById('reqSource').value.trim();
-  const owner = document.getElementById('reqOwner').value.trim();
-  const comments = document.getElementById('reqComments').value.trim();
-
-  // Validation
-  if (!reqType || !category || !priority || !description || !rationale || !acceptance || !owner) {
-    showAlert('Please fill all required fields marked with *', 'error');
-    return;
-  }
-
-  // Collect regulatory references
-  const regulatoryRefs = [];
-  if (document.getElementById('ref21cfr11')?.checked) regulatoryRefs.push('21 CFR Part 11');
-  if (document.getElementById('refannex11')?.checked) regulatoryRefs.push('EU GMP Annex 11');
-  if (document.getElementById('refgamp5')?.checked) regulatoryRefs.push('GAMP 5');
-  if (document.getElementById('refich')?.checked) regulatoryRefs.push('ICH Q7/Q9/Q10');
-  if (document.getElementById('refalcoa')?.checked) regulatoryRefs.push('ALCOA+');
-
-  try {
-    showAlert('Creating requirement...', 'info');
+    const projectId = selectedProjectForReq;
     
-    // Insert into Supabase with correct column names from your schema
-    const { data, error } = await supabaseClient
-      .from('requirements')
-      .insert([{
-        project_id: projectId,
-        requirement_type: reqType,
-        requirement_title: description.substring(0, 100),
-        requirement_description: description,
-        acceptance_criteria: acceptance,
-        priority: priority,
-        category: category,
-        rationale: rationale,
-        gxp_relevant: (gxpImpact === 'Direct'),
-        gxp_impact: gxpImpact,
-        risk_level: risk,
-        source: source || null,
-        owner: owner,
-        comments: comments || null,
-        regulatory_refs: regulatoryRefs.length > 0 ? regulatoryRefs : null,
-        status: 'Draft',
-        created_by: owner,
-        type: reqType,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }])
-      .select('*');
+    // ✅ FIX: Check if project is selected
+    if (!projectId) {
+        showAlert('Please select a project first', 'error');
+        return;
+    }
+    
+    // Get form values
+    const reqType = document.getElementById('reqType').value;
+    const category = document.getElementById('reqCategory').value;
+    const priority = document.getElementById('reqPriority').value;
+    const description = document.getElementById('reqDescription').value.trim();
+    const rationale = document.getElementById('reqRationale').value.trim();
+    const acceptance = document.getElementById('reqAcceptance').value.trim();
+    const risk = document.getElementById('reqRisk').value;
+    const gxpImpact = document.getElementById('reqGxpImpact').value;
+    const source = document.getElementById('reqSource').value.trim();
+    const owner = document.getElementById('reqOwner').value.trim();
+    const comments = document.getElementById('reqComments').value.trim();
 
-    if (error) {
-      console.error('Supabase error:', error);
-      throw error;
+    // ✅ FIX: Proper validation with specific error messages
+    if (!reqType || reqType === 'Select Type') {
+        showAlert('Please select Requirement Type', 'error');
+        document.getElementById('reqType').focus();
+        return;
+    }
+    
+    if (!category || category === 'Select Category') {
+        showAlert('Please select Category', 'error');
+        document.getElementById('reqCategory').focus();
+        return;
+    }
+    
+    if (!priority || priority === 'Select Priority') {
+        showAlert('Please select Priority', 'error');
+        document.getElementById('reqPriority').focus();
+        return;
+    }
+    
+    if (!description) {
+        showAlert('Please enter Requirement Statement', 'error');
+        document.getElementById('reqDescription').focus();
+        return;
+    }
+    
+    if (!rationale) {
+        showAlert('Please enter Rationale/Business Justification', 'error');
+        document.getElementById('reqRationale').focus();
+        return;
+    }
+    
+    if (!acceptance) {
+        showAlert('Please enter Acceptance Criteria', 'error');
+        document.getElementById('reqAcceptance').focus();
+        return;
+    }
+    
+    if (!owner) {
+        showAlert('Please enter Requirement Owner', 'error');
+        document.getElementById('reqOwner').focus();
+        return;
     }
 
-    if (data && data.length > 0) {
-      showAlert(`✓ Requirement ${data[0].requirement_id} added successfully!`, 'success');
-      closeAddRequirementModal();
-      await loadProjectRequirements();
+    // Collect regulatory references
+    const regulatoryRefs = [];
+    if (document.getElementById('ref21cfr11')?.checked) regulatoryRefs.push('21 CFR Part 11');
+    if (document.getElementById('refannex11')?.checked) regulatoryRefs.push('EU GMP Annex 11');
+    if (document.getElementById('refgamp5')?.checked) regulatoryRefs.push('GAMP 5');
+    if (document.getElementById('refich')?.checked) regulatoryRefs.push('ICH Q7/Q9/Q10');
+    if (document.getElementById('refalcoa')?.checked) regulatoryRefs.push('ALCOA+');
+
+    try {
+        showAlert('Creating requirement...', 'info');
+
+        // ✅ Using correct column names from schema
+        const requirementData = {
+            project_id: projectId,
+            requirement_type: reqType,
+            requirement_title: description.substring(0, 100),
+            requirement_description: description,
+            acceptance_criteria: acceptance,
+            priority: priority,
+            category: category,
+            rationale: rationale,
+            gxp_relevant: (gxpImpact === 'Direct'),
+            gxp_impact: gxpImpact,
+            risk_level: risk,
+            source: source || null,
+            owner: owner,
+            comments: comments || null,
+            regulatory_refs: regulatoryRefs.length > 0 ? regulatoryRefs : null,
+            status: 'Draft',
+            created_by: owner,
+            type: reqType,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+
+        const { data, error } = await supabaseClient
+            .from('requirements')
+            .insert([requirementData])
+            .select();
+
+        if (error) {
+            console.error('Supabase error:', error);
+            throw error;
+        }
+
+        if (data && data.length > 0) {
+            showAlert(`Requirement ${data[0].requirement_id} added successfully!`, 'success');
+            closeAddRequirementModal();
+            await loadProjectRequirements();
+        }
+
+    } catch (error) {
+        console.error('Error saving requirement:', error);
+        showAlert(`Error: ${error.message} - Failed to create requirement`, 'error');
     }
-  } catch (error) {
-    console.error('Error saving requirement:', error);
-    showAlert(`Error: ${error.message || 'Failed to create requirement'}`, 'error');
-  }
 }
+
+
 
 
 function viewRequirement(projectId, reqId) {
-  const proj = projects.find(p => p.id === projectId);
-  const req = proj.requirements.find(r => r.id === reqId);
-  
-  if (!req) return;
-
-  currentRequirementForLink = { projectId, reqId };
-
-  const priorityColors = {
-    'Critical': { bg: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', border: 'rgba(239, 68, 68, 0.3)' },
-    'High': { bg: 'rgba(249, 115, 22, 0.2)', color: '#fb923c', border: 'rgba(249, 115, 22, 0.3)' },
-    'Medium': { bg: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', border: 'rgba(59, 130, 246, 0.3)' },
-    'Low': { bg: 'rgba(156, 163, 175, 0.2)', color: '#9ca3af', border: 'rgba(156, 163, 175, 0.3)' }
-  };
-
-  const pColor = priorityColors[req.priority];
-
-  const content = `
-    <div style="background: var(--surface); border: 1px solid var(--border); padding: 24px; border-radius: 12px; margin-bottom: 20px;">
-      <!-- Header Badges -->
-      <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
-        <div style="padding: 8px 16px; background: var(--accent); color: #000; border-radius: 8px; font-weight: 800; font-size: 14px;">${req.id}</div>
-        <div style="padding: 6px 12px; background: ${pColor.bg}; color: ${pColor.color}; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid ${pColor.border};">${req.priority}</div>
-        <div style="padding: 6px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; font-size: 12px;">${req.type}</div>
-        <div style="padding: 6px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; font-size: 12px;">Risk: ${req.risk}</div>
-        <div style="padding: 6px 12px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 6px; font-size: 12px; color: var(--accent);">GxP: ${req.gxpImpact}</div>
-      </div>
-      
-      <!-- Main Details Grid -->
-      <div style="display: grid; gap: 20px;">
-        <div>
-          <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Category</div>
-          <div style="font-weight: 600;">${req.category}</div>
-        </div>
-
-        <div>
-          <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Requirement Statement</div>
-          <div style="line-height: 1.6; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 3px solid var(--accent);">${req.description}</div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-          <div>
-            <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Rationale</div>
-            <div style="line-height: 1.6; color: var(--text-dim); font-size: 13px;">${req.rationale}</div>
-          </div>
-
-          <div>
-            <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Acceptance Criteria</div>
-            <div style="line-height: 1.6; color: var(--text-dim); font-size: 13px;">${req.acceptance}</div>
-          </div>
-        </div>
-
-        ${req.regulatoryRefs && req.regulatoryRefs.length > 0 ? `
-          <div>
-            <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Regulatory References</div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              ${req.regulatoryRefs.map(ref => `
-                <span style="padding: 4px 10px; background: var(--accent-dim); color: var(--accent); border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid var(--accent);">${ref}</span>
-              `).join('')}
+    console.log('Opening requirement:', projectId, reqId);
+    
+    // Store for later use (IMPORTANT: ADD THIS NEW LINE)
+    currentViewedRequirement = { projectId, reqId };
+    
+    // Find the project
+    const proj = projects.find(p => p.id === projectId);
+    
+    if (!proj) {
+        console.error('Project not found:', projectId);
+        showAlert('Project not found', 'error');
+        return;
+    }
+    
+    if (!proj.requirements || proj.requirements.length === 0) {
+        console.error('No requirements found for project');
+        showAlert('No requirements loaded for this project', 'error');
+        return;
+    }
+    
+    // Find the requirement
+    const req = proj.requirements.find(r => r.id === reqId);
+    
+    if (!req) {
+        console.error('Requirement not found:', reqId);
+        showAlert('Requirement not found', 'error');
+        return;
+    }
+    
+    currentRequirementForLink = { projectId, reqId };
+    
+    // Define priority colors
+    const priorityColors = {
+        'Critical': { bg: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', border: 'rgba(239, 68, 68, 0.3)' },
+        'High': { bg: 'rgba(249, 115, 22, 0.2)', color: '#f97316', border: 'rgba(249, 115, 22, 0.3)' },
+        'Medium': { bg: 'rgba(59, 130, 246, 0.2)', color: '#3b82f6', border: 'rgba(59, 130, 246, 0.3)' },
+        'Low': { bg: 'rgba(156, 163, 175, 0.2)', color: '#6b7280', border: 'rgba(156, 163, 175, 0.3)' }
+    };
+    
+    const pColor = priorityColors[req.priority] || priorityColors['Medium'];
+    
+    // Build the content HTML
+    const content = `
+        <div style="background: #ffffff; border: 1px solid #e4e4e7; padding: 24px; border-radius: 12px; margin-bottom: 20px;">
+            <!-- Header Badges -->
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                <div style="padding: 8px 16px; background: var(--accent); color: #fff; border-radius: 8px; font-weight: 800; font-size: 14px;">${req.reqId || req.id}</div>
+                <div style="padding: 6px 12px; background: ${pColor.bg}; color: ${pColor.color}; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid ${pColor.border};">${req.priority}</div>
+                <div style="padding: 6px 12px; background: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 6px; font-size: 12px; color: #18181b;">${req.type}</div>
+                <div style="padding: 6px 12px; background: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 6px; font-size: 12px; color: #18181b;">Risk: ${req.risk}</div>
+                <div style="padding: 6px 12px; background: rgba(14,164,116,0.1); border: 1px solid var(--accent); border-radius: 6px; font-size: 12px; color: var(--accent);">GxP: ${req.gxpImpact}</div>
             </div>
-          </div>
-        ` : ''}
+            
+            <!-- Main Details Grid -->
+            <div style="display: grid; gap: 20px;">
+                <div>
+                    <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Category</div>
+                    <div style="font-weight: 600; color: #18181b;">${req.category}</div>
+                </div>
 
-        ${req.source ? `
-          <div>
-            <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Source Document</div>
-            <div style="font-size: 13px; color: var(--text-dim);">${req.source}</div>
-          </div>
-        ` : ''}
+                <div>
+                    <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Requirement Statement</div>
+                    <div style="line-height: 1.6; padding: 12px; background: #f9fafb; border-radius: 8px; border-left: 3px solid var(--accent); color: #18181b;">${req.description || 'No description provided'}</div>
+                </div>
 
-        ${req.comments ? `
-          <div>
-            <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Additional Notes</div>
-            <div style="line-height: 1.6; color: var(--text-dim); font-size: 13px; font-style: italic;">${req.comments}</div>
-          </div>
-        ` : ''}
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Rationale</div>
+                        <div style="line-height: 1.6; color: #4b5563; font-size: 13px;">${req.rationale || 'No rationale provided'}</div>
+                    </div>
 
-        <!-- Metadata Footer -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--border);">
-          <div>
-            <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px;">Requirement Owner</div>
-            <div style="font-size: 12px; font-weight: 600;">${req.owner}</div>
-          </div>
-          <div>
-            <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px;">Created Date</div>
-            <div style="font-size: 12px;">${new Date(req.createdAt).toLocaleDateString()}</div>
-          </div>
-          <div>
-            <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px;">Status</div>
-            <div style="font-size: 12px; font-weight: 600; color: var(--accent);">${req.status || 'Draft'}</div>
-          </div>
+                    <div>
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Acceptance Criteria</div>
+                        <div style="line-height: 1.6; color: #4b5563; font-size: 13px;">${req.acceptance || 'No acceptance criteria provided'}</div>
+                    </div>
+                </div>
+
+                ${req.regulatoryRefs && req.regulatoryRefs.length > 0 ? `
+                    <div>
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Regulatory References</div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            ${req.regulatoryRefs.map(ref => `
+                                <span style="padding: 4px 10px; background: rgba(14,164,116,0.1); color: var(--accent); border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid var(--accent);">${ref}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${req.source ? `
+                    <div>
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Source Document</div>
+                        <div style="font-size: 13px; color: #4b5563;">${req.source}</div>
+                    </div>
+                ` : ''}
+
+                ${req.comments ? `
+                    <div>
+                        <div style="font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Additional Notes</div>
+                        <div style="line-height: 1.6; color: #4b5563; font-size: 13px; font-style: italic;">${req.comments}</div>
+                    </div>
+                ` : ''}
+
+                <!-- Metadata Footer -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; padding-top: 20px; border-top: 1px solid #e4e4e7;">
+                    <div>
+                        <div style="font-size: 10px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Requirement Owner</div>
+                        <div style="font-size: 12px; font-weight: 600; color: #18181b;">${req.owner || 'Not assigned'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 10px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Created Date</div>
+                        <div style="font-size: 12px; color: #18181b;">${req.createdAt ? new Date(req.createdAt).toLocaleDateString() : 'N/A'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 10px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Last Modified</div>
+                        <div style="font-size: 12px; color: #18181b;">${req.lastModified ? new Date(req.lastModified).toLocaleDateString() : 'Never'}</div>
+                    </div>
+<div>
+                        <div style="font-size: 10px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Status</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="font-size: 12px; font-weight: 600; padding: 4px 12px; background: ${req.status === 'Approved' ? 'rgba(34, 197, 94, 0.2)' : req.status === 'Modified' ? 'rgba(249, 115, 22, 0.2)' : 'rgba(156, 163, 175, 0.2)'}; color: ${req.status === 'Approved' ? '#22c55e' : req.status === 'Modified' ? '#f97316' : '#6b7280'}; border-radius: 6px;">${req.status || 'Draft'}</div>
+                            <button onclick="showStatusChangeMenu(); event.stopPropagation();" style="padding: 4px 8px; background: var(--accent); color: white; border: none; border-radius: 4px; font-size: 10px; cursor: pointer;">Change</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  `;
+    `;
 
-  document.getElementById('viewReqTitle').textContent = `${req.id} - ${req.type}`;
-  document.getElementById('viewReqContent').innerHTML = content;
+    // Set the modal title and content
+    document.getElementById('viewReqTitle').textContent = `${req.reqId || req.id} - ${req.type}`;
+    document.getElementById('viewReqContent').innerHTML = content;
 
-  // Render linked test cases
-  const testCasesHtml = req.testCases && req.testCases.length > 0 ? 
-    req.testCases.map((tc, idx) => {
-      const statusColors = {
-        'Not Started': 'status-pending',
-        'In Progress': 'status-inprogress',
-        'Passed': 'status-completed',
-        'Failed': 'background: rgba(239, 68, 68, 0.2); color: #fca5a5;'
-      };
+    // Render linked test cases (keep existing code)
+    const testCasesHtml = req.testCases && req.testCases.length > 0 ? 
+        req.testCases.map((tc, idx) => {
+            const statusColors = {
+                'Not Started': 'background: rgba(156, 163, 175, 0.2); color: #6b7280;',
+                'In Progress': 'background: rgba(59, 130, 246, 0.2); color: #3b82f6;',
+                'Passed': 'background: rgba(34, 197, 94, 0.2); color: #22c55e;',
+                'Failed': 'background: rgba(239, 68, 68, 0.2); color: #ef4444;'
+            };
 
-      return `
-        <div style="background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: start; gap: 16px;">
-          <div style="flex: 1;">
-            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
-              <span style="padding: 4px 8px; background: var(--accent); color: #000; border-radius: 6px; font-size: 11px; font-weight: 700;">${tc.id}</span>
-              <span style="font-weight: 600; font-size: 14px;">${tc.name}</span>
-            </div>
-            <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 4px;">
-              <strong>Type:</strong> ${tc.type} 
-              ${tc.description ? `<br><strong>Description:</strong> ${tc.description}` : ''}
-            </div>
-            <div style="font-size: 11px; color: var(--text-dim);">
-              Linked: ${new Date(tc.linkedAt).toLocaleDateString()}
-            </div>
-          </div>
-          <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
-            <span class="status-tag ${statusColors[tc.status]}" style="white-space: nowrap;">${tc.status}</span>
-            <button onclick="updateTestCaseStatus('${projectId}', '${req.id}', ${idx}); event.stopPropagation();" class="btn" style="background: var(--accent); color: #000; font-size: 11px; padding: 6px 10px;">
-              ${tc.status === 'Not Started' ? '▶ Start' : tc.status === 'In Progress' ? '✓ Pass' : '🔄'}
-            </button>
-            <button onclick="deleteTestCase('${projectId}', '${req.id}', ${idx}); event.stopPropagation();" class="btn" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-size: 11px; padding: 6px 10px; border: 1px solid rgba(239, 68, 68, 0.3);">🗑️</button>
-          </div>
-        </div>
-      `;
-    }).join('') :
-    '<div style="text-align: center; padding: 30px 20px; color: var(--text-dim); background: var(--surface); border-radius: 12px; border: 2px dashed var(--border);"><div style="font-size: 36px; margin-bottom: 12px;">🔗</div><div style="font-weight: 600; margin-bottom: 6px;">No Test Cases Linked Yet</div><div style="font-size: 13px;">Click "Link Test Case" above to establish traceability</div></div>';
+            const statusStyle = statusColors[tc.status] || statusColors['Not Started'];
 
-  document.getElementById('linkedTestCases').innerHTML = testCasesHtml;
-  document.getElementById('viewRequirementModal').classList.add('active');
+            return `
+                <div style="background: #ffffff; border: 1px solid #e4e4e7; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: start; gap: 16px;">
+                    <div style="flex: 1;">
+                        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+                            <span style="padding: 4px 8px; background: var(--accent); color: #fff; border-radius: 6px; font-size: 11px; font-weight: 700;">${tc.id}</span>
+                            <span style="font-weight: 600; font-size: 14px; color: #18181b;">${tc.name}</span>
+                        </div>
+                        <div style="font-size: 12px; color: #4b5563; margin-bottom: 4px;">
+                            <strong>Type:</strong> ${tc.type} 
+                            ${tc.description ? `<br><strong>Description:</strong> ${tc.description}` : ''}
+                        </div>
+                        <div style="font-size: 11px; color: #6b7280;">
+                            Linked: ${new Date(tc.linkedAt).toLocaleDateString()}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0;">
+                        <span style="padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap; ${statusStyle}">${tc.status}</span>
+                        <button onclick="updateTestCaseStatus('${projectId}', '${reqId}', ${idx}); event.stopPropagation();" class="btn" style="background: var(--accent); color: #fff; font-size: 11px; padding: 6px 10px; border: none; cursor: pointer; border-radius: 6px;">
+                            ${tc.status === 'Not Started' ? '▶ Start' : tc.status === 'In Progress' ? '✓ Pass' : '🔄'}
+                        </button>
+                        <button onclick="deleteTestCase('${projectId}', '${reqId}', ${idx}); event.stopPropagation();" class="btn" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 11px; padding: 6px 10px; border: 1px solid rgba(239, 68, 68, 0.3); cursor: pointer; border-radius: 6px;">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }).join('') :
+        '<div style="text-align: center; padding: 30px 20px; color: #6b7280; background: #f9fafb; border-radius: 12px; border: 2px dashed #e4e4e7;"><div style="font-size: 36px; margin-bottom: 12px;">🔗</div><div style="font-weight: 600; margin-bottom: 6px; color: #18181b;">No Test Cases Linked Yet</div><div style="font-size: 13px;">Click "Link Test Case" above to establish traceability</div></div>';
+
+    document.getElementById('linkedTestCases').innerHTML = testCasesHtml;
+    
+    // Hide audit trail by default (NEW LINE)
+    document.getElementById('auditTrailSection').style.display = 'none';
+    
+    // Show the modal
+    const modal = document.getElementById('viewRequirementModal');
+    if (modal) {
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+    } else {
+        console.error('viewRequirementModal not found');
+        showAlert('Error: Modal not found', 'error');
+    }
 }
 
 function closeViewRequirementModal() {
-  document.getElementById('viewRequirementModal').classList.remove('active');
-  currentRequirementForLink = null;
+    const modal = document.getElementById('viewRequirementModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+    }
+    currentRequirementForLink = null;
 }
+
+// Store current requirement being viewed/edited
+let currentViewedRequirement = { projectId: null, reqId: null };
+
+// Open Edit Modal and populate with current data
+function openEditRequirementModal() {
+    const { projectId, reqId } = currentViewedRequirement;
+    
+    if (!projectId || !reqId) {
+        showAlert('No requirement selected for editing', 'error');
+        return;
+    }
+    
+    const proj = projects.find(p => p.id === projectId);
+    if (!proj) return;
+    
+    const req = proj.requirements.find(r => r.id === reqId);
+    if (!req) return;
+    
+    // Populate edit form with current values
+    document.getElementById('editReqId').value = req.reqId || req.id;
+    document.getElementById('editReqType').value = req.type || '';
+    document.getElementById('editReqCategory').value = req.category || '';
+    document.getElementById('editReqPriority').value = req.priority || '';
+    document.getElementById('editReqDescription').value = req.description || '';
+    document.getElementById('editReqRationale').value = req.rationale || '';
+    document.getElementById('editReqAcceptance').value = req.acceptance || '';
+    document.getElementById('editReqRisk').value = req.risk || '';
+    document.getElementById('editReqGxpImpact').value = req.gxpImpact || '';
+    document.getElementById('editReqSource').value = req.source || '';
+    document.getElementById('editReqOwner').value = req.owner || '';
+    document.getElementById('editReqComments').value = req.comments || '';
+    document.getElementById('editChangeReason').value = '';
+    document.getElementById('editUserName').value = '';
+    document.getElementById('currentUserEmail').textContent = currentUser?.email || 'Not authenticated';
+    
+    // Show edit modal
+    const modal = document.getElementById('editRequirementModal');
+    if (modal) {
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+    }
+}
+
+function closeEditRequirementModal() {
+    const modal = document.getElementById('editRequirementModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+    }
+}
+
+async function confirmEditRequirement() {
+    const { projectId, reqId } = currentViewedRequirement;
+    
+    if (!projectId || !reqId) {
+        showAlert('Error: No requirement selected', 'error');
+        return;
+    }
+    
+    // Get change reason
+    const changeReason = document.getElementById('editChangeReason').value.trim();
+    if (!changeReason) {
+        showAlert('Change Reason is required for audit trail compliance', 'error');
+        return;
+    }
+    
+    // Get current user for electronic signature
+    if (!currentUser) {
+        await getCurrentUser();
+    }
+    
+    if (!currentUser) {
+        showAlert('User not authenticated. Please log in.', 'error');
+        return;
+    }
+    
+    const userName = document.getElementById('editUserName').value.trim() || currentUser.email || 'System User';
+    
+    // Collect updated values
+    const updatedData = {
+        type: document.getElementById('editReqType').value,
+        category: document.getElementById('editReqCategory').value,
+        priority: document.getElementById('editReqPriority').value,
+        description: document.getElementById('editReqDescription').value,
+        rationale: document.getElementById('editReqRationale').value,
+        acceptance: document.getElementById('editReqAcceptance').value,
+        risk: document.getElementById('editReqRisk').value,
+        gxpImpact: document.getElementById('editReqGxpImpact').value,
+        source: document.getElementById('editReqSource').value,
+        owner: document.getElementById('editReqOwner').value,
+        comments: document.getElementById('editReqComments').value,
+        lastModified: new Date().toISOString(),
+        status: 'Modified'
+    };
+    
+    try {
+        // 🟢 USE IN-MEMORY DATA (same as viewRequirement)
+        const proj = projects.find(p => p.id === projectId);
+        
+        if (!proj) {
+            throw new Error('Project not found in memory');
+        }
+        
+        if (!proj.requirements || proj.requirements.length === 0) {
+            throw new Error('No requirements found for this project');
+        }
+        
+        // Clone requirements array
+        let requirements = [...proj.requirements];
+        
+        // Find requirement index
+        const reqIndex = requirements.findIndex(r => r.id === reqId);
+        
+        if (reqIndex === -1) {
+            console.error('Requirement not found:', reqId);
+            console.error('Available IDs:', requirements.map(r => r.id));
+            throw new Error('Requirement not found in project');
+        }
+        
+        const oldReq = {...requirements[reqIndex]};
+        
+        // Create audit trail entry
+        const auditEntry = {
+            timestamp: new Date().toISOString(),
+            action: 'Modified',
+            changedBy: userName,
+            changedByUserId: currentUser.id,
+            changedByEmail: currentUser.email,
+            changeReason: changeReason,
+            requirementId: reqId,
+            requirementCode: oldReq.reqId || reqId,
+            changes: []
+        };
+        
+        // Track what changed
+        const fieldsToCheck = ['type', 'category', 'priority', 'description', 'rationale', 'acceptance', 'risk', 'gxpImpact', 'source', 'owner', 'comments'];
+        fieldsToCheck.forEach(field => {
+            if (oldReq[field] !== updatedData[field]) {
+                auditEntry.changes.push({
+                    field: field,
+                    oldValue: oldReq[field] || '(empty)',
+                    newValue: updatedData[field] || '(empty)'
+                });
+            }
+        });
+        
+        // Check if status changed
+        if (oldReq.status !== updatedData.status) {
+            auditEntry.changes.push({
+                field: 'status',
+                oldValue: oldReq.status || 'Draft',
+                newValue: updatedData.status
+            });
+        }
+        
+        // Update requirement in array
+        requirements[reqIndex] = {
+            ...requirements[reqIndex],
+            ...updatedData
+        };
+        
+        // Update local cache
+        proj.requirements = requirements;
+        
+        // Fetch current audit trail from database
+        const { data: projectData, error: fetchError } = await supabaseClient
+            .from('validation_projects')
+            .select('requirement_audit_trail')
+            .eq('id', projectId)
+            .single();
+        
+        if (fetchError) throw fetchError;
+        
+        // Get existing audit trail
+        let auditTrail = projectData.requirement_audit_trail || [];
+        
+        // Add new audit entry
+        auditTrail.push(auditEntry);
+        
+        // Save to database
+        const { error: updateError } = await supabaseClient
+            .from('validation_projects')
+            .update({ 
+                requirements: requirements,
+                requirement_audit_trail: auditTrail,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', projectId);
+        
+        if (updateError) throw updateError;
+        
+        showAlert('✅ Requirement updated successfully! Changes logged in audit trail.', 'success');
+        closeEditRequirementModal();
+        
+        // Refresh view
+        viewRequirement(projectId, reqId);
+        
+    } catch (error) {
+        console.error('Error updating requirement:', error);
+        showAlert('❌ Failed to update requirement: ' + error.message, 'error');
+    }
+}
+
+function showStatusChangeMenu() {
+    const statuses = ['Draft', 'Under Review', 'Approved', 'Modified', 'Rejected', 'Obsolete'];
+    
+    let menu = 'Change requirement status to:\n\n';
+    statuses.forEach((status, idx) => {
+        menu += `${idx + 1}. ${status}\n`;
+    });
+    menu += '\nEnter number (1-6):';
+    
+    const choice = prompt(menu);
+    
+    if (choice && choice >= 1 && choice <= 6) {
+        const selectedStatus = statuses[choice - 1];
+        changeRequirementStatus(selectedStatus);
+    }
+}
+
+
+// Toggle Audit Trail visibility
+function toggleAuditTrail() {
+    const section = document.getElementById('auditTrailSection');
+    const isVisible = section.style.display !== 'none';
+    
+    if (isVisible) {
+        section.style.display = 'none';
+    } else {
+        section.style.display = 'block';
+        loadAuditTrail();
+    }
+}
+
+async function loadAuditTrail() {
+    const { projectId, reqId } = currentViewedRequirement;
+    
+    if (!projectId || !reqId) return;
+    
+    try {
+        // Fetch audit trail from database
+        const { data: project, error } = await supabaseClient
+            .from('validation_projects')
+            .select('requirement_audit_trail')
+            .eq('id', projectId)
+            .single();
+        
+        if (error) throw error;
+        
+        // Get audit entries for this specific requirement
+        const allAuditTrail = project.requirement_audit_trail || [];
+        const auditTrail = allAuditTrail.filter(entry => entry.requirementId === reqId);
+        
+        if (auditTrail.length === 0) {
+            document.getElementById('auditTrailContent').innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-dim); background: #f9fafb; border-radius: 12px;">
+                    <div style="font-size: 36px; margin-bottom: 12px;">📋</div>
+                    <div style="font-weight: 600; margin-bottom: 6px; color: #18181b;">No Audit Trail History</div>
+                    <div style="font-size: 13px;">This requirement has not been modified since creation.</div>
+                </div>
+            `;
+            return;
+        }
+        
+        // Render audit trail (most recent first)
+        const auditHtml = [...auditTrail].reverse().map((entry, idx) => {
+            const changesHtml = entry.changes && entry.changes.length > 0 ? 
+                entry.changes.map(change => `
+                    <div style="margin: 8px 0; padding: 8px; background: #f9fafb; border-radius: 6px; border-left: 3px solid var(--accent);">
+                        <strong style="color: var(--accent); text-transform: capitalize;">${change.field.replace(/([A-Z])/g, ' $1')}:</strong><br>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
+                            <span style="color: #ef4444; text-decoration: line-through; font-size: 12px; flex: 1;">${change.oldValue}</span>
+                            <span style="color: #6b7280;">→</span>
+                            <span style="color: #22c55e; font-size: 12px; flex: 1; font-weight: 600;">${change.newValue}</span>
+                        </div>
+                    </div>
+                `).join('') : '<div style="font-size: 12px; color: #6b7280;">No specific field changes recorded</div>';
+            
+            return `
+                <div style="background: #ffffff; border: 1px solid #e4e4e7; padding: 20px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-weight: 700; color: #18181b; font-size: 14px; margin-bottom: 4px;">
+                                📝 ${entry.action} by ${entry.changedBy}
+                            </div>
+                            <div style="font-size: 11px; color: #6b7280;">
+                                🕒 ${new Date(entry.timestamp).toLocaleString('en-US', { 
+                                    year: 'numeric', 
+                                    month: 'short', 
+                                    day: 'numeric', 
+                                    hour: '2-digit', 
+                                    minute: '2-digit',
+                                    second: '2-digit'
+                                })}
+                            </div>
+                            ${entry.changedByEmail ? `<div style="font-size: 10px; color: #9ca3af; margin-top: 2px;">✉️ ${entry.changedByEmail}</div>` : ''}
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+                            <div style="padding: 4px 12px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; font-size: 11px; color: #3b82f6; font-weight: 600;">
+                                Entry #${auditTrail.length - idx}
+                            </div>
+                            <div style="padding: 2px 8px; background: rgba(14,164,116,0.1); border-radius: 4px; font-size: 10px; color: var(--accent); font-weight: 600;">
+                                ${entry.requirementCode || reqId}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px; padding: 12px; background: rgba(249, 115, 22, 0.1); border-left: 3px solid #f97316; border-radius: 6px;">
+                        <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">📝 CHANGE REASON:</div>
+                        <div style="font-size: 13px; color: #18181b; line-height: 1.5;">${entry.changeReason}</div>
+                    </div>
+                    
+                    ${entry.changes && entry.changes.length > 0 ? `
+                        <div>
+                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 8px; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                                <span>🔄 FIELDS MODIFIED:</span>
+                                <span style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 2px 8px; border-radius: 12px; font-size: 10px;">${entry.changes.length} changes</span>
+                            </div>
+                            ${changesHtml}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
+        
+        document.getElementById('auditTrailContent').innerHTML = auditHtml;
+        
+    } catch (error) {
+        console.error('Error loading audit trail:', error);
+        document.getElementById('auditTrailContent').innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #ef4444; background: rgba(239, 68, 68, 0.1); border-radius: 12px;">
+                <div style="font-size: 36px; margin-bottom: 12px;">⚠️</div>
+                <div style="font-weight: 600; margin-bottom: 6px;">Error Loading Audit Trail</div>
+                <div style="font-size: 13px;">${error.message}</div>
+            </div>
+        `;
+    }
+}
+
+// Status change with audit trail
+async function changeRequirementStatus(newStatus) {
+    const { projectId, reqId } = currentViewedRequirement;
+    
+    if (!projectId || !reqId) return;
+    
+    const statusReason = prompt(`Change status to "${newStatus}".\n\nPlease provide a reason for this status change:`);
+    
+    if (!statusReason || statusReason.trim() === '') {
+        showAlert('Status change cancelled - reason is required', 'info');
+        return;
+    }
+    
+    try {
+        // Get current user
+        if (!currentUser) {
+            await getCurrentUser();
+        }
+        
+        // Fetch project
+        const { data: project, error: fetchError } = await supabaseClient
+            .from('validation_projects')
+            .select('requirements, requirement_audit_trail')
+            .eq('id', projectId)
+            .single();
+        
+        if (fetchError) throw fetchError;
+        
+        let requirements = project.requirements || [];
+        const reqIndex = requirements.findIndex(r => r.id === reqId);
+        
+        if (reqIndex === -1) throw new Error('Requirement not found');
+        
+        const oldStatus = requirements[reqIndex].status || 'Draft';
+        
+        // Create audit entry for status change
+        const auditEntry = {
+            timestamp: new Date().toISOString(),
+            action: 'Status Changed',
+            changedBy: currentUser?.email || 'System User',
+            changedByUserId: currentUser?.id || null,
+            changedByEmail: currentUser?.email || null,
+            changeReason: statusReason,
+            requirementId: reqId,
+            requirementCode: requirements[reqIndex].reqId || reqId,
+            changes: [{
+                field: 'status',
+                oldValue: oldStatus,
+                newValue: newStatus
+            }]
+        };
+        
+        // Update requirement status
+        requirements[reqIndex].status = newStatus;
+        requirements[reqIndex].lastModified = new Date().toISOString();
+        
+        // Update audit trail
+        let auditTrail = project.requirement_audit_trail || [];
+        auditTrail.push(auditEntry);
+        
+        // Save to database
+        const { error: updateError } = await supabaseClient
+            .from('validation_projects')
+            .update({ 
+                requirements: requirements,
+                requirement_audit_trail: auditTrail,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', projectId);
+        
+        if (updateError) throw updateError;
+        
+        // Update local cache
+        const projIndex = projects.findIndex(p => p.id === projectId);
+        if (projIndex !== -1) {
+            projects[projIndex].requirements = requirements;
+            projects[projIndex].requirement_audit_trail = auditTrail;
+        }
+        
+        showAlert(`✅ Status changed to "${newStatus}" successfully!`, 'success');
+        
+        // Refresh view
+        viewRequirement(projectId, reqId);
+        
+    } catch (error) {
+        console.error('Error changing status:', error);
+        showAlert('❌ Failed to change status: ' + error.message, 'error');
+    }
+}
+
+// Export requirement as PDF (placeholder)
+function exportRequirementPDF() {
+    showAlert('PDF export feature coming soon!', 'info');
+}
+
 
 function openLinkTestCaseModal() {
   if (!currentRequirementForLink) return;
@@ -3604,17 +4847,17 @@ function renderStatusDistribution(projects) {
 }
 
 
-    // ========== UI FUNCTIONS ==========
 function switchTab(tabName) {
     // Remove active from all tabs
     document.querySelectorAll('.tab-content').forEach(el => {
         if (el) el.classList.remove('active');
     });
+    
     document.querySelectorAll('.tab-btn').forEach(el => {
         if (el) el.classList.remove('active');
     });
     
-    // Activate selected tab
+    // Activate selected tab content
     const tabContent = document.getElementById(tabName);
     if (tabContent) {
         tabContent.classList.add('active');
@@ -3623,11 +4866,15 @@ function switchTab(tabName) {
         return;
     }
     
-    // Activate button
-    const clickedButton = event?.target;
-    if (clickedButton) {
-        clickedButton.classList.add('active');
-    }
+    // Activate the corresponding button
+    // Find button by matching onclick attribute or data attribute
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+        const onclick = btn.getAttribute('onclick');
+        if (onclick && onclick.includes(`'${tabName}'`)) {
+            btn.classList.add('active');
+        }
+    });
     
     // Load data based on tab
     if (tabName === 'agile') {
@@ -3638,8 +4885,13 @@ function switchTab(tabName) {
         loadProjectsForRequirements();
     } else if (tabName === 'deliverables') {
         loadProjectsForDeliverables();
+    } else if (tabName === 'projects') {
+        // Load projects if needed
+    } else if (tabName === 'testing') {
+        // Load testing data if needed
     }
 }
+
 
 
 
@@ -3705,50 +4957,85 @@ function toggleTestView(view) {
 }
 
 
+// Open PROJECT modal - BULLETPROOF VERSION (same as application modal)
 function openNewProjectModal() {
-    // Try both possible modal IDs
-    const modal = document.getElementById('newProjectModal') || document.getElementById('projectModal');
-    
-    if (!modal) {
-        console.error('Project modal not found! Check modal ID in HTML');
-        alert('Error: Project modal not found. Check console.');
-        return;
-    }
-    
-    modal.classList.add('active');
-    modal.style.display = 'flex';
-    
-    // Reset form INPUTS individually (since projectForm is a DIV, not a FORM)
-    const inputs = modal.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-        if (input.type === 'checkbox' || input.type === 'radio') {
-            input.checked = false;
-        } else {
-            input.value = '';
+    try {
+        console.log('🎯 Opening PROJECT modal...');
+        
+        // Find the modal - it's called 'projectModal' in your HTML
+        const modal = document.getElementById('projectModal');
+        if (!modal) {
+            console.error('❌ Project Modal not found!');
+            alert('Error: Project modal not found in page');
+            return;
         }
-    });
-    
-    // Show step 1
-    setWizardStep(1);
-    
-    // Load applications for the dropdown
-    loadApplicationsForProject();
-    
-    // Reset GAMP preview
-    const gampPreview = document.getElementById('gampPreview');
-    if (gampPreview) gampPreview.style.display = 'none';
+        
+        console.log('✅ Project modal found:', modal);
+        
+        // Show the modal - BOTH methods for safety
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        
+        // Reset the form
+        const form = modal.querySelector('form');
+        if (form) {
+            form.reset();
+            console.log('✅ Form reset');
+        } else {
+            console.warn('⚠️ No form found, but modal will still show');
+        }
+        
+        // Reset all inputs manually (in case form.reset() doesn't work)
+        const inputs = modal.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = false;
+            } else {
+                input.value = '';
+            }
+        });
+        
+        // Load applications into dropdown
+        console.log('📡 Loading applications...');
+        loadApplicationsForProject();
+        
+        // Show step 1 (if wizard)
+        if (typeof setWizardStep === 'function') {
+            setWizardStep(1);
+        }
+        
+        // Scroll to top
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0;
+            }
+        }, 100);
+        
+        console.log('✅ Project modal opened successfully');
+        
+    } catch (error) {
+        console.error('❌ Error opening project modal:', error);
+        alert('Error opening modal: ' + error.message);
+    }
 }
+
+// Make it globally accessible
+window.openNewProjectModal = openNewProjectModal;
+
+
+
 
 
 function closeProjectModal() {
-    // Try both possible modal IDs
-    const modal = document.getElementById('newProjectModal') || document.getElementById('projectModal');
-    
-    if (modal) {
-        modal.classList.remove('active');
-        modal.style.display = 'none';
-    }
+  const modal = document.getElementById('projectModal');
+  
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+  }
 }
+
 
     function goToStep2() {
       if (!document.getElementById('projectName').value.trim() || !document.getElementById('systemName').value.trim()) {
@@ -4023,97 +5310,96 @@ async function createSprint(event) {
 
 // Load all applications
 async function loadApplications() {
+    console.log('🔵 Starting loadApplications...');
+    
     try {
+        console.log('📡 Querying Supabase...');
+        
         const { data: applications, error } = await supabaseClient
             .from('applications')
-            .select(`
-                *,
-                validation_projects(count)
-            `)
+            .select('*')
             .order('created_at', { ascending: false });
 
-        if (error) throw error;
+        console.log('📊 Query result:', { data: applications, error });
 
-        renderApplications(applications);
+        if (error) {
+            console.error('❌ Supabase error:', error);
+            throw error;
+        }
+
+        console.log('✅ Got applications:', applications);
+        console.log('📝 Number of applications:', applications?.length || 0);
+        
+        renderApplications(applications || []);
+        
     } catch (error) {
-        console.error('Error loading applications:', error);
-        showAlert('Error loading applications', 'error');
+        console.error('💥 Error in loadApplications:', error);
+        const container = document.getElementById('applicationsContainer');
+        if (container) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="color: #ef4444; margin-bottom: 12px; font-size: 18px;">⚠️ Error Loading Applications</div>
+                    <div style="color: var(--text-dim); font-size: 14px; margin-bottom: 8px;">${error.message}</div>
+                    <div style="color: var(--text-lighter); font-size: 12px;">Check browser console for details</div>
+                </div>
+            `;
+        }
     }
 }
 
 function renderApplications(applications) {
-    const container = document.getElementById('applicationsContainer');
+  const container = document.getElementById('applicationsContainer');
+  if (!container) { console.error('applicationsContainer not found'); return; }
 
-        if (!container) {
-        console.error('applicationsContainer not found in DOM');
-        return;
-    }
-    
-    if (!applications || applications.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 60px 20px;">
-                <div style="font-size: 48px; margin-bottom: 16px;">🖥️</div>
-                <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Applications Defined</div>
-                <div style="color: var(--text-dim); margin-bottom: 24px;">Start by adding your first GxP system/application</div>
-            </div>
-        `;
-        return;
-    }
-
+  if (!applications || applications.length === 0) {
     container.innerHTML = `
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
-            ${applications.map(app => {
-                const projectCount = app.validation_projects?.[0]?.count || 0;
-                const gxpColor = {
-                    'GxP Critical': '#fca5a5',
-                    'GxP Non-Critical': '#fb923c',
-                    'Non-GxP': '#9ca3af'
-                }[app.gxp_impact] || '#9ca3af';
+      <div style="text-align:center; padding:60px 20px;">
+        <div style="font-size:48px; margin-bottom:12px;">📦</div>
+        <div style="font-weight:700; margin-bottom:6px;">No Applications Defined</div>
+        <div style="color:#6b7280; margin-bottom:16px;">Create your first system/application</div>
+        <button class="btn btn-primary" onclick="openNewApplicationModal()">+ Add Application</button>
+      </div>`;
+    return;
+  }
 
-                return `
-                    <div class="card" style="cursor: pointer; transition: all 0.3s; border: 2px solid transparent;" 
-                         onclick="viewApplicationDetails('${app.id}')"
-                         onmouseover="this.style.borderColor='var(--accent)'" 
-                         onmouseout="this.style.borderColor='transparent'">
-                        <div style="display: flex; align-items: start; gap: 16px; margin-bottom: 16px;">
-                            <div style="width: 50px; height: 50px; background: var(--surface); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                                ${getSystemIcon(app.system_type)}
-                            </div>
-                            <div style="flex: 1;">
-                                <h3 style="font-size: 18px; margin-bottom: 4px;">${app.application_name}</h3>
-                                <div style="font-size: 12px; color: var(--text-dim); font-family: monospace;">${app.application_code || 'N/A'}</div>
-                            </div>
-                        </div>
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px;">
+      ${applications.map(app => `
+        <div class="card" style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div style="font-weight:800; font-size:18px;">${app.application_name || 'Unnamed'}</div>
+              <div style="color:#6b7280; font-family:monospace; font-size:12px;">${app.application_code || '-'}</div>
+            </div>
+            <div style="font-size:28px;">${getSystemIcon(app.system_type)}</div>
+          </div>
 
-                        <div style="display: grid; gap: 8px; margin-bottom: 16px;">
-                            <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                                <span style="color: var(--text-dim);">System Type</span>
-                                <span style="font-weight: 600;">${app.system_type || 'N/A'}</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                                <span style="color: var(--text-dim);">Vendor</span>
-                                <span style="font-weight: 600;">${app.vendor_name || 'N/A'}</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                                <span style="color: var(--text-dim);">Version</span>
-                                <span style="font-weight: 600;">${app.current_version || 'N/A'}</span>
-                            </div>
-                        </div>
+          <div style="margin-top:12px; display:grid; gap:6px; font-size:13px;">
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color:#6b7280;">Vendor</span><span>${app.vendor_name || 'N/A'}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color:#6b7280;">Version</span><span>${app.current_version || 'N/A'}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span style="color:#6b7280;">Owner</span><span>${app.system_owner || 'N/A'}</span>
+            </div>
+          </div>
 
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <span style="padding: 4px 12px; background: ${gxpColor}20; color: ${gxpColor}; border-radius: 16px; font-size: 11px; font-weight: 700;">
-                                ${app.gxp_impact}
-                            </span>
-                            <span style="padding: 4px 12px; background: var(--accent)20; color: var(--accent); border-radius: 16px; font-size: 11px; font-weight: 700;">
-                                ${projectCount} Projects
-                            </span>
-                        </div>
-                    </div>
-                `;
-            }).join('')}
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <span style="background:rgba(16,185,129,.1); color:#10b981; border:1px solid #10b981; border-radius:6px; padding:2px 8px; font-size:11px; font-weight:700;">
+              ${app.status || 'Active'}
+            </span>
+            <span style="background:#f3f4f6; color:#6b7280; border-radius:6px; padding:2px 8px; font-size:11px;">
+              ${app.system_type || 'System'}
+            </span>
+          </div>
         </div>
-    `;
+      `).join('')}
+    </div>`;
 }
+
+
 
 function getSystemIcon(systemType) {
     const icons = {
@@ -4127,46 +5413,115 @@ function getSystemIcon(systemType) {
     return icons[systemType] || '💻';
 }
 
-// Open new application modal
+// Open application modal - BULLETPROOF VERSION
 function openNewApplicationModal() {
-    document.getElementById('applicationModal').classList.add('active');
-    document.getElementById('applicationModal').style.display = 'flex';
-    document.getElementById('applicationForm').reset();
+    try {
+        console.log('Opening application modal...');
+        
+        // Find the modal
+        const modal = document.getElementById('applicationModal');
+        if (!modal) {
+            console.error('❌ Modal not found!');
+            alert('Error: Application modal not found in page');
+            return;
+        }
+        
+        // Show the modal
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        
+        // Reset the form
+        const form = document.getElementById('applicationForm');
+        if (form) {
+            form.reset();
+        } else {
+            console.warn('⚠️ Form not found, but modal will still show');
+        }
+        
+        console.log('✅ Modal opened successfully');
+        
+    } catch (error) {
+        console.error('❌ Error opening modal:', error);
+        alert('Error opening modal: ' + error.message);
+    }
 }
 
 // Close application modal
 function closeApplicationModal() {
-    document.getElementById('applicationModal').classList.remove('active');
-    document.getElementById('applicationModal').style.display = 'none';
-}
-
-
-// Load applications for project creation dropdown
-async function loadApplicationsForProject() {
     try {
-        const { data, error } = await supabaseClient
-            .from('applications')
-            .select('id, application_name, application_code')
-            .eq('status', 'Active')
-            .order('application_name', { ascending: true });
-
-        if (error) throw error;
-
-        const selector = document.getElementById('projectApplication');
-        if (selector) {
-            selector.innerHTML = '<option value="">Select Application</option>';
-            
-            data.forEach(app => {
-                const option = document.createElement('option');
-                option.value = app.id;
-                option.textContent = `${app.application_name} (${app.application_code || app.id})`;
-                selector.appendChild(option);
-            });
+        const modal = document.getElementById('applicationModal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('active');
         }
     } catch (error) {
-        console.error('Error loading applications:', error);
+        console.error('Error closing modal:', error);
     }
 }
+
+// Also close modal when clicking outside
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('applicationModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeApplicationModal();
+            }
+        });
+    }
+});
+
+
+async function loadApplicationsForProject() {
+  try {
+    console.log('Loading applications for project dropdown...');
+    
+    const { data: applications, error } = await supabaseClient
+      .from('applications')
+      .select('id, application_name, system_type, vendor_name')
+      .order('application_name', { ascending: true });
+
+    if (error) {
+      console.error('Error loading applications:', error);
+      throw error;
+    }
+
+    console.log('Got applications:', applications);
+
+    const dropdown = document.getElementById('projectApplication');
+    
+    if (!dropdown) {
+      console.error('projectApplication dropdown not found!');
+      return;
+    }
+
+    // Clear existing options
+    dropdown.innerHTML = '<option value="">Select Application</option>';
+
+    // Add applications
+    if (applications && applications.length > 0) {
+      applications.forEach(app => {
+        const option = document.createElement('option');
+        option.value = app.id;
+        option.textContent = `${app.application_name} ${app.system_type ? '(' + app.system_type + ')' : ''}`;
+        dropdown.appendChild(option);
+      });
+      
+      console.log(`✅ Loaded ${applications.length} applications into dropdown`);
+    } else {
+      dropdown.innerHTML = '<option value="">No applications found - Create one first</option>';
+      console.warn('No applications found in database');
+    }
+
+  } catch (error) {
+    console.error('Failed to load applications:', error);
+    const dropdown = document.getElementById('projectApplication');
+    if (dropdown) {
+      dropdown.innerHTML = '<option value="">Error loading applications</option>';
+    }
+  }
+}
+
 
 // ==========================================
 // AUTO-VERSION GENERATION
@@ -4237,13 +5592,13 @@ async function createApplication(event) {
     try {
         const appId = `APP-${Date.now()}`;
         
-        const applicationData = {
-            id: appId,
-            application_name: document.getElementById('appName').value,
-            application_code: document.getElementById('appCode').value,
-            system_type: document.getElementById('appSystemType').value,
-            gxp_impact: document.getElementById('appGxpImpact').value,
-            vendor_name: document.getElementById('appVendor').value,
+const applicationData = {
+    id: appId,
+    application_name: document.getElementById('appName').value,
+    application_code: document.getElementById('appCode').value,
+    system_type: document.getElementById('appSystemType').value,
+    gxp_impact: 'Direct',  // Default value or remove this line if column is nullable
+    vendor_name: document.getElementById('appVendor').value,
             current_version: document.getElementById('appVersion').value,
             system_owner: document.getElementById('appOwner').value,
             business_unit: document.getElementById('appBusinessUnit').value,
@@ -4606,414 +5961,52 @@ async function openQuickVersionDialog() {
 }
 
 
+// Add this near the bottom of your script, with other event listeners
+document.getElementById('projectApplication')?.addEventListener('change', async function() {
+  const appId = this.value;
+  const versionDropdown = document.getElementById('projectVersion');
+  
+  if (!appId || !versionDropdown) {
+    if (versionDropdown) {
+      versionDropdown.disabled = true;
+      versionDropdown.innerHTML = '<option value="">Select Application First</option>';
+    }
+    return;
+  }
+
+  // Load versions for selected application
+  versionDropdown.disabled = false;
+  versionDropdown.innerHTML = '<option value="">Loading versions...</option>';
+
+  try {
+    const { data: versions, error } = await supabaseClient
+      .from('application_versions')
+      .select('id, version_number, is_production')
+      .eq('application_id', appId)
+      .order('version_number', { ascending: false });
+
+    if (error) throw error;
+
+    versionDropdown.innerHTML = '<option value="">Select Version</option>';
+    versionDropdown.innerHTML += '<option value="new">➕ Create New Version</option>';
+
+    if (versions && versions.length > 0) {
+      versions.forEach(ver => {
+        const option = document.createElement('option');
+        option.value = ver.id;
+        option.textContent = `v${ver.version_number}${ver.is_production ? ' (Production)' : ''}`;
+        versionDropdown.appendChild(option);
+      });
+    }
+
+  } catch (error) {
+    console.error('Error loading versions:', error);
+    versionDropdown.innerHTML = '<option value="">Error loading versions</option>';
+  }
+});
+
+
 
   </script>
-
-<!-- Sprint Modal -->
-<div id="sprintModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Create New Sprint</h2>
-            <button class="close-btn" onclick="closeSprintModal()">&times;</button>
-        </div>
-
-        <form id="sprintForm" onsubmit="createSprint(event)">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label required">Sprint Number</label>
-                    <input type="number" class="form-input" id="sprintNumber" min="1" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">Sprint Name</label>
-                    <input type="text" class="form-input" id="sprintName" placeholder="e.g., Sprint 1 - User Management" required>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label">Sprint Goal</label>
-                    <textarea class="form-textarea" id="sprintGoal" placeholder="What will be achieved in this sprint?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">Start Date</label>
-                    <input type="date" class="form-input" id="sprintStartDate" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">End Date</label>
-                    <input type="date" class="form-input" id="sprintEndDate" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Planned Story Points</label>
-                    <input type="number" class="form-input" id="plannedStoryPoints" min="0">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <select class="form-select" id="sprintStatus">
-                        <option value="Planned">Planned</option>
-                        <option value="Active">Active</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
-                    </select>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 30px;">
-                <button type="button" class="btn btn-secondary" onclick="closeSprintModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary" style="flex: 1;">Create Sprint</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- New Test Suite Modal -->
-<div id="testSuiteModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Create Test Suite</h2>
-            <button class="close-btn" onclick="closeTestSuiteModal()">&times;</button>
-        </div>
-
-        <form id="testSuiteForm" onsubmit="createTestSuite(event)">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label required">Test Suite ID</label>
-                    <input type="text" class="form-input" id="testSuiteId" placeholder="e.g., TS-IQ-001" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">Test Type</label>
-                    <select class="form-select" id="testType" required>
-                        <option value="">Select Type</option>
-                        <option value="IQ">IQ - Installation Qualification</option>
-                        <option value="OQ">OQ - Operational Qualification</option>
-                        <option value="PQ">PQ - Performance Qualification</option>
-                        <option value="UAT">UAT - User Acceptance Testing</option>
-                        <option value="SIT">SIT - System Integration Testing</option>
-                        <option value="Regression">Regression Testing</option>
-                    </select>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label required">Test Suite Name</label>
-                    <input type="text" class="form-input" id="testSuiteName" placeholder="e.g., System Hardware Installation Verification" required>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label">Test Objective</label>
-                    <textarea class="form-textarea" id="testObjective" placeholder="What is the purpose of this test suite?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Assigned To</label>
-                    <input type="text" class="form-input" id="testAssignedTo" placeholder="Test Lead Name">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Planned Execution Date</label>
-                    <input type="date" class="form-input" id="testPlannedDate">
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 30px;">
-                <button type="button" class="btn btn-secondary" onclick="closeTestSuiteModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary" style="flex: 1;">Create Test Suite</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Add Test Case to Suite Modal -->
-<div id="addTestCaseModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Add Test Case</h2>
-            <button class="close-btn" onclick="closeAddTestCaseModal()">&times;</button>
-        </div>
-
-        <form id="testCaseForm" onsubmit="addTestCase(event)">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label required">Test Case ID</label>
-                    <input type="text" class="form-input" id="tcId" placeholder="e.g., TC-IQ-001" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">Link to Requirement</label>
-                    <select class="form-select" id="tcRequirement" required>
-                        <option value="">Select Requirement</option>
-                    </select>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label required">Test Case Title</label>
-                    <input type="text" class="form-input" id="tcTitle" placeholder="e.g., Verify power supply installation" required>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label required">Test Procedure</label>
-                    <textarea class="form-textarea" id="tcProcedure" placeholder="Step-by-step procedure..." required></textarea>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label required">Expected Result</label>
-                    <textarea class="form-textarea" id="tcExpected" placeholder="What should happen..." required></textarea>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 30px;">
-                <button type="button" class="btn btn-secondary" onclick="closeAddTestCaseModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary" style="flex: 1;">Add Test Case</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Execute Test Case Modal -->
-<div id="executeTestModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Execute Test Case</h2>
-            <button class="close-btn" onclick="closeExecuteTestModal()">&times;</button>
-        </div>
-
-        <div id="executeTestContent">
-            <!-- Will be populated dynamically -->
-        </div>
-
-        <form id="executeTestForm" onsubmit="saveTestExecution(event)">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label required">Test Result</label>
-                    <select class="form-select" id="testResult" required onchange="toggleDeviationFields()">
-                        <option value="">Select Result</option>
-                        <option value="Pass">Pass</option>
-                        <option value="Fail">Fail</option>
-                        <option value="N/A">N/A</option>
-                        <option value="Blocked">Blocked</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label required">Executed By</label>
-                    <input type="text" class="form-input" id="executedBy" placeholder="Your name" required>
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label">Actual Result</label>
-                    <textarea class="form-textarea" id="actualResult" placeholder="What actually happened..."></textarea>
-                </div>
-
-                <div id="deviationFields" style="display: none; grid-column: 1 / -1;">
-                    <div class="form-group">
-                        <label class="form-label">Deviation Number</label>
-                        <input type="text" class="form-input" id="deviationNumber" placeholder="e.g., DEV-2025-001">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Deviation Justification</label>
-                        <textarea class="form-textarea" id="deviationJustification" placeholder="Explain the deviation..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 30px;">
-                <button type="button" class="btn btn-secondary" onclick="closeExecuteTestModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary" style="flex: 1;">Save Execution</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- New Application Modal -->
-<div id="applicationModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">New Application/System</h2>
-            <button class="close-btn" onclick="closeApplicationModal()">&times;</button>
-        </div>
-
-        <form id="applicationForm" onsubmit="createApplication(event)">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label required">Application Name</label>
-                    <input type="text" class="form-input" id="appName" placeholder="e.g., LabWare LIMS" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Application Code</label>
-                    <input type="text" class="form-input" id="appCode" placeholder="e.g., LIMS-LAB">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">System Type</label>
-                    <select class="form-select" id="appSystemType">
-                        <option value="">Select Type</option>
-                        <option value="LIMS">LIMS</option>
-                        <option value="ERP">ERP (SAP, Oracle)</option>
-                        <option value="MES">MES</option>
-                        <option value="QMS">QMS</option>
-                        <option value="EDMS">EDMS</option>
-                        <option value="Chromatography">Chromatography Data System</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Vendor Name</label>
-                    <input type="text" class="form-input" id="appVendor" placeholder="e.g., LabWare Inc.">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Current Version</label>
-                    <input type="text" class="form-input" id="appVersion" placeholder="e.g., v8.5">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">System Owner</label>
-                    <input type="text" class="form-input" id="appOwner" placeholder="Business owner name">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Business Unit</label>
-                    <input type="text" class="form-input" id="appBusinessUnit" placeholder="e.g., QC Lab">
-                </div>
-
-                <div class="form-group full">
-                    <label class="form-label">System Description</label>
-                    <textarea class="form-textarea" id="appDescription" placeholder="Brief description of the system purpose..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Installation Date</label>
-                    <input type="date" class="form-input" id="appInstallDate">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Go-Live Date</label>
-                    <input type="date" class="form-input" id="appGoLiveDate">
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 12px; margin-top: 30px;">
-                <button type="button" class="btn btn-secondary" onclick="closeApplicationModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary" style="flex: 1;">Create Application</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Version Management Modal -->
-<div id="versionManagementModal" class="modal">
-    <div class="modal-content" style="max-width: 1200px;">
-        <div class="modal-header">
-            <h2 class="modal-title">📋 Version Management</h2>
-            <button class="close-btn" onclick="closeVersionManagement()">&times;</button>
-        </div>
-        
-        <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-            <select id="versionAppFilter" class="form-select" onchange="filterVersionsByApp()" style="flex: 1;">
-                <option value="">All Applications</option>
-            </select>
-            <button class="btn btn-primary" onclick="openNewVersionModal()">+ New Version</button>
-        </div>
-        
-        <div id="versionsListContainer">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Application</th>
-                        <th>Version</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Go-Live Date</th>
-                        <th>Projects</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="versionsTableBody">
-                    <tr><td colspan="7" style="text-align: center; padding: 40px;">Loading versions...</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- New Version Modal -->
-<div id="newVersionModal" class="modal">
-    <div class="modal-content" style="max-width: 700px;">
-        <div class="modal-header">
-            <h2 class="modal-title">➕ New Version</h2>
-            <button class="close-btn" onclick="closeNewVersionModal()">&times;</button>
-        </div>
-        
-        <form id="versionForm" onsubmit="event.preventDefault(); createVersion();">
-            <div class="form-group">
-                <label class="form-label required">Application</label>
-                <select class="form-select" id="versionAppId" required>
-                    <option value="">Select Application</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label required">Version Number</label>
-                <input type="text" class="form-input" id="versionNumber" placeholder="e.g., 8.5.1" pattern="^\d+\.\d+(\.\d+)?$" required>
-                <small style="color: var(--text-dim); font-size: 12px;">Format: MAJOR.MINOR or MAJOR.MINOR.PATCH (e.g., 8.5 or 8.5.1)</small>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label required">Version Type</label>
-                <select class="form-select" id="versionType" required onchange="updateValidationApproach()">
-                    <option value="">Select Type</option>
-                    <option value="Major">Major Release (Breaking changes)</option>
-                    <option value="Minor">Minor Release (New features)</option>
-                    <option value="Patch">Patch (Bug fixes)</option>
-                    <option value="Configuration">Configuration Only</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Validation Approach</label>
-                <select class="form-select" id="validationApproach">
-                    <option value="">Select Approach</option>
-                    <option value="Full CSV">Full CSV (IQ/OQ/PQ)</option>
-                    <option value="Partial Validation">Partial Validation (Risk-based OQ/PQ)</option>
-                    <option value="Impact Assessment">Impact Assessment + Testing</option>
-                    <option value="Configuration OQ">Configuration OQ Only</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Release Date</label>
-                <input type="date" class="form-input" id="releaseDate">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Planned Go-Live Date</label>
-                <input type="date" class="form-input" id="goLiveDate">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Change Description</label>
-                <textarea class="form-input" id="changeDescription" rows="4" placeholder="Describe what changed in this version..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="isProduction">
-                    <span>Mark as Production Version</span>
-                </label>
-            </div>
-            
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary" onclick="closeNewVersionModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary">Create Version</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
 </body>
 </html>

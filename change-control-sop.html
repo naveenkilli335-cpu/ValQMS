@@ -316,6 +316,53 @@
         }
     </style>
 </head>
+<!-- ACCESS CONTROL - ADD THIS SECTION -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Supabase configuration - UPDATE THESE VALUES
+  const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+  
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  
+  // CHANGE THIS FOR EACH SOP FILE
+  const SOP_SLUG = 'audit-inspection-management-sop'; // For this file
+  
+  async function checkAccess() {
+    try {
+      // Check if user is logged in
+      const { data: { session } } = await sb.auth.getSession();
+      
+      if (!session) {
+        alert('⚠️ Please login to access this SOP');
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Check if user has purchased this SOP
+      const { data, error } = await sb
+        .from('purchases')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .eq('product_slug', SOP_SLUG)
+        .eq('status', 'paid')
+        .single();
+      
+      if (error || !data) {
+        alert('⚠️ Please purchase this SOP to access it.');
+        window.location.href = 'index.html';
+      }
+    } catch (err) {
+      console.error('Access check error:', err);
+      window.location.href = 'index.html';
+    }
+  }
+  
+  // Run access check when page loads
+  checkAccess();
+</script>
+
 <body>
     <div class="nav-buttons no-print">
         <a href="index.html" class="btn btn-secondary">← Back to Home</a>

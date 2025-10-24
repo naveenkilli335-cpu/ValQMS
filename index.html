@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="dark">
+<html lang="en" data-theme="cyan" data-bg="lavender">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -89,19 +89,19 @@
     [data-bg="neon"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 30%, rgba(236,72,153,0.4) 0%, transparent 40%),radial-gradient(circle at 80% 70%, rgba(59,130,246,0.35) 0%, transparent 40%),radial-gradient(circle at 50% 50%, rgba(168,85,247,0.3) 0%, transparent 50%);filter:blur(60px);animation:blobMove 20s infinite ease-in-out alternate;z-index:-1}
 
 /* Light backgrounds - dark text - PASTE HERE */
-[data-bg="aurora"],
-[data-bg="sunset"],
-[data-bg="ocean"],
-[data-bg="mint"],
-[data-bg="pearl"],
-[data-bg="lavender"] {
-  --text: #0f172a;
-  --text-dim: #475569;
-  --surface: rgba(0,0,0,0.05);
-  --surface-hover: rgba(0,0,0,0.08);
-  --border: rgba(0,0,0,0.1);
-  --glass: rgba(0,0,0,0.03);
-}
+    [data-bg="aurora"],
+    [data-bg="sunset"],
+    [data-bg="ocean"],
+    [data-bg="mint"],
+    [data-bg="pearl"],
+    [data-bg="lavender"] {
+    --text: #0f172a;
+    --text-dim: #475569;
+    --surface: rgba(0,0,0,0.05);
+    --surface-hover: rgba(0,0,0,0.08);
+    --border: rgba(0,0,0,0.1);
+    --glass: rgba(0,0,0,0.03);
+  }
 
 [data-bg="aurora"] h1,
 [data-bg="sunset"] h1,
@@ -1049,7 +1049,110 @@
       h1{font-size:42px}
       .footer-grid{grid-template-columns:1fr;gap:32px}
     }
+
+/* Course Payment Styles */
+.my-courses h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.purchased-badge {
+  display: inline-block;
+  margin: 0.5rem 0.5rem 0 0;
+  padding: 0.625rem 1rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  color: #000;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.purchased-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* Payment Success Modal */
+.payment-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 3000;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-modal.active {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--glass);
+  backdrop-filter: blur(40px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 3rem;
+  max-width: 500px;
+  text-align: center;
+  animation: modalSlide 0.3s ease;
+}
+
+@keyframes modalSlide {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+  color: #000;
+  font-weight: 800;
+}
+
+.modal-box h2 {
+  margin-bottom: 1rem;
+  font-size: 1.875rem;
+}
+
+.modal-box p {
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.price-tag {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 1rem 0;
+}
+
   </style>
+
 </head>
 
 <body>
@@ -1067,6 +1170,7 @@
       <a href="#qms">QMS Applications</a>
       <a href="#QMS Procedures">QMS Procedures</a>
       <a href="#validation">GxP Validation & Project Managmement</a>
+      <a href="#ValQMS Academy">ValQMS Academy</a>
       <a href="#resources">Resources</a>
       <a href="#about">About</a>
     </nav>
@@ -1261,82 +1365,12 @@
       <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
     </div>
     
-    <div class="qms-grid">
-      <div class="module-card" onclick="window.location.href='change-control-sop_2.html'" style="cursor: pointer;">
-        <h4>📋 Change Control SOP</h4>
-        <p>Manage pharmaceutical change requests with full GMP compliance</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='deviation-management-sop.html'" style="cursor: pointer;">
-        <h4>📊 Deviation Management SOP</h4>
-        <p>Record, analyze, and close deviations efficiently with root cause analysis</p>
-        <div class="app-badge">SOP</div>
-      </div>
-     
-      <div class="module-card" onclick="window.location.href='capa-management-sop.html'" style="cursor: pointer;">
-        <h4>🎯 CAPA Management SOP</h4>
-        <p>Plan, execute, and track corrective and preventive actions systematically</p>
-        <div class="app-badge">SOP</div>
-      </div>
-
-      <div class="module-card" onclick="window.location.href='risk-management-sop.html'" style="cursor: pointer;">
-        <h4>⚠️ Risk Management SOP</h4>
-        <p>Identify, assess, and mitigate risks using ICH Q9 compliant frameworks</p>
-        <div class="app-badge">SOP</div>
-      </div>
-
-      <div class="module-card" onclick="window.location.href='audit-inspection-sop.html'" style="cursor: pointer;">
-        <h4>🔍 Audit & Inspection</h4>
-        <p>Digital audit trails and inspection readiness with full documentation</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='Training-management-sop.html'" style="cursor: pointer;">
-        <h4>🎓 Training Management SOP</h4>
-        <p>Ensure training effectiveness tied to system and process changes</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='document-management-sop.html'" style="cursor: pointer;">
-        <h4>📄 Document Management SOP</h4>
-        <p>Manage creation, approval, distribution, revision, and retirement of QMS documents with version control</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='complaint-management-sop.html'" style="cursor: pointer;">
-        <h4>📞 Complaint Management SOP</h4>
-        <p>Capture, log, investigate, and resolve customer complaints with trending analysis</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='supplier-management-sop.html'" style="cursor: pointer;">
-        <h4>🏭 Supplier Management SOP</h4>
-        <p>Qualify suppliers, monitor performance, and enforce quality agreements</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='productlifecycle-management-sop.html'" style="cursor: pointer;">
-        <h4>🔄 Product Lifecycle Management SOP</h4>
-        <p>Oversee product flow from concept to distribution with batch review and QC testing</p>
-        <div class="app-badge">SOP</div>
-      </div>
-                 
-      <div class="module-card" onclick="window.location.href='validation-management-sop.html'" style="cursor: pointer;">
-        <h4>✅ Validation Management SOP</h4>
-        <p>Execute IQ/OQ/PQ protocols and maintain validation lifecycle documentation</p>
-        <div class="app-badge">SOP</div>
-      </div>
-      
-      <div class="module-card" onclick="window.location.href='Non-Conformance-management-sop.html'" style="cursor: pointer;">
-        <h4>❌ Non-Conformance Management SOP</h4>
-        <p>Document, investigate, and resolve product and process non-conformances</p>
-        <div class="app-badge">SOP</div>
-      </div>
-              
+    <div class="app-grid" id="qmsProceduresGrid">
+      <!-- QMS Procedures will be rendered dynamically by JavaScript -->
     </div>
   </div>
 </section>
+
 
 
 <!-- GxP Validation & Project Management -->
@@ -1374,6 +1408,32 @@
     </div>
   </div>
 </section>
+
+
+<!-- Validation Courses with Payment -->
+<section id="ValQMS Academy">
+  <div class="container">
+    <div class="section-head">
+      <h2>ValQMS Academy</h2>
+      <p>Purchase individual courses or subscribe for unlimited access to all training content</p>
+    </div>
+
+    <div class="app-grid" id="coursesGrid">
+      <!-- Courses will be rendered dynamically by JavaScript -->
+    </div>
+
+    <!-- My Purchased Courses -->
+    <div class="my-courses" style="margin-top: 3rem; padding: 2rem; background: var(--glass); border: 1px dashed var(--border); border-radius: 18px;">
+      <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">My Purchased Courses</h3>
+      <div id="myCoursesList" class="empty-state" style="color: var(--text-dim); font-style:normal;">
+        Login to view your purchased courses.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
     <!-- Resources -->
     <section id="resources">
@@ -1470,9 +1530,14 @@
           <p>Built by validation experts for validation experts</p>
         </div>
         <div class="qms-grid">
-          <div class="module-card"><h4>⚡ Lightning Fast</h4><p>Process thousands of validation records instantly with browser-native performance</p></div>
-          <div class="module-card"><h4>🔒 Privacy First</h4><p>All processing happens locally. Your validation data never leaves your device</p></div>
-          <div class="module-card"><h4>🎯 Zero Installation</h4><p>No software to install. Works instantly in any browser</p></div>
+          <div class="module-card"><h4>⚡ All-in-One QMS Platform</h4><p>Change control, CAPA, deviations, training, risk management, and audit tools - all integrated in one platform</p></div>
+          <div class="module-card"><h4>🔒 End-to-End Validation</h4><p>Complete project and validation lifecycle management from GxP assessment to go-live with GAMP 5 compliance</p></div>
+          <div class="module-card"><h4>☁️ Zero Installation</h4><p>Zero installation required. Access anywhere, anytime. Your validation data is secure and backed up automatically</p></div>
+          <div class="module-card"><h4>🎯 Automated Workflows</h4><p>Smart GxP assessment, automatic version tracking, and risk-based validation. Reduce manual effort by 70%</p></div>
+          <div class="module-card"><h4>🛡️ Regulatory Compliant</h4><p>Built-in compliance with FDA, EU GMP Annex 11, and GAMP 5 guidelines with complete audit trails</p></div>
+          <div class="module-card"><h4>👥 Team Collaboration</h4><p>Cloud-based platform enabling real-time collaboration across validation, QA, and IT teams. Track progress, assign tasks, and manage deliverables seamlessly.</p></div>
+          <div class="module-card"><h4>📊 Real-Time Analytics</h4><p>Live dashboards and reports. Monitor project status, resource allocation, and validation metrics in real-time</p></div>
+          <div class="module-card"><h4>🚀 Inspection-Ready</h4><p>Complete audit trails, traceability matrix, and instant reporting. Be audit-ready at all times</p></div>       
         </div>
       </div>
     </section>
@@ -1488,15 +1553,16 @@
               <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
               <span>ValQMS</span>
             </a>
-            <p>Empowering Life Sciences organizations with browser-native advanced tools for validation, automation, and regulatory compliance.</p>
+            <p>Empowering Life Sciences organizations with browser-native advanced tools for validation, automation, and regulatory compliance.</p><p>For any help or support please drop an email at <b>support@valqms.com</b></p>
           </div>
       <div class="footer-col">
         <h5>Product</h5>
         <ul>
           <li><a href="#tools">Smart Tools</a></li>
-          <li><a href="#qms">QMS</a></li>
+          <li><a href="#qms">QMS Applications</a></li>
           <li><a href="#qms-procedures">QMS Procedures</a></li>
-          <li><a href="#validation">Validation</a></li>
+          <li><a href="#validation">GxP Validation & Project Management</a></li>
+          <li><a href="#ValQMS Academy">ValQMS Academy</a></li>
           <li><a href="#resources">Resources</a></li>
         </ul>
       </div>
@@ -1520,7 +1586,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© 2025 ValQMS. Built with ❤️ by validation experts</p>
+          <p>© 2025 ValQMS. Built with ❤️ by validation experts for validation experts</p>
           <div class="footer-socials">
            <!-- <a href="#" title="Twitter">𝕏</a> -->
             <a href="#" title="LinkedIn">in</a>
@@ -1566,12 +1632,15 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
   const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
-  
+
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+     window.sb = sb;
 
     // Check authentication immediately
   (async function checkAuth() {
@@ -1946,7 +2015,661 @@ if (themeDropdown) {
     }
   });
 
+// ========================================
+// RAZORPAY PAYMENT INTEGRATION WITH SUPABASE
+// ========================================
+const RAZORPAY_KEY_ID = 'rzp_test_RWogQofYpuwRHW'; // TODO: Replace with your Razorpay Key ID
+
+// Course icons (matching your app-card style)
+const courseIcons = {
+  csv: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M3 4h18v14H3z"/><path d="M3 10h18"/>
+  </svg>`,
+  annex: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+  </svg>`,
+  qms: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M9 12l2 2 4-4"/>
+  </svg>`,
+  ai: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  </svg>`,
+  subscription: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M4 6h16M4 12h16M4 18h16"/>
+  </svg>`
+};
+
+const courseGradients = {
+  csv: 'linear-gradient(135deg, #3b82f6, #60a5fa)',
+  annex: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+  qms: 'linear-gradient(135deg, #10b981, #34d399)',
+  ai: 'linear-gradient(135deg, #f59e0b, #f97316)',
+  subscription: 'linear-gradient(135deg, #06b6d4, #22d3ee)'
+};
+
+// QMS Procedure Icons - FIXED TO MATCH YOUR SUPABASE SLUGS
+const qmsIcons = {
+  'change-control': `<div style="font-size: 40px; line-height: 1;">📋</div>`,
+  'document-management': `<div style="font-size: 40px; line-height: 1;">📄</div>`,  // Fixed
+  'complaint-management': `<div style="font-size: 40px; line-height: 1;">📞</div>`,  // Fixed
+  'non-conformance-management': `<div style="font-size: 40px; line-height: 1;">❌</div>`,  // Fixed
+  'audit-inspection': `<div style="font-size: 40px; line-height: 1;">🔍</div>`,  // Fixed
+  'risk-management': `<div style="font-size: 40px; line-height: 1;">⚠️</div>`,  // Fixed
+  'productlifecycle-management': `<div style="font-size: 40px; line-height: 1;">🔄</div>`,  // Fixed
+  'deviation-management': `<div style="font-size: 40px; line-height: 1;">📊</div>`,  // Fixed
+  'capa-management': `<div style="font-size: 40px; line-height: 1;">🎯</div>`,  // Fixed
+  'supplier-management': `<div style="font-size: 40px; line-height: 1;">🏭</div>`,  // Fixed
+  'training-management': `<div style="font-size: 40px; line-height: 1;">🎓</div>`,  // Added
+  'validation-management': `<div style="font-size: 40px; line-height: 1;">✅</div>`  // Added
+};
+
+const qmsGradients = {
+  'change-control': 'linear-gradient(135deg, #10b981, #34d399)',
+  'document-management': 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+  'complaint-management': 'linear-gradient(135deg, #f59e0b, #fb923c)',
+  'non-conformance-management': 'linear-gradient(135deg, #dc2626, #ef4444)',
+  'audit-inspection': 'linear-gradient(135deg, #ec4899, #f472b6)',
+  'risk-management': 'linear-gradient(135deg, #f97316, #fb923c)',
+  'productlifecycle-management': 'linear-gradient(135deg, #0ea5e9, #38bdf8)',
+  'deviation-management': 'linear-gradient(135deg, #ef4444, #f87171)',
+  'capa-management': 'linear-gradient(135deg, #3b82f6, #60a5fa)',
+  'supplier-management': 'linear-gradient(135deg, #06b6d4, #22d3ee)',
+  'training-management': 'linear-gradient(135deg, #10b981, #34d399)',
+  'validation-management': 'linear-gradient(135deg, #6366f1, #818cf8)'
+};
+
+
+
+// Render courses from Supabase
+async function renderCourses() {
+  const grid = document.getElementById('coursesGrid');
+  if (!grid) return;
+  
+  try {
+    // Fetch products from Supabase
+const { data: products, error } = await sb
+  .from('products')
+  .select('*')
+  .eq('active', true)
+  .neq('type', 'procedure')  // Exclude procedures
+  .order('type', { ascending: false });
+    
+    if (error) throw error;
+    
+    grid.innerHTML = '';
+    
+    products.forEach(product => {
+      const priceInRupees = product.price_in_paise / 100;
+      const iconKey = product.slug.includes('csv') ? 'csv' :
+                     product.slug.includes('annex') ? 'annex' :
+                     product.slug.includes('qms') ? 'qms' :
+                     product.slug.includes('ai') ? 'ai' : 'subscription';
+      
+      const isSubscription = product.type === 'subscription';
+      const priceDisplay = isSubscription ? `₹${priceInRupees}/month` : `₹${priceInRupees}`;
+      
+grid.innerHTML += `
+  <div class="app-card">
+    <div class="app-icon" style="background: ${courseGradients[iconKey]};">
+      ${courseIcons[iconKey]}
+    </div>
+    <h4>${product.title}</h4>
+    <p>${product.description || ''}</p>
+    <div class="price-tag">${priceDisplay}</div>
+    <div class="app-badge" style="background: ${isSubscription ? courseGradients.subscription : 'linear-gradient(135deg, var(--accent), var(--accent-bright))'}">${isSubscription ? 'Subscription' : 'Course'}</div>
+    <div style="margin-top: 14px; display: flex; gap: 8px;">
+      <button onclick="previewCourse('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+        <span>Preview</span>
+      </button>
+      <button onclick="${isSubscription ? 'subscribe' : 'buyCourse'}('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+        <span>${isSubscription ? 'Subscribe' : 'Buy'}</span>
+      </button>
+    </div>
+  </div>
+`;
+
+    });
+  } catch (error) {
+    console.error('Error loading courses:', error);
+    grid.innerHTML = '<p style="color: var(--text-dim); text-align: center;">Error loading courses. Please refresh.</p>';
+  }
+}
+
+// Render QMS Procedures with Purchase Status Check - ENHANCED DEBUG
+async function renderQMSProcedures() {
+  const grid = document.getElementById('qmsProceduresGrid');
+  if (!grid) return;
+  
+  try {
+    // Get user session
+    const { data: { session } } = await sb.auth.getSession();
+    console.log('🔍 Current user ID:', session?.user?.id);
+    console.log('🔍 Current user email:', session?.user?.email);
+    
+    // Fetch procedures
+    const { data: products, error } = await sb
+      .from('products')
+      .select('*')
+      .eq('type', 'procedure')
+      .eq('active', true)
+      .order('price_in_paise', { ascending: true });
+    
+    if (error) throw error;
+    
+    // Get user's purchases if logged in
+    let purchasedSlugs = [];
+    if (session) {
+      // DETAILED DEBUG QUERY
+      const { data: allPurchases, error: allPurchasesError } = await sb
+        .from('purchases')
+        .select('*')
+        .eq('user_id', session.user.id);
+      
+      console.log('🔍 ALL user purchases (any status):', allPurchases);
+      
+      const { data: purchases, error: purchaseError } = await sb
+        .from('purchases')
+        .select('product_slug, status, created_at')
+        .eq('user_id', session.user.id)
+        .eq('status', 'paid');
+      
+      console.log('🔍 PAID purchases:', purchases);
+      console.log('🔍 Purchase error:', purchaseError);
+      
+      if (!purchaseError && purchases) {
+        purchasedSlugs = purchases.map(p => p.product_slug);
+        console.log('✅ Purchased procedures:', purchasedSlugs);
+      } else {
+        console.log('⚠️ No purchases found or error:', purchaseError);
+      }
+    }
+    
+    grid.innerHTML = '';
+    
+    products.forEach(product => {
+      const priceInRupees = product.price_in_paise / 100;
+      const isFree = product.price_in_paise === 0;
+      const isPurchased = purchasedSlugs.includes(product.slug);
+      const iconKey = product.slug.replace('-sop', '');
+      
+      // Determine correct filename
+      const fileName = product.slug === 'change-control-sop' ? 
+        'change-control-sop_2.html' : 
+        `${product.slug}.html`;
+      
+      console.log(`${product.slug}: isPurchased=${isPurchased}, isFree=${isFree}, in array=${purchasedSlugs.includes(product.slug)}`);
+      
+      grid.innerHTML += `
+        <div class="app-card" style="position: relative; overflow: visible;">
+          ${!isFree && !isPurchased ? 
+            `<div style="position: absolute; top: 0; left: 0; width: 80px; height: 80px; overflow: hidden; z-index: 10;">
+              <div style="position: absolute; top: 18px; left: -25px; width: 120px; text-align: center; transform: rotate(-45deg); background: linear-gradient(135deg, #f59e0b, #fb923c); padding: 4px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.3);">
+                <span style="color: #000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Premium</span>
+              </div>
+            </div>` : ''
+          }
+          <div class="app-icon" style="background: ${qmsGradients[iconKey] || 'linear-gradient(135deg, #8b5cf6, #a78bfa)'};">
+            ${qmsIcons[iconKey] || qmsIcons['document-management']}
+          </div>
+          <h4>${product.title}</h4>
+          <p>${product.description || ''}</p>
+          <div class="price-tag">${isFree ? 'FREE' : (isPurchased ? 'PURCHASED' : '₹' + priceInRupees)}</div>
+          <div class="app-badge" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa)">SOP</div>
+          <div style="margin-top: 14px;">
+            ${isFree || isPurchased ? 
+              `<button onclick="window.location.href='${fileName}'" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #10b981, #34d399); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                <span>Access Now</span>
+              </button>` :
+              `<button onclick="buyProcedure('${product.slug}');" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                <span>Buy Now - ₹${priceInRupees}</span>
+              </button>`
+            }
+          </div>
+        </div>
+      `;
+  });
+  } catch (error) {
+    console.error('Error loading QMS procedures:', error);
+  }
+}
+
+
+
+async function loadMyPurchases() {
+  const myCoursesList = document.getElementById('myCoursesList');
+  
+  if (!myCoursesList) {
+    console.log('myCoursesList element not found');
+    return;
+  }
+
+  try {
+    // Check if user is logged in
+    const { data: { session }, error: sessionError } = await sb.auth.getSession();
+    
+    if (sessionError) {
+      console.error('Session error:', sessionError);
+      throw sessionError;
+    }
+    
+    if (!session) {
+      console.log('No session - user not logged in');
+      myCoursesList.classList.add('empty-state');
+      myCoursesList.innerHTML = 'Please login to see your courses.';
+      return;
+    }
+
+    console.log('User logged in:', session.user.email);
+
+    // Get purchases
+    const { data: purchases, error: purchasesError } = await sb
+      .from('purchases')
+      .select('product_slug, created_at')
+      .eq('user_id', session.user.id)
+      .eq('status', 'paid')
+      .order('created_at', { ascending: false });
+
+    if (purchasesError) {
+      console.error('Database error:', purchasesError);
+      throw purchasesError;
+    }
+
+    console.log('All purchases:', purchases);
+
+    if (!purchases || purchases.length === 0) {
+      myCoursesList.classList.add('empty-state');
+      myCoursesList.innerHTML = 'No purchased courses yet. Start learning today!';
+      return;
+    }
+
+    // Filter out SOPs (products ending with -sop)
+    const coursePurchases = purchases.filter(p => !p.product_slug.endsWith('-sop'));
+    
+    console.log('Filtered course purchases:', coursePurchases);
+
+    if (coursePurchases.length === 0) {
+      myCoursesList.classList.add('empty-state');
+      myCoursesList.innerHTML = 'No purchased courses yet. Start learning today!';
+      return;
+    }
+
+    // Render purchased courses
+    myCoursesList.classList.remove('empty-state');
+    myCoursesList.innerHTML = '';
+
+    coursePurchases.forEach(purchase => {
+      const product = courses.find(c => c.id === purchase.product_slug) 
+                   || (purchase.product_slug === subscription.id ? subscription : null);
+      
+      if (product) {
+        const badge = document.createElement('span');
+        badge.className = 'purchased-course';
+        badge.textContent = product.title;
+        badge.style.cursor = 'pointer';
+        badge.onclick = () => {
+          window.location.href = `course-${purchase.product_slug}.html`;
+        };
+        myCoursesList.appendChild(badge);
+      } else {
+        console.warn('Product not found for slug:', purchase.product_slug);
+      }
+    });
+
+  } catch (error) {
+    console.error('Error in loadMyPurchases:', error);
+    myCoursesList.classList.add('empty-state');
+    myCoursesList.innerHTML = 'No purchased courses yet. Start learning today!';
+  }
+}
+
+
+
+// Check if user already purchased a product
+async function checkPurchase(productSlug) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return false;
+  
+  const { data, error } = await sb
+    .from('purchases')
+    .select('id')
+    .eq('user_id', session.user.id)
+    .eq('product_slug', productSlug)
+    .eq('status', 'paid')
+    .single();
+  
+  return !!data;
+}
+
+
+
+// Open Razorpay Checkout
+function openRazorpayCheckout({ amount, name, description, productSlug, purchaseId }) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      key: RAZORPAY_KEY_ID,
+      amount: amount, // in paise
+      currency: 'INR',
+      name: 'ValQMS Academy',
+      description: description,
+      theme: {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#10b981'
+      },
+      handler: function (response) {
+        resolve(response);
+      },
+      modal: {
+        ondismiss: function() {
+          reject(new Error('Payment cancelled'));
+        }
+      },
+      prefill: {
+        name: sb.auth.getUser().then(u => u.data?.user?.user_metadata?.fullname || ''),
+        email: sb.auth.getUser().then(u => u.data?.user?.email || '')
+      },
+      notes: {
+        product_slug: productSlug,
+        purchase_id: purchaseId
+      }
+    };
+    
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+}
+
+// Update purchase record after payment
+async function updatePurchaseRecord(purchaseId, paymentData) {
+  const { error } = await sb
+    .from('purchases')
+    .update({
+      status: 'paid',
+      payment_id: paymentData.razorpay_payment_id,
+      order_id: paymentData.razorpay_order_id || null,
+      signature: paymentData.razorpay_signature || null,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', purchaseId);
+  
+  if (error) throw error;
+}
+
+// Grant access after payment
+function grantAccess(productTitle) {
+  const modal = document.getElementById('paymentModal');
+  const message = document.getElementById('paymentMessage');
+  
+  if (message) {
+    message.textContent = `Payment successful! You now have access to "${productTitle}".`;
+  }
+  
+  if (modal) {
+    modal.classList.add('active');
+  }
+  
+  // Reload purchases
+  loadMyPurchases();
+}
+
+// Buy course
+window.buyCourse = async function(productSlug) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    alert('Please login to purchase courses');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  try {
+    // Check if already purchased
+    const alreadyPurchased = await checkPurchase(productSlug);
+    if (alreadyPurchased) {
+      alert('You already own this course!');
+      return;
+    }
+    
+    // Get product details
+    const { data: product, error: prodError } = await sb
+      .from('products')
+      .select('*')
+      .eq('slug', productSlug)
+      .single();
+    
+    if (prodError) throw prodError;
+    
+    // Create purchase record
+    const purchase = await createOrderRecord(productSlug, product.price_in_paise);
+    
+    // Open Razorpay
+    const payment = await openRazorpayCheckout({
+      amount: product.price_in_paise,
+      name: product.title,
+      description: 'One-time course purchase',
+      productSlug: product.slug,
+      purchaseId: purchase.id
+    });
+    
+    // Update purchase record
+    await updatePurchaseRecord(purchase.id, payment);
+    
+    // Grant access
+    grantAccess(product.title);
+    
+  } catch (error) {
+    console.error('Payment error:', error);
+    if (error.message !== 'Payment cancelled') {
+      alert('Payment failed. Please try again.');
+    }
+  }
+};
+
+// Subscribe
+window.subscribe = async function(productSlug) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    alert('Please login to subscribe');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  try {
+    // Check if already subscribed
+    const alreadyPurchased = await checkPurchase(productSlug);
+    if (alreadyPurchased) {
+      alert('You already have an active subscription!');
+      return;
+    }
+    
+    const { data: product, error: prodError } = await sb
+      .from('products')
+      .select('*')
+      .eq('slug', productSlug)
+      .single();
+    
+    if (prodError) throw prodError;
+    
+    const purchase = await createOrderRecord(productSlug, product.price_in_paise);
+    
+    const payment = await openRazorpayCheckout({
+      amount: product.price_in_paise,
+      name: product.title,
+      description: 'Monthly subscription',
+      productSlug: product.slug,
+      purchaseId: purchase.id
+    });
+    
+    await updatePurchaseRecord(purchase.id, payment);
+    grantAccess(product.title);
+    
+  } catch (error) {
+    console.error('Subscription error:', error);
+    if (error.message !== 'Payment cancelled') {
+      alert('Subscription failed. Please try again.');
+    }
+  }
+};
+
+// ==========================================
+// PAYMENT HELPER FUNCTIONS
+// ==========================================
+
+// Create order entry in Supabase
+async function createOrderRecord(productSlug, amount) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) throw new Error('Not authenticated');
+  
+  console.log('📦 Creating order record:', productSlug, amount);
+  
+  const { data, error } = await sb
+    .from('purchases')
+    .insert({
+      user_id: session.user.id,
+      product_slug: productSlug,
+      status: 'created',
+      amount_paid: amount
+    })
+    .select()
+    .single();
+  
+  if (error) {
+    console.error('❌ Create order error:', error);
+    throw error;
+  }
+  
+  console.log('✅ Order created:', data.id);
+  return data;
+}
+
+
+
+
+// Buy QMS Procedure - COMPLETE WITH DEBUGGING
+window.buyProcedure = async function(procedureSlug) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    alert('Please login to purchase procedures');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  try {
+    console.log('🛒 Starting purchase for:', procedureSlug);
+    
+    // Check if already purchased
+    const alreadyPurchased = await checkPurchase(procedureSlug);
+    if (alreadyPurchased) {
+      alert('You already own this procedure!');
+      window.location.href = `${procedureSlug}.html`;
+      return;
+    }
+    
+    // Get product details
+    const { data: product, error: prodError } = await sb
+      .from('products')
+      .select('*')
+      .eq('slug', procedureSlug)
+      .single();
+    
+    if (prodError) throw prodError;
+    console.log('✅ Product found:', product.title, product.price_in_paise);
+    
+    // Create purchase record
+    const purchase = await createOrderRecord(procedureSlug, product.price_in_paise);
+    console.log('✅ Purchase record created:', purchase.id);
+    
+    // Open Razorpay checkout
+    console.log('💳 Opening Razorpay...');
+    const payment = await openRazorpayCheckout({
+      amount: product.price_in_paise,
+      name: product.title,
+      description: 'QMS Procedure Purchase',
+      productSlug: product.slug,
+      purchaseId: purchase.id
+    });
+    
+    console.log('✅ Payment completed:', payment.razorpay_payment_id);
+    
+    // Update purchase status to paid
+    console.log('📝 Updating purchase to paid...');
+    await updatePurchaseRecord(purchase.id, payment);
+    console.log('✅ Purchase status updated to paid');
+    
+    // Verify update worked
+    const { data: verifyPurchase } = await sb
+      .from('purchases')
+      .select('status, payment_id')
+      .eq('id', purchase.id)
+      .single();
+    
+    console.log('🔍 Verification - Status:', verifyPurchase?.status);
+    
+    if (verifyPurchase?.status !== 'paid') {
+      console.error('⚠️ WARNING: Status not updated correctly!');
+      throw new Error('Payment completed but status not updated');
+    }
+    
+    // Show success
+    alert(`✅ Purchase successful! You now have access to ${product.title}`);
+    
+    // Reload UI
+    await renderQMSProcedures();
+    await loadMyPurchases();
+    
+    // Redirect
+    window.location.href = `${procedureSlug}.html`;
+    
+  } catch (error) {
+    console.error('❌ Purchase error:', error);
+    console.error('Error stack:', error.stack);
+    
+    if (error.message !== 'Payment cancelled') {
+      alert(`❌ Purchase failed: ${error.message}\n\nPlease contact support if payment was deducted.`);
+    }
+  }
+};
+
+
+
+// Preview course
+window.previewCourse = function(productSlug) {
+  window.location.href = `preview-${productSlug}.html`;
+};
+
+// Close payment modal
+window.closePaymentModal = function() {
+  const modal = document.getElementById('paymentModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+};
+
+// Initialize courses on page load
+renderCourses();
+renderQMSProcedures();
+
+// Load purchases if user is logged in
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    loadMyPurchases();
+  }
+});
+
+
+
 </script>
+
+<!-- Payment Success Modal -->
+<div id="paymentModal" class="payment-modal">
+  <div class="modal-box">
+    <div class="success-icon">✓</div>
+    <h2>Payment Successful!</h2>
+    <p id="paymentMessage">Your payment was successful. You now have access to this course.</p>
+    <button class="cta" onclick="closePaymentModal()">
+      <span>Continue Learning</span>
+    </button>
+  </div>
+</div>
+
+
 
 </body>
 </html>

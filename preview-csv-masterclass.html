@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Masterclass Preview - ValQMS Academy</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-green: #10b981;
+      --primary-blue: #06b6d4;
+      --dark-bg: #0a1628;
+      --card-bg: #0f1f38;
+      --text-primary: #f0f9ff;
+      --text-secondary: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --gradient-green: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(180deg, #0a1628 0%, #051120 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary-green);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .preview-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: var(--gradient-green);
+      color: #000;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+    }
+
+    .preview-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin: 2rem 0 1rem;
+      color: var(--text-primary);
+    }
+
+    ul {
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin: 0.75rem 0;
+      color: var(--text-secondary);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .info-card h4 {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .info-card p {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .cta-section {
+      text-align: center;
+      margin: 3rem 0;
+      padding: 2rem;
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 16px;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--gradient-green);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 1rem 0;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: var(--gradient-green);
+      color: #000;
+      font-size: 1.125rem;
+      font-weight: 700;
+      border-radius: 12px;
+      text-decoration: none;
+      margin-top: 1rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .price {
+        font-size: 2.5rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html#courses" class="back-btn">← Back to All Courses</a>
+    
+    <span class="preview-badge">FREE PREVIEW</span>
+    
+    <h1>Computer System Validation (CSV) Masterclass</h1>
+    
+    <div class="preview-box">
+      <h2>📚 What You'll Learn</h2>
+      <ul>
+        <li>Complete CSV lifecycle from planning through retirement</li>
+        <li>GAMP 5 risk-based approach to computerized system validation</li>
+        <li>Requirements traceability matrices and test script development</li>
+        <li>21 CFR Part 11 compliance for electronic records and signatures</li>
+        <li>IQ/OQ/PQ protocol design and execution strategies</li>
+        <li>Validation Master Plan (VMP) and system categorization</li>
+        <li>Vendor assessment and supplier audits</li>
+        <li>Audit readiness and regulatory inspection preparation</li>
+        <li>Change control and periodic review processes</li>
+        <li>Cloud and SaaS validation considerations</li>
+      </ul>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>Duration</h4>
+        <p>8 Hours</p>
+      </div>
+      <div class="info-card">
+        <h4>Level</h4>
+        <p>Intermediate</p>
+      </div>
+      <div class="info-card">
+        <h4>Format</h4>
+        <p>Video + Templates</p>
+      </div>
+      <div class="info-card">
+        <h4>Access</h4>
+        <p>Lifetime</p>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <h2>📂 Course Modules</h2>
+      
+      <h3>Module 1: CSV Fundamentals</h3>
+      <ul>
+        <li>Introduction to Computer System Validation</li>
+        <li>Regulatory landscape (FDA, EMA, WHO)</li>
+        <li>GAMP 5 software categories</li>
+      </ul>
+
+      <h3>Module 2: Planning & Documentation</h3>
+      <ul>
+        <li>Validation Master Plan (VMP) creation</li>
+        <li>User Requirements Specification (URS)</li>
+        <li>Functional Requirements Specification (FRS)</li>
+        <li>Design Specifications and traceability</li>
+      </ul>
+
+      <h3>Module 3: Testing & Qualification</h3>
+      <ul>
+        <li>Installation Qualification (IQ) protocols</li>
+        <li>Operational Qualification (OQ) test scripts</li>
+        <li>Performance Qualification (PQ) strategies</li>
+        <li>Risk-based testing approach</li>
+      </ul>
+
+      <h3>Module 4: 21 CFR Part 11 Compliance</h3>
+      <ul>
+        <li>Electronic records requirements</li>
+        <li>Electronic signatures implementation</li>
+        <li>Audit trails and data integrity</li>
+        <li>System access controls</li>
+      </ul>
+
+      <h3>Module 5: Lifecycle Management</h3>
+      <ul>
+        <li>Change control procedures</li>
+        <li>Periodic review requirements</li>
+        <li>System retirement and data archival</li>
+        <li>CAPA for validation deviations</li>
+      </ul>
+    </div>
+
+    <div class="preview-box">
+      <h2>🎁 Included Resources</h2>
+      <ul>
+        <li>15+ Validation templates (VMP, URS, FRS, IQ/OQ/PQ)</li>
+        <li>Traceability matrix Excel template</li>
+        <li>Part 11 compliance checklist</li>
+        <li>Sample test scripts and protocols</li>
+        <li>Vendor assessment questionnaire</li>
+        <li>Audit readiness checklist</li>
+      </ul>
+    </div>
+
+    <div class="preview-box">
+      <h2>✅ Prerequisites</h2>
+      <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+        Basic understanding of GxP systems and pharmaceutical quality regulations is recommended but not required. 
+        This course is suitable for validation engineers, QA professionals, IT professionals in pharma/biotech, 
+        and anyone involved in computerized system implementation.
+      </p>
+    </div>
+
+    <div class="cta-section">
+      <h2>Ready to Master CSV?</h2>
+      <div class="price">₹999</div>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        One-time payment • Lifetime access • 30-day money-back guarantee
+      </p>
+      <a href="index.html#courses" class="buy-btn">Buy Now & Start Learning</a>
+    </div>
+
+    <p style="text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-top: 2rem;">
+      Questions? Contact us at <strong style="color: var(--text-primary);">contact@valqms.academy</strong>
+    </p>
+  </div>
+</body>
+</html>

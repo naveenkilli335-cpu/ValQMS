@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Masterclass - ValQMS Academy</title>
+  
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-green: #10b981;
+      --dark-bg: #0a1628;
+      --card-bg: #0f1f38;
+      --text-primary: #f0f9ff;
+      --text-secondary: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #0a1628 0%, #051120 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-primary);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary-green);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2rem;
+    }
+    
+    /* Locked State */
+    .locked {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    
+    .lock-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+    
+    .locked h2 {
+      font-size: 1.875rem;
+      margin-bottom: 1rem;
+    }
+    
+    .locked p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+    }
+    
+    .buy-btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: #000;
+      font-weight: 700;
+      font-size: 1.125rem;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+    }
+    
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+    }
+    
+    /* Course Content - Unlocked */
+    .course-content {
+      display: none;
+    }
+    
+    .course-content.unlocked {
+      display: block;
+    }
+    
+    .module {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .module h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-green);
+    }
+    
+    .lesson-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .lesson-list li {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .lesson-list li:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--primary-green);
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html#courses" class="back-btn">← Back to Courses</a>
+    
+    <h1>Computer System Validation (CSV) Masterclass</h1>
+    
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+      <p>Checking access...</p>
+    </div>
+    
+    <!-- Locked State -->
+    <div id="lockedContent" class="locked" style="display: none;">
+      <div class="lock-icon">🔒</div>
+      <h2>This Course is Locked</h2>
+      <p>Purchase this course to access all lessons, templates, and resources.</p>
+      <a href="index.html#courses" class="buy-btn">Buy Now - ₹999</a>
+    </div>
+    
+    <!-- Unlocked Course Content -->
+    <div id="courseContent" class="course-content">
+      <div class="module">
+        <h2>Module 1: CSV Fundamentals</h2>
+        <ul class="lesson-list">
+          <li>📹 Lesson 1.1: Introduction to Computer System Validation</li>
+          <li>📹 Lesson 1.2: Regulatory Landscape (FDA, EMA, WHO)</li>
+          <li>📹 Lesson 1.3: GAMP 5 Software Categories</li>
+          <li>📄 Template: System Categorization Worksheet</li>
+        </ul>
+      </div>
+      
+      <div class="module">
+        <h2>Module 2: Planning & Documentation</h2>
+        <ul class="lesson-list">
+          <li>📹 Lesson 2.1: Validation Master Plan (VMP)</li>
+          <li>📹 Lesson 2.2: User Requirements Specification (URS)</li>
+          <li>📹 Lesson 2.3: Functional Requirements Specification (FRS)</li>
+          <li>📄 Template: VMP Template</li>
+          <li>📄 Template: URS Template</li>
+          <li>📄 Template: FRS Template</li>
+        </ul>
+      </div>
+      
+      <div class="module">
+        <h2>Module 3: Testing & Qualification</h2>
+        <ul class="lesson-list">
+          <li>📹 Lesson 3.1: Installation Qualification (IQ)</li>
+          <li>📹 Lesson 3.2: Operational Qualification (OQ)</li>
+          <li>📹 Lesson 3.3: Performance Qualification (PQ)</li>
+          <li>📹 Lesson 3.4: Risk-Based Testing Strategies</li>
+          <li>📄 Template: IQ/OQ/PQ Protocols</li>
+        </ul>
+      </div>
+      
+      <div class="module">
+        <h2>Module 4: 21 CFR Part 11 Compliance</h2>
+        <ul class="lesson-list">
+          <li>📹 Lesson 4.1: Electronic Records Requirements</li>
+          <li>📹 Lesson 4.2: Electronic Signatures Implementation</li>
+          <li>📹 Lesson 4.3: Audit Trails and Data Integrity</li>
+          <li>📄 Checklist: Part 11 Compliance Checklist</li>
+        </ul>
+      </div>
+      
+      <div class="module">
+        <h2>Module 5: Lifecycle Management</h2>
+        <ul class="lesson-list">
+          <li>📹 Lesson 5.1: Change Control Procedures</li>
+          <li>📹 Lesson 5.2: Periodic Review Requirements</li>
+          <li>📹 Lesson 5.3: System Retirement & Data Archival</li>
+          <li>📄 Template: Change Control Form</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Initialize Supabase (use same credentials as your index.html)
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://nufpaayytxtjihqrvtfi.supabase.co',           // TODO: Replace with your actual Supabase URL
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY'       // TODO: Replace with your actual Supabase anon key
+    );
+    
+    const COURSE_SLUG = 'csv-masterclass';
+    
+    // Check if user has purchased this course
+    async function checkAccess() {
+      try {
+        // Get current user session
+        const { data: { session }, error: sessionError } = await sb.auth.getSession();
+        
+        if (sessionError) throw sessionError;
+        
+        // If not logged in, show locked
+        if (!session) {
+          showLocked();
+          return;
+        }
+        
+        // Check purchases table
+        const { data: purchase, error: purchaseError } = await sb
+          .from('purchases')
+          .select('status')
+          .eq('user_id', session.user.id)
+          .eq('product_slug', COURSE_SLUG)
+          .eq('status', 'paid')
+          .single();
+        
+        if (purchaseError && purchaseError.code !== 'PGRST116') {
+          throw purchaseError;
+        }
+        
+        // If purchase found and paid, show content
+        if (purchase && purchase.status === 'paid') {
+          showContent();
+        } else {
+          showLocked();
+        }
+        
+      } catch (error) {
+        console.error('Access check error:', error);
+        showLocked();
+      }
+    }
+    
+    function showContent() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('lockedContent').style.display = 'none';
+      document.getElementById('courseContent').style.display = 'block';
+      console.log('✅ Access granted - course unlocked');
+    }
+    
+    function showLocked() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('lockedContent').style.display = 'block';
+      document.getElementById('courseContent').style.display = 'none';
+      console.log('🔒 Course locked - purchase required');
+    }
+    
+    // Run access check on page load
+    checkAccess();
+  </script>
+</body>
+</html>

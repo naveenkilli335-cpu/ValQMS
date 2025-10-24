@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ValQMS Academy - Validation Courses</title>
+  <meta name="description" content="Professional validation courses for pharmaceutical and biotech industries">
+  
+  <!-- Razorpay Checkout Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-green: #10b981;
+      --primary-blue: #06b6d4;
+      --dark-bg: #0a1628;
+      --card-bg: #0f1f38;
+      --text-primary: #f0f9ff;
+      --text-secondary: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --shadow: rgba(0, 0, 0, 0.3);
+      --gradient-green: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      --gradient-blue: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(180deg, #0a1628 0%, #051120 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 22, 40, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--gradient-green);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .login-btn {
+      padding: 0.5rem 1.25rem;
+      background: var(--gradient-green);
+      color: #000;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 2rem 2rem 1rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Courses Section */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.875rem;
+      font-weight: 700;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Course Grid */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 1024px) {
+      .course-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .nav-links {
+        gap: 1rem;
+      }
+    }
+
+    /* Course Card */
+    .course-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .course-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-green);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .course-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 0 20px 40px var(--shadow);
+    }
+
+    .course-card:hover::before {
+      opacity: 1;
+    }
+
+    .course-badge {
+      display: inline-block;
+      padding: 0.375rem 0.875rem;
+      background: var(--gradient-green);
+      color: #000;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: fit-content;
+    }
+
+    .subscription-badge {
+      background: var(--gradient-blue);
+    }
+
+    .course-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    .course-card p {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+      flex-grow: 1;
+    }
+
+    .price {
+      font-size: 1.875rem;
+      font-weight: 800;
+      background: var(--gradient-green);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .price-label {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--gradient-green);
+      color: #000;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-subscribe {
+      background: var(--gradient-blue);
+    }
+
+    /* My Courses Section */
+    .my-courses {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+    }
+
+    .my-courses h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state {
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .purchased-course {
+      display: inline-block;
+      margin: 0.5rem 0.5rem 0 0;
+      padding: 0.625rem 1rem;
+      background: var(--gradient-green);
+      color: #000;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9375rem;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 4rem;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      background: rgba(10, 22, 40, 0.5);
+      backdrop-filter: blur(8px);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-secondary);
+    }
+
+    /* Success Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 500px;
+      text-align: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--gradient-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+    }
+
+    .modal h2 {
+      margin-bottom: 0.75rem;
+      font-size: 1.75rem;
+    }
+
+    .modal p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">ValQMS Academy</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#login" class="login-btn">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Professional Validation Courses</h1>
+    <p>Master Computer System Validation, QMS, Annex 11, and 21 CFR Part 11 with expert-led courses designed for pharmaceutical, biotech, and medical device professionals.</p>
+  </section>
+
+  <!-- Courses Section -->
+  <main class="container" id="courses">
+    <div class="section-header">
+      <div>
+        <h2>Available Courses</h2>
+        <p class="section-subtitle">Choose an individual course or subscribe for full access</p>
+      </div>
+    </div>
+
+    <!-- Course Grid - Dynamically Populated -->
+    <div id="courseGrid" class="course-grid"></div>
+
+    <!-- My Courses Section -->
+    <section class="my-courses" id="my-courses">
+      <h3>My Courses</h3>
+      <div id="myCoursesList" class="empty-state">
+        No purchased courses yet. After successful payment, your courses will appear here.
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-container">
+      <div>© ValQMS Academy 2025</div>
+      <div>contact@valqms.academy</div>
+    </div>
+  </footer>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <div class="success-icon">✓</div>
+      <h2>Access Granted!</h2>
+      <p id="modalMessage">Your payment was successful. You now have access to this course.</p>
+      <button class="btn btn-primary" onclick="closeModal()">Continue Learning</button>
+    </div>
+  </div>
+
+  <script>
+    // ========================================
+    // CONFIGURATION - REPLACE WITH YOUR KEYS
+    // ========================================
+    const RAZORPAY_KEY_ID = 'rzp_test_RWogQofYpuwRHW'; // TODO: Replace with your Razorpay Key ID
+
+    // ========================================
+    // COURSE DATA
+    // ========================================
+    const courses = [
+      {
+        id: 'csv-masterclass',
+        title: 'Computer System Validation (CSV) Masterclass',
+        description: 'Complete end-to-end CSV implementation: planning, risk assessment, testing strategies, and Part 11 compliance with practical templates.',
+        price: 999,
+        previewUrl: '/preview/annex11-21cfr11',
+        type: 'course'
+      },
+      {
+        id: 'annex11-21cfr11',
+        title: 'Annex 11 & 21 CFR Part 11 Deep Dive',
+        description: 'Master electronic records and signatures requirements, implement controls, and ensure audit trail compliance for GxP systems.',
+        price: 799,
+        previewUrl: '/preview/annex11-21cfr11',
+        type: 'course'
+      },
+      {
+        id: 'qms-pharma',
+        title: 'Quality Management System (QMS) for Pharma',
+        description: 'Comprehensive QMS framework: documentation hierarchy, change control, CAPA, deviations, and audit management.',
+        price: 1299,
+        previewUrl: '/preview/qms-pharma',
+        type: 'course'
+      },
+      {
+        id: 'ai-csa',
+        title: 'AI in Computer Software Assurance',
+        description: 'Modern CSA approach with AI-assisted testing, risk-based validation, and practical implementation for regulated environments.',
+        price: 1499,
+        previewUrl: '/preview/ai-csa',
+        type: 'course'
+      }
+    ];
+
+    // Subscription plan
+    const subscription = {
+      id: 'valqms-unlimited',
+      title: 'ValQMS Unlimited Subscription',
+      description: 'Get unlimited access to all courses, future updates, exclusive content, and live Q&A sessions. Billed monthly.',
+      price: 499,
+      priceLabel: '₹499/month',
+      type: 'subscription'
+    };
+
+    // ========================================
+    // RENDER COURSES
+    // ========================================
+    function renderCourses() {
+      const grid = document.getElementById('courseGrid');
+      grid.innerHTML = '';
+
+      // Add subscription card first
+      grid.appendChild(createSubscriptionCard(subscription));
+
+      // Add course cards
+      courses.forEach(course => {
+        grid.appendChild(createCourseCard(course));
+      });
+    }
+
+    function createCourseCard(course) {
+      const card = document.createElement('div');
+      card.className = 'course-card';
+      card.innerHTML = `
+        <span class="course-badge">Course</span>
+        <h3>${course.title}</h3>
+        <p>${course.description}</p>
+        <div class="price">₹${course.price}</div>
+        <div class="button-group">
+          <button class="btn btn-secondary" onclick="previewCourse('${course.id}')">Preview</button>
+          <button class="btn btn-primary" onclick="buyCourse('${course.id}')">Buy Now</button>
+        </div>
+      `;
+      return card;
+    }
+
+    function createSubscriptionCard(sub) {
+      const card = document.createElement('div');
+      card.className = 'course-card';
+      card.innerHTML = `
+        <span class="course-badge subscription-badge">Subscription</span>
+        <h3>${sub.title}</h3>
+        <p>${sub.description}</p>
+        <div class="price">${sub.priceLabel}</div>
+        <div class="button-group">
+          <button class="btn btn-secondary" onclick="subscriptionDetails()">Details</button>
+          <button class="btn btn-primary btn-subscribe" onclick="subscribe('${sub.id}')">Subscribe</button>
+        </div>
+      `;
+      return card;
+    }
+
+    // ========================================
+    // PAYMENT FLOW
+    // ========================================
+    async function buyCourse(courseId) {
+      const course = courses.find(c => c.id === courseId);
+      if (!course) {
+        alert('Course not found');
+        return;
+      }
+
+      try {
+        // Step 1: Create order on backend
+        const order = await createOrder({
+          productId: course.id,
+          amount: course.price * 100, // Convert to paise
+          currency: 'INR',
+          type: 'course'
+        });
+
+        // Step 2: Open Razorpay Checkout
+        const payment = await openRazorpayCheckout({
+          orderId: order.id,
+          amount: order.amount,
+          name: course.title,
+          description: 'One-time course purchase',
+          productId: course.id
+        });
+
+        // Step 3: Verify payment on backend (optional but recommended)
+        await verifyPayment({
+          razorpay_order_id: payment.razorpay_order_id,
+          razorpay_payment_id: payment.razorpay_payment_id,
+          razorpay_signature: payment.razorpay_signature,
+          productId: course.id
+        });
+
+        // Step 4: Grant access
+        grantAccess(course.id, course.title);
+
+      } catch (error) {
+        console.error('Payment error:', error);
+        if (error.message !== 'Payment cancelled') {
+          alert('Payment failed. Please try again.');
+        }
+      }
+    }
+
+    async function subscribe(subscriptionId) {
+      try {
+        // For subscriptions, you can use Razorpay Subscriptions API
+        // Here we're using a simple one-time payment for demonstration
+        const order = await createOrder({
+          productId: subscription.id,
+          amount: subscription.price * 100,
+          currency: 'INR',
+          type: 'subscription'
+        });
+
+        const payment = await openRazorpayCheckout({
+          orderId: order.id,
+          amount: order.amount,
+          name: subscription.title,
+          description: 'Monthly subscription',
+          productId: subscription.id
+        });
+
+        await verifyPayment({
+          razorpay_order_id: payment.razorpay_order_id,
+          razorpay_payment_id: payment.razorpay_payment_id,
+          razorpay_signature: payment.razorpay_signature,
+          productId: subscription.id
+        });
+
+        grantAccess(subscription.id, subscription.title);
+
+      } catch (error) {
+        console.error('Subscription error:', error);
+        if (error.message !== 'Payment cancelled') {
+          alert('Subscription failed. Please try again.');
+        }
+      }
+    }
+
+    // ========================================
+    // RAZORPAY INTEGRATION
+    // ========================================
+    async function createOrder(orderData) {
+      // TODO: Replace with actual backend API call
+      // This should create an order using Razorpay Orders API on your server
+      // Example backend implementation:
+      /*
+      const response = await fetch(BACKEND_CREATE_ORDER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+      
+      if (!response.ok) throw new Error('Order creation failed');
+      return await response.json();
+      */
+
+      // Demo: Return mock order (remove in production)
+      console.warn('Using demo order - implement backend integration');
+      return {
+        id: 'order_demo_' + Date.now(),
+        amount: orderData.amount,
+        currency: orderData.currency
+      };
+    }
+
+    function openRazorpayCheckout({ orderId, amount, name, description, productId }) {
+      return new Promise((resolve, reject) => {
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: amount, // Amount in paise
+          currency: 'INR',
+          name: 'ValQMS Academy',
+          description: description,
+          order_id: orderId,
+          theme: {
+            color: '#10b981'
+          },
+          handler: function (response) {
+            // Payment successful
+            resolve(response);
+          },
+          modal: {
+            ondismiss: function() {
+              // User closed the checkout form
+              reject(new Error('Payment cancelled'));
+            }
+          },
+          prefill: {
+            // You can prefill customer details if available
+            // name: 'Customer Name',
+            // email: 'customer@example.com',
+            // contact: '9999999999'
+          },
+          notes: {
+            product_id: productId
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+      });
+    }
+
+    async function verifyPayment(paymentData) {
+      // TODO: Implement backend verification
+      // This should verify the payment signature on your server
+      // and store transaction details in your database
+      /*
+      const response = await fetch(BACKEND_VERIFY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paymentData)
+      });
+      
+      if (!response.ok) throw new Error('Payment verification failed');
+      return await response.json();
+      */
+
+      // Demo: Log payment data (implement proper verification in production)
+      console.log('Payment data to verify:', paymentData);
+      return true;
+    }
+
+    // ========================================
+    // ACCESS MANAGEMENT
+    // ========================================
+    function grantAccess(productId, productTitle) {
+      // Show success modal
+      document.getElementById('modalMessage').textContent = 
+        `Your payment was successful! You now have access to "${productTitle}".`;
+      document.getElementById('successModal').classList.add('active');
+
+      // Add to My Courses section
+      const myCoursesList = document.getElementById('myCoursesList');
+      
+      // Remove empty state message
+      if (myCoursesList.classList.contains('empty-state')) {
+        myCoursesList.classList.remove('empty-state');
+        myCoursesList.innerHTML = '';
+      }
+
+      // Add purchased course badge
+      const courseBadge = document.createElement('span');
+      courseBadge.className = 'purchased-course';
+      courseBadge.textContent = productTitle;
+      myCoursesList.appendChild(courseBadge);
+
+      // TODO: Store access information in backend/database
+      // - Save transaction details
+      // - Update user's course access
+      // - Send confirmation email
+      console.log('Access granted for:', productId);
+    }
+
+    function closeModal() {
+      document.getElementById('successModal').classList.remove('active');
+    }
+
+    // ========================================
+    // OTHER ACTIONS
+    // ========================================
+    function previewCourse(courseId) {
+      const course = courses.find(c => c.id === courseId);
+      if (course) {
+        // Navigate to preview page or show preview modal
+        window.location.href = course.previewUrl;
+      }
+    }
+
+    function subscriptionDetails() {
+      alert('ValQMS Unlimited Subscription includes:\n\n' +
+            '✓ Access to all current courses\n' +
+            '✓ All future course releases\n' +
+            '✓ Exclusive templates and resources\n' +
+            '✓ Monthly live Q&A sessions\n' +
+            '✓ Community forum access\n' +
+            '✓ Priority support\n\n' +
+            'Billed monthly at ₹499. Cancel anytime.');
+    }
+
+    // ========================================
+    // INITIALIZATION
+    // ========================================
+    document.addEventListener('DOMContentLoaded', function() {
+      renderCourses();
+    });
+  </script>
+</body>
+</html>
