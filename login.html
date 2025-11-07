@@ -500,8 +500,8 @@
           password,
           options: { 
             data: { full_name: name },
-            emailRedirectTo: 'https://valqms.com/index.html'
-            //emailRedirectTo: 'http://127.0.0.1:5500/login.html'
+            //emailRedirectTo: 'https://valqms.com/index.html'
+            emailRedirectTo: 'http://127.0.0.1:5500/login.html'
           }
         });
 
@@ -573,8 +573,8 @@
       const { error } = await sb.auth.signInWithOAuth({
         provider: 'google',
         options: {
-        redirectTo: 'https://valqms.com/index.html',
-        //redirectTo: 'http://127.0.0.1:5500/login.html',
+        //redirectTo: 'https://valqms.com/index.html',
+        redirectTo: 'http://127.0.0.1:5500/login.html',
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
