@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="mesh">
+<html lang="en" data-theme="green" data-bg="mint">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>User Access Matrix Builder — ValQMS</title>
-  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
   
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -54,6 +57,175 @@
     [data-bg="dark"] body{background:#0a0e1a;position:relative}
     [data-bg="dark"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%);z-index:-1}
 
+/* Mint Background - Light Theme */
+[data-bg="mint"] body{background:#d1fae5;position:relative}
+
+[data-bg="mint"] body::before{
+  content:'';
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.08) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(52,211,153,0.08) 0%, transparent 50%);
+  z-index:-1;
+}
+
+/* Light theme text and surface overrides for mint */
+[data-bg="mint"] {
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --surface: rgba(255,255,255,0.7);
+  --surface-hover: rgba(255,255,255,0.9);
+  --border: rgba(16,185,129,0.2);
+  --glass: rgba(255,255,255,0.5);
+}
+
+[data-bg="mint"] .header-glass {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+[data-bg="mint"] .card,
+[data-bg="mint"] .how-to-use {
+  background: white;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+[data-bg="mint"] .how-to-header h3 {
+  color: #1e293b !important;
+}
+
+[data-bg="mint"] .how-to-content ol {
+  color: #1e293b !important;
+}
+
+[data-bg="mint"] .how-to-content strong {
+  color: #10b981 !important;
+}
+
+[data-bg="mint"] .toggle-icon {
+  color: #10b981 !important;
+}
+
+[data-bg="mint"] .matrix-container {
+  background: white !important;
+  border: 1px solid rgba(16,185,129,0.2) !important;
+}
+
+[data-bg="mint"] th {
+  background: rgba(16,185,129,0.1) !important;
+  color: #1e293b !important;
+}
+
+[data-bg="mint"] td {
+  color: #1e293b !important;
+}
+
+[data-bg="mint"] tr:hover {
+  background: rgba(16,185,129,0.05) !important;
+}
+
+[data-bg="mint"] input[type=text],
+[data-bg="mint"] textarea {
+  background: white !important;
+  color: #1e293b !important;
+  border-color: rgba(16,185,129,0.3) !important;
+}
+
+[data-bg="mint"] input:focus,
+[data-bg="mint"] textarea:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.15) !important;
+}
+
+[data-bg="mint"] label {
+  color: #64748b !important;
+}
+
+[data-bg="mint"] .stat-card {
+  background: white !important;
+  border: 1px solid rgba(16,185,129,0.2) !important;
+}
+
+[data-bg="mint"] .conflict-alert {
+  background: rgba(239,68,68,0.08) !important;
+  border-color: #fca5a5 !important;
+}
+
+[data-bg="mint"] .role-badge {
+  background: rgba(16,185,129,0.2) !important;
+  border: 1px solid #10b981 !important;
+  color: #10b981 !important;
+}
+
+[data-bg="mint"] .role-badge:hover {
+  background: rgba(16,185,129,0.3) !important;
+}
+
+[data-bg="mint"] .btn-secondary {
+  background: white !important;
+  border: 2px solid rgba(16,185,129,0.3) !important;
+  color: #1e293b !important;
+}
+
+[data-bg="mint"] .btn-secondary:hover {
+  background: rgba(16,185,129,0.05) !important;
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+}
+
+[data-bg="mint"] .conflict-alert h4 {
+  color: #ef4444 !important;
+}
+
+[data-bg="mint"] .conflict-alert ul {
+  color: #1e293b !important;
+}
+
+[data-bg="mint"] .matrix-container {
+  background: white;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+[data-bg="mint"] th {
+  background: rgba(16,185,129,0.1);
+  color: #1e293b;
+}
+
+[data-bg="mint"] td {
+  color: #1e293b;
+}
+
+[data-bg="mint"] tr:hover {
+  background: rgba(16,185,129,0.05);
+}
+
+[data-bg="mint"] input[type=text],
+[data-bg="mint"] textarea {
+  background: white;
+  color: #1e293b;
+  border-color: rgba(16,185,129,0.3);
+}
+
+[data-bg="mint"] input:focus,
+[data-bg="mint"] textarea:focus {
+  border-color: #10b981;
+}
+
+[data-bg="mint"] .stat-card {
+  background: white;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+[data-bg="mint"] .conflict-alert {
+  background: rgba(239,68,68,0.08);
+  border-color: #fca5a5;
+}
+
+[data-bg="mint"] label {
+  color: #64748b;
+}
+
+
     @keyframes meshMove{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(5deg)}}
     @keyframes waveMove{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
     
@@ -68,10 +240,12 @@
       overflow-x:hidden;
     }
 
-    /* GLASSMORPHISM HEADER */
-    header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:40px}
-    .header-glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.1)}
-    header .header-container{display:flex;justify-content:space-between;align-items:center;height:72px;max-width:1800px;margin:0 auto;padding:0}
+    /* GLASSMORPHISM HEADER - FIXED (match Comparision Tool) */
+    header{position:fixed;top:12px;left:0;right:0;z-index:1000;padding:0 24px;margin-bottom:40px;pointer-events:none}
+  .header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff;pointer-events:auto}
+  header .header-container{display:flex;justify-content:space-between;align-items:center;height:72px;width:100%;max-width:none;margin:0;padding:0}
+  /* Add padding to body to account for fixed header */
+  body { padding-top:72px; }
     
     .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s}
     .logo:hover{transform:translateY(-2px)}
@@ -79,9 +253,20 @@
     .logo-mark::after{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;z-index:-1;opacity:0;filter:blur(10px);transition:opacity 0.3s}
     .logo-mark:hover::after{opacity:0.7}
     .logo-mark img{width:100%;height:100%;object-fit:contain;padding:4px}
+    /* Index-style initials inside gradient logo square */
+    .logo-mark .brand-initials{
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:-0.5px;
+      color:#fff;
+      text-shadow:0 1px 2px rgba(0,0,0,0.25);
+    }
     .brand-text{display:flex;flex-direction:column}
     .brand-text h1{font-size:18px;font-weight:800;letter-spacing:-0.5px;margin:0;line-height:1.2}
-    .brand-text .subtitle{font-size:12px;color:var(--text-dim);font-weight:500}
+  .brand-text .subtitle{font-size:12px;color:var(--text-dim);font-weight:500}
+  /* Force readable brand text in header on dark glass, even under light/mint overrides */
+  header .brand-text h1, header .brand-text .subtitle { color:#fff !important; -webkit-text-fill-color:#fff !important; }
+  html[data-bg="mint"] header .brand-text h1, html[data-bg="mint"] header .brand-text .subtitle { color:#fff !important; -webkit-text-fill-color:#fff !important; }
 
     .header-controls{display:flex;gap:12px;align-items:center}
     
@@ -98,6 +283,8 @@
     .bg-preview.dots{background:#0a0e27;background-image:radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);background-size:15px 15px}
     .bg-preview.waves{background:linear-gradient(180deg, #0f172a 0%, #10b981 100%)}
     .bg-preview.dark{background:#0a0e1a}
+    .bg-preview.mint{background:linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)}
+
 
     .theme-selector{position:relative}
     .theme-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
@@ -130,7 +317,7 @@
     .btn-home{padding:10px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px var(--accent-glow)}
     .btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
 
-    .container{max-width:1800px;margin:0 auto;padding:0 24px}
+  .container{width:100%;max-width:none;margin:24px 0 0;padding:0 24px}
     
     .card{
       background:var(--glass);
@@ -262,6 +449,7 @@
       border-collapse:collapse;
       font-size:13px;
     }
+
     th{
       background:rgba(0,0,0,0.4);
       padding:14px;
@@ -275,6 +463,8 @@
       text-transform:uppercase;
       letter-spacing:0.5px;
     }
+
+
     td{
       padding:14px;
       border-bottom:1px solid var(--border);
@@ -347,6 +537,31 @@
     @media(max-width:968px){
       header{top:8px;padding:0 16px}
       .header-glass{padding:0 20px;border-radius:16px}
+      /* Index-style dark header link/control colors */
+      header .header-glass nav a { color: rgba(255,255,255,0.9) !important; }
+      header .header-glass nav a:hover { color: #fff !important; background: rgba(255,255,255,0.12); }
+      header .logo span { color: #fff !important; }
+      header .bg-btn,
+      header .theme-btn,
+      header .mobile-menu-btn,
+      header .user-badge,
+      header .btn-login {
+        background: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        color: #0f172a !important;
+        box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03) !important;
+      }
+      header .bg-btn:hover,
+      header .theme-btn:hover,
+      header .mobile-menu-btn:hover,
+      header .user-badge:hover,
+      header .btn-login:hover {
+        background: #ffffff !important;
+        border-color: var(--accent) !important;
+        color: #0f172a !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16,185,129,0.15) !important;
+      }
       .mobile-menu-btn{display:block}
       .header-controls{gap:8px}
       .bg-btn,.theme-btn{padding:10px;font-size:0}
@@ -364,7 +579,7 @@
     <div class="header-glass">
       <div class="header-container">
         <a href="index.html" class="logo">
-          <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+          <div class="logo-mark"><span class="brand-initials">VQ</span></div>
           <div class="brand-text">
             <h1>ValQMS Tools</h1>
             <div class="subtitle">User Access Matrix Builder</div>
@@ -372,40 +587,6 @@
         </a>
 
         <div class="header-controls">
-          <!-- Background Selector -->
-          <div class="bg-selector">
-            <button class="bg-btn" id="bgBtn"><span>🎨</span><span>Background</span></button>
-            <div class="bg-dropdown" id="bgDropdown">
-              <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh Gradient</span></div>
-              <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Purple Gradient</span></div>
-              <div class="bg-option" data-bg="dots"><div class="bg-preview dots"></div><span>Dot Pattern</span></div>
-              <div class="bg-option" data-bg="waves"><div class="bg-preview waves"></div><span>Wave Motion</span></div>
-              <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark Mode</span></div>
-            </div>
-          </div>
-
-          <!-- Theme Selector -->
-          <div class="theme-selector">
-            <button class="theme-btn" id="themeBtn"><span>🎨</span><span>Theme</span></button>
-            <div class="theme-dropdown" id="themeDropdown">
-              <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
-              <div class="theme-option" data-theme="cyan"><div class="theme-color cyan"></div><span>Cyan</span></div>
-              <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
-              <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
-              <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
-              <div class="theme-option" data-theme="red"><div class="theme-color red"></div><span>Red</span></div>
-              <div class="theme-option" data-theme="pink"><div class="theme-color pink"></div><span>Pink</span></div>
-              <div class="theme-option" data-theme="teal"><div class="theme-color teal"></div><span>Teal</span></div>
-              <div class="theme-option" data-theme="indigo"><div class="theme-color indigo"></div><span>Indigo</span></div>
-              <div class="theme-option" data-theme="yellow"><div class="theme-color yellow"></div><span>Yellow</span></div>
-              <div class="theme-option" data-theme="magenta"><div class="theme-color magenta"></div><span>Magenta</span></div>
-              <div class="theme-option" data-theme="emerald"><div class="theme-color emerald"></div><span>Emerald</span></div>
-              <div class="theme-option" data-theme="amber"><div class="theme-color amber"></div><span>Amber</span></div>
-              <div class="theme-option" data-theme="lime"><div class="theme-color lime"></div><span>Lime</span></div>
-              <div class="theme-option" data-theme="violet"><div class="theme-color violet"></div><span>Violet</span></div>
-            </div>
-          </div>
-
           <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
         </div>
       </div>
@@ -513,41 +694,10 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    // Theme System
-    const themeBtn=document.getElementById('themeBtn');
-    const themeDropdown=document.getElementById('themeDropdown');
-    const themeOptions=document.querySelectorAll('.theme-option');
-    themeBtn.addEventListener('click',e=>{e.stopPropagation();themeDropdown.classList.toggle('active');bgDropdown.classList.remove('active')});
-    document.addEventListener('click',()=>{themeDropdown.classList.remove('active');bgDropdown.classList.remove('active')});
-    themeDropdown.addEventListener('click',e=>e.stopPropagation());
-    themeOptions.forEach(opt=>{
-      opt.addEventListener('click',()=>{
-        const theme=opt.dataset.theme;
-        document.documentElement.setAttribute('data-theme',theme);
-        localStorage.setItem('valqmsTheme',theme);
-        themeDropdown.classList.remove('active');
-      });
-    });
-
-    // Background System
-    const bgBtn=document.getElementById('bgBtn');
-    const bgDropdown=document.getElementById('bgDropdown');
-    const bgOptions=document.querySelectorAll('.bg-option');
-    bgBtn.addEventListener('click',e=>{e.stopPropagation();bgDropdown.classList.toggle('active');themeDropdown.classList.remove('active')});
-    bgDropdown.addEventListener('click',e=>e.stopPropagation());
-    bgOptions.forEach(opt=>{
-      opt.addEventListener('click',()=>{
-        const bg=opt.dataset.bg;
-        document.documentElement.setAttribute('data-bg',bg);
-        localStorage.setItem('valqmsBg',bg);
-        bgDropdown.classList.remove('active');
-      });
-    });
-
-    // Initialize
+    // Removed theme/background selectors for tools; keep initTheme to apply saved defaults
     function initTheme(){
       const savedTheme=localStorage.getItem('valqmsTheme')||'green';
-      const savedBg=localStorage.getItem('valqmsBg')||'mesh';
+      const savedBg=localStorage.getItem('valqmsBg')||'mint';
       document.documentElement.setAttribute('data-theme',savedTheme);
       document.documentElement.setAttribute('data-bg',savedBg);
     }

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="mesh">
+<html lang="en" data-theme="green" data-bg="mint">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Change Request Details — ValQMS</title>
-<link rel="icon" href="favicon.jpg?v=5">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/x-icon" href="valqms-logo.svg" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -13,44 +15,32 @@
 [data-bg="mesh"] body{background:#0f172a;position:relative}
 [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
 @keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
-body{font-family:'Inter',sans-serif;color:var(--text);line-height:1.6;min-height:100vh}
-.container{max-width:1200px;margin:0 auto;padding:24px}
-header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:24px}
-.header-glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:18px}
-.back-btn{
-  color:var(--text-dim);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:600;
-  padding:8px 16px;
-  border-radius:8px;
-  transition:all 0.3s;
-  cursor:pointer;
-}
-.back-btn:hover{
-  color:var(--text);
-  background:var(--surface);
-}
-
-.nav-link{
-  color:var(--text-dim);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:600;
-  padding:8px 16px;
-  border-radius:8px;
-  transition:all 0.3s;
-  cursor:pointer;
-}
-.nav-link:hover{
-  color:var(--text);
-  background:var(--surface);
-}
-.nav-link.active{
-  color:var(--accent);
-  background:var(--accent-dim);
-}
+body{font-family:'Inter',sans-serif;color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;padding-top:72px}
+.container{width:100%;max-width:none;margin:24px 0 0;padding:24px}
+/* Fixed glass header (match tools/comparison) */
+header{position:fixed;top:12px;left:0;right:0;z-index:1000;padding:0 24px;pointer-events:none}
+.header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff;pointer-events:auto}
+.header-container{display:flex;justify-content:space-between;align-items:center;height:72px;width:100%;max-width:none;margin:0;padding:0 32px}
+/* Logo mark + brand text */
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s}
+.logo:hover{transform:translateY(-2px)}
+.logo-mark{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;box-shadow:0 4px 20px var(--accent-glow);transition:all 0.3s;position:relative}
+.logo-mark::after{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;z-index:-1;opacity:0;filter:blur(10px);transition:opacity 0.3s}
+.logo-mark:hover::after{opacity:0.7}
+.logo-mark .brand-initials{font-weight:900;font-size:18px;letter-spacing:-0.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.25)}
+.brand-text{display:flex;flex-direction:column;gap:2px}
+.brand-text h1{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin:0;line-height:1.2;color:#fff}
+.brand-text .subtitle{font-size:13px;color:rgba(255,255,255,0.85);font-weight:500;line-height:1.2}
+.header-controls{display:flex;gap:12px;align-items:center}
+/* Green Home button */
+.btn-home{padding:10px 20px;background:linear-gradient(135deg,#10b981,#34d399);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(16,185,129,0.4)}
+.btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,185,129,0.4)}
+/* Compact header action */
+.btn-head{padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.btn-head:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25)}
+/* White header buttons (Back, PDF) */
+header .btn-head{background:#ffffff !important;border:1px solid #e5e7eb !important;color:#0f172a !important;box-shadow:0 1px 2px rgba(15,23,42,0.06),0 1px 1px rgba(15,23,42,0.03) !important}
+header .btn-head:hover{background:#ffffff !important;border-color:var(--accent) !important;transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,0.15) !important}
 .page-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:32px}
 .page-title{font-size:28px;font-weight:800;margin-bottom:8px}
 .page-subtitle{color:var(--text-dim);font-size:14px}
@@ -131,72 +121,201 @@ header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:24px}
 @keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
 @keyframes mesh2Move{0%{transform:translate(0,0)}100%{transform:translate(-50px,40px)}}
 
-/* Selector Buttons */
-.bg-selector, .theme-selector{position:relative}
-.bg-btn, .theme-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
-.bg-btn:hover, .theme-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
-.bg-dropdown, .theme-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:180px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
-.bg-dropdown.active, .theme-dropdown.active{display:block}
-.bg-option, .theme-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;font-weight:500}
-.bg-option:hover, .theme-option:hover{background:var(--surface-hover)}
-.bg-preview, .theme-color{width:28px;height:28px;border-radius:8px;border:2px solid rgba(255,255,255,0.2)}
-.bg-preview.mesh{background:radial-gradient(circle, #10b981 0%, #6366f1 100%)}
-.bg-preview.gradient{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%)}
-.bg-preview.dark{background:#0a0e1a}
-.bg-preview.mesh2{background:radial-gradient(circle, rgba(255,0,128,0.3) 0%, transparent 50%),radial-gradient(circle, rgba(0,255,128,0.3) 0%, transparent 50%)}
-.theme-color.green{background:linear-gradient(135deg,#10b981,#34d399)}
-.theme-color.blue{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
-.theme-color.purple{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
-.theme-color.orange{background:linear-gradient(135deg,#f97316,#fb923c)}
+
+/* Mint/Light Green Background Theme */
+[data-bg="mint"] body {
+  background: #d1fae5;
+  position: relative;
+}
+
+[data-bg="mint"] body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 50%, rgba(16,185,129,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(52,211,153,0.08) 0%, transparent 50%);
+  z-index: -1;
+}
+
+/* Update colors for light theme */
+[data-bg="mint"] {
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --surface: rgba(255,255,255,0.7);
+  --surface-hover: rgba(255,255,255,0.9);
+  --border: rgba(16,185,129,0.2);
+  --glass: rgba(255,255,255,0.5);
+}
+
+/* Header glass for light theme */
+[data-bg="mint"] .header-glass {
+  /* Keep dark header like index, override any light theme */
+  background: #0f172a !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
+}
+
+/* Cards for light theme */
+[data-bg="mint"] .card,
+[data-bg="mint"] .detail-card,
+[data-bg="mint"] .section-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Status header for light theme */
+[data-bg="mint"] .status-header {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Info grid for light theme */
+[data-bg="mint"] .info-item {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(16,185,129,0.15);
+}
+
+/* Timeline for light theme */
+[data-bg="mint"] .timeline-item {
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 3px solid var(--accent);
+}
+
+[data-bg="mint"] .timeline-item::before {
+  background: var(--accent);
+  border: 3px solid #d1fae5;
+}
+
+/* Comments for light theme */
+[data-bg="mint"] .comment {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(16,185,129,0.15);
+}
+
+/* Modal for light theme */
+[data-bg="mint"] .modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+/* Dark header + light body for modals (match Manage Roles look) */
+[data-bg="mint"] .modal-header {
+  background: #0f172a;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+[data-bg="mint"] .close-modal {
+  color: #ffffff;
+}
+[data-bg="mint"] .modal-body,
+[data-bg="mint"] .modal-footer {
+  background: #ffffff;
+  color: #1e293b;
+}
+
+/* Table styling for light theme */
+[data-bg="mint"] thead {
+  background: rgba(16,185,129,0.1);
+}
+
+[data-bg="mint"] td {
+  border-bottom: 1px solid rgba(16,185,129,0.15);
+}
+
+[data-bg="mint"] tbody tr:hover {
+  background: rgba(16,185,129,0.05);
+}
+
+/* Input fields for light theme */
+[data-bg="mint"] input[type="text"],
+[data-bg="mint"] input[type="date"],
+[data-bg="mint"] textarea,
+[data-bg="mint"] select {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #1e293b;
+}
+
+/* Dropdown menus for light theme */
+[data-bg="mint"] .btn-secondary { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(16,185,129,0.3); color: #1e293b; }
+
+/* Workflow progress for light theme */
+[data-bg="mint"] .workflow-progress::before {
+  background: rgba(16,185,129,0.2);
+}
+
+[data-bg="mint"] .workflow-circle {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(16,185,129,0.3);
+}
+
+/* Tabs for light theme */
+[data-bg="mint"] .tabs {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+[data-bg="mint"] .tab {
+  color: #64748b;
+}
+
+[data-bg="mint"] .tab.active {
+  background: rgba(16,185,129,0.15);
+  color: #1e293b;
+}
+
+/* Action buttons section for light theme */
+[data-bg="mint"] .actions {
+  background: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Modal styles (match create form styling) */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:2000;padding:24px;overflow-y:auto}
+.modal.active{display:flex;align-items:center;justify-content:center}
+.modal-content{background:rgba(15,23,42,0.95);border:1px solid var(--border);border-radius:20px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-header{padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-header h2{font-size:22px;font-weight:800}
+.modal-body{padding:24px}
+.modal-footer{padding:24px;border-top:1px solid var(--border);display:flex;gap:12px;justify-content:flex-end}
+.close-modal{background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:all 0.3s}
+.close-modal:hover{background:var(--surface);color:var(--text)}
+.form-group{margin-bottom:20px}
+label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+input[type="text"],input[type="date"],textarea,select{width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:#fff;font-size:14px;font-family:inherit;transition:all 0.3s}
+textarea{min-height:100px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+
 
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
 
 <header>
-<div class="header-glass">
-  <div style="display:flex;gap:20px;align-items:center;flex:1">
-    <a href="change-management.html" class="back-btn" style="display:flex;align-items:center;gap:8px">
-      <span style="font-size:18px">←</span>
-      <span>Back</span>
-    </a>
-    <span style="color:var(--border)">|</span>
-    <a href="index.html" class="back-btn" style="display:flex;align-items:center;gap:8px">
-      <span style="font-size:18px">🏠</span>
-      <span>Home</span>
-    </a>
-  </div>
-  
-  <div style="display:flex;gap:12px;align-items:center">
-    <!-- Background Selector -->
-    <div class="bg-selector" style="position:relative">
-      <button class="bg-btn" id="bgBtn" style="padding:8px 14px;font-size:12px"><span>🎨</span></button>
-      <div class="bg-dropdown" id="bgDropdown">
-        <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh</span></div>
-        <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Gradient</span></div>
-        <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark</span></div>
-        <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
+  <div class="header-glass">
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><span class="brand-initials">VQ</span></div>
+        <div class="brand-text">
+          <h1>ValQMS Applications</h1>
+          <div class="subtitle">Change Request Details</div>
+        </div>
+      </a>
+      <div class="header-controls">
+        <a href="change-management.html" class="btn-head" aria-label="Back to Change Management">← Back</a>
+        <button class="btn-head" onclick="exportToPDF()">📄 PDF</button>
+        <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
       </div>
     </div>
-
-    <!-- Theme Selector -->
-    <div class="theme-selector" style="position:relative">
-      <button class="theme-btn" id="themeBtn" style="padding:8px 14px;font-size:12px"><span>🎨</span></button>
-      <div class="theme-dropdown" id="themeDropdown">
-        <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
-        <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
-        <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
-        <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
-      </div>
-    </div>
-
-    <button onclick="exportToPDF()" class="btn" style="padding:8px 16px;font-size:13px">📄 PDF</button>
-    <a href="change-management.html" class="btn btn-secondary" style="padding:8px 16px;font-size:13px">Close</a>
   </div>
-</div>
-</header>
+  </header>
 
 
 <div class="container">
@@ -215,6 +334,8 @@ header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:24px}
 <!-- Dynamic workflow steps -->
 </div>
 </div>
+
+ 
 
 <div class="grid-2col">
 <div>
@@ -268,6 +389,106 @@ header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:24px}
 
 </div>
 
+<!-- Edit Change Modal (same structure as New Change form) -->
+<div id="editChangeModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Change Request</h2>
+      <button class="close-modal" onclick="closeEditModal()">×</button>
+    </div>
+    <form id="editChangeForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Change Title *</label>
+          <input type="text" id="edit_changeTitle" required>
+        </div>
+        <div class="form-group">
+          <label>Description *</label>
+          <textarea id="edit_changeDescription" required></textarea>
+        </div>
+        <!-- Current vs Proposed (mandatory, placed right after Description) -->
+        <div class="form-group">
+          <label>Current State *</label>
+          <textarea id="edit_currentState" maxlength="4000" required aria-required="true" placeholder="Describe the current state/process/equipment"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Proposed Change *</label>
+          <textarea id="edit_proposedChange" maxlength="4000" required aria-required="true" placeholder="Describe the proposed change in detail"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Type *</label>
+            <select id="edit_changeType" required>
+              <option value="">Select...</option>
+              <option value="Normal">Normal</option>
+              <option value="Emergency">Emergency</option>
+              <option value="Temporary">Temporary</option>
+              <option value="Planned">Planned</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="edit_changeCategory" required>
+              <option value="">Select...</option>
+              <option value="Process Change">Process</option>
+              <option value="Equipment Change">Equipment</option>
+              <option value="Document Change">Document</option>
+              <option value="System Change">System</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Department *</label>
+            <select id="edit_changeDepartment" required>
+              <option value="">Select...</option>
+              <option value="Quality Assurance">Quality Assurance</option>
+              <option value="Production">Production</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Regulatory">Regulatory</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="edit_changePriority">
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Justification *</label>
+          <textarea id="edit_justification" required placeholder="Why is this change needed? Business and compliance rationale."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Initial Risk (optional)</label>
+          <select id="edit_changeRisk">
+            <option value="">Not assessed</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+          <div class="help-text">You can refine this during Impact/Risk Assessment</div>
+        </div>
+
+
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="edit_proposedDate" disabled>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+        <button type="submit" class="btn">Save Changes</button>
+      </div>
+    </form>
+  </div>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL='https://nufpaayytxtjihqrvtfi.supabase.co';
@@ -284,10 +505,50 @@ window.location.href='change-management.html';
 
 
 const WORKFLOW_STAGES=['Draft','Submitted for QA Review','Impact Assessment','Risk Assessment','QA Consolidation','CAB Review','Approved','Implementation','Verification','Closed'];
+// Normalize stage strings from DB to our canonical labels
+function normalizeStage(stage){
+  if(!stage) return 'Draft';
+  const s = String(stage).trim().toLowerCase();
+  const aliases = {
+    'submitted for qa review':'Submitted for QA Review',
+    'qa review':'Submitted for QA Review',
+    'impact assessment':'Impact Assessment',
+    'risk assessment':'Risk Assessment',
+    'qa consolidation':'QA Consolidation',
+    'cab review':'CAB Review',
+    'approved':'Approved',
+    'implementation':'Implementation',
+    'verification':'Verification',
+    'closed':'Closed',
+    'draft':'Draft'
+  };
+  if(aliases[s]) return aliases[s];
+  // fuzzy: find first canonical that includes the words
+  const found = WORKFLOW_STAGES.find(w=>w.toLowerCase()===s || w.toLowerCase().includes(s) || s.includes(w.toLowerCase()));
+  return found || 'Draft';
+}
+
+// Compute due date (proposed_implementation_date) based on change type
+function computeDueDateByType(type){
+  const map = { 'Emergency': 7, 'Temporary': 14, 'Planned': 21, 'Normal': 30 };
+  const days = map[type] ?? 30;
+  const d = new Date();
+  d.setHours(12,0,0,0);
+  d.setDate(d.getDate()+days);
+  return d.toISOString().slice(0,10);
+}
+
+// Get SLA days by type
+function getSlaDays(type){
+  const map = { 'Emergency': 7, 'Temporary': 14, 'Planned': 21, 'Normal': 30 };
+  return map[type] ?? 30;
+}
 
 // Global variables
 let currentUser = null;
 let changeData = null;
+// Schema flags for optional columns
+let hasCurrentState=false, hasProposedChange=false;
 
 (async function loadChangeDetails() {
   try {
@@ -311,9 +572,11 @@ let changeData = null;
     document.getElementById('changeSubtitle').textContent = `Created by ${change.initiator_name} on ${new Date(change.created_at).toLocaleDateString()}`;
     document.getElementById('changeDescription').textContent = change.description || 'No description provided';
     
-    const currentStage = change.workflow_stage || 'Draft';
-    renderWorkflowProgress(currentStage);
-    renderDetails(change);
+  const currentStage = normalizeStage(change.workflow_stage || 'Draft');
+  renderWorkflowProgress(currentStage);
+  renderDetails(change);
+  // Detect optional columns after initial load
+  await detectChangeRequestColumns();
     
   } catch (error) {
     console.error('Error:', error);
@@ -321,17 +584,37 @@ let changeData = null;
   }
 })();
 
+// Detect presence of optional columns for updates
+async function detectChangeRequestColumns(){
+  try{
+    const { data, error } = await sb
+      .from('change_requests')
+      .select('id,current_state,proposed_change')
+      .limit(1);
+    if(error){
+      hasCurrentState=false; hasProposedChange=false;
+    }else{
+      hasCurrentState=true; hasProposedChange=true;
+    }
+  }catch{
+    hasCurrentState=false; hasProposedChange=false;
+  }
+}
+
 
 function renderDetails(change){
 const details=[
-{label:'Initiator',value:change.initiator_name||'Unknown'},
-{label:'Department',value:change.department},
-{label:'Change Type',value:change.change_type},
-{label:'Category',value:change.change_category||'-'},
-{label:'Priority',value:`<span class="badge ${(change.priority||'medium').toLowerCase()}">${change.priority||'Medium'}</span>`},
-{label:'Status',value:`<span class="badge ${(change.workflow_stage||'draft').toLowerCase().replace(/\s+/g,'-')}">${change.workflow_stage||'Draft'}</span>`},
-{label:'Created',value:new Date(change.created_at).toLocaleDateString()},
-{label:'Target Date',value:change.proposed_implementation_date?new Date(change.proposed_implementation_date).toLocaleDateString():'-'}
+  {label:'Initiator',value:change.initiator_name||'Unknown'},
+  {label:'Department',value:change.department||'-'},
+  {label:'Change Type',value:change.change_type||'-'},
+  {label:'Category',value:change.change_category||'-'},
+  {label:'Priority',value:`<span class="badge ${(change.priority||'medium').toLowerCase()}">${change.priority||'Medium'}</span>`},
+  {label:'Status',value:`<span class="badge ${(change.workflow_stage||'draft').toLowerCase().replace(/\s+/g,'-')}">${change.workflow_stage||'Draft'}</span>`},
+  {label:'Created',value:new Date(change.created_at).toLocaleString('en-IN')},
+  {label:'Last Updated',value:change.updated_at?new Date(change.updated_at).toLocaleString('en-IN'):'-'},
+  {label:'Due Date',value:change.due_date?new Date(change.due_date).toLocaleDateString('en-IN'):'-'},
+  {label:'Approved At',value:change.approved_at?new Date(change.approved_at).toLocaleString('en-IN'):'-'},
+  {label:'Closed At',value:change.closed_at?new Date(change.closed_at).toLocaleString('en-IN'):'-'}
 ];
 
 let html='';
@@ -351,33 +634,157 @@ function editChange(){
     showToast('❌ Cannot edit a closed change request', 'error');
     return;
   }
-  
-  if(confirm('Are you sure you want to edit this change request?')){
-    const newTitle=prompt('Enter new title:',document.getElementById('changeTitle').textContent.split(' - ')[1]);
-    if(newTitle){
-      updateChange({title:newTitle});
-    }
-  }
+  openEditModal();
 }
 
-async function updateChange(updates){
-  try{
-    const {error}=await sb.from('change_requests')
-  .update({workflow_stage:nextStage, updated_at: new Date().toISOString()})
-  .eq('id',changeId);
-    if(error)throw error;
-    alert('✅ Change updated successfully!');
-    location.reload();
-  }catch(error){
-    console.error('Error:',error);
-    alert('❌ Error updating change: '+error.message);
+function openEditModal(){
+  const modal = document.getElementById('editChangeModal');
+  if(!modal) return;
+  // Prefill fields from loaded changeData
+  document.getElementById('edit_changeTitle').value = changeData?.title || '';
+  document.getElementById('edit_changeDescription').value = changeData?.description || '';
+  document.getElementById('edit_changeType').value = changeData?.change_type || '';
+  document.getElementById('edit_changeCategory').value = changeData?.change_category || '';
+  document.getElementById('edit_changeDepartment').value = changeData?.department || '';
+  document.getElementById('edit_changePriority').value = changeData?.priority || 'Medium';
+  document.getElementById('edit_justification').value = changeData?.justification || '';
+  const riskSel = document.getElementById('edit_changeRisk');
+  if(riskSel) riskSel.value = changeData?.overall_risk_rating || '';
+  // Prefill current/proposed if present
+  const cs = document.getElementById('edit_currentState');
+  const pc = document.getElementById('edit_proposedChange');
+  if(cs) cs.value = changeData?.current_state || '';
+  if(pc) pc.value = changeData?.proposed_change || '';
+  const d = changeData?.due_date ? new Date(changeData.due_date) : null;
+  document.getElementById('edit_proposedDate').value = d ? new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10) : '';
+  // Enable due date editing only for Draft or Rejected
+  const stageRaw = (changeData?.workflow_stage || '').toLowerCase();
+  const statusRaw = (changeData?.status || '').toLowerCase();
+  const isDraft = normalizeStage(changeData?.workflow_stage || 'Draft') === 'Draft';
+  const isRejected = stageRaw === 'rejected' || statusRaw === 'rejected';
+  const dueInput = document.getElementById('edit_proposedDate');
+  dueInput.disabled = !(isDraft || isRejected);
+  // In Draft/Rejected, restrict date to exactly the SLA date calculated from today's submission baseline
+  if(isDraft || isRejected){
+    const t = document.getElementById('edit_changeType').value;
+    const expected = computeDueDateByType(t);
+    if (expected){
+      dueInput.min = expected;
+      dueInput.max = expected;
+      // If current value deviates, snap to expected to prevent invalid state
+      if(dueInput.value !== expected){ dueInput.value = expected; }
+    }
+  }else{
+    // Clear constraints when not editable
+    dueInput.removeAttribute('min');
+    dueInput.removeAttribute('max');
   }
+  // Auto-update due date when Type changes (keeps stage-based editability)
+  document.getElementById('edit_changeType')?.addEventListener('change', ()=>{
+    const t = document.getElementById('edit_changeType').value;
+    const newDue = t ? computeDueDateByType(t) : '';
+    const di = document.getElementById('edit_proposedDate');
+    di.value = newDue;
+    // Update constraints to the new expected due date
+    if(newDue){ di.min = newDue; di.max = newDue; }
+  });
+  modal.classList.add('active');
 }
+
+function closeEditModal(){
+  const modal = document.getElementById('editChangeModal');
+  if(modal) modal.classList.remove('active');
+}
+
+// Close on backdrop click
+document.getElementById('editChangeModal')?.addEventListener('click', (e)=>{
+  if(e.target?.id === 'editChangeModal') closeEditModal();
+});
+
+// Handle form submit to update change
+document.getElementById('editChangeForm')?.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if(!currentUser){ showToast('User not authenticated','error'); return; }
+  const updates = {
+    title: document.getElementById('edit_changeTitle').value.trim(),
+    description: document.getElementById('edit_changeDescription').value.trim(),
+    change_type: document.getElementById('edit_changeType').value,
+    change_category: document.getElementById('edit_changeCategory').value,
+    department: document.getElementById('edit_changeDepartment').value,
+    priority: document.getElementById('edit_changePriority').value,
+    justification: document.getElementById('edit_justification').value.trim(),
+  due_date: document.getElementById('edit_proposedDate').value || null,
+    sla_days: (function(){ const t=document.getElementById('edit_changeType').value; const map={'Emergency':7,'Temporary':14,'Planned':21,'Normal':30}; return map[t]??30; })(),
+    overall_risk_rating: document.getElementById('edit_changeRisk')?.value || null,
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  };
+  if(hasCurrentState){ updates.current_state = (document.getElementById('edit_currentState')?.value || '').trim() || null; }
+  if(hasProposedChange){ updates.proposed_change = (document.getElementById('edit_proposedChange')?.value || '').trim() || null; }
+  try{
+    const { error } = await sb.from('change_requests').update(updates).eq('id', changeId);
+    if(error) throw error;
+    // Optional audit log
+    if(typeof logManualAudit === 'function'){
+      await logManualAudit('UPDATE', 'change_request', null, null, 'Change request updated');
+    }
+    showToast('✓ Change updated successfully','success');
+    closeEditModal();
+    setTimeout(()=> location.reload(), 500);
+  }catch(err){
+    console.error('Update error:', err);
+    showToast('Error updating change: '+err.message,'error');
+  }
+});
 
 function addComment(){
   const comment=prompt('Enter your comment:');
   if(comment){
     submitComment(comment);
+  }
+}
+
+// Handle submission from Draft: align due_date to SLA from today, then transition
+async function submitForQAReview(){
+  try{
+    if(!currentUser){ showToast('You must be logged in','error'); return; }
+    if(!changeData){ showToast('Change not loaded','error'); return; }
+    // Compute expected due date from submission day and current type
+    const typeNow = changeData.change_type || document.getElementById('edit_changeType')?.value || 'Normal';
+    const expectedDue = computeDueDateByType(typeNow);
+    const sla = getSlaDays(typeNow);
+
+    // If stored due_date differs or sla_days mismatches, update before transition
+    const storedDue = changeData.due_date ? new Date(changeData.due_date) : null;
+    const storedDueStr = storedDue ? new Date(storedDue.getTime()-storedDue.getTimezoneOffset()*60000).toISOString().slice(0,10) : '';
+    const needsUpdate = (storedDueStr !== expectedDue) || (changeData.sla_days !== sla);
+
+    if(needsUpdate){
+      const proceed = confirm(`Due Date must match SLA from today for ${typeNow}.\nExpected: ${new Date(expectedDue).toLocaleDateString('en-IN')}\nCurrent: ${storedDueStr ? new Date(storedDueStr).toLocaleDateString('en-IN') : 'N/A'}\n\nUpdate and continue?`);
+      if(!proceed){
+        showToast('Submission cancelled. Please correct Due Date.', 'warning');
+        return;
+      }
+      const { error: updErr } = await sb
+        .from('change_requests')
+        .update({
+          due_date: expectedDue,
+          sla_days: sla,
+          updated_at: new Date().toISOString(),
+          updated_by: currentUser.id
+        })
+        .eq('id', changeId);
+      if(updErr) throw updErr;
+      // Reflect locally for consistent UI
+      changeData.due_date = expectedDue;
+      changeData.sla_days = sla;
+    }
+
+    await transitionToNextStage('Submitted for QA Review');
+    closeStageModal();
+  }catch(err){
+    console.error('Submit for QA error:', err);
+    showToast('Error submitting for QA: '+err.message, 'error');
   }
 }
 
@@ -610,262 +1017,188 @@ async function loadAuditTrail(){
       throw error;
     }
     
-    console.log('Audit events loaded:', data?.length || 0);
+  console.log('Audit events loaded:', data?.length || 0);
     
-    let html='<div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px" onclick="this.remove()">';
-    html+='<div style="background:#0f172a;border:1px solid var(--border);border-radius:16px;max-width:900px;width:100%;max-height:85vh;overflow-y:auto;padding:28px" onclick="event.stopPropagation()">';
-    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;border-bottom:2px solid var(--border);padding-bottom:16px">';
-    html+='<h2 style="color:var(--text);font-size:24px;font-weight:800">🔍 Complete Audit Trail</h2>';
-    html+='<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;color:var(--text-dim);font-size:28px;cursor:pointer;width:36px;height:36px;border-radius:8px;transition:all 0.3s" onmouseover="this.style.background=\'rgba(255,255,255,0.1)\'" onmouseout="this.style.background=\'none\'">×</button>';
-    html+='</div>';
+let html=`<div class="modal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px" onclick="this.remove()">
+  <div class="modal-content" style="max-width:900px;max-height:85vh;overflow-y:auto" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title" style="margin:0">🔍 Complete Audit Trail</h3>
+      <button class="close-btn" onclick="this.closest('.modal').remove()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px">`;
+
+if(!data || data.length===0){
+  html+=`<div style="text-align:center;padding:60px 20px;color:#64748b">
+    <div style="font-size:64px;margin-bottom:16px;opacity:0.5">📋</div>
+    <p style="font-size:18px;font-weight:600;margin-bottom:8px;color:#1e293b">No Audit Records Found</p>
+    <p style="font-size:14px;color:#64748b">Audit trail will be automatically created when changes are made</p>
+  </div>`;
+}else{
+  data.forEach(a=>{
+    let actionTitle = a.action;
+    let actionIcon = '';
+    let actionColor = '#10b981';
     
-    if(!data || data.length===0){
-      html+='<div style="text-align:center;padding:60px 20px;color:var(--text-dim)">';
-      html+='<div style="font-size:64px;margin-bottom:16px;opacity:0.5">📋</div>';
-      html+='<p style="font-size:18px;font-weight:600;margin-bottom:8px">No Audit Records Found</p>';
-      html+='<p style="font-size:14px">Audit trail will be automatically created when changes are made</p>';
-      html+='</div>';
-    }else{
-      data.forEach(a=>{
-        // Map action and field to display values
-// Map action and field to display values
-let actionTitle = a.action;
-let actionIcon = '📝';
-let actionColor = '#10b981';
-
-// Action type mapping
-if(a.action === 'CREATE'){
-  actionTitle = 'Change Request Created';
-  actionIcon = '✨';
-  actionColor = '#10b981';
-} else if(a.action === 'UPDATE'){
-  if(a.field_name === 'workflow_stage'){
-    // UPDATED: Show transition with arrow
-    if(a.old_value && a.new_value){
-      actionTitle = `${a.old_value} → ${a.new_value}`;
-    } else {
-      actionTitle = 'Workflow Stage Changed';
-    }
-    actionIcon = '🔄';
-    actionColor = '#3b82f6';
-  } else if(a.field_name === 'status'){
-    // Show status transition
-    if(a.old_value && a.new_value){
-      actionTitle = `Status: ${a.old_value} → ${a.new_value}`;
-    } else {
-      actionTitle = 'Status Updated';
-    }
-    actionIcon = '📊';
-    actionColor = '#8b5cf6';
-  } else if(a.field_name === 'priority'){
-    // Show priority change
-    if(a.old_value && a.new_value){
-      actionTitle = `Priority: ${a.old_value} → ${a.new_value}`;
-    } else {
-      actionTitle = 'Priority Changed';
-    }
-    actionIcon = '⚡';
-    actionColor = '#f59e0b';
-  } else if(a.field_name === 'title'){
-    actionTitle = 'Title Modified';
-    actionIcon = '✏️';
-    actionColor = '#06b6d4';
-  } else if(a.field_name === 'description'){
-    actionTitle = 'Description Updated';
-    actionIcon = '📝';
-    actionColor = '#fb923c';
-  } else {
-    actionTitle = 'Field Updated: ' + (a.field_name || 'Unknown');
-    actionIcon = '✏️';
-    actionColor = '#fb923c';
-  }
-} else if(a.action === 'APPROVE'){
-  actionTitle = 'Change Request Approved';
-  actionIcon = '✅';
-  actionColor = '#10b981';
-} else if(a.action === 'REJECT'){
-  actionTitle = 'Change Request Rejected';
-  actionIcon = '❌';
-  actionColor = '#ef4444';
-} else if(a.action === 'SUBMIT'){
-  actionTitle = 'Submitted for Review';
-  actionIcon = '📤';
-  actionColor = '#06b6d4';
-} else if(a.action === 'SIGN'){
-  actionTitle = 'Digitally Signed';
-  actionIcon = '✍️';
-  actionColor = '#ec4899';
-} else if(a.action === 'LOCK'){
-  actionTitle = 'Record Locked';
-  actionIcon = '🔒';
-  actionColor = '#f97316';
-} else if(a.action === 'UNLOCK'){
-  actionTitle = 'Record Unlocked';
-  actionIcon = '🔓';
-  actionColor = '#06b6d4';
-}
-
-        
-        // Format field name nicely
-        let fieldDisplay = a.field_name ? a.field_name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
-        
-        html+=`<div style="background:var(--surface);padding:20px;border-radius:12px;margin-bottom:16px;border-left:4px solid ${actionColor};box-shadow:0 2px 8px rgba(0,0,0,0.2)">
-          
-          <!-- Header Section -->
-          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
-            <div style="flex:1">
-              <div style="color:${actionColor};font-size:18px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px">
-                <span>${actionIcon}</span>
-                <span>${actionTitle}</span>
-              </div>
-              
-              <!-- User Info -->
-              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-                <div style="display:flex;align-items:center;gap:6px">
-                  <span style="color:var(--text-dim);font-size:13px">👤</span>
-                  <span style="color:var(--text);font-size:14px;font-weight:600">${a.user_full_name||'System'}</span>
-                </div>`;
-        
-        // Add employee ID if available
-        if(a.user_employee_id){
-          html+=`<div style="background:var(--surface);padding:3px 10px;border-radius:6px">
-                  <span style="color:var(--text-dim);font-size:12px">ID: ${a.user_employee_id}</span>
-                </div>`;
+    // Action type mapping (keep existing logic)
+    if(a.action === 'CREATE'){
+      actionTitle = 'Change Request Created';
+      actionIcon = '✨';
+      actionColor = '#10b981';
+    }else if(a.action === 'UPDATE'){
+      if(a.field_name === 'workflow_stage'){
+        if(a.old_value && a.new_value){
+          actionTitle = `${a.old_value} → ${a.new_value}`;
+        }else{
+          actionTitle = 'Workflow Stage Changed';
         }
-        
-        html+=`<div style="display:flex;align-items:center;gap:6px">
-  <span style="color:var(--text-dim);font-size:13px">
-    ${new Date(a.timestamp_utc).toLocaleString('en-IN',{
-      day:'2-digit',
-      month:'short', 
-      year:'numeric',
-      hour:'2-digit',
-      minute:'2-digit',
-      hour12:true
-    })}
-  </span>
-</div>`;
-        
-        // Add IP address if available
-        if(a.ip_address){
-          html+=`<div style="display:flex;align-items:center;gap:6px">
-                  <span style="color:var(--text-dim);font-size:13px">🌐</span>
-                  <span style="color:var(--text-dim);font-size:12px">${a.ip_address}</span>
-                </div>`;
-        }
-        
-        html+=`</div>
+        actionIcon = '🔄';
+        actionColor = '#3b82f6';
+      }else if(a.field_name === 'status'){
+        actionTitle = a.old_value && a.new_value ? `Status: ${a.old_value} → ${a.new_value}` : 'Status Updated';
+        actionIcon = '📊';
+        actionColor = '#8b5cf6';
+      }else if(a.field_name === 'priority'){
+        actionTitle = a.old_value && a.new_value ? `Priority: ${a.old_value} → ${a.new_value}` : 'Priority Changed';
+        actionIcon = '⚠️';
+        actionColor = '#f59e0b';
+      }else if(a.field_name === 'title'){
+        actionTitle = 'Title Modified';
+        actionIcon = '✏️';
+        actionColor = '#06b6d4';
+      }else if(a.field_name === 'description'){
+        actionTitle = 'Description Updated';
+        actionIcon = '📝';
+        actionColor = '#fb923c';
+      }else{
+        actionTitle = `Field Updated: ${a.field_name || 'Unknown'}`;
+        actionIcon = '🔧';
+        actionColor = '#fb923c';
+      }
+    }else if(a.action === 'APPROVE'){
+      actionTitle = 'Change Request Approved';
+      actionIcon = '✅';
+      actionColor = '#10b981';
+    }else if(a.action === 'REJECT'){
+      actionTitle = 'Change Request Rejected';
+      actionIcon = '❌';
+      actionColor = '#ef4444';
+    }else if(a.action === 'SUBMIT'){
+      actionTitle = 'Submitted for Review';
+      actionIcon = '📤';
+      actionColor = '#06b6d4';
+    }else if(a.action === 'SIGN'){
+      actionTitle = 'Digitally Signed';
+      actionIcon = '🔏';
+      actionColor = '#ec4899';
+    }else if(a.action === 'LOCK'){
+      actionTitle = 'Record Locked';
+      actionIcon = '🔒';
+      actionColor = '#f97316';
+    }else if(a.action === 'UNLOCK'){
+      actionTitle = 'Record Unlocked';
+      actionIcon = '🔓';
+      actionColor = '#06b6d4';
+    }
+
+  let fieldDisplay = a.field_name ? a.field_name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
+
+    html+=`<div style="background:rgba(255,255,255,0.7);padding:20px;border-radius:12px;margin-bottom:16px;border-left:4px solid ${actionColor};box-shadow:0 2px 8px rgba(0,0,0,0.1);border:1px solid rgba(16,185,129,0.15)">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
+        <div style="flex:1">
+          <div style="color:${actionColor};font-size:18px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+            <span>${actionIcon}</span>
+            <span>${actionTitle}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:#64748b;font-size:13px">👤</span>
+              <span style="color:#1e293b;font-size:14px;font-weight:600">${a.user_full_name||'System'}</span>
             </div>
-          </div>`;
-        
-        // Field Name Display
-        if(a.field_name){
-          html+=`<div style="margin-bottom:12px">
-            <span style="color:var(--text-dim);font-size:12px;text-transform:uppercase;letter-spacing:0.5px">Field Changed:</span>
-            <code style="background:rgba(99,102,241,0.2);color:#a5b4fc;padding:4px 10px;border-radius:6px;font-size:13px;margin-left:8px;font-family:monospace">${fieldDisplay}</code>
-          </div>`;
-        }
-        
-// Value Changes Display - Enhanced
-if(a.old_value || a.new_value){
-  // For workflow_stage changes, show arrow transition
-  if(a.field_name === 'workflow_stage'){
-    html+=`<div style="background:var(--surface);padding:16px;border-radius:10px;margin-top:12px;text-align:center">
-      <div style="display:flex;align-items:center;justify-content:center;gap:16px;font-size:16px;font-weight:600">
-        ${a.old_value ? `<span style="color:#f87171">${a.old_value}</span>` : ''}
-        <span style="color:var(--accent);font-size:24px">→</span>
-        ${a.new_value ? `<span style="color:#34d399">${a.new_value}</span>` : ''}
-      </div>
-      <div style="color:var(--text-dim);font-size:12px;margin-top:8px">Stage Transition</div>
-    </div>`;
-  } else {
-    // For other fields, show detailed before/after
-    html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">`;
-    
-    if(a.old_value){
-      html+=`<div style="background:rgba(239,68,68,0.1);padding:12px;border-radius:8px;border-left:3px solid #ef4444">
-        <div style="color:#f87171;font-size:11px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">PREVIOUS</div>
-        <div style="color:var(--text);font-size:14px;word-break:break-word;white-space:pre-wrap">${a.old_value}</div>
-      </div>`;
-    }
-    
-    if(a.new_value){
-      html+=`<div style="background:rgba(16,185,129,0.1);padding:12px;border-radius:8px;border-left:3px solid #10b981">
-        <div style="color:#34d399;font-size:11px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">UPDATED</div>
-        <div style="color:var(--text);font-size:14px;word-break:break-word;white-space:pre-wrap">${a.new_value}</div>
-      </div>`;
-    }
-    
-    html+=`</div>`;
-  }
-}
-        
-        // Reason Display
-        if(a.reason){
-          html+=`<div style="margin-top:12px;padding:10px 14px;background:rgba(99,102,241,0.1);border-radius:8px;border-left:2px solid #6366f1">
-            <span style="color:#a5b4fc;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Reason: </span>
-            <span style="color:var(--text);font-size:13px">${a.reason}</span>
-          </div>`;
-        }
-        
-// Metadata Display (collapsible) - Cleaned up
-if(a.metadata && Object.keys(a.metadata).length > 0){
-  // Filter out redundant fields
-  const cleanMetadata = {...a.metadata};
-  delete cleanMetadata.transition_time;
-  delete cleanMetadata.to_stage;
-  delete cleanMetadata.from_stage;
-  
-  if(Object.keys(cleanMetadata).length > 0){
-    html+=`<details style="margin-top:12px">
-      <summary style="color:var(--text-dim);font-size:12px;cursor:pointer;user-select:none;padding:6px 0">📊 Technical Details</summary>
-      <pre style="margin-top:8px;padding:12px;background:rgba(15,23,42,0.5);border-radius:6px;font-size:11px;color:var(--text-dim);overflow-x:auto;border:1px solid var(--border)">${JSON.stringify(cleanMetadata, null, 2)}</pre>
-    </details>`;
-  }
-}
-        
-        // Audit Integrity Footer
-        html+=`<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="color:var(--accent);font-size:12px">✓</span>
-            <span style="color:var(--text-dim);font-size:10px;font-family:monospace">Checksum: ${a.checksum ? a.checksum.substring(0,20)+'...' : 'N/A'}</span>
-          </div>`;
-        
-        if(a.event_id){
-          html+=`<div style="color:var(--text-dim);font-size:10px">Event ID: ${a.event_id.substring(0,8)}</div>`;
-        }
-        
-        html+=`</div>
-        </div>`;
-      });
-      
-      // Summary Footer
-      const uniqueUsers = new Set(data.map(e => e.user_id)).size;
-      const updateCount = data.filter(e => e.action === 'UPDATE').length;
-      
-      html+=`<div style="margin-top:24px;padding:20px;border-top:2px solid var(--border);background:var(--surface);border-radius:12px">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;text-align:center">
-          <div>
-            <div style="color:var(--accent);font-size:28px;font-weight:800">${data.length}</div>
-            <div style="color:var(--text-dim);font-size:12px;margin-top:4px">Total Events</div>
-          </div>
-          <div>
-            <div style="color:var(--accent);font-size:28px;font-weight:800">${updateCount}</div>
-            <div style="color:var(--text-dim);font-size:12px;margin-top:4px">Modifications</div>
-          </div>
-          <div>
-            <div style="color:var(--accent);font-size:28px;font-weight:800">${uniqueUsers}</div>
-            <div style="color:var(--text-dim);font-size:12px;margin-top:4px">Unique Users</div>
+            ${a.user_employee_id ? `<div style="background:rgba(16,185,129,0.1);padding:3px 10px;border-radius:6px">
+              <span style="color:#059669;font-size:12px">ID: ${a.user_employee_id}</span>
+            </div>` : ''}
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:#64748b;font-size:13px">🕐</span>
+              <span style="color:#64748b;font-size:13px">${new Date(a.timestamp_utc).toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})}</span>
+            </div>
+            ${a.ip_address ? `<div style="display:flex;align-items:center;gap:6px">
+              <span style="color:#64748b;font-size:13px">🌐</span>
+              <span style="color:#64748b;font-size:12px">${a.ip_address}</span>
+            </div>` : ''}
           </div>
         </div>
-        <p style="color:var(--text-dim);font-size:11px;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-          🔒 This audit trail is tamper-proof and complies with 21 CFR Part 11 regulations
-        </p>
-      </div>`;
-    }
-    
-    html+='</div></div>';
-    document.body.insertAdjacentHTML('beforeend',html);
+      </div>
+      
+      ${a.field_name ? `<div style="margin-bottom:12px">
+        <span style="color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:0.5px">Field Changed:</span>
+        <code style="background:rgba(99,102,241,0.1);color:#6366f1;padding:4px 10px;border-radius:6px;font-size:13px;margin-left:8px;font-family:monospace">${fieldDisplay}</code>
+      </div>` : ''}
+      
+      ${(a.old_value && a.new_value) ? (a.field_name === 'workflow_stage' ? 
+        `<div style="background:rgba(255,255,255,0.5);padding:16px;border-radius:10px;margin-top:12px;text-align:center;border:1px solid rgba(16,185,129,0.2)">
+          <div style="display:flex;align-items:center;justify-content:center;gap:16px;font-size:16px;font-weight:600">
+            ${a.old_value ? `<span style="color:#f87171">${a.old_value}</span>` : ''}
+            <span style="color:#10b981;font-size:24px">→</span>
+            ${a.new_value ? `<span style="color:#34d399">${a.new_value}</span>` : ''}
+          </div>
+          <div style="color:#64748b;font-size:12px;margin-top:8px">Stage Transition</div>
+        </div>` :
+        `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          ${a.old_value ? `<div style="background:rgba(239,68,68,0.1);padding:12px;border-radius:8px;border-left:3px solid #ef4444;border:1px solid rgba(239,68,68,0.2)">
+            <div style="color:#f87171;font-size:11px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">PREVIOUS</div>
+            <div style="color:#1e293b;font-size:14px;word-break:break-word;white-space:pre-wrap">${a.old_value}</div>
+          </div>` : ''}
+          ${a.new_value ? `<div style="background:rgba(16,185,129,0.1);padding:12px;border-radius:8px;border-left:3px solid #10b981;border:1px solid rgba(16,185,129,0.2)">
+            <div style="color:#34d399;font-size:11px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">UPDATED</div>
+            <div style="color:#1e293b;font-size:14px;word-break:break-word;white-space:pre-wrap">${a.new_value}</div>
+          </div>` : ''}
+        </div>`) : ''}
+      
+      ${a.reason ? `<div style="margin-top:12px;padding:10px 14px;background:rgba(99,102,241,0.05);border-radius:8px;border-left:2px solid #6366f1;border:1px solid rgba(99,102,241,0.15)">
+        <span style="color:#6366f1;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Reason: </span>
+        <span style="color:#1e293b;font-size:13px">${a.reason}</span>
+      </div>` : ''}
+      
+      <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(16,185,129,0.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="color:#10b981;font-size:12px">✓</span>
+          <span style="color:#64748b;font-size:10px;font-family:monospace">Checksum: ${a.checksum ? a.checksum.substring(0,20)+'...' : 'N/A'}</span>
+        </div>
+        ${a.event_id || a.id ? `<div style="color:#64748b;font-size:10px">Event ID: ${(a.event_id||a.id).substring(0,8)}</div>` : ''}
+      </div>
+    </div>`;
+  });
+}
+
+const uniqueUsers = new Set(data.map(e => e.user_id)).size;
+const updateCount = data.filter(e => e.action === 'UPDATE').length;
+
+html+=`<div style="margin-top:24px;padding:20px;border-top:2px solid rgba(16,185,129,0.2);background:rgba(255,255,255,0.7);border-radius:12px;border:1px solid rgba(16,185,129,0.15)">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;text-align:center">
+    <div>
+      <div style="color:#10b981;font-size:28px;font-weight:800">${data.length}</div>
+      <div style="color:#64748b;font-size:12px;margin-top:4px">Total Events</div>
+    </div>
+    <div>
+      <div style="color:#10b981;font-size:28px;font-weight:800">${updateCount}</div>
+      <div style="color:#64748b;font-size:12px;margin-top:4px">Modifications</div>
+    </div>
+    <div>
+      <div style="color:#10b981;font-size:28px;font-weight:800">${uniqueUsers}</div>
+      <div style="color:#64748b;font-size:12px;margin-top:4px">Unique Users</div>
+    </div>
+  </div>
+  <p style="color:#64748b;font-size:11px;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(16,185,129,0.15)">
+    🔒 This audit trail is tamper-proof and complies with 21 CFR Part 11 regulations
+  </p>
+
+</div>
+    </div>
+  </div>
+</div>`;
+
+document.body.insertAdjacentHTML('beforeend',html);
+
     
   }catch(error){
     console.error('Error loading audit trail:',error);
@@ -891,6 +1224,24 @@ setTimeout(()=>{
   loadAttachments();
 },1000);
 
+function formatDateTime(dt){
+  if(!dt) return '-';
+  try{ return new Date(dt).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true}); }catch{ return '-'; }
+}
+
+function renderKeyDates(change){
+  const el = document.getElementById('keyDatesContent');
+  if(!el) return;
+  const rows = [
+    {label:'Created', value: formatDateTime(change.created_at)},
+    {label:'Last Updated', value: formatDateTime(change.updated_at)},
+    {label:'Proposed Date', value: change.proposed_implementation_date ? new Date(change.proposed_implementation_date).toLocaleDateString('en-IN') : '-'},
+    {label:'Approved At', value: formatDateTime(change.approved_at)},
+    {label:'Closed At', value: formatDateTime(change.closed_at)}
+  ];
+  el.innerHTML = rows.map(r=>`<div class="detail-row"><span class="detail-label">${r.label}</span><span class="detail-value">${r.value}</span></div>`).join('');
+}
+
 // ============================================
 // INTERACTIVE WORKFLOW STEPS
 // ============================================
@@ -910,7 +1261,7 @@ async function logManualAudit(action, fieldName = null, oldValue = null, newValu
       user_id: currentUser.id,
       user_full_name: currentUser.email.split('@')[0],
       user_employee_id: 'USR-' + currentUser.id.substring(0, 8),
-      timestamp_utc: new Date().toISOString(),
+      // Rely on DB default for timestamp_utc to avoid clock skew check constraint
       timestamp_local: new Date().toISOString(),
       timezone: 'Asia/Kolkata',
       field_name: fieldName,
@@ -952,7 +1303,9 @@ function renderWorkflowProgress(currentStage){
   const container=document.getElementById('workflowProgress');
   let html='';
   
-  const currentIndex = WORKFLOW_STAGES.indexOf(currentStage);
+  const normalized = normalizeStage(currentStage);
+  let currentIndex = WORKFLOW_STAGES.indexOf(normalized);
+  if(currentIndex < 0) currentIndex = 0;
 
   container.setAttribute('data-completion', currentIndex);
   
@@ -970,7 +1323,7 @@ function renderWorkflowProgress(currentStage){
     const icon = (isCompleted || isLastAndCurrent) ? '✓' : (index + 1);
     
     // Make clickable if it's current or next stage
-    const clickHandler = (isCurrent || isNextStage) ? `onclick="openStageModal('${stage}')"` : 
+  const clickHandler = (isCurrent || isNextStage) ? `onclick="openStageModal('${stage}')"` : 
                         isCompleted ? `onclick="viewStageInfo('${stage}')"` : '';
     
     const cursorStyle = (isCurrent || isNextStage) ? 'cursor:pointer' : 
@@ -994,9 +1347,9 @@ function openStageModal(stageName) {
     case 'Draft':
       modalContent = `
         <h3>Submit for QA Review</h3>
-        <p style="margin:12px 0;color:var(--text-dim)">Are you ready to submit this change request for QA review?</p>
+        <p style="margin:12px 0;color:var(--text-dim)">On submission, the Due Date will be aligned to SLA from today based on the selected Change Type.</p>
         <div style="display:flex;gap:12px;margin-top:20px">
-          <button class="btn" onclick="transitionToNextStage('Submitted for QA Review');closeStageModal()">
+          <button class="btn" onclick="submitForQAReview()">
             ✓ Submit for QA Review
           </button>
           <button class="btn btn-secondary" onclick="closeStageModal()">Cancel</button>
@@ -1151,15 +1504,18 @@ case 'Closed':
 }
 
 function showStageModal(content){
-  const modal=`
-    <div id="stageModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px">
-      <div style="background:#0f172a;border:1px solid var(--border);border-radius:16px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;padding:24px">
-        ${content}
-        <button class="btn btn-secondary" onclick="closeStageModal()" style="margin-top:16px;width:100%">Cancel</button>
+  const modal = `
+    <div id="stageModal" class="modal active">
+      <div class="modal-content">
+        <div class="modal-body">
+          ${content}
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeStageModal()">Cancel</button>
+        </div>
       </div>
-    </div>
-  `;
-  document.body.insertAdjacentHTML('beforeend',modal);
+    </div>`;
+  document.body.insertAdjacentHTML('beforeend', modal);
 }
 
 function closeStageModal(){
@@ -1188,23 +1544,22 @@ async function transitionToNextStage(nextStage) {
   console.log('Change ID:', changeId);
   
   try {
-    // Update the change request
-    const { data, error } = await sb
+    // Update the change request (no select to avoid 406 when SELECT is not allowed by RLS)
+    const { error } = await sb
       .from('change_requests')
       .update({ 
         workflow_stage: nextStage,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        updated_by: currentUser?.id || null
       })
-      .eq('id', changeId)
-      .select()
-      .single();
+      .eq('id', changeId);
     
     if (error) {
       console.error('❌ Transition error:', error);
       throw error;
     }
     
-    console.log('✓ Database updated:', data);
+    console.log('✓ Workflow stage updated to:', nextStage);
     
     // Log the transition manually (backup to trigger)
     await logManualAudit(
@@ -1217,13 +1572,14 @@ async function transitionToNextStage(nextStage) {
     
     showToast(`✓ Successfully moved to: ${nextStage}`, 'success');
     
-    // Update local data
+    // Update local data and UI immediately
     changeData.workflow_stage = nextStage;
+    renderWorkflowProgress(normalizeStage(nextStage));
     
-    // Reload the page to show updated state
+    // Reload the page shortly to refresh all sections (audit, details)
     setTimeout(() => {
       location.reload();
-    }, 1000);
+    }, 800);
     
   } catch (error) {
     console.error('❌ Error in transitionToNextStage:', error);
@@ -1258,7 +1614,8 @@ async function submitImpactAssessment() {
     // Update change request with risk rating
     await sb.from('change_requests').update({
       overall_risk_rating: risk,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      updated_by: session.user.id
     }).eq('id', changeId);
     
     // Transition to next stage
@@ -1327,7 +1684,7 @@ async function submitCABDecision(decision) {
     if (decision === 'approved') {
       updateData.approved_at = new Date().toISOString();
     }
-    
+    updateData.updated_by = currentUser?.id || null;
     await sb.from('change_requests').update(updateData).eq('id', changeId);
     
     await submitComment(`CAB Decision: ${decision.toUpperCase()} - ${comments}`);
@@ -1376,7 +1733,8 @@ async function submitVerification() {
   try {
     const updateData = {
       verification_result: result,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      updated_by: currentUser?.id || null
     };
     
     if (result === 'Passed') {
@@ -1394,59 +1752,6 @@ async function submitVerification() {
   } catch (error) {
     console.error('Error:', error);
     showToast('Error: ' + error.message, 'error');
-  }
-}
-
-async function submitCABDecision(decision){
-  const comments=document.getElementById('cabComments').value;
-  const nextStage=decision==='approved'?'Approved':'Rejected';
-  
-  try{
-await sb.from('change_requests').update({
-  workflow_stage:nextStage,
-  approved_at:decision==='approved'?new Date().toISOString():null,
-  updated_at: new Date().toISOString()
-}).eq('id',changeId);
-    
-    await addComment('CAB Decision: '+decision.toUpperCase()+'. '+comments);
-    closeStageModal();
-    alert('✅ CAB Decision recorded!');
-    location.reload();
-  }catch(error){
-    alert('❌ Error: '+error.message);
-  }
-}
-
-async function submitImplementation(){
-  const notes=document.getElementById('implNotes').value;
-  try{
-    await addComment('Implementation completed. '+notes);
-    await transitionToNextStage('Verification');
-    closeStageModal();
-  }catch(error){
-    alert('❌ Error: '+error.message);
-  }
-}
-
-async function submitVerification(){
-  const result=document.getElementById('verifyResult').value;
-  const comments=document.getElementById('verifyComments').value;
-  const nextStage=result==='Passed'?'Closed':'Implementation';
-  
-  try{
-await sb.from('change_requests').update({
-  workflow_stage:nextStage,
-  verification_result:result,
-  closed_at:result==='Passed'?new Date().toISOString():null,
-  updated_at: new Date().toISOString()
-}).eq('id',changeId);
-    
-    await addComment('Verification: '+result+'. '+comments);
-    closeStageModal();
-    alert('✅ Verification submitted!');
-    location.reload();
-  }catch(error){
-    alert('❌ Error: '+error.message);
   }
 }
 
@@ -1594,7 +1899,8 @@ async function finalizeClose() {
         workflow_stage: 'Closed',
         status: 'Closed',
         closed_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        updated_by: currentUser?.id || null
       })
       .eq('id', changeId);
     

@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en" data-bg="mint">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Risk Assessment Details — ValQMS</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="assets/theme.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;min-height:100vh;background:#d1fae5;color:#1e293b}
+    header{position:fixed;top:12px;left:0;right:0;z-index:1000;padding:0 24px;pointer-events:none}
+    .header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff;pointer-events:auto}
+    .header-container{display:flex;justify-content:space-between;align-items:center;height:72px;width:100%;max-width:none;margin:0}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:800;font-size:22px;letter-spacing:-0.7px}
+    .logo-mark{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,#10b981,#34d399);border-radius:12px;box-shadow:0 4px 20px rgba(16,185,129,0.4)}
+    .brand-initials{font-weight:900;font-size:18px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.25)}
+    .brand-text{display:flex;flex-direction:column;gap:2px}
+    .brand-text h1{font-size:20px;font-weight:800;margin:0;line-height:1.2;color:#fff}
+    .brand-text .subtitle{font-size:13px;color:rgba(255,255,255,0.8);font-weight:500}
+    .header-controls{display:flex;gap:12px;align-items:center}
+    .btn-head{padding:10px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:10px;color:#fff;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;gap:8px}
+    .btn-home{padding:10px 20px;background:linear-gradient(135deg,#10b981,#34d399);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;display:inline-flex;gap:8px}
+    .container{padding:24px;margin-top:108px}
+    .card{background:#fff;border:1px solid rgba(16,185,129,0.2);border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.06);padding:20px;margin-bottom:16px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+    .meta .item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px}
+    .meta .label{font-size:11px;color:#64748b;text-transform:uppercase;font-weight:700}
+    .meta .value{font-size:14px;font-weight:700;color:#0f172a;margin-top:4px}
+    .section-title{font-size:18px;font-weight:800;margin-bottom:8px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .btn{padding:10px 16px;border:none;border-radius:10px;background:linear-gradient(135deg,#10b981,#34d399);color:#000;font-weight:800;cursor:pointer;transition:all .15s ease}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(16,185,129,.35)}
+  .btn-secondary{background:#fff;border:1px solid #e5e7eb;color:#374151;transition:all .15s ease}
+  .btn-secondary:hover{border-color:#10b981;color:#065f46;background:#f0fdf4;box-shadow:0 2px 8px rgba(16,185,129,.15)}
+  .btn-sm{padding:6px 10px;font-size:12px;border-radius:8px}
+    table{width:100%;border-collapse:collapse}
+    thead{background:#f1f5f9}
+    th,td{padding:12px;border-bottom:1px solid #e5e7eb;font-size:13px;text-align:left}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800}
+    .badge.low{background:#d1fae5;color:#065f46}
+    .badge.medium{background:#fef3c7;color:#92400e}
+    .badge.high{background:#fed7aa;color:#9a3412}
+    .badge.critical{background:#fee2e2;color:#991b1b}
+    /* Workflow progress (like Change Management) */
+    .workflow{display:flex;justify-content:space-between;margin:12px 0 8px;position:relative}
+    .workflow::before{content:'';position:absolute;top:20px;left:0;right:0;height:2px;background:#e5e7eb}
+    .w-step{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+    .w-dot{width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:800}
+    .w-step.active .w-dot{background:#10b981;border-color:#10b981;box-shadow:0 0 0 4px rgba(16,185,129,0.15)}
+    .w-step.completed .w-dot{background:#10b981;border-color:#10b981;color:#000}
+    .w-label{font-size:11px;color:#64748b;margin-top:6px}
+    /* Modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:2000;align-items:center;justify-content:center}
+    .modal.active{display:flex}
+    .modal-content{background:#fff;border:1px solid rgba(16,185,129,0.2);border-radius:16px;max-width:900px;width:92%;max-height:90vh;overflow:auto}
+    .modal-header{background:#0f172a;color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
+    .modal-body{padding:20px 24px}
+    .modal-footer{padding:16px 24px;border-top:1px solid #e5e7eb;display:flex;gap:10px;justify-content:flex-end}
+    .close-btn{background:none;border:none;color:#fff;font-size:24px;cursor:pointer}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .form-group{display:flex;flex-direction:column}
+    .form-label{font-size:12px;font-weight:700;color:#374151;margin-bottom:6px;text-transform:uppercase}
+    .form-input,.form-select,.form-textarea{padding:12px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px}
+    .form-textarea{min-height:100px;resize:vertical}
+    @media(max-width:768px){.grid-2{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.container{margin-top:88px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-glass">
+      <div class="header-container">
+        <a href="index.html" class="logo">
+          <div class="logo-mark"><span class="brand-initials">VQ</span></div>
+          <div class="brand-text">
+            <h1>ValQMS Applications</h1>
+            <div class="subtitle">Risk Details</div>
+          </div>
+        </a>
+        <div class="header-controls">
+          <a href="riskassessment-tool.html#assessments" class="btn-head">← Back to List</a>
+          <button class="btn-head" onclick="exportToPDF()">⬇ PDF</button>
+          <a href="index.html" class="btn-home">Home</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container" id="printArea">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:12px;color:#64748b">Risk Assessment</div>
+          <h1 id="raNumber" style="margin:2px 0 6px 0">RA-</h1>
+          <div id="raTitle" style="color:#334155"></div>
+        </div>
+        <div class="toolbar">
+          <button class="btn" onclick="openStatusModal()" data-action="change-status">Change Status</button>
+        </div>
+      </div>
+      <div class="workflow" id="workflow"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Assessment Metadata</div>
+        <div class="meta" id="metaBox"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">Summary</div>
+        <div id="summaryBox" style="color:#475569;font-size:14px">Loading…</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="section-title">Risk Items</div>
+        <div class="toolbar">
+          <button class="btn-secondary" onclick="exportItemsCSV()">Export CSV</button>
+          <button class="btn" onclick="openItemModal()" data-action="add-risk">+ Add Risk Item</button>
+        </div>
+      </div>
+      <div class="table-container" id="itemsTableContainer" style="max-height:60vh;overflow:auto">
+        <table>
+          <thead><tr><th>#</th><th>Failure Mode</th><th>S</th><th>O</th><th>D</th><th>RPN</th><th>Level</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="itemsBody"><tr><td colspan="9" style="text-align:center;padding:32px;color:#6b7280">Loading…</td></tr></tbody>
+        </table>
+        <div id="itemsLoadMore" style="text-align:center;padding:10px;color:#64748b;display:none">Loading more…</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Audit Trail</div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Date/Time</th><th>Action</th><th>Field</th><th>By</th><th>Details</th></tr></thead>
+          <tbody id="auditBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Discussions / Comments -->
+    <div class="card" id="commentsCard">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="section-title">Discussions</div>
+        <div style="font-size:12px;color:#64748b">Live comments with @mentions and reactions</div>
+      </div>
+      <div id="commentsList" style="margin-top:8px"></div>
+      <div style="margin-top:12px">
+        <textarea id="commentInput" class="form-textarea" placeholder="Add a comment. Use @ to mention…"></textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+          <button class="btn-secondary" onclick="clearCommentBox()">Clear</button>
+          <button class="btn" onclick="postComment()">Comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Risk Item Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title">Add Risk Item</h2><button class="close-btn" onclick="closeItemModal()">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Item # (auto)</label><input id="itemNumber" class="form-input" placeholder="Auto-assigned" disabled /></div>
+          <div class="form-group"><label class="form-label">Process Step</label><input id="processStep" class="form-input" /></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Failure Mode</label><textarea id="failureMode" class="form-textarea"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Effects</label><textarea id="effects" class="form-textarea"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Causes</label><textarea id="causes" class="form-textarea"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Current Controls</label><textarea id="controls" class="form-textarea"></textarea></div>
+          <div class="form-group"><label class="form-label">Severity</label><input id="severity" type="number" min="1" max="10" value="1" class="form-input" /></div>
+          <div class="form-group"><label class="form-label">Occurrence</label><input id="occurrence" type="number" min="1" max="10" value="1" class="form-input" /></div>
+          <div class="form-group"><label class="form-label">Detection</label><input id="detection" type="number" min="1" max="10" value="1" class="form-input" /></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Recommended Actions</label><textarea id="recommendedActions" class="form-textarea"></textarea></div>
+          <div class="form-group"><label class="form-label">Responsibility</label><input id="responsibility" class="form-input" /></div>
+          <div class="form-group"><label class="form-label">Target Date</label><input id="targetDate" type="date" class="form-input" /></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-secondary" onclick="closeItemModal()">Cancel</button><button class="btn" onclick="submitItem()">Add</button></div>
+    </div>
+  </div>
+
+  <!-- Change Status Modal -->
+  <div id="statusModal" class="modal"><div class="modal-content">
+    <div class="modal-header"><h2 class="modal-title">Change Status</h2><button class="close-btn" onclick="closeStatusModal()">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">New Status</label>
+        <select id="newStatus" class="form-select">
+          <option>Draft</option>
+          <option>Under Review</option>
+          <option>Approved</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Comment</label><textarea id="statusComment" class="form-textarea" placeholder="Reason or note"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" onclick="closeStatusModal()">Cancel</button><button class="btn" onclick="submitStatusChange()">Update</button></div>
+  </div></div>
+
+  <!-- View Risk Item Modal -->
+  <div id="viewItemModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title">Risk Item Details</h2><button class="close-btn" onclick="closeViewItemModal()">&times;</button></div>
+      <div class="modal-body" id="viewItemBody">
+        <!-- Filled dynamically -->
+      </div>
+      <div class="modal-footer"><button class="btn-secondary" onclick="closeViewItemModal()">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Edit Risk Item Modal -->
+  <div id="editItemModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title">Edit Risk Item</h2><button class="close-btn" onclick="closeEditItemModal()">&times;</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="editItemId" />
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Item #</label><input id="editItemNumber" class="form-input" disabled /></div>
+          <div class="form-group"><label class="form-label">Status</label>
+            <select id="editStatus" class="form-select">
+              <option>Open</option>
+              <option>In Progress</option>
+              <option>Closed</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Process Step</label><input id="editProcessStep" class="form-input" /></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Failure Mode</label><textarea id="editFailureMode" class="form-textarea"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Effects</label><textarea id="editEffects" class="form-textarea"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Causes</label><textarea id="editCauses" class="form-textarea"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Current Controls</label><textarea id="editControls" class="form-textarea"></textarea></div>
+
+          <div class="form-group"><label class="form-label">Severity (S)</label><input id="editSeverity" type="number" min="1" max="10" class="form-input" oninput="calcEditRPN()" /></div>
+          <div class="form-group"><label class="form-label">Occurrence (O)</label><input id="editOccurrence" type="number" min="1" max="10" class="form-input" oninput="calcEditRPN()" /></div>
+          <div class="form-group"><label class="form-label">Detection (D)</label><input id="editDetection" type="number" min="1" max="10" class="form-input" oninput="calcEditRPN()" /></div>
+          <div class="form-group"><label class="form-label">Target Date</label><input id="editTargetDate" type="date" class="form-input" /></div>
+          <div class="form-group"><label class="form-label">Responsibility</label><input id="editResponsibility" class="form-input" /></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Mitigation Actions</label><textarea id="editMitigation" class="form-textarea" placeholder="Describe actions implemented"></textarea></div>
+          <div class="form-group" style="grid-column:1/-1"><label class="form-label">Recommended Actions</label><textarea id="editRecommendations" class="form-textarea"></textarea></div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="section-title">Residual Risk (Post-Mitigation)</div>
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Residual Severity (S)</label><input id="resSeverity" type="number" min="1" max="10" class="form-input" oninput="calcResidualRPN()" /></div>
+            <div class="form-group"><label class="form-label">Residual Occurrence (O)</label><input id="resOccurrence" type="number" min="1" max="10" class="form-input" oninput="calcResidualRPN()" /></div>
+            <div class="form-group"><label class="form-label">Residual Detection (D)</label><input id="resDetection" type="number" min="1" max="10" class="form-input" oninput="calcResidualRPN()" /></div>
+            <div class="form-group"><label class="form-label">Residual RPN</label><input id="resRpn" class="form-input" disabled /></div>
+            <div class="form-group"><label class="form-label">Residual Level</label><input id="resLevel" class="form-input" disabled /></div>
+          </div>
+          <div style="font-size:12px;color:#64748b">Note: Residual values are calculated for decision-making and logged in audit. The item’s stored RPN remains based on pre-mitigation S/O/D.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeEditItemModal()">Cancel</button>
+        <button class="btn" onclick="submitEditItem()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mitigation Actions Modal -->
+  <div id="mitigationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title">Mitigation Actions — <span id="mitItemLabel"></span></h2><button class="close-btn" onclick="closeMitigationModal()">&times;</button></div>
+      <div class="modal-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap">
+          <div style="font-size:13px;color:#64748b">Track actions, owners, due dates, and post-mitigation effectiveness.</div>
+          <div><button class="btn btn-sm" onclick="openAddMitigation()">+ Add Action</button></div>
+        </div>
+        <div id="mitList"></div>
+        <div id="mitForm" style="display:none;margin-top:12px">
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Title</label><input id="mitTitle" class="form-input" placeholder="e.g., Add automatic sensor check"/></div>
+            <div class="form-group"><label class="form-label">Owner</label><input id="mitOwner" class="form-input" placeholder="Owner name or email"/></div>
+            <div class="form-group"><label class="form-label">Target Date</label><input id="mitTarget" type="date" class="form-input"/></div>
+            <div class="form-group"><label class="form-label">Status</label>
+              <select id="mitStatus" class="form-select">
+                <option>Open</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+              </select>
+            </div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Description</label><textarea id="mitDesc" class="form-textarea" placeholder="Describe the mitigation action"></textarea></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Milestones (comma-separated)</label><input id="mitMilestones" class="form-input" placeholder="Define steps or checkpoints"/></div>
+            <div class="form-group"><label class="form-label">Effectiveness (1-5)</label><input id="mitEffectiveness" type="number" min="1" max="5" class="form-input" placeholder="Set when Completed"/></div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button class="btn-secondary" onclick="cancelMitigationForm()">Cancel</button>
+            <button class="btn" onclick="submitMitigation()">Save Action</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approvals Action Modal -->
+  <div id="approvalModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title" id="approvalModalTitle">Approval</h2><button class="close-btn" onclick="closeApprovalModal()">&times;</button></div>
+      <div class="modal-body">
+        <input type="hidden" id="approvalTaskId" />
+        <div class="form-grid">
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label" id="approvalCommentLabel">Comment</label>
+            <textarea id="approvalComment" class="form-textarea" placeholder="Add a short note (required for rejection)"></textarea>
+          </div>
+          <div class="form-group" id="delegateTargetGroup" style="display:none">
+            <label class="form-label">Delegate To (email or user id)</label>
+            <input id="delegateTarget" class="form-input" placeholder="user@example.com"/>
+          </div>
+        </div>
+        <div style="font-size:12px;color:#64748b;margin-top:8px" id="approvalEsignHint">Note: An e-signature may be required.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeApprovalModal()">Cancel</button>
+        <button class="btn" id="approvalPrimaryBtn" onclick="submitApprovalAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/access-control.js"></script>
+  <script>
+  const SUPABASE_URL='https://nufpaayytxtjihqrvtfi.supabase.co';
+    const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+  const { createClient } = supabase; const sb = createClient(SUPABASE_URL,SUPABASE_KEY);
+  const q = new URLSearchParams(location.search); const raId = q.get('id');
+  let RA=null, ITEMS=[];
+  // Pagination for items
+  let ITEMS_PAGE=0, ITEMS_PAGE_SIZE=100, ITEMS_HAS_MORE=true, ITEMS_LOADING=false;
+  // Mitigation state
+  let CURRENT_ITEM_ID=null; let EDITING_MIT_ID=null; let MIT_CACHE=[];
+  let MIT_BY_ITEM = new Map();
+  // Schema detection flags
+  let hasMitDescription=false;
+  let hasMitOwnerId=false;
+  // Auth state
+  let CURRENT_USER=null;
+  // Approvals state
+  let APPROVALS_SUPPORTED=false; let APPROVAL_INSTANCE=null; let APPROVAL_TASKS=[]; let APPROVAL_ACTION_MODE=null;
+  // Notifications & Profiles
+  let hasNotifications=false; let hasProfiles=false;
+  // Comments & Reactions state
+  let COMMENTS=[]; let hasComments=false; let hasReactions=false; let hasCommentEdits=false; let commentsRealtime=null;
+  let COMMENTS_STATE = { limit:50, oldest:null, loading:false, hasMore:true };
+  // Realtime subscriptions tracking
+  const SUBS=[];
+  function trackSub(ch){ if(ch) SUBS.push(ch); return ch; }
+  function cleanupSubs(){ try{ SUBS.splice(0).forEach(ch=>{ try{ ch.unsubscribe && ch.unsubscribe(); }catch(_){} }); }catch(_){} }
+
+  // Lightweight client-side cache with TTL and entity-aware invalidation
+  const CACHE = new Map(); // key -> { data, expires, ids:Set<string> }
+  const CACHE_IDX = new Map(); // table:id -> Set<cacheKey>
+  const CACHE_TTL_MS = 5*60*1000;
+  function cacheKey(table, filterKey, sort){ return `${table}:${filterKey||'*'}:${sort||'*'}`; }
+  function cacheGet(key){ const e = CACHE.get(key); if(!e) return null; if(Date.now()>e.expires){ CACHE.delete(key); return null; } return e.data; }
+  function cacheSet(key, data, ttlMs=CACHE_TTL_MS, opts){ const rec={ data, expires: Date.now()+ttlMs, ids: new Set((opts?.ids)||[]) }; CACHE.set(key, rec); if(opts?.table && rec.ids.size){ for(const id of rec.ids){ const idxKey = `${opts.table}:${id}`; const set = CACHE_IDX.get(idxKey)||new Set(); set.add(key); CACHE_IDX.set(idxKey, set); } } }
+  function cacheInvalidateEntity(table, id){ const idxKey=`${table}:${id}`; const set=CACHE_IDX.get(idxKey); if(set){ for(const k of set){ CACHE.delete(k); } CACHE_IDX.delete(idxKey); } CACHE.delete(cacheKey(table, `id=${id}`, '*')); }
+
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      if(!raId){ alert('Missing risk assessment id'); window.location.href='riskassessment-tool.html'; return; }
+      await initRBAC();
+      await initAuth();
+      await detectRiskItemResidualColumns();
+      await loadData();
+      await detectMitigationColumns();
+      await detectNotificationsTable();
+      await detectProfilesTable();
+      await detectApprovalTables();
+      await loadApprovals();
+      await detectCommentsTables();
+      await loadComments(true);
+      await subscribeComments();
+      setupItemsInfiniteScroll();
+      window.addEventListener('beforeunload', cleanupSubs);
+    });
+
+    // Detect whether residual columns exist on risk_items to avoid failing updates
+    let hasResidualCols = false;
+    async function detectRiskItemResidualColumns(){
+      try{
+        const { data, error } = await sb.from('risk_items').select('residual_severity').limit(1);
+        if(!error && data) hasResidualCols = true;
+      }catch(e){ hasResidualCols = false; }
+    }
+
+    async function initAuth(){
+      try{
+        const { data: { user } } = await sb.auth.getUser();
+        CURRENT_USER = user || null;
+      }catch(_){ CURRENT_USER = null; }
+    }
+
+    // Detect optional columns for mitigation_actions to avoid insert errors
+    async function detectMitigationColumns(){
+      try{
+        const descProbe = await sb.from('mitigation_actions').select('description').limit(1);
+        hasMitDescription = !descProbe.error;
+        const ownerProbe = await sb.from('mitigation_actions').select('owner_id').limit(1);
+        hasMitOwnerId = !ownerProbe.error;
+      }catch(_){ hasMitDescription = false; }
+    }
+
+    async function detectNotificationsTable(){
+      try{ const pb = await sb.from('notifications').select('id').limit(1); hasNotifications = !pb.error; }catch(_){ hasNotifications=false; }
+    }
+    async function detectProfilesTable(){
+      try{ const pb = await sb.from('profiles').select('id').limit(1); hasProfiles = !pb.error; }catch(_){ hasProfiles=false; }
+    }
+
+    // Approvals detection and load
+    async function detectApprovalTables(){
+      try{
+        const probe = await sb.from('approval_instances').select('id').limit(1);
+        APPROVALS_SUPPORTED = !probe.error;
+      }catch(_){ APPROVALS_SUPPORTED=false; }
+    }
+
+    async function loadApprovals(){
+      try{
+        if(!APPROVALS_SUPPORTED) { renderApprovalsCard(); return; }
+        const { data: inst } = await sb.from('approval_instances').select('*').eq('ra_id', raId).order('created_at',{ascending:false}).limit(1).maybeSingle();
+        APPROVAL_INSTANCE = inst || null;
+        if(APPROVAL_INSTANCE){
+          const { data: tasks } = await sb.from('approval_tasks').select('*').eq('instance_id', APPROVAL_INSTANCE.id).order('step_index, created_at');
+          APPROVAL_TASKS = tasks||[];
+        } else { APPROVAL_TASKS = []; }
+        renderApprovalsCard();
+        await ensureOverdueNotificationsForApprovals();
+      }catch(e){ console.warn('Load approvals failed', e); renderApprovalsCard(String(e?.message||'Failed to load approvals')); }
+    }
+
+    function renderApprovalsCard(errorMsg){
+      // Ensure a card exists; place it after the Audit Trail card or at the end
+      const container = document.getElementById('printArea');
+      let card = document.getElementById('approvalsCard');
+      if(!card){
+        card = document.createElement('div'); card.className='card'; card.id='approvalsCard';
+        container.appendChild(card);
+      }
+      const header = `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div class="section-title">Approvals</div>${APPROVALS_SUPPORTED && !APPROVAL_INSTANCE?'<button class="btn" onclick="startApproval()" data-action="approve">Start Approval</button>':''}</div>`;
+      if(!APPROVALS_SUPPORTED){ card.innerHTML = `${header}<div style="padding:12px;color:#64748b">Approvals not configured in database. Create tables approval_instances and approval_tasks to enable.</div>`; return; }
+      if(errorMsg){ card.innerHTML = `${header}<div style="padding:12px;color:#991b1b;background:#fee2e2;border-left:4px solid #ef4444;border-radius:8px">${errorMsg}</div>`; return; }
+      if(!APPROVAL_INSTANCE){ card.innerHTML = `${header}<div style="padding:12px;color:#64748b">No approval in progress. Click "Start Approval" to launch the workflow.</div>`; return; }
+
+      // Group tasks by step
+      const steps = [...new Set((APPROVAL_TASKS||[]).map(t=>t.step_index))].sort((a,b)=>a-b);
+      const me = CURRENT_USER?.id;
+      const rows = steps.map(si => {
+        const group = APPROVAL_TASKS.filter(t=>t.step_index===si);
+        const allApproved = group.every(t=>t.status==='Approved');
+        const anyRejected = group.some(t=>t.status==='Rejected');
+        const status = anyRejected? 'Rejected' : (allApproved? 'Approved':'In Progress');
+        const items = group.map(t=>{
+          const mine = me && (t.assigned_to === me);
+          const overdue = t.required_by && t.status==='Pending' && new Date(t.required_by) < new Date();
+          const actionBtns = mine && t.status==='Pending' ? `
+              <button class="btn btn-sm" onclick="openApprovalModal('approve','${t.id}')">Approve</button>
+              <button class="btn-secondary btn-sm" onclick="openApprovalModal('reject','${t.id}')">Reject</button>
+              <button class="btn-secondary btn-sm" onclick="openApprovalModal('delegate','${t.id}')">Delegate</button>
+            `: '';
+          return `<tr>
+            <td>${t.assigned_to_name||t.assigned_to||'-'}</td>
+            <td>${t.status}${overdue? ' <span class="badge critical">Overdue</span>':''}</td>
+            <td>${t.required_by? new Date(t.required_by).toLocaleDateString(): '-'}</td>
+            <td>${t.completed_at? new Date(t.completed_at).toLocaleString(): '-'}</td>
+            <td>${t.comment||'-'}</td>
+            <td>${actionBtns}</td>
+          </tr>`;
+        }).join('');
+        return `<div class="card" style="margin:8px 0;background:#f8fafc"><div class="section-title">Step ${si+1} — ${status}</div>
+          <div class="table-container"><table><thead><tr><th>Approver</th><th>Status</th><th>Due</th><th>Completed</th><th>Comment</th><th>Actions</th></tr></thead><tbody>${items||'<tr><td colspan="6">No tasks</td></tr>'}</tbody></table></div></div>`;
+      }).join('');
+
+      const instStatus = APPROVAL_INSTANCE.status || 'In Progress';
+      card.innerHTML = `${header}
+        <div style="font-size:13px;color:#475569;margin-bottom:8px">Workflow Status: <strong>${instStatus}</strong></div>
+        ${rows||'<div style="padding:12px">No tasks</div>'}`;
+    }
+
+    async function startApproval(){
+      try{
+        // Optional: require e-sign
+        if(window.AccessControl?.esign){ await window.AccessControl.esign('approve'); }
+        // Try to fetch rule-driven plan, else fallback
+        let plan = await fetchApprovalPlanFromRules();
+        if(!plan || !plan.steps || !plan.steps.length){ plan = defaultApprovalPlan(RA); }
+        // Create instance
+        const instPayload = { ra_id: raId, status:'In Progress', current_step:0, created_by: CURRENT_USER?.id||null, created_by_name: CURRENT_USER?.email||null };
+        const { data: instData, error: instErr } = await sb.from('approval_instances').insert([instPayload]).select();
+        if(instErr) throw instErr; const instance = Array.isArray(instData)? instData[0]: instData;
+        // Create tasks
+        const tasks = [];
+        plan.steps.forEach((step, idx)=>{
+          const due = step.sla_days? new Date(Date.now()+ step.sla_days*86400000).toISOString().slice(0,10): null;
+          (step.approvers||[]).forEach(ap=>{
+            tasks.push({ instance_id: instance.id, step_index: idx, assigned_to: ap.id||null, assigned_to_name: ap.name||ap.email||null, status:'Pending', required_by: due });
+          });
+        });
+        if(tasks.length){ const { error: taskErr } = await sb.from('approval_tasks').insert(tasks); if(taskErr) throw taskErr; }
+        APPROVAL_INSTANCE = instance; await loadApprovals();
+        await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'CREATE', field_changed:'approval_instance', old_value:null, new_value: JSON.stringify({plan, instance}), changed_by: CURRENT_USER?.email||CURRENT_USER?.id||'system', comments:'Approval started' }]);
+      }catch(e){ console.warn('Start approval failed', e); alert('Failed to start approval'+(e?.message?': '+e.message:'')); }
+    }
+
+    async function fetchApprovalPlanFromRules(){
+      try{
+        const { data: rules, error } = await sb.from('approval_rules').select('*').eq('active', true);
+        if(error) return null;
+        // Very simple evaluator: pick highest matching rule by priority
+        const rl = (rules||[]).filter(r=>{
+          const matchCat = !r.category || r.category===RA.category;
+          const matchDept = !r.department || r.department===RA.department;
+          const matchLevel = !r.risk_level || r.risk_level===RA.risk_level;
+          const rpnOk = !r.min_rpn || (Number(RA.max_rpn||0) >= Number(r.min_rpn));
+          return matchCat && matchDept && matchLevel && rpnOk;
+        }).sort((a,b)=> (b.priority||0)-(a.priority||0))[0];
+        if(!rl) return null;
+        // Expect rl.steps to be jsonb array: [{approvers:[{id,email,name,role}], sla_days: int}]
+        return rl.steps ? { steps: rl.steps } : null;
+      }catch(_){ return null; }
+    }
+
+    function defaultApprovalPlan(ra){
+      const high = (ra.risk_level||'').toLowerCase();
+      if(high==='high' || high==='critical'){
+        return { steps:[
+          { approvers:[{name:'Process Owner'},{name:'QA'}], sla_days:3 },
+          { approvers:[{name:'Quality Head'}], sla_days:3 },
+        ]};
+      }
+      return { steps:[ { approvers:[{name:'Process Owner'}], sla_days:3 }, { approvers:[{name:'QA'}], sla_days:3 } ] };
+    }
+
+    function openApprovalModal(mode, taskId){
+      APPROVAL_ACTION_MODE = mode;
+      document.getElementById('approvalTaskId').value = taskId;
+      const title = mode==='approve'? 'Approve' : mode==='reject'? 'Reject' : 'Delegate';
+      document.getElementById('approvalModalTitle').textContent = title;
+      document.getElementById('approvalCommentLabel').textContent = mode==='reject'? 'Rejection Reason (required)': 'Comment';
+      document.getElementById('delegateTargetGroup').style.display = mode==='delegate' ? 'block':'none';
+      document.getElementById('approvalModal').classList.add('active');
+    }
+    function closeApprovalModal(){ document.getElementById('approvalModal').classList.remove('active'); document.getElementById('approvalComment').value=''; document.getElementById('delegateTarget').value=''; }
+
+    async function submitApprovalAction(){
+      try{
+        const taskId = document.getElementById('approvalTaskId').value;
+        const comment = (document.getElementById('approvalComment').value||'').trim();
+        if(APPROVAL_ACTION_MODE==='reject' && !comment){ alert('Rejection reason is required'); return; }
+        // Optional e-sign
+        if(window.AccessControl?.esign){ await window.AccessControl.esign('approve'); }
+        if(APPROVAL_ACTION_MODE==='approve'){
+          await completeTask(taskId, 'Approved', comment);
+        } else if(APPROVAL_ACTION_MODE==='reject'){
+          await completeTask(taskId, 'Rejected', comment);
+          // Mark instance rejected
+          if(APPROVAL_INSTANCE){ await sb.from('approval_instances').update({ status:'Rejected' }).eq('id', APPROVAL_INSTANCE.id); }
+        } else if(APPROVAL_ACTION_MODE==='delegate'){
+          const target = (document.getElementById('delegateTarget').value||'').trim();
+          if(!target){ alert('Enter delegate email or user id'); return; }
+          await delegateTask(taskId, target, comment);
+        }
+        closeApprovalModal();
+        await evaluateApprovalProgress();
+        await loadApprovals();
+      }catch(e){ console.warn('Approval action failed', e); alert('Failed to perform action'+(e?.message?': '+e.message:'')); }
+    }
+
+    async function completeTask(taskId, status, comment){
+      const patch = { status, comment: comment||null, completed_at: new Date().toISOString() };
+      const { error } = await sb.from('approval_tasks').update(patch).eq('id', taskId);
+      if(error) throw error;
+      await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'approval_task', old_value:null, new_value: JSON.stringify({task_id: taskId, ...patch}), changed_by: CURRENT_USER?.email||CURRENT_USER?.id||'system', comments:`Task ${status}` }]);
+    }
+
+    async function delegateTask(taskId, target, comment){
+      // Try to resolve target to profile id if profiles table exists
+      let resolvedId = null;
+      if(hasProfiles){ try{ const rid = await resolveProfileId(target); if(rid) resolvedId = rid; }catch(_){} }
+      const patch = { assigned_to_name: target, status: 'Pending', comment: comment||null };
+      if(resolvedId) patch.assigned_to = resolvedId;
+      const { error } = await sb.from('approval_tasks').update(patch).eq('id', taskId);
+      if(error) throw error;
+      await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'approval_task', old_value:null, new_value: JSON.stringify({task_id: taskId, delegated_to: target}), changed_by: CURRENT_USER?.email||CURRENT_USER?.id||'system', comments:'Delegated' }]);
+    }
+
+    async function resolveProfileId(identifier){
+      // Try email match first, fallback to name
+      if(!identifier) return null;
+      const em = identifier.includes('@');
+      if(em){ const { data } = await sb.from('profiles').select('id').eq('email', identifier).limit(1); return (data&&data[0]?.id)||null; }
+      const { data } = await sb.from('profiles').select('id').eq('full_name', identifier).limit(1);
+      return (data&&data[0]?.id)||null;
+    }
+
+    async function ensureOverdueNotificationsForApprovals(){
+      try{
+        if(!hasNotifications || !APPROVAL_INSTANCE || !Array.isArray(APPROVAL_TASKS)) return;
+        const today = new Date(); today.setHours(0,0,0,0);
+        const overdue = APPROVAL_TASKS.filter(t=> t.required_by && t.status==='Pending' && new Date(t.required_by) < today);
+        for(const t of overdue){
+          // Skip if we already have an open notification for this task
+          const { data: existing } = await sb.from('notifications')
+            .select('id,status')
+            .eq('entity_table','approval_tasks')
+            .eq('entity_id', t.id)
+            .eq('type','approval_overdue')
+            .limit(1);
+          if(existing && existing.length) continue;
+          const payload = {
+            type: 'approval_overdue',
+            entity_table: 'approval_tasks',
+            entity_id: t.id,
+            recipient_id: t.assigned_to||null,
+            recipient_email: t.assigned_to_name||null,
+            message: `Approval task overdue for ${(RA?.ra_number)||'RA'} — Step ${Number(t.step_index)+1}`,
+            severity: 'high',
+            status: 'open'
+          };
+          await sb.from('notifications').insert([payload]);
+        }
+      }catch(e){ console.warn('Overdue notifications failed', e); }
+    }
+
+    async function evaluateApprovalProgress(){
+      if(!APPROVAL_INSTANCE) return;
+      // Check if any rejection
+      const { data: tasks } = await sb.from('approval_tasks').select('*').eq('instance_id', APPROVAL_INSTANCE.id);
+      const byStep = (tasks||[]).reduce((m,t)=>{ (m[t.step_index]=m[t.step_index]||[]).push(t); return m; },{});
+      const steps = Object.keys(byStep).map(n=>Number(n)).sort((a,b)=>a-b);
+      // Find first step with pending
+      for(const si of steps){
+        const group = byStep[si];
+        if(group.some(t=>t.status==='Rejected')){
+          await sb.from('approval_instances').update({ status:'Rejected', current_step: si }).eq('id', APPROVAL_INSTANCE.id);
+          await sb.from('risk_assessments').update({ status:'Under Review' }).eq('id', raId); // keep under review but rejected
+          return;
+        }
+        if(group.every(t=>t.status==='Approved')){ continue; }
+        // This is the active step
+        await sb.from('approval_instances').update({ status:'In Progress', current_step: si }).eq('id', APPROVAL_INSTANCE.id);
+        return;
+      }
+      // All steps approved
+      await sb.from('approval_instances').update({ status:'Approved', current_step: steps.length-1 }).eq('id', APPROVAL_INSTANCE.id);
+      await sb.from('risk_assessments').update({ status:'Approved' }).eq('id', raId);
+      await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'approval_instance', old_value:null, new_value: JSON.stringify({ status:'Approved' }), changed_by: CURRENT_USER?.email||CURRENT_USER?.id||'system', comments:'Workflow fully approved' }]);
+    }
+
+    async function initRBAC(){
+      try{
+        if(!window.AccessControl) return;
+        await window.AccessControl.init({ supabase: sb, requireESigFor:['approve'] });
+        if(window.AccessControl.role){
+          window.AccessControl.enforce('tools','risk', { add:['[data-action="add-risk"]'], approve:['[data-action="change-status"]'] });
+        }
+      }catch(e){ console.warn('RBAC init failed', e); }
+    }
+
+    async function loadData(){
+      try{
+        // RA (cached)
+        const raKey = cacheKey('risk_assessments', `id=${raId}`, '*');
+        let ra = cacheGet(raKey);
+        if(!ra){ const { data } = await sb.from('risk_assessments').select('*').eq('id', raId).single(); ra = data; cacheSet(raKey, ra, CACHE_TTL_MS, { table:'risk_assessments', ids: [ra?.id].filter(Boolean) }); }
+        RA = ra; if(!RA){ throw new Error('RA not found'); }
+        // Reset items paging and load first page
+        ITEMS=[]; ITEMS_PAGE=0; ITEMS_HAS_MORE=true; ITEMS_LOADING=false;
+        document.getElementById('itemsBody').innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:#6b7280">Loading…</td></tr>';
+        await loadItemsPage(0);
+        render();
+        await loadAudit();
+      }catch(e){ console.error(e); alert('Failed to load risk assessment'); }
+    }
+
+    async function loadItemsPage(page){
+      if(ITEMS_LOADING || !ITEMS_HAS_MORE) return; ITEMS_LOADING=true; const loader=document.getElementById('itemsLoadMore'); if(loader) loader.style.display='block';
+      try{
+        const key = cacheKey('risk_items', `ra=${raId}:page=${page}:size=${ITEMS_PAGE_SIZE}`, 'item_number:asc');
+        let rows = cacheGet(key);
+        if(!rows){
+          const from = page*ITEMS_PAGE_SIZE; const to = from + ITEMS_PAGE_SIZE - 1;
+          const { data } = await sb.from('risk_items').select('*').eq('ra_id', raId).order('item_number',{ascending:true}).range(from, to);
+          rows = data||[]; cacheSet(key, rows, CACHE_TTL_MS, { table:'risk_items', ids: rows.map(r=>r.id) });
+        }
+        if(page===0) ITEMS = rows; else ITEMS = ITEMS.concat(rows);
+        ITEMS_HAS_MORE = rows.length === ITEMS_PAGE_SIZE; ITEMS_PAGE = page+1; renderItemsOnly();
+        // Batch preload mitigations for visible items
+        const ids = ITEMS.map(r=>r.id);
+        preloadMitigationsForItems(ids).catch(()=>{});
+      }catch(e){ console.warn('loadItemsPage failed', e); }
+      finally{ ITEMS_LOADING=false; const loader=document.getElementById('itemsLoadMore'); if(loader) loader.style.display='none'; }
+    }
+
+    function setupItemsInfiniteScroll(){
+      const el = document.getElementById('itemsTableContainer'); if(!el) return;
+      el.addEventListener('scroll', async () => {
+        if(ITEMS_LOADING || !ITEMS_HAS_MORE) return;
+        const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 48;
+        if(nearBottom){ await loadItemsPage(ITEMS_PAGE); }
+      });
+    }
+
+    function render(){
+      document.getElementById('raNumber').textContent = RA.ra_number || 'RA-';
+      document.getElementById('raTitle').textContent = RA.title || '';
+      // metadata
+      const meta = [
+        ['Type', RA.assessment_type||'-'],
+        ['Category', RA.category||'-'],
+        ['Initiated Date', RA.initiated_date? new Date(RA.initiated_date).toLocaleDateString(): '-' ],
+        ['Initiated By', RA.initiated_by||'-'],
+        ['Review Date', RA.review_date? new Date(RA.review_date).toLocaleDateString(): '-' ],
+        ['Risk Level', RA.risk_level||'TBD'],
+      ];
+      document.getElementById('metaBox').innerHTML = meta.map(([k,v])=>`<div class="item"><div class="label">${k}</div><div class="value">${v}</div></div>`).join('');
+      // summary
+      const maxRPN = (ITEMS||[]).reduce((m,i)=>Math.max(m, Number(i.rpn)||Number(i.severity||0)*Number(i.occurrence||0)*Number(i.detection||0)),0);
+      const openCount = (ITEMS||[]).filter(i=>['Open','In Progress'].includes(i.status)).length;
+      document.getElementById('summaryBox').innerHTML = `Max RPN: <strong>${maxRPN}</strong><br>Open/Active Items: <strong>${openCount}</strong>`;
+      // items
+      const body = document.getElementById('itemsBody');
+      if(!ITEMS.length){ body.innerHTML = '<tr><td colspan=8 style="text-align:center;padding:32px;color:#6b7280">No items yet</td></tr>'; }
+      else {
+        body.innerHTML = ITEMS.map(i=>{
+          const rpn = i.rpn ?? (Number(i.severity||0)*Number(i.occurrence||0)*Number(i.detection||0));
+          const lvl = rpn>=200?'critical':rpn>=100?'high':rpn>=40?'medium':'low';
+          return `<tr>
+            <td>${i.item_number||''}</td>
+            <td>${i.potential_failure_mode||''}</td>
+            <td>${i.severity||''}</td>
+            <td>${i.occurrence||''}</td>
+            <td>${i.detection||''}</td>
+            <td><strong>${rpn}</strong></td>
+            <td><span class="badge ${lvl}">${lvl.toUpperCase()}</span></td>
+            <td>${i.status||''}</td>
+              <td>
+                <button class="btn-secondary btn-sm" onclick="openViewItem('${i.id}')">View</button>
+                <button class="btn btn-sm" onclick="openEditItem('${i.id}')" data-action="add-risk">Edit</button>
+                <button class="btn-secondary btn-sm" onclick="openMitigation('${i.id}','${i.item_number||''}')">Mitigation</button>
+              </td>
+          </tr>`;
+        }).join('');
+      }
+      // workflow
+      renderWorkflow(RA.status||'Draft');
+      // default newStatus select to current status
+      const ns = document.getElementById('newStatus'); if(ns){ ns.value = RA.status || 'Draft'; }
+    }
+
+    function renderItemsOnly(){
+      const body = document.getElementById('itemsBody');
+      if(!ITEMS.length){ body.innerHTML = '<tr><td colspan=8 style="text-align:center;padding:32px;color:#6b7280">No items yet</td></tr>'; return; }
+      const rowsHtml = ITEMS.map(i=>{
+        const rpn = i.rpn ?? (Number(i.severity||0)*Number(i.occurrence||0)*Number(i.detection||0));
+        const lvl = rpn>=200?'critical':rpn>=100?'high':rpn>=40?'medium':'low';
+        return `<tr>
+          <td>${i.item_number||''}</td>
+          <td>${i.potential_failure_mode||''}</td>
+          <td>${i.severity||''}</td>
+          <td>${i.occurrence||''}</td>
+          <td>${i.detection||''}</td>
+          <td><strong>${rpn}</strong></td>
+          <td><span class="badge ${lvl}">${lvl.toUpperCase()}</span></td>
+          <td>${i.status||''}</td>
+          <td>
+            <button class="btn-secondary btn-sm" onclick="openViewItem('${i.id}')">View</button>
+            <button class="btn btn-sm" onclick="openEditItem('${i.id}')" data-action="add-risk">Edit</button>
+            <button class="btn-secondary btn-sm" onclick="openMitigation('${i.id}','${i.item_number||''}')">Mitigation</button>
+          </td>
+        </tr>`;
+      }).join('');
+      body.innerHTML = rowsHtml;
+    }
+
+    function renderWorkflow(status){
+      const steps = ['Draft','Under Review','Approved','In Progress','Completed'];
+      const idx = Math.max(0, steps.indexOf(status));
+      const html = steps.map((s,i)=>`<div class="w-step ${i<idx?'completed': (i===idx?'active':'')}"><div class="w-dot">${i+1}</div><div class="w-label">${s}</div></div>`).join('');
+      document.getElementById('workflow').innerHTML = html;
+    }
+
+    async function openItemModal(){
+      try{
+        const nextNum = await generateNextItemNumber();
+        const input = document.getElementById('itemNumber');
+        if(input) input.value = nextNum;
+      }catch(_){ /* ignore prefill errors */ }
+      document.getElementById('itemModal').classList.add('active');
+    }
+    function closeItemModal(){ document.getElementById('itemModal').classList.remove('active'); }
+  function closeViewItemModal(){ document.getElementById('viewItemModal').classList.remove('active'); }
+  function closeEditItemModal(){ document.getElementById('editItemModal').classList.remove('active'); }
+    async function submitItem(){
+      try{
+        const autoItemNum = await generateNextItemNumber();
+        const payload = {
+          ra_id: raId,
+          item_number: autoItemNum,
+          process_step: document.getElementById('processStep').value,
+          potential_failure_mode: document.getElementById('failureMode').value,
+          potential_effects: document.getElementById('effects').value,
+          potential_causes: document.getElementById('causes').value,
+          current_controls: document.getElementById('controls').value,
+          severity: Number(document.getElementById('severity').value)||1,
+          occurrence: Number(document.getElementById('occurrence').value)||1,
+          detection: Number(document.getElementById('detection').value)||1,
+          recommended_actions: document.getElementById('recommendedActions').value,
+          responsibility: document.getElementById('responsibility').value,
+          target_date: document.getElementById('targetDate').value||null,
+          status: 'Open'
+        };
+  const rpn = payload.severity*payload.occurrence*payload.detection;
+  const level = rpn>=200?'Critical': rpn>=100?'High': rpn>=40?'Medium':'Low';
+  // rpn and (in your DB) risk_level are computed; omit them from insert
+  const { data, error } = await sb.from('risk_items').insert([{...payload}]).select();
+        if(error) throw error;
+        await updateRaRiskLevel();
+        closeItemModal();
+        // Invalidate caches and reload first page only
+        const newId = Array.isArray(data)? data[0]?.id : null; if(newId) cacheInvalidateEntity('risk_items', newId);
+        ITEMS=[]; ITEMS_PAGE=0; ITEMS_HAS_MORE=true; await loadItemsPage(0); render();
+        await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'CREATE', field_changed:'risk_items', old_value:null, new_value: JSON.stringify(payload), changed_by:'system', comments:'Item added in detail view' }]);
+      }catch(e){ console.error(e); alert('Failed to add item' + (e?.message? ': '+e.message : '')); }
+    }
+
+    function openViewItem(itemId){
+      try{
+        const it = (ITEMS||[]).find(x=>String(x.id)===String(itemId));
+        if(!it){ return; }
+        const rpn = it.rpn ?? (Number(it.severity||0)*Number(it.occurrence||0)*Number(it.detection||0));
+        const level = rpn>=200?'Critical': rpn>=100?'High': rpn>=40?'Medium':'Low';
+        const html = `
+          <div class="meta" style="margin-bottom:12px">
+            <div class="item"><div class="label">Item #</div><div class="value">${it.item_number||''}</div></div>
+            <div class="item"><div class="label">Status</div><div class="value">${it.status||''}</div></div>
+            <div class="item"><div class="label">Risk Level</div><div class="value">${level}</div></div>
+            <div class="item"><div class="label">RPN</div><div class="value">${rpn}</div></div>
+            <div class="item"><div class="label">Severity</div><div class="value">${it.severity||''}</div></div>
+            <div class="item"><div class="label">Occurrence</div><div class="value">${it.occurrence||''}</div></div>
+            <div class="item"><div class="label">Detection</div><div class="value">${it.detection||''}</div></div>
+            <div class="item"><div class="label">Target Date</div><div class="value">${it.target_date? new Date(it.target_date).toLocaleDateString(): '-'}</div></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Process Step</label><div class="form-input" style="background:#f8fafc">${it.process_step||''}</div></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Failure Mode</label><div class="form-textarea" style="background:#f8fafc;min-height:unset">${it.potential_failure_mode||''}</div></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Effects</label><div class="form-textarea" style="background:#f8fafc;min-height:unset">${it.potential_effects||''}</div></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Potential Causes</label><div class="form-textarea" style="background:#f8fafc;min-height:unset">${it.potential_causes||''}</div></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Current Controls</label><div class="form-textarea" style="background:#f8fafc;min-height:unset">${it.current_controls||''}</div></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Recommended Actions</label><div class="form-textarea" style="background:#f8fafc;min-height:unset">${it.recommended_actions||''}</div></div>
+            <div class="form-group" style="grid-column:1/-1"><label class="form-label">Responsibility</label><div class="form-input" style="background:#f8fafc">${it.responsibility||''}</div></div>
+          </div>`;
+        const body = document.getElementById('viewItemBody');
+        if(body) body.innerHTML = html;
+        document.getElementById('viewItemModal').classList.add('active');
+      }catch(e){ console.warn('openViewItem failed', e); }
+    }
+
+    function openEditItem(itemId){
+      const it = (ITEMS||[]).find(x=>String(x.id)===String(itemId));
+      if(!it) return;
+      // Prefill
+      document.getElementById('editItemId').value = it.id;
+      document.getElementById('editItemNumber').value = it.item_number||'';
+      document.getElementById('editStatus').value = it.status||'Open';
+      document.getElementById('editProcessStep').value = it.process_step||'';
+      document.getElementById('editFailureMode').value = it.potential_failure_mode||'';
+      document.getElementById('editEffects').value = it.potential_effects||'';
+      document.getElementById('editCauses').value = it.potential_causes||'';
+      document.getElementById('editControls').value = it.current_controls||'';
+      document.getElementById('editSeverity').value = it.severity||1;
+      document.getElementById('editOccurrence').value = it.occurrence||1;
+      document.getElementById('editDetection').value = it.detection||1;
+      document.getElementById('editTargetDate').value = it.target_date? String(it.target_date).slice(0,10): '';
+      document.getElementById('editResponsibility').value = it.responsibility||'';
+      document.getElementById('editMitigation').value = '';
+      document.getElementById('editRecommendations').value = it.recommended_actions||'';
+      calcEditRPN();
+      calcResidualRPN();
+      document.getElementById('editItemModal').classList.add('active');
+    }
+
+    function calcEditRPN(){
+      const s=Number(document.getElementById('editSeverity').value)||0;
+      const o=Number(document.getElementById('editOccurrence').value)||0;
+      const d=Number(document.getElementById('editDetection').value)||0;
+      // Optional: display calculated RPN inline if needed
+      return s*o*d;
+    }
+
+    function calcResidualRPN(){
+      const rs=Number(document.getElementById('resSeverity').value)||0;
+      const ro=Number(document.getElementById('resOccurrence').value)||0;
+      const rd=Number(document.getElementById('resDetection').value)||0;
+      const rpn = rs*ro*rd;
+      const level = rpn>=200?'Critical': rpn>=100?'High': rpn>=40?'Medium':'Low';
+      const rpnEl=document.getElementById('resRpn'); if(rpnEl) rpnEl.value = rpn||'';
+      const lvlEl=document.getElementById('resLevel'); if(lvlEl) lvlEl.value = level;
+      return rpn;
+    }
+
+    async function submitEditItem(){
+      try{
+        const id = document.getElementById('editItemId').value;
+        const updates = {
+          process_step: document.getElementById('editProcessStep').value,
+          potential_failure_mode: document.getElementById('editFailureMode').value,
+          potential_effects: document.getElementById('editEffects').value,
+          potential_causes: document.getElementById('editCauses').value,
+          current_controls: document.getElementById('editControls').value,
+          severity: Number(document.getElementById('editSeverity').value)||1,
+          occurrence: Number(document.getElementById('editOccurrence').value)||1,
+          detection: Number(document.getElementById('editDetection').value)||1,
+          recommended_actions: document.getElementById('editRecommendations').value,
+          responsibility: document.getElementById('editResponsibility').value,
+          target_date: document.getElementById('editTargetDate').value||null,
+          status: document.getElementById('editStatus').value
+        };
+        const { error } = await sb.from('risk_items').update(updates).eq('id', id);
+        if(error) throw error;
+        cacheInvalidateEntity('risk_items', id);
+        // Log residuals into audit comments for traceability
+        const resS = Number(document.getElementById('resSeverity').value)||null;
+        const resO = Number(document.getElementById('resOccurrence').value)||null;
+        const resD = Number(document.getElementById('resDetection').value)||null;
+        const resR = Number(document.getElementById('resRpn').value)||null;
+        const resL = document.getElementById('resLevel').value||null;
+        const mitigationNotes = document.getElementById('editMitigation').value||'';
+        await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'risk_item', old_value:null, new_value: JSON.stringify({ id, updates }), changed_by:'system', comments:`Residual: S=${resS||'-'}, O=${resO||'-'}, D=${resD||'-'}, RPN=${resR||'-'}, Level=${resL||'-'}; Mitigation: ${mitigationNotes}` }]);
+        closeEditItemModal();
+        await updateRaRiskLevel();
+        // Refresh first page to reflect change
+        const key0 = cacheKey('risk_items', `ra=${raId}:page=0:size=${ITEMS_PAGE_SIZE}`, 'item_number:asc'); CACHE.delete(key0);
+        ITEMS=[]; ITEMS_PAGE=0; ITEMS_HAS_MORE=true; await loadItemsPage(0); render();
+      }catch(e){ console.error('Edit failed', e); alert('Failed to save changes'+(e?.message?': '+e.message:'')); }
+    }
+
+    async function generateNextItemNumber(){
+      const { data } = await sb.from('risk_items').select('item_number').eq('ra_id', raId);
+      const nums = (data||[])
+        .map(r => {
+          const m = String(r.item_number||'').match(/(\d+)$/);
+          return m ? parseInt(m[1], 10) : 0;
+        })
+        .filter(n => !isNaN(n));
+      const next = (nums.length ? Math.max(...nums) : 0) + 1;
+      const seq = String(next).padStart(3,'0');
+      return RA?.ra_number ? `${RA.ra_number}-${seq}` : seq;
+    }
+
+    function openStatusModal(){ document.getElementById('statusModal').classList.add('active'); }
+    function closeStatusModal(){ document.getElementById('statusModal').classList.remove('active'); }
+    async function submitStatusChange(){
+      try{
+        const newStatus = document.getElementById('newStatus').value;
+        const comment = document.getElementById('statusComment').value;
+        // Build an updates object for audit and optional residual persistence
+        const updates = { status: newStatus, status_comment: comment };
+        // Persist residuals if DB supports them, and record in audit
+        const resS = Number(document.getElementById('resSeverity').value)||null;
+        const resO = Number(document.getElementById('resOccurrence').value)||null;
+        const resD = Number(document.getElementById('resDetection').value)||null;
+        const resR = Number(document.getElementById('resRpn').value)||null;
+        const resL = document.getElementById('resLevel').value||null;
+        const mitigationNotes = document.getElementById('editMitigation').value||'';
+        if(hasResidualCols){
+          updates.residual_severity = resS;
+          updates.residual_occurrence = resO;
+          updates.residual_detection = resD;
+          updates.residual_rpn = resR;
+          updates.residual_level = resL;
+        }
+        // Update the assessment status
+        const { error: upErr } = await sb.from('risk_assessments').update({ status: newStatus }).eq('id', raId);
+        if(upErr) throw upErr;
+        // Insert an audit trail entry summarising the status change and residuals
+        await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'assessment_status', old_value: RA.status||null, new_value: JSON.stringify(updates), changed_by:'system', comments:`Status change: ${newStatus}; ${comment || ''} Residual: S=${resS||'-'}, O=${resO||'-'}, D=${resD||'-'}, RPN=${resR||'-'}, Level=${resL||'-'}; Mitigation: ${mitigationNotes}` }]);
+        // Refresh local state
+        RA.status = newStatus;
+        document.getElementById('statusModal').classList.remove('active');
+        renderWorkflow(RA.status||'Draft');
+        await loadData();
+      }catch(e){ console.error('submitStatusChange failed', e); alert('Failed to change status'+(e?.message?': '+e.message:'')); }
+    }
+
+    async function updateRaRiskLevel(){
+      const { data } = await sb.from('risk_items').select('rpn').eq('ra_id', raId);
+      const maxRpn = (data||[]).reduce((m,i)=>Math.max(m,Number(i.rpn)||0),0);
+      const level = maxRpn>=200?'Critical': maxRpn>=100?'High': maxRpn>=40?'Medium':'Low';
+      await sb.from('risk_assessments').update({ risk_level: level }).eq('id', raId);
+      await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'risk_level', old_value: RA.risk_level||null, new_value: level, changed_by:'system', comments:`Auto from items (max RPN ${maxRpn})` }]);
+      RA.risk_level = level;
+    }
+
+    async function loadAudit(){
+      const { data } = await sb.from('risk_audit_trail').select('*').eq('ra_id', raId).order('changed_at',{ascending:false});
+      const body = document.getElementById('auditBody');
+      if(!data||!data.length){ body.innerHTML = '<tr><td colspan=5 style="text-align:center;padding:20px;color:#6b7280">No audit entries</td></tr>'; return; }
+      body.innerHTML = data.map(a=>`<tr><td>${new Date(a.changed_at).toLocaleString()}</td><td>${a.action}</td><td>${a.field_changed||'-'}</td><td>${a.changed_by||''}</td><td>${a.comments||''}</td></tr>`).join('');
+    }
+
+    function exportToPDF(){
+      try{
+        const wrapper = document.getElementById('printArea').cloneNode(true);
+        const opt = { margin:10, filename:`${(RA?.ra_number||'Risk_Detail')}_${new Date().toISOString().slice(0,10)}.pdf`, image:{type:'jpeg',quality:0.95}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'pt',format:'a4',orientation:'landscape'} };
+        html2pdf().set(opt).from(wrapper).save();
+      }catch(e){ console.error(e); window.print(); }
+    }
+
+    function toCSV(rows){ return rows.map(r=>r.map(x=>`"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n'); }
+    function downloadCSV(filename, rows){ const blob=new Blob([toCSV(rows)],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.style.display='none'; document.body.appendChild(a); a.click(); a.remove(); }
+    function exportItemsCSV(){
+      const rows = [['#','Failure Mode','S','O','D','RPN','Level','Status']];
+      (ITEMS||[]).forEach(i=>{ const rpn=i.rpn ?? (i.severity*i.occurrence*i.detection); const level = rpn>=200?'Critical': rpn>=100?'High': rpn>=40?'Medium':'Low'; rows.push([i.item_number||'', i.potential_failure_mode||'', i.severity||'', i.occurrence||'', i.detection||'', rpn, level, i.status||'']); });
+      downloadCSV(`${RA?.ra_number||'Risk'}_items_${new Date().toISOString().slice(0,10)}.csv`, rows);
+    }
+
+    // ========== Comments & Reactions ==========
+    async function detectCommentsTables(){
+      try{
+        const a = await sb.from('risk_comments').select('id').limit(1);
+        hasComments = !a.error;
+      }catch(_){ hasComments=false; }
+      try{
+        const b = await sb.from('comment_reactions').select('id').limit(1);
+        hasReactions = !b.error;
+      }catch(_){ hasReactions=false; }
+      try{
+        const c = await sb.from('comment_edits').select('id').limit(1);
+        hasCommentEdits = !c.error;
+      }catch(_){ hasCommentEdits=false; }
+    }
+
+    async function loadComments(initial=false){
+      try{
+        if(!hasComments){ document.getElementById('commentsList').innerHTML = '<div style="color:#64748b">Comments are not configured in the database.</div>'; return; }
+        if(COMMENTS_STATE.loading) return; COMMENTS_STATE.loading=true;
+        let query = sb.from('risk_comments').select('*').eq('ra_id', raId).order('created_at', { ascending:false }).limit(COMMENTS_STATE.limit);
+        if(!initial && COMMENTS_STATE.oldest){ query = query.lt('created_at', COMMENTS_STATE.oldest); }
+        const key = cacheKey('risk_comments', `ra=${raId}:before=${initial? 'now': COMMENTS_STATE.oldest||'none'}:limit=${COMMENTS_STATE.limit}`, 'created_at:desc');
+        let rows = cacheGet(key);
+        if(!rows){ const { data } = await query; rows = data||[]; cacheSet(key, rows, CACHE_TTL_MS, { table:'risk_comments', ids: rows.map(r=>r.id) }); }
+        if(rows.length){ const oldest = rows[rows.length-1].created_at; COMMENTS_STATE.oldest = COMMENTS_STATE.oldest? new Date(Math.min(new Date(COMMENTS_STATE.oldest), new Date(oldest))).toISOString() : oldest; }
+        COMMENTS_STATE.hasMore = rows.length === COMMENTS_STATE.limit;
+        rows.reverse(); if(initial){ COMMENTS = rows; } else { COMMENTS = COMMENTS.concat(rows); }
+        renderComments(); renderCommentsLoadMore();
+      }catch(e){ document.getElementById('commentsList').innerHTML = '<div style="color:#991b1b;background:#fee2e2;border-left:4px solid #ef4444;padding:10px;border-radius:8px">Failed to load comments</div>'; }
+      finally{ COMMENTS_STATE.loading=false; }
+    }
+
+    function renderCommentsLoadMore(){
+      const card = document.getElementById('commentsCard'); if(!card) return;
+      let btn = document.getElementById('loadOlderComments');
+      if(!btn){ btn = document.createElement('button'); btn.id='loadOlderComments'; btn.className='btn-secondary'; btn.style.marginTop='8px'; btn.textContent='Load older comments'; btn.onclick=()=>loadComments(false); card.appendChild(btn); }
+      btn.style.display = COMMENTS_STATE.hasMore? 'inline-flex':'none';
+    }
+
+    function groupCommentsByThread(rows){
+      const byId = {}; (rows||[]).forEach(c=>byId[c.id]= {...c, replies: []});
+      const roots=[]; (rows||[]).forEach(c=>{ if(c.parent_id && byId[c.parent_id]) byId[c.parent_id].replies.push(byId[c.id]); else roots.push(byId[c.id]); });
+      return roots;
+    }
+
+    function renderComments(){
+      const container = document.getElementById('commentsList'); if(!container) return;
+      if(!COMMENTS.length){ container.innerHTML = '<div style="color:#64748b">No comments yet. Be the first to comment.</div>'; return; }
+      const roots = groupCommentsByThread(COMMENTS);
+      const me = CURRENT_USER?.id;
+      function renderNode(c, depth){
+        const ts = new Date(c.created_at).toLocaleString();
+        const pin = c.is_pinned? '<span class="badge medium" title="Pinned">PINNED</span>':'';
+        const actions = [
+          `<button class="btn-secondary btn-sm" onclick="replyTo('${c.id}')">Reply</button>`,
+          hasReactions? `<button class="btn-secondary btn-sm" onclick="toggleReaction('${c.id}','+1')">👍</button>
+                         <button class="btn-secondary btn-sm" onclick="toggleReaction('${c.id}','heart')">❤️</button>` : '',
+          (me && (c.created_by===me))? `<button class="btn-secondary btn-sm" onclick="editComment('${c.id}')">Edit</button>`:'',
+          (window.AccessControl?.role==='admin')? `<button class="btn-secondary btn-sm" onclick="togglePin('${c.id}', ${c.is_pinned? 'false':'true'})">${c.is_pinned?'Unpin':'Pin'}</button>`:'' ,
+          hasCommentEdits? `<button class="btn-secondary btn-sm" onclick="viewHistory('${c.id}')">History</button>`:''
+        ].filter(Boolean).join(' ');
+        const style = `margin-left:${depth*16}px;padding:10px;border-left:${depth? '2px solid #e5e7eb':'none'};`;
+        return `<div style="${style}">
+          <div style="display:flex;gap:8px;align-items:center"><strong>${c.created_by_name||'User'}</strong> <span style="color:#64748b">${ts}</span> ${pin}</div>
+          <div style="white-space:pre-wrap;margin:6px 0">${escapeHtml(c.body||'')}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">${actions}</div>
+        </div>` + (c.replies||[]).map(r=>renderNode(r, depth+1)).join('');
+      }
+      container.innerHTML = roots.map(r=>renderNode(r,0)).join('');
+    }
+
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+
+    function clearCommentBox(){ const el=document.getElementById('commentInput'); if(el) el.value=''; }
+    function replyTo(parentId){ const el=document.getElementById('commentInput'); if(!el) return; el.focus(); el.value = (el.value||'') + `\n↪ Replying to #${parentId}: `; el.dataset.replyTo = parentId; }
+
+    async function postComment(){
+      try{
+        if(!hasComments){ alert('Comments not available'); return; }
+        if(!CURRENT_USER){ alert('Please sign in to comment'); return; }
+        const box = document.getElementById('commentInput'); const body = (box.value||'').trim(); if(!body){ return; }
+        const parent = box.dataset.replyTo || null;
+        const mentions = await extractMentions(body);
+        const payload = { ra_id: raId, parent_id: parent, body, mentions: mentions?.length? mentions: null, is_pinned:false, created_by: CURRENT_USER.id, created_by_name: CURRENT_USER.email||CURRENT_USER.user_metadata?.full_name||null };
+        const { data, error } = await sb.from('risk_comments').insert([payload]).select();
+        if(error) throw error; clearCommentBox(); delete box.dataset.replyTo;
+        // Notify mentioned users
+        if(hasNotifications && mentions && mentions.length){
+          for(const m of mentions){
+            await sb.from('notifications').insert([{ type:'mention', entity_table:'risk_comments', entity_id: (data&&data[0]?.id)||null, recipient_id: m.id||null, recipient_email: m.email||null, message:`You were mentioned in ${(RA?.ra_number)||'a risk'}` }]);
+          }
+        }
+      }catch(e){ console.warn('postComment failed', e); alert('Failed to add comment'+(e?.message?': '+e.message:'')); }
+    }
+
+    async function extractMentions(text){
+      try{
+        if(!hasProfiles) return [];
+        const tokens = Array.from(new Set((text.match(/@([\w.+-]+@[\w.-]+|[\w .-]{2,})/g)||[]).map(t=>t.slice(1).trim())));
+        if(!tokens.length) return [];
+        const results=[];
+        for(const t of tokens){
+          if(t.includes('@')){ const { data } = await sb.from('profiles').select('id,email,full_name').eq('email', t).limit(1); if(data&&data[0]) results.push({ id:data[0].id, email:data[0].email }); }
+          else { const { data } = await sb.from('profiles').select('id,email,full_name').eq('full_name', t).limit(1); if(data&&data[0]) results.push({ id:data[0].id, email:data[0].email }); }
+        }
+        return results;
+      }catch(_){ return []; }
+    }
+
+    async function toggleReaction(commentId, type){
+      try{
+        if(!hasReactions || !CURRENT_USER) return;
+        const q = sb.from('comment_reactions');
+        const { data: exists } = await q.select('id').eq('comment_id', commentId).eq('user_id', CURRENT_USER.id).eq('reaction', type).limit(1);
+        if(exists && exists.length){ await sb.from('comment_reactions').delete().eq('id', exists[0].id); }
+        else { await sb.from('comment_reactions').insert([{ comment_id: commentId, user_id: CURRENT_USER.id, reaction: type }]); }
+      }catch(e){ console.warn('toggleReaction failed', e); }
+    }
+
+    async function togglePin(commentId, flag){
+      try{
+        if(window.AccessControl?.role!=='admin') { alert('Only admins can pin'); return; }
+        await sb.from('risk_comments').update({ is_pinned: !!flag }).eq('id', commentId);
+      }catch(e){ console.warn('togglePin failed', e); }
+    }
+
+    async function editComment(id){
+      try{
+        const c = (COMMENTS||[]).find(x=>String(x.id)===String(id)); if(!c) return;
+        const body = prompt('Edit comment:', c.body||''); if(body==null) return;
+        if(hasCommentEdits){ await sb.from('comment_edits').insert([{ comment_id:id, old_body:c.body||'', edited_by: CURRENT_USER?.id||null }]); }
+        await sb.from('risk_comments').update({ body, updated_at: new Date().toISOString() }).eq('id', id);
+      }catch(e){ console.warn('editComment failed', e); }
+    }
+
+    async function viewHistory(id){
+      try{
+        if(!hasCommentEdits){ alert('No history available'); return; }
+        const { data } = await sb.from('comment_edits').select('*').eq('comment_id', id).order('edited_at', {ascending:false});
+        alert((data||[]).map(r=>`${new Date(r.edited_at).toLocaleString()} — ${r.old_body||''}`).join('\n\n')||'No edits');
+      }catch(e){ console.warn('viewHistory failed', e); }
+    }
+
+    async function subscribeComments(){
+      try{
+        if(!hasComments) return;
+        if(commentsRealtime){ try{ commentsRealtime.unsubscribe(); }catch(_){} }
+        commentsRealtime = trackSub(
+          sb.channel('comments-ra-'+raId)
+            .on('postgres_changes', {event:'*', schema:'public', table:'risk_comments', filter:`ra_id=eq.${raId}`}, (payload)=>{
+              try{
+                if(payload.eventType==='INSERT'){
+                  const c = payload.new; if(!COMMENTS.find(x=>x.id===c.id)) { COMMENTS.push(c); COMMENTS.sort((a,b)=> new Date(a.created_at)-new Date(b.created_at)); renderComments(); }
+                } else if(payload.eventType==='UPDATE'){
+                  const c = payload.new; const idx = COMMENTS.findIndex(x=>x.id===c.id); if(idx>=0){ COMMENTS[idx]=c; renderComments(); }
+                } else if(payload.eventType==='DELETE'){
+                  const c = payload.old; const idx = COMMENTS.findIndex(x=>x.id===c.id); if(idx>=0){ COMMENTS.splice(idx,1); renderComments(); }
+                }
+              }catch(_){ /* noop */ }
+            })
+            .subscribe()
+        );
+      }catch(e){ console.warn('subscribeComments failed', e); }
+    }
+
+    // Mitigation Actions functions
+    function openMitigation(itemId, itemLabel){
+      CURRENT_ITEM_ID = itemId; EDITING_MIT_ID=null; document.getElementById('mitItemLabel').textContent = itemLabel||''; document.getElementById('mitigationModal').classList.add('active');
+      const memo = MIT_BY_ITEM.get(itemId);
+      if(memo){ MIT_CACHE = memo; renderMitigations(); } else { loadMitigations(); }
+    }
+    function closeMitigationModal(){ document.getElementById('mitigationModal').classList.remove('active'); }
+    function openAddMitigation(){ EDITING_MIT_ID=null; showMitForm({}); }
+    function cancelMitigationForm(){ document.getElementById('mitForm').style.display='none'; EDITING_MIT_ID=null; }
+
+    async function loadMitigations(){
+      try{
+        const key = cacheKey('mitigation_actions', `item=${CURRENT_ITEM_ID}`, 'created_at:desc');
+        let rows = cacheGet(key);
+        if(!rows){ const { data, error } = await sb.from('mitigation_actions').select('*').eq('risk_item_id', CURRENT_ITEM_ID).order('created_at',{ascending:false}); if(error) throw error; rows = data||[]; cacheSet(key, rows, CACHE_TTL_MS, { table:'mitigation_actions', ids: rows.map(r=>r.id) }); }
+        MIT_CACHE = rows; MIT_BY_ITEM.set(CURRENT_ITEM_ID, rows); renderMitigations();
+      }catch(e){ console.warn('Failed to load mitigations', e); document.getElementById('mitList').innerHTML = `<div style="color:#991b1b;background:#fee2e2;border-left:4px solid #ef4444;padding:10px;border-radius:8px">Failed to load mitigation actions</div>`; }
+    }
+    async function preloadMitigationsForItems(itemIds){
+      try{
+        if(!Array.isArray(itemIds) || !itemIds.length) return;
+        const need = itemIds.filter(id=> !MIT_BY_ITEM.has(id)); if(!need.length) return;
+        const key = cacheKey('mitigation_actions', `items=${need.slice().sort().join('|')}`, 'created_at:desc');
+        let rows = cacheGet(key);
+        if(!rows){ const { data } = await sb.from('mitigation_actions').select('*').in('risk_item_id', need).order('created_at',{ascending:false}); rows = data||[]; cacheSet(key, rows, CACHE_TTL_MS, { table:'mitigation_actions', ids: rows.map(r=>r.id) }); }
+        const byItem = rows.reduce((m,a)=>{ (m[a.risk_item_id]=m[a.risk_item_id]||[]).push(a); return m; },{});
+        for(const id of need){ MIT_BY_ITEM.set(id, byItem[id]||[]); }
+      }catch(e){ console.warn('preloadMitigationsForItems failed', e); }
+    }
+    function renderMitigations(){
+      const list=document.getElementById('mitList'); if(!list) return; const today=new Date(); today.setHours(0,0,0,0);
+      if(!MIT_CACHE.length){ list.innerHTML = '<div style="padding:16px;color:#64748b">No mitigation actions yet. Click "+ Add Action" to create one.</div>'; return; }
+      list.innerHTML = `<div class="table-container"><table><thead><tr><th>Title</th><th>Owner</th><th>Status</th><th>Target</th><th>Actual</th><th>Effectiveness</th><th>Actions</th></tr></thead><tbody>
+        ${MIT_CACHE.map(a=>{ const overdue = a.target_date && a.status!=='Completed' && new Date(a.target_date) < today; const statusBadge = a.status==='Completed'?'badge low':(a.status==='In Progress'?'badge medium':'badge high'); const tgt=a.target_date? new Date(a.target_date).toLocaleDateString(): '-'; const act=a.actual_date? new Date(a.actual_date).toLocaleDateString(): '-'; const eff=a.effectiveness_rating? `${a.effectiveness_rating}/5`:'-'; return `<tr><td>${a.action_description||a.title||'-'}</td><td>${a.owner_name||'-'}</td><td>${overdue?'<span class=\"badge critical\">Overdue</span> ': ''}<span class=\"${statusBadge}\">${a.status||'Open'}</span></td><td>${tgt}</td><td>${act}</td><td>${eff}</td><td><button class=\"btn-secondary btn-sm\" onclick=\"editMitigation('${a.id}')\">Edit</button>${a.status!=='Completed'?` <button class=\"btn btn-sm\" onclick=\"advanceMitigation('${a.id}')\">${a.status==='Open'?'Start':'Complete'}</button>`:''}</td></tr>`; }).join('')}
+      </tbody></table></div>`;
+    }
+    function showMitForm(prefill){ document.getElementById('mitForm').style.display='block'; document.getElementById('mitTitle').value = prefill.action_description||prefill.title||''; document.getElementById('mitOwner').value = prefill.owner_name || (document.getElementById('editResponsibility')?.value||''); document.getElementById('mitTarget').value = prefill.target_date? String(prefill.target_date).slice(0,10): ''; document.getElementById('mitStatus').value = prefill.status || 'Open'; document.getElementById('mitDesc').value = prefill.description||''; document.getElementById('mitMilestones').value = Array.isArray(prefill.milestones)? prefill.milestones.join(', '):''; document.getElementById('mitEffectiveness').value = prefill.effectiveness_rating||''; }
+    function editMitigation(id){ const a=MIT_CACHE.find(x=>String(x.id)===String(id)); if(!a) return; EDITING_MIT_ID=a.id; showMitForm(a); }
+    async function advanceMitigation(id){
+      try{
+        const a=MIT_CACHE.find(x=>String(x.id)===String(id)); if(!a) return;
+        const next=a.status==='Open'?'In Progress':'Completed';
+        const patch={ status: next };
+        if(next==='Completed' && !a.actual_date){ patch.actual_date = new Date().toISOString().slice(0,10); }
+        const { error } = await sb.from('mitigation_actions').update(patch).eq('id', id);
+        if(error) throw error;
+        // Audit log for status transition
+        const actor = CURRENT_USER?.email || CURRENT_USER?.id || 'system';
+        await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'mitigation_action', old_value: JSON.stringify({id, status:a.status, actual_date:a.actual_date||null}), new_value: JSON.stringify({id, status:patch.status, actual_date:patch.actual_date||a.actual_date||null}), changed_by: actor, comments:`Mitigation status change for risk_item_id=${CURRENT_ITEM_ID}` }]);
+        await loadMitigations();
+      }catch(e){ console.warn('Advance failed', e); alert('Failed to update action status'); }
+    }
+    async function submitMitigation(){
+      try{
+        const payload={
+          risk_item_id: CURRENT_ITEM_ID,
+          action_description: document.getElementById('mitTitle').value?.trim()||null,
+          owner_name: document.getElementById('mitOwner').value?.trim()||null,
+          target_date: document.getElementById('mitTarget').value||null,
+          status: document.getElementById('mitStatus').value||'Open',
+          description: document.getElementById('mitDesc').value?.trim()||null,
+          milestones:(()=>{ const raw=document.getElementById('mitMilestones').value||''; const parts=raw.split(',').map(s=>s.trim()).filter(Boolean); return parts.length? parts: null; })(),
+          effectiveness_rating:(()=>{ const v=Number(document.getElementById('mitEffectiveness').value); return (v>=1&&v<=5)? v: null; })(),
+        };
+        // Omit optional columns that the DB doesn't have
+        if(!hasMitDescription) delete payload.description;
+        // Include owner_id if column exists and user is logged in (needed for RLS)
+        if(hasMitOwnerId && CURRENT_USER?.id){ payload.owner_id = CURRENT_USER.id; }
+
+        if(EDITING_MIT_ID){
+          const oldRec = MIT_CACHE.find(x=>String(x.id)===String(EDITING_MIT_ID)) || null;
+          const { error } = await sb.from('mitigation_actions').update(payload).eq('id', EDITING_MIT_ID);
+          if(error) throw error;
+          const actor = CURRENT_USER?.email || CURRENT_USER?.id || 'system';
+          await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'UPDATE', field_changed:'mitigation_action', old_value: oldRec? JSON.stringify(oldRec): null, new_value: JSON.stringify({...payload, id: EDITING_MIT_ID}), changed_by: actor, comments:`Mitigation updated for risk_item_id=${CURRENT_ITEM_ID}` }]);
+        } else {
+          const { data, error } = await sb.from('mitigation_actions').insert([payload]).select();
+          if(error) throw error;
+          const newRec = Array.isArray(data) ? data[0] : null;
+          const actor = CURRENT_USER?.email || CURRENT_USER?.id || 'system';
+          await sb.from('risk_audit_trail').insert([{ ra_id: raId, action:'CREATE', field_changed:'mitigation_action', old_value: null, new_value: JSON.stringify(newRec||payload), changed_by: actor, comments:`Mitigation created for risk_item_id=${CURRENT_ITEM_ID}` }]);
+        }
+        document.getElementById('mitForm').style.display='none';
+        // Invalidate cache for this item's mitigations and memo
+        cacheInvalidateEntity('mitigation_actions', EDITING_MIT_ID||'new');
+        MIT_BY_ITEM.delete(CURRENT_ITEM_ID);
+        await loadMitigations();
+      }catch(e){ console.warn('Save mitigation failed', e); alert('Failed to save action'+(e?.message?': '+e.message:'')); }
+    }
+  </script>
+</body>
+</html>

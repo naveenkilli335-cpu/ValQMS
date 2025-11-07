@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="mesh">
+<html lang="en" data-theme="green" data-bg="mint">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Login — ValQMS</title>
-  <link rel="icon" href="favicon.jpg?v=6">
+ 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
@@ -139,6 +142,7 @@
     }
   </style>
   
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
 
@@ -220,7 +224,7 @@
   <div class="login-card">
     <a href="index.html" class="logo-container">
       <div class="logo-mark">
-        <img src="favicon.jpg" alt="ValQMS">
+  <img src="assets/valqms-logo.svg" alt="ValQMS">
       </div>
       <span class="logo-text">ValQMS</span>
     </a>
@@ -496,8 +500,8 @@
           password,
           options: { 
             data: { full_name: name },
-            emailRedirectTo: 'https://valqms.com/index.html'
-            //emailRedirectTo: 'http://127.0.0.1:5500/login.html'
+            //emailRedirectTo: 'https://valqms.com/index.html'
+            emailRedirectTo: 'http://127.0.0.1:5500/login.html'
           }
         });
 
@@ -569,8 +573,8 @@
       const { error } = await sb.auth.signInWithOAuth({
         provider: 'google',
         options: {
-        redirectTo: 'https://valqms.com/index.html',
-        //redirectTo: 'http://127.0.0.1:5500/login.html',
+        //redirectTo: 'https://valqms.com/index.html',
+        redirectTo: 'http://127.0.0.1:5500/login.html',
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -601,6 +605,25 @@
       window.location.href = '/index.html';
     }
   });
+
+  async function signInWithGoogle() {
+    try {
+        const { data, error } = await sb.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: window.location.origin + '/index.html'
+            }
+        })
+        
+        if (error) {
+            console.error('Google sign-in error:', error)
+            alert('Failed to sign in with Google')
+        }
+    } catch (error) {
+        console.error('Error:', error)
+        alert('An error occurred during Google sign-in')
+    }
+}
 </script>
 </body>
 </html>

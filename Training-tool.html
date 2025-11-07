@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bg="mint">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Management System | ValQMS</title>
-    <link rel="icon" href="favicon.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
@@ -17,22 +19,25 @@
 
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: #d1fae5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
+
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: none;
+            margin: 0;
         }
 
         /* Header */
         .header {
-            background: white;
+            background: #0f172a; /* match index header color */
+            color: #ffffff;
             padding: 20px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
@@ -58,10 +63,11 @@
             font-size: 20px;
         }
 
+
         .logo-text {
             font-size: 24px;
             font-weight: 700;
-            color: #1e293b;
+            color: #ffffff; /* white on dark header */
         }
 
         .header-actions {
@@ -81,7 +87,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
         }
 
@@ -89,6 +95,7 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
+
 
         .btn-secondary {
             background: white;
@@ -100,6 +107,7 @@
             border-color: #10b981;
             color: #10b981;
         }
+
 
         .btn-sm {
             padding: 6px 12px;
@@ -183,6 +191,7 @@
             color: #10b981;
         }
 
+
         .tab-content {
             display: none;
         }
@@ -232,6 +241,7 @@
             outline: none;
             border-color: #10b981;
         }
+
 
         .form-textarea {
             min-height: 100px;
@@ -392,6 +402,7 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            body { padding: 12px; }
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -411,20 +422,11 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <div class="logo-box">TM</div>
-                <div class="logo-text">Training Management System</div>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="location.href='index.html'">← Back to Home</button>
-                <button class="btn btn-primary" onclick="showQuickActions()">Quick Actions ▼</button>
-            </div>
-        </div>
+        
 
         <!-- Alert -->
         <div id="alert" class="alert"></div>
@@ -464,9 +466,12 @@
 
             <!-- Training Assignments Tab -->
             <div id="assignmentsTab" class="tab-content active">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap:10px;">
                     <h3>Training Assignments</h3>
-                    <button class="btn btn-primary btn-sm" onclick="openAssignmentModal()">+ Assign Training</button>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <button class="btn btn-secondary btn-sm" onclick="showQuickActions()">Quick Actions ▼</button>
+                        <button class="btn btn-primary btn-sm" onclick="openAssignmentModal()">+ Assign Training</button>
+                    </div>
                 </div>
 
                 <div class="filter-section">
@@ -1160,5 +1165,75 @@
         function showQuickActions() { alert('Quick Actions menu coming soon!'); }
         function filterAssignments() { loadAssignments(); }
     </script>
+    <!-- Downloadable PDF support -->
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script>
+        // Export Training Assignments register to a downloadable PDF
+        window.exportToPDF = function(){
+            try{
+                const table = document.querySelector('#assignmentsTable');
+                if(!table){ alert('No Training Assignments table found'); return; }
+
+                // Build a clean export container
+                const wrap = document.createElement('div');
+                wrap.style.padding = '16px';
+                wrap.style.background = '#ffffff';
+                wrap.style.color = '#111827';
+                wrap.style.fontFamily = "Inter, Arial, sans-serif";
+                wrap.style.width = '100%';
+
+                const h1 = document.createElement('h2');
+                h1.textContent = 'Training Assignments Register';
+                h1.style.margin = '0 0 4px';
+                h1.style.fontWeight = '800';
+                h1.style.fontSize = '20px';
+
+                const sub = document.createElement('div');
+                const today = new Date();
+                const dstr = today.toLocaleString();
+                sub.textContent = `Generated on ${dstr}`;
+                sub.style.fontSize = '12px';
+                sub.style.margin = '0 0 12px';
+                sub.style.color = '#6b7280';
+
+                const cloned = table.cloneNode(true);
+                cloned.style.width = '100%';
+                cloned.style.borderCollapse = 'collapse';
+                // Light borders for readability
+                cloned.querySelectorAll('th, td').forEach(cell=>{ cell.style.border = '1px solid #e5e7eb'; cell.style.padding = '8px 10px'; });
+                const thead = cloned.querySelector('thead');
+                if(thead){ thead.style.background = '#f9fafb'; }
+
+                wrap.appendChild(h1);
+                wrap.appendChild(sub);
+                wrap.appendChild(cloned);
+
+                // Temporarily attach for accurate rendering
+                wrap.style.position = 'fixed';
+                wrap.style.left = '-99999px';
+                document.body.appendChild(wrap);
+
+                const ymd = new Date().toISOString().slice(0,10);
+                const opt = {
+                    margin: 10,
+                    filename: `Training_Assignments_Register_${ymd}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                };
+                html2pdf().set(opt).from(wrap).save().then(()=>{
+                    document.body.removeChild(wrap);
+                }).catch(err=>{
+                    console.error('PDF export failed', err);
+                    document.body.removeChild(wrap);
+                    window.print();
+                });
+            }catch(e){
+                console.error(e);
+                window.print();
+            }
+        };
+    </script>
+    <script src="assets/global-header.js"></script>
 </body>
 </html>

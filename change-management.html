@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="mesh">
+<html lang="en" data-theme="green" data-bg="mint">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Change Control Dashboard — ValQMS</title>
-<link rel="icon" href="favicon.jpg?v=5">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -14,14 +16,34 @@
 [data-bg="mesh"] body{background:#0f172a;position:relative}
 [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
 @keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
-body{font-family:'Inter',sans-serif;color:var(--text);line-height:1.6;min-height:100vh}
-.container{max-width:1400px;margin:0 auto;padding:24px}
-header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:24px}
-.header-glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:16px 32px;display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:18px}
-nav{display:flex;gap:20px;align-items:center}
-nav a{color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:600;padding:8px 16px;border-radius:8px;transition:all 0.3s}
-nav a:hover,nav a.active{color:var(--text);background:var(--surface)}
+body{font-family:'Inter',sans-serif;color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
+.container{width:100%;max-width:none;margin:24px 0 0;padding:24px}
+/* GLASSMORPHISM HEADER - FIXED (match Tools) */
+header{position:fixed;top:12px;left:0;right:0;z-index:1000;padding:0 24px;pointer-events:none}
+.header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff;pointer-events:auto}
+.header-container{display:flex;justify-content:space-between;align-items:center;height:72px;width:100%;max-width:none;margin:0}
+/* Add padding to body to account for fixed header */
+body { padding-top:72px; }
+/* Header nav/link styles on dark glass */
+header .header-glass nav a{color:rgba(255,255,255,0.9) !important;text-decoration:none;font-size:14px;font-weight:600;padding:8px 12px;border-radius:8px;transition:all 0.3s}
+header .header-glass nav a:hover, header .header-glass nav a.active{color:#fff !important;background:rgba(255,255,255,0.12)}
+/* Logo mark + brand text (like tools) */
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s}
+.logo:hover{transform:translateY(-2px)}
+.logo-mark{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;box-shadow:0 4px 20px var(--accent-glow);transition:all 0.3s;position:relative}
+.logo-mark::after{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;z-index:-1;opacity:0;filter:blur(10px);transition:opacity 0.3s}
+.logo-mark:hover::after{opacity:0.7}
+.logo-mark .brand-initials{font-weight:900;font-size:18px;letter-spacing:-0.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.25)}
+.brand-text{display:flex;flex-direction:column;gap:2px}
+.brand-text h1{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin:0;line-height:1.2;color:#fff}
+.brand-text .subtitle{font-size:13px;color:rgba(255,255,255,0.8);font-weight:500;line-height:1.2}
+.header-controls{display:flex;gap:12px;align-items:center}
+/* Green Home button (fixed colors) */
+.btn-home{padding:10px 20px;background:linear-gradient(135deg,#10b981,#34d399);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(16,185,129,0.4)}
+.btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,185,129,0.4)}
+/* Compact header action button */
+.btn-head{padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.btn-head:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25)}
 .page-title{font-size:32px;font-weight:800;margin-bottom:8px}
 .page-subtitle{color:var(--text-dim);font-size:14px;margin-bottom:32px}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:32px}
@@ -36,6 +58,17 @@ nav a:hover,nav a.active{color:var(--text);background:var(--surface)}
 .card-title{font-size:18px;font-weight:700;color:var(--text)}
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
 .chart-container{position:relative;height:300px}
+/* Analytics additions */
+.mini-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:20px}
+.chart-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:16px}
+.chart-title{font-weight:700;color:var(--text);margin-bottom:8px;font-size:14px}
+.chart-fixed{position:relative;height:220px}
+/* Heatmap */
+.heatmap{margin-top:8px}
+.heatmap-grid{display:grid;gap:4px}
+.heatmap-cell{height:22px;border-radius:6px;background:var(--surface);border:1px solid var(--border)}
+.heatmap-legend{display:flex;align-items:center;gap:8px;margin-top:8px;color:var(--text-dim);font-size:12px}
+.legend-bar{height:8px;background:linear-gradient(90deg,#e2e8f0,#fecaca,#ef4444);border-radius:999px;flex:1}
 table{width:100%;border-collapse:collapse}
 thead{background:var(--surface);border-bottom:2px solid var(--border)}
 th{padding:12px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--text-dim);text-transform:uppercase}
@@ -51,6 +84,9 @@ tbody tr:hover{background:var(--surface)}
 .badge.critical{background:rgba(220,38,38,0.3);color:#dc2626}
 .badge.medium{background:rgba(251,146,60,0.2);color:#fb923c}
 .badge.low{background:rgba(16,185,129,0.2);color:#10b981}
+.badge.due-overdue{background:rgba(239,68,68,0.18);color:#ef4444}
+.badge.due-soon{background:rgba(249,115,22,0.18);color:#f59e0b}
+.badge.due-ok{background:rgba(16,185,129,0.18);color:#10b981}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s;text-decoration:none}
 .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--accent-glow)}
 .btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}
@@ -104,6 +140,143 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 @keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
 @keyframes mesh2Move{0%{transform:translate(0,0)}100%{transform:translate(-50px,40px)}}
 
+
+/* Mint/Light Green Background Theme */
+[data-bg="mint"] body {
+  background: #d1fae5;
+  position: relative;
+}
+
+[data-bg="mint"] body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 50%, rgba(16,185,129,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(52,211,153,0.08) 0%, transparent 50%);
+  z-index: -1;
+}
+
+/* Update colors for light theme */
+[data-bg="mint"] {
+  --text: #1e293b;
+  --text-dim: #64748b;
+  --surface: rgba(255,255,255,0.7);
+  --surface-hover: rgba(255,255,255,0.9);
+  --border: rgba(16,185,129,0.2);
+  --glass: rgba(255,255,255,0.5);
+}
+
+/* Header glass for light theme */
+[data-bg="mint"] .header-glass {
+    /* Force dark header like index */
+    background: #0f172a !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    color: #ffffff !important;
+}
+
+/* Cards for light theme */
+[data-bg="mint"] .card,
+[data-bg="mint"] .stat-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Modal for light theme */
+[data-bg="mint"] .modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+/* Dark header + light body for modals (match Manage Roles look) */
+[data-bg="mint"] .modal-header {
+    background: #0f172a;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+[data-bg="mint"] .close-modal {
+    color: #ffffff;
+}
+[data-bg="mint"] .modal-body,
+[data-bg="mint"] .modal-footer {
+    background: #ffffff;
+    color: #1e293b;
+}
+
+/* Table styling for light theme */
+[data-bg="mint"] thead {
+  background: rgba(16,185,129,0.1);
+}
+
+[data-bg="mint"] td {
+  border-bottom: 1px solid rgba(16,185,129,0.15);
+}
+
+[data-bg="mint"] tbody tr:hover {
+  background: rgba(16,185,129,0.05);
+}
+
+/* Input fields for light theme */
+[data-bg="mint"] input[type="text"],
+[data-bg="mint"] input[type="date"],
+[data-bg="mint"] textarea,
+[data-bg="mint"] select {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #1e293b;
+}
+
+/* Dropdown menus for light theme */
+[data-bg="mint"] .bg-dropdown,
+[data-bg="mint"] .theme-dropdown {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+/* Buttons for light theme */
+[data-bg="mint"] .bg-btn,
+[data-bg="mint"] .theme-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #1e293b;
+}
+
+[data-bg="mint"] .btn-secondary {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #1e293b;
+}
+
+/* Index-style dark header overrides */
+header .header-glass { background:#0f172a !important; border:1px solid rgba(255,255,255,0.08) !important; color:#fff }
+header .header-glass nav a { color: rgba(255,255,255,0.9) !important; }
+header .header-glass nav a:hover { color: #fff !important; background: rgba(255,255,255,0.12); }
+header .logo span { color: #fff !important; }
+/* Header controls: white buttons on dark header */
+header .bg-btn,
+header .theme-btn,
+header .mobile-menu-btn,
+header .user-badge,
+header .btn-login {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    color: #0f172a !important;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03) !important;
+}
+header .bg-btn:hover,
+header .theme-btn:hover,
+header .mobile-menu-btn:hover,
+header .user-badge:hover,
+header .btn-login:hover {
+    background: #ffffff !important;
+    border-color: var(--accent) !important;
+    color: #0f172a !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16,185,129,0.15) !important;
+}
+
+
 /* Selector Buttons */
 .bg-selector, .theme-selector{position:relative}
 .bg-btn, .theme-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
@@ -122,55 +295,54 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 .theme-color.purple{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
 .theme-color.orange{background:linear-gradient(135deg,#f97316,#fb923c)}
 
+/* Form helpers */
+.help-text{font-size:12px;color:var(--text-dim);margin-top:6px}
+.invalid-msg{font-size:12px;color:#ef4444;margin-top:6px;display:none}
+.invalid .invalid-msg{display:block}
+.invalid input,.invalid textarea,.invalid select{border-color:#ef4444}
+
 
 </style>
+    <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
 
 <header>
-<div class="header-glass">
-<a href="change-management.html" class="logo">📊 Change Control Dashboard</a>
-<nav>
-<a href="change-management.html" class="active">Dashboard</a>
-<a href="change-management.html" onclick="alert('Change Requests feature coming soon')">Change Requests</a>
-<a href="change-management.html" onclick="alert('Reports feature coming soon')">Reports</a>
-<a href="change-management.html" onclick="alert('Settings feature coming soon')">Settings</a>
-<span style="color:var(--border);margin:0 8px">|</span>
-
-<!-- Background Selector -->
-<div class="bg-selector" style="position:relative">
-  <button class="bg-btn" id="bgBtn" style="padding:8px 14px;font-size:12px" type="button"><span>🎨</span></button>
-  <div class="bg-dropdown" id="bgDropdown">
-    <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh</span></div>
-    <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Gradient</span></div>
-    <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark</span></div>
-    <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
-  </div>
-</div>
-
-<!-- Theme Selector -->
-<div class="theme-selector" style="position:relative">
-  <button class="theme-btn" id="themeBtn" style="padding:8px 14px;font-size:12px" type="button"><span>🎨</span></button>
-  <div class="theme-dropdown" id="themeDropdown">
-    <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
-    <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
-    <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
-    <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
-  </div>
-</div>
-
-<a href="index.html" style="display:flex;align-items:center;gap:6px;text-decoration:none">
-<span style="font-size:16px">🏠</span>
-<span>Home</span>
-</a>
-</nav>
-</div>
-</header>
+    <div class="header-glass">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-mark"><span class="brand-initials">VQ</span></div>
+                <div class="brand-text">
+                    <h1>ValQMS Applications</h1>
+                    <div class="subtitle">Change Control Dashboard</div>
+                </div>
+            </a>
+                    <div class="header-controls">
+                                <nav class="app-nav" style="display:flex;gap:8px;align-items:center">
+                                    <a href="#" onclick="showSection('dashboard');return false;">Dashboard</a>
+                                    <a href="#" class="active" onclick="showSection('changes');return false;">Change Controls</a>
+                                </nav>
+                        <button class="btn" style="padding:10px 16px" onclick="openNewChangeModal()">+ New Change</button>
+                        <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
+                    </div>
+        </div>
+    </div>
+    </header>
 
 
 <div class="container">
+
+<!-- DASHBOARD SECTION -->
+<section id="section-dashboard" style="display:none">
 <h1 class="page-title">Change Control Dashboard</h1>
 <p class="page-subtitle">Monitor and manage change requests across your organization</p>
+
+<!-- Reports merged into Dashboard: quick exports -->
+<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin:-8px 0 16px">
+    <button class="btn btn-sm" onclick="exportChangesCSV()">Export Changes CSV</button>
+    <button class="btn btn-sm btn-secondary" onclick="exportSummaryCSV()">Export Summary CSV</button>
+  
+</div>
 
 <div class="stats-grid">
 <div class="stat-card" onclick="filterByStatus('all')">
@@ -228,17 +400,61 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 <canvas id="priorityChart"></canvas>
 </div>
 </div>
+
+<!-- Additional Analytics -->
+<div class="mini-charts">
+    <div class="chart-card">
+        <div class="chart-title">By Category</div>
+        <div class="chart-fixed"><canvas id="categoryChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-title">Changes Trend (Created per Day)</div>
+        <div class="chart-fixed"><canvas id="changesTrendChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-title">Heatmap: Priority × Status</div>
+        <div id="cmHeatmap" class="heatmap">
+            <div id="cmHeatmapGrid" class="heatmap-grid"></div>
+            <div class="heatmap-legend"><span>Low</span><div class="legend-bar"></div><span>High</span></div>
+                <div id="cmHeatmapLegendText" class="heatmap-legend">Rows: Priority (Low→Critical) · Columns: <span id="cmHeatmapLabels"></span></div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- CHANGES SECTION -->
+<section id="section-changes" style="display:block">
+    <div class="card">
+        <div class="card-header" style="flex-wrap:wrap;gap:12px">
+            <h3 class="card-title">Change Controls</h3>
+            <div class="toolbar" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <select id="filterStatus" class="btn-secondary" style="padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text)">
+                    <option value="all">All Status</option>
+                    <option>Draft</option>
+                    <option>CAB Review</option>
+                    <option>Implementation</option>
+                    <option>Closed</option>
+                </select>
+                <select id="filterPriority" class="btn-secondary" style="padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text)">
+                    <option value="all">All Priority</option>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Critical</option>
+                </select>
+            </div>
+        </div>
+        <div id="changesTableContainer"></div>
+    </div>
+</section>
+
+<!-- Reports merged into Dashboard (section removed) -->
+
+<!-- removed Settings section as redundant -->
+</div>
 </div>
 
-<div class="card">
-<div class="card-header">
-<h3 class="card-title">Recent Change Requests</h3>
-<button class="btn btn-sm" onclick="openNewChangeModal()">+ New Change Request</button>
-</div>
-<div id="loadingState" class="loading" style="display:none"><div class="spinner"></div></div>
-<div id="changesContainer"></div>
-</div>
-</div>
+<!-- Recent Change Requests already shown on Dashboard; redundant block removed -->
 
 <!-- New Change Modal -->
 <div id="newChangeModal" class="modal">
@@ -249,69 +465,110 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 </div>
 <form id="newChangeForm">
 <div class="modal-body">
-<div class="form-group">
-<label>Change Title *</label>
-<input type="text" id="changeTitle" required>
-</div>
-<div class="form-group">
-<label>Description *</label>
-<textarea id="changeDescription" required></textarea>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Type *</label>
-<select id="changeType" required>
-<option value="">Select...</option>
-<option value="Normal">Normal</option>
-<option value="Emergency">Emergency</option>
-<option value="Temporary">Temporary</option>
-<option value="Planned">Planned</option>
-</select>
-</div>
-<div class="form-group">
-<label>Category *</label>
-<select id="changeCategory" required>
-<option value="">Select...</option>
-<option value="Process Change">Process</option>
-<option value="Equipment Change">Equipment</option>
-<option value="Document Change">Document</option>
-<option value="System Change">System</option>
-</select>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label>Department *</label>
-<select id="changeDepartment" required>
-<option value="">Select...</option>
-<option value="Quality Assurance">Quality Assurance</option>
-<option value="Production">Production</option>
-<option value="Engineering">Engineering</option>
-<option value="Regulatory">Regulatory</option>
-</select>
-</div>
-<div class="form-group">
-<label>Priority</label>
-<select id="changePriority">
-<option value="Medium">Medium</option>
-<option value="Low">Low</option>
-<option value="High">High</option>
-<option value="Critical">Critical</option>
-</select>
-</div>
-</div>
-<div class="form-group">
-<label>Justification *</label>
-<textarea id="justification" required></textarea>
-</div>
-<div class="form-group">
-<label>Proposed Date</label>
-<input type="date" id="proposedDate">
-</div>
+    <!-- Basic Information -->
+    <div class="form-group">
+        <label>Change Title *</label>
+        <input type="text" id="changeTitle" maxlength="120" aria-required="true" required placeholder="Short, descriptive title (max 120 chars)">
+        <div class="help-text"><span id="titleCount">0</span>/120</div>
+    </div>
+    <div class="form-group">
+        <label>Description *</label>
+        <textarea id="changeDescription" minlength="10" maxlength="2000" aria-required="true" required placeholder="Summarize the purpose, scope, and expected outcome (min 10 chars)"></textarea>
+        <div class="help-text"><span id="descCount">0</span>/2000</div>
+    </div>
+
+    <!-- Current vs Proposed (mandatory) -->
+    <div class="form-group">
+        <label>Current State *</label>
+        <textarea id="changeCurrentState" maxlength="4000" required aria-required="true" placeholder="Describe the current state/process/equipment"></textarea>
+    </div>
+    <div class="form-group">
+        <label>Proposed Change *</label>
+        <textarea id="changeProposedChange" maxlength="4000" required aria-required="true" placeholder="Describe the proposed change in detail"></textarea>
+    </div>
+
+    <!-- Classification -->
+    <div class="form-row">
+        <div class="form-group">
+            <label>Type *</label>
+            <select id="changeType" aria-required="true" required>
+                <option value="" disabled selected>Select type…</option>
+                <option value="Normal">Normal</option>
+                <option value="Emergency">Emergency</option>
+                <option value="Temporary">Temporary</option>
+                <option value="Planned">Planned</option>
+            </select>
+            <div class="help-text">Select the change process type</div>
+        </div>
+        <div class="form-group">
+            <label>Category *</label>
+            <select id="changeCategory" aria-required="true" required>
+                <option value="" disabled selected>Select category…</option>
+                <option value="Process Change">Process</option>
+                <option value="Equipment Change">Equipment</option>
+                <option value="Document Change">Document</option>
+                <option value="System Change">System</option>
+            </select>
+            <div class="help-text">Area of impact</div>
+        </div>
+    </div>
+
+    <!-- Due Date (auto-populated from Type) -->
+    <div class="form-group">
+        <label>Due Date</label>
+        <input type="date" id="changeDueDate" disabled>
+        <div class="help-text">Auto-populated based on selected type</div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label>Department *</label>
+            <select id="changeDepartment" aria-required="true" required>
+                <option value="" disabled selected>Select department…</option>
+                <option value="Quality Assurance">Quality Assurance</option>
+                <option value="Production">Production</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Regulatory">Regulatory</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Priority</label>
+            <select id="changePriority">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+            </select>
+            <div class="help-text">Used for dashboard ordering and SLA</div>
+        </div>
+    </div>
+
+    <!-- Risk (optional) -->
+    <div class="form-group">
+        <label>Initial Risk (optional)</label>
+        <select id="changeRisk">
+            <option value="">Not assessed</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+        </select>
+        <div class="help-text">You can refine this during Impact/Risk Assessment</div>
+    </div>
+
+    <!-- Justification -->
+    <div class="form-group">
+        <label>Justification *</label>
+        <textarea id="justification" minlength="5" maxlength="1000" aria-required="true" required placeholder="Why is this change needed? Business and compliance rationale."></textarea>
+        <div class="help-text"><span id="justCount">0</span>/1000</div>
+    </div>
+
+
+    <!-- Proposed Date intentionally removed by request -->
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" onclick="closeModal('newChangeModal')">Cancel</button>
-<button type="submit" class="btn">Create Change Request</button>
+<button id="createChangeBtn" type="submit" class="btn">Create Change Request</button>
 </div>
 </form>
 </div>
@@ -326,7 +583,22 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 const {createClient}=supabase;
 const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=null;
-let statusChart,priorityChart;
+let statusChart,priorityChart,categoryChart,changesTrendChart;
+// Schema flags for optional columns
+let hasCurrentState=false, hasProposedChange=false;
+
+// SLA mapping and due date computation based on change type
+const SLA_DAYS = { 'Emergency': 7, 'Temporary': 14, 'Planned': 21, 'Normal': 30 };
+function getSlaDays(type){
+    return SLA_DAYS[type] ?? 30;
+}
+function computeDueDateByType(type){
+    const days = getSlaDays(type);
+    const d = new Date();
+    d.setHours(12,0,0,0); // normalize midday to avoid TZ edge cases
+    d.setDate(d.getDate()+days);
+    return d.toISOString().slice(0,10); // YYYY-MM-DD
+}
 
 // Check authentication
 (async function checkAuth(){
@@ -342,6 +614,8 @@ let statusChart,priorityChart;
         
         currentUser=session.user;
         console.log('User authenticated:', currentUser.email);
+        // Detect optional columns for current/proposed
+        await detectChangeRequestColumns();
         loadDashboard();
     } catch(err) {
         console.error('Auth check error:', err);
@@ -349,6 +623,24 @@ let statusChart,priorityChart;
         setTimeout(() => window.location.href='login.html', 2000);
     }
 })();
+
+// Detect presence of optional columns current_state and proposed_change
+async function detectChangeRequestColumns(){
+    try{
+        const { data, error } = await sb
+            .from('change_requests')
+            .select('id,current_state,proposed_change')
+            .limit(1);
+        if(error){
+            console.warn('Optional columns missing:', error.message);
+            hasCurrentState=false; hasProposedChange=false;
+        }else{
+            hasCurrentState=true; hasProposedChange=true;
+        }
+    }catch(e){
+        hasCurrentState=false; hasProposedChange=false;
+    }
+}
 
 // Load dashboard data
 async function loadDashboard(){
@@ -367,8 +659,9 @@ async function loadDashboard(){
         }
         
         console.log('Loaded changes:', changes.length);
+        allChanges = changes || [];
         
-        // Update statistics
+    // Update statistics
         document.getElementById('totalChanges').textContent=changes.length;
         
         const activeChanges = changes.filter(c=>
@@ -388,10 +681,41 @@ async function loadDashboard(){
             return closedDate.getMonth()===thisMonth && closedDate.getFullYear()===thisYear;
         });
         document.getElementById('completedChanges').textContent=completedThisMonth.length;
+
+        // Extra KPIs (avg cycle time for closed, overdue open)
+        const cycleDays = changes
+            .filter(c=>c.closed_at && c.workflow_stage==='Closed')
+            .map(c=>{ const start=new Date(c.created_at); const end=new Date(c.closed_at); return Math.max(0, Math.round((end-start)/(1000*60*60*24))); });
+        const avgCycle = cycleDays.length? Math.round(cycleDays.reduce((a,b)=>a+b,0)/cycleDays.length) : 0;
+        // Overdue = due_date < today and not closed
+        const today = new Date(); today.setHours(0,0,0,0);
+        const overdue = changes.filter(c=> c.due_date && (!c.workflow_stage || c.workflow_stage!=='Closed') && new Date(c.due_date) < today).length;
+        // Append KPI cards if not present (light touch)
+        try{
+            const grid = document.querySelector('.stats-grid');
+            if(grid && !document.getElementById('avgCycleDays')){
+                const node = document.createElement('div');
+                node.className='stat-card';
+                node.innerHTML = `<div class="stat-header"><span class="stat-label">Avg Cycle (days)</span><span style="font-size:24px">⏱️</span></div><div class="stat-value" id="avgCycleDays">${avgCycle}</div><div class="stat-change">Closed items</div>`;
+                grid.appendChild(node);
+            } else if(document.getElementById('avgCycleDays')){
+                document.getElementById('avgCycleDays').textContent = avgCycle;
+            }
+            if(grid && !document.getElementById('overdueCount')){
+                const node2 = document.createElement('div');
+                node2.className='stat-card';
+                node2.innerHTML = `<div class="stat-header"><span class="stat-label">Overdue Changes</span><span style="font-size:24px">📅</span></div><div class="stat-value" id="overdueCount">${overdue}</div><div class="stat-change">Due date passed</div>`;
+                grid.appendChild(node2);
+            } else if(document.getElementById('overdueCount')){
+                document.getElementById('overdueCount').textContent = overdue;
+            }
+        }catch{}
         
         // Render charts and table
-        renderCharts(changes);
+    renderCharts(changes);
         renderRecentChanges(changes.slice(0,10));
+    renderChangesTable();
+    updateReportsSummary();
         hideLoading();
         
         showToast('Dashboard loaded successfully', 'success');
@@ -522,18 +846,82 @@ function renderCharts(changes){
             }
         });
     }
+
+    // Category Chart (from change_category)
+    const catCtx=document.getElementById('categoryChart')?.getContext('2d');
+    if(catCtx){
+        const catCounts={};
+        changes.forEach(c=>{ const k=c.change_category||'Other'; catCounts[k]=(catCounts[k]||0)+1; });
+        const labels=Object.keys(catCounts);
+        const dataVals=Object.values(catCounts);
+        if(categoryChart) categoryChart.destroy();
+        categoryChart = new Chart(catCtx,{
+            type:'doughnut',
+            data:{ labels, datasets:[{ data:dataVals, backgroundColor: labels.map((_,i)=>['#10b981','#60a5fa','#f59e0b','#ef4444','#a78bfa','#fbbf24'][i%6]), borderWidth:0 }] },
+            options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ color:'#94a3b8' }}} }
+        });
+    }
+
+    // Trend Chart (created per day)
+    const tCtx = document.getElementById('changesTrendChart')?.getContext('2d');
+    if(tCtx){
+        const createdBucket = new Map();
+        const closedBucket = new Map();
+        changes.forEach(c=>{ const d=(c.created_at? new Date(c.created_at): new Date()).toISOString().slice(0,10); createdBucket.set(d,(createdBucket.get(d)||0)+1); });
+        changes.filter(c=>c.closed_at && c.workflow_stage==='Closed').forEach(c=>{ const d=new Date(c.closed_at).toISOString().slice(0,10); closedBucket.set(d,(closedBucket.get(d)||0)+1); });
+        const labels = Array.from(new Set([...createdBucket.keys(), ...closedBucket.keys()])).sort();
+        const createdData = labels.map(k=>createdBucket.get(k)||0);
+        const closedData = labels.map(k=>closedBucket.get(k)||0);
+        if(changesTrendChart) changesTrendChart.destroy();
+        changesTrendChart = new Chart(tCtx, { type:'line', data:{ labels, datasets:[
+            { label:'Created', data: createdData, borderColor:'#10b981', backgroundColor:'rgba(16,185,129,.2)', fill:true, tension:.25 },
+            { label:'Closed', data: closedData, borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,.15)', fill:true, tension:.25 }
+        ] }, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ color:'#94a3b8' } } }, scales:{ y:{ beginAtZero:true, ticks:{ color:'#94a3b8'} }, x:{ ticks:{ color:'#94a3b8'} } } } });
+    }
+
+    // Priority × Status Heatmap
+    renderCMHeatmap(changes);
+}
+
+function renderCMHeatmap(changes){
+    const gridEl = document.getElementById('cmHeatmapGrid');
+    if(!gridEl) return;
+    const statuses = Array.from(new Set((changes||[]).map(c=>c.workflow_stage||'Draft')));
+    const priorities = ['Low','Medium','High','Critical'];
+    // counts map
+    const counts = priorities.map(()=>Array(statuses.length).fill(0));
+    changes.forEach(c=>{
+        const si = statuses.indexOf(c.workflow_stage||'Draft');
+        const pi = Math.max(0, priorities.indexOf(c.priority||'Medium'));
+        if(si>=0 && pi>=0) counts[pi][si]++;
+    });
+    const max = Math.max(1, ...counts.flat());
+    // Build grid with CSS columns equal to statuses length
+    gridEl.style.gridTemplateColumns = `repeat(${statuses.length}, 1fr)`;
+    gridEl.innerHTML = counts.map((row,ri)=> row.map((v,ci)=>{
+        const alpha = v===0? 0.06 : (0.15 + 0.85*(v/max));
+        const color = `rgba(239,68,68,${alpha.toFixed(2)})`;
+        const title = `${priorities[ri]} × ${statuses[ci]}: ${v}`;
+        return `<div class="heatmap-cell" title="${title}" style="background:${v?color:'var(--surface)'}"></div>`;
+    }).join('')).join('');
+    // Update dynamic legend labels for columns
+    const lbl = document.getElementById('cmHeatmapLabels');
+    if(lbl) lbl.textContent = statuses.join(' · ');
 }
 
 // Render recent changes table
 function renderRecentChanges(changes){
     const container=document.getElementById('changesContainer');
+    if(!container){
+        return;
+    }
     
     if(!changes || changes.length===0){
         container.innerHTML='<div class="empty-state">No change requests found. Click "New Change Request" to create one.</div>';
         return;
     }
     
-    let html='<table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Initiator</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
+    let html='<table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Due</th><th>Initiator</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
     
     changes.forEach(c=>{
         const statusBadge=(c.workflow_stage||'draft').toLowerCase().replace(/\s+/g,'-');
@@ -544,11 +932,16 @@ function renderRecentChanges(changes){
             day: 'numeric'
         });
         
+    const dueDateObj = c.due_date ? new Date(c.due_date) : null;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dueBadgeClass = !dueDateObj ? '' : (dueDateObj < today ? 'due-overdue' : ( (dueDateObj - today)/(1000*60*60*24) <= 3 ? 'due-soon' : 'due-ok'));
+    const dueDate = dueDateObj ? dueDateObj.toLocaleDateString('en-IN') : '-';
         html+=`<tr>
             <td><strong>${c.change_number||'PENDING'}</strong></td>
             <td>${c.title||'Untitled'}</td>
             <td><span class="badge ${statusBadge}">${c.workflow_stage||'Draft'}</span></td>
             <td><span class="badge ${priorityBadge}">${c.priority||'Medium'}</span></td>
+            <td>${dueDateObj ? `<span class="badge ${dueBadgeClass}">${dueDate}</span>` : '-'}</td>
             <td>${c.initiator_name||'Unknown'}</td>
             <td>${createdDate}</td>
             <td><button class="btn btn-sm btn-secondary" onclick="viewChange('${c.id}')">View</button></td>
@@ -559,12 +952,165 @@ function renderRecentChanges(changes){
     container.innerHTML=html;
 }
 
+// Render full changes table in the Changes tab with filters
+function renderChangesTable(){
+    const container = document.getElementById('changesTableContainer');
+    if (!container) return;
+    if (!allChanges || allChanges.length===0){
+        container.innerHTML = '<div class="empty-state">No change requests found.</div>';
+        return;
+    }
+    const fStatus = (document.getElementById('filterStatus')?.value||'all').toLowerCase();
+    const fPrio = (document.getElementById('filterPriority')?.value||'all').toLowerCase();
+    const rows = allChanges.filter(c=>{
+        const s = (c.workflow_stage||'draft').toLowerCase();
+        const p = (c.priority||'medium').toLowerCase();
+        const okS = (fStatus==='all') || (s===fStatus.replace(/\s+/g,'-') || s===fStatus);
+        const okP = (fPrio==='all') || (p===fPrio);
+        return okS && okP;
+    });
+    let html='<table><thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Priority</th><th>Due</th><th>Initiator</th><th>Created</th><th>Actions</th></tr></thead><tbody>';
+    rows.forEach(c=>{
+        const statusBadge=(c.workflow_stage||'draft').toLowerCase().replace(/\s+/g,'-');
+        const priorityBadge=(c.priority||'medium').toLowerCase();
+        const createdDate = new Date(c.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+    const dueDateObj = c.due_date ? new Date(c.due_date) : null;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dueBadgeClass = !dueDateObj ? '' : (dueDateObj < today ? 'due-overdue' : ( (dueDateObj - today)/(1000*60*60*24) <= 3 ? 'due-soon' : 'due-ok'));
+    const dueDate = dueDateObj ? dueDateObj.toLocaleDateString('en-IN') : '-';
+        html+=`<tr>
+            <td><strong>${c.change_number||'PENDING'}</strong></td>
+            <td>${c.title||'Untitled'}</td>
+            <td><span class="badge ${statusBadge}">${c.workflow_stage||'Draft'}</span></td>
+            <td><span class="badge ${priorityBadge}">${c.priority||'Medium'}</span></td>
+            <td>${dueDateObj ? `<span class="badge ${dueBadgeClass}">${dueDate}</span>` : '-'}</td>
+            <td>${c.initiator_name||'Unknown'}</td>
+            <td>${createdDate}</td>
+            <td><button class="btn btn-sm btn-secondary" onclick="viewChange('${c.id}')">View</button></td>
+        </tr>`;
+    });
+    html+='</tbody></table>';
+    container.innerHTML = html;
+}
+
+// Reports summary and exports
+function updateReportsSummary(){
+    const el = document.getElementById('reportsSummary');
+    if (!el) return;
+    if (!allChanges || allChanges.length===0){
+        el.innerHTML = 'No data yet. Load the dashboard to fetch data.';
+        return;
+    }
+    const statusCounts={};
+    const priorityCounts={Low:0,Medium:0,High:0,Critical:0};
+    allChanges.forEach(c=>{
+        const s=c.workflow_stage||'Draft';
+        statusCounts[s]=(statusCounts[s]||0)+1;
+        const p=c.priority||'Medium';
+        if(priorityCounts[p]!==undefined) priorityCounts[p]++;
+    });
+    const total=allChanges.length;
+    el.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+            <div class="card"><div class="card-title">Total Changes</div><div style="font-size:28px;font-weight:800">${total}</div></div>
+            <div class="card"><div class="card-title">By Status</div><div style="color:var(--text-dim);margin-top:8px">${Object.entries(statusCounts).map(([k,v])=>`${k}: <strong>${v}</strong>`).join('<br>')}</div></div>
+            <div class="card"><div class="card-title">By Priority</div><div style="color:var(--text-dim);margin-top:8px">${Object.entries(priorityCounts).map(([k,v])=>`${k}: <strong>${v}</strong>`).join('<br>')}</div></div>
+        </div>`;
+}
+
+function exportChangesCSV(){
+    if(!allChanges||allChanges.length===0){showToast('No data to export','error');return}
+    const headers = ['change_number','title','workflow_stage','priority','initiator_name','created_at'];
+    const rows = allChanges.map(c=>[
+        c.change_number||'', c.title||'', c.workflow_stage||'', c.priority||'', c.initiator_name||'', c.created_at||''
+    ]);
+    downloadCSV('changes.csv',[headers,...rows]);
+}
+
+function exportSummaryCSV(){
+    if(!allChanges||allChanges.length===0){showToast('No data to export','error');return}
+    const statusCounts={}; const priorityCounts={Low:0,Medium:0,High:0,Critical:0};
+    allChanges.forEach(c=>{ const s=c.workflow_stage||'Draft'; statusCounts[s]=(statusCounts[s]||0)+1; const p=c.priority||'Medium'; if(priorityCounts[p]!==undefined) priorityCounts[p]++; });
+    const rows = [['Metric','Value']];
+    rows.push(['Total Changes', allChanges.length]);
+    Object.entries(statusCounts).forEach(([k,v])=>rows.push([`Status - ${k}`, v]));
+    Object.entries(priorityCounts).forEach(([k,v])=>rows.push([`Priority - ${k}`, v]));
+    downloadCSV('changes_summary.csv', rows);
+}
+
+function downloadCSV(filename, rows){
+    const csvContent = rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csvContent],{type:'text/csv;charset=utf-8;'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename; link.style.display='none'; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+}
+
 // Form submission
+// Live counters and draft autosave
+const draftKey = 'valqms_new_change_draft';
+function updateCounters(){
+    const t = document.getElementById('changeTitle');
+    const d = document.getElementById('changeDescription');
+    const j = document.getElementById('justification');
+    document.getElementById('titleCount').textContent = (t?.value||'').length;
+    document.getElementById('descCount').textContent = (d?.value||'').length;
+    document.getElementById('justCount').textContent = (j?.value||'').length;
+}
+function saveDraft(){
+    const draft = {
+        title: document.getElementById('changeTitle')?.value || '',
+        description: document.getElementById('changeDescription')?.value || '',
+        type: document.getElementById('changeType')?.value || '',
+        category: document.getElementById('changeCategory')?.value || '',
+        department: document.getElementById('changeDepartment')?.value || '',
+        priority: document.getElementById('changePriority')?.value || 'Medium',
+        risk: document.getElementById('changeRisk')?.value || '',
+        justification: document.getElementById('justification')?.value || '',
+        current_state: document.getElementById('changeCurrentState')?.value || '',
+        proposed_change: document.getElementById('changeProposedChange')?.value || ''
+    };
+    localStorage.setItem(draftKey, JSON.stringify(draft));
+}
+function loadDraft(){
+    try{
+        const draft = JSON.parse(localStorage.getItem(draftKey)||'{}');
+        if(Object.keys(draft).length===0) return;
+        if(draft.title) document.getElementById('changeTitle').value = draft.title;
+        if(draft.description) document.getElementById('changeDescription').value = draft.description;
+        if(draft.type) document.getElementById('changeType').value = draft.type;
+        if(draft.category) document.getElementById('changeCategory').value = draft.category;
+        if(draft.department) document.getElementById('changeDepartment').value = draft.department;
+        if(draft.priority) document.getElementById('changePriority').value = draft.priority;
+        if(document.getElementById('changeRisk') && draft.risk!==undefined) document.getElementById('changeRisk').value = draft.risk;
+        if(draft.justification) document.getElementById('justification').value = draft.justification;
+        if(draft.current_state) document.getElementById('changeCurrentState').value = draft.current_state;
+        if(draft.proposed_change) document.getElementById('changeProposedChange').value = draft.proposed_change;
+        updateCounters();
+    }catch{}
+}
+['changeTitle','changeDescription','changeType','changeCategory','changeDepartment','changePriority','changeRisk','justification','changeCurrentState','changeProposedChange'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input', ()=>{ updateCounters(); saveDraft(); });
+    document.getElementById(id)?.addEventListener('change', ()=>{ saveDraft(); });
+});
+
+// Auto-populate Due Date field from Type selection in New Change form
+function setNewFormDueFromType(){
+    const t = document.getElementById('changeType')?.value;
+    const due = t ? computeDueDateByType(t) : '';
+    const dd = document.getElementById('changeDueDate');
+    if(dd) dd.value = due;
+}
+document.getElementById('changeType')?.addEventListener('change', setNewFormDueFromType);
+
 document.getElementById('newChangeForm').addEventListener('submit',async(e)=>{
     e.preventDefault();
+        const btn = document.getElementById('createChangeBtn');
+        if(btn) { btn.disabled = true; btn.textContent = 'Creating…'; }
     
     if(!currentUser){
         showToast('User not authenticated','error');
+                if(btn){ btn.disabled=false; btn.textContent='Create Change Request'; }
         return;
     }
     
@@ -576,13 +1122,19 @@ document.getElementById('newChangeForm').addEventListener('submit',async(e)=>{
         department:document.getElementById('changeDepartment').value,
         priority:document.getElementById('changePriority').value,
         justification:document.getElementById('justification').value.trim(),
-        proposed_implementation_date:document.getElementById('proposedDate').value||null,
+            // New due date fields (SLA-driven)
+            due_date:(()=>{ const v=document.getElementById('changeDueDate')?.value; if(v) return v; const t=document.getElementById('changeType').value; return t?computeDueDateByType(t):null; })(),
+            sla_days:(()=>{ const t=document.getElementById('changeType').value; return t?getSlaDays(t):null; })(),
+                overall_risk_rating: (document.getElementById('changeRisk')?.value || '') || null,
         initiator_id:currentUser.id,
         initiator_name:currentUser.email.split('@')[0],
         workflow_stage:'Draft',
         status:'Draft',
         created_by:currentUser.id
     };
+    // Include optional fields only if columns exist
+    if(hasCurrentState){ formData.current_state = (document.getElementById('changeCurrentState')?.value || '').trim() || null; }
+    if(hasProposedChange){ formData.proposed_change = (document.getElementById('changeProposedChange')?.value || '').trim() || null; }
     
     try{
         const {data,error}=await sb
@@ -596,10 +1148,16 @@ document.getElementById('newChangeForm').addEventListener('submit',async(e)=>{
         showToast('Change request created successfully!','success');
         closeModal('newChangeModal');
         document.getElementById('newChangeForm').reset();
+                localStorage.removeItem(draftKey);
         loadDashboard();
     }catch(error){
         console.error('Create change error:',error);
         showToast('Error creating change: '+error.message,'error');
+        if(error?.message?.toLowerCase().includes('column')){
+            showToast('Heads up: Optional fields may require DB columns current_state/proposed_change','error');
+        }
+        }finally{
+                if(btn){ btn.disabled=false; btn.textContent='Create Change Request'; }
     }
 });
 
@@ -611,6 +1169,8 @@ function viewChange(id){
 // Modal functions
 function openNewChangeModal(){
     document.getElementById('newChangeModal').classList.add('active');
+    // Prefill any draft and update counters
+    setTimeout(()=>{ loadDraft(); updateCounters(); setNewFormDueFromType(); }, 0);
 }
 
 function closeModal(id){
@@ -663,65 +1223,59 @@ document.querySelectorAll('.modal').forEach(modal=>{
 
 // Initialize theme and background from localStorage
 const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
-const savedBg = localStorage.getItem('valqmsBg') || 'mesh';
+const savedBg = localStorage.getItem('valqmsBg') || 'mint';
 document.documentElement.setAttribute('data-theme', savedTheme);
 document.documentElement.setAttribute('data-bg', savedBg);
 
-// Wait for DOM to be ready
-setTimeout(() => {
-  // Background selector
-  const bgBtn = document.getElementById('bgBtn');
-  const bgDropdown = document.getElementById('bgDropdown');
-  const themeBtn = document.getElementById('themeBtn');
-  const themeDropdown = document.getElementById('themeDropdown');
+// Removed brand selector UI; theme/background still load from localStorage above
 
-  if (bgBtn) {
-    bgBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      themeDropdown?.classList.remove('active');
-      bgDropdown.classList.toggle('active');
+// Simple tab navigation
+function showSection(name){
+    const sections = ['dashboard','changes','reports'];
+    sections.forEach(s => {
+        const el = document.getElementById('section-'+s);
+        if (el) el.style.display = (s===name)?'block':'none';
     });
-  }
+    // toggle active nav
+    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+    const link = Array.from(document.querySelectorAll('nav a')).find(a=>a.textContent.trim().toLowerCase().startsWith(name));
+    link?.classList.add('active');
+}
 
-  document.querySelectorAll('.bg-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      const bg = opt.dataset.bg;
-      document.documentElement.setAttribute('data-bg', bg);
-      localStorage.setItem('valqmsBg', bg);
-      bgDropdown?.classList.remove('active');
+// Filters for Changes section
+function getFilteredChanges(){
+    if(!allChanges) return [];
+    const fStatus = (document.getElementById('filterStatus')?.value||'all').toLowerCase();
+    const fPrio = (document.getElementById('filterPriority')?.value||'all').toLowerCase();
+    return allChanges.filter(c=>{
+        const s = (c.workflow_stage||'draft').toLowerCase();
+        const p = (c.priority||'medium').toLowerCase();
+        const okS = (fStatus==='all') || (s===fStatus.replace(/\s+/g,'-') || s===fStatus);
+        const okP = (fPrio==='all') || (p===fPrio);
+        return okS && okP;
     });
-  });
+}
 
-  if (themeBtn) {
-    themeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      bgDropdown?.classList.remove('active');
-      themeDropdown.classList.toggle('active');
-    });
-  }
+document.getElementById('filterStatus')?.addEventListener('change', ()=>{ renderChangesTable(); renderCharts(getFilteredChanges()); });
+document.getElementById('filterPriority')?.addEventListener('change', ()=>{ renderChangesTable(); renderCharts(getFilteredChanges()); });
 
-  document.querySelectorAll('.theme-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      const theme = opt.dataset.theme;
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('valqmsTheme', theme);
-      themeDropdown?.classList.remove('active');
-    });
-  });
+let allChanges = [];
 
-  // Close dropdowns on outside click
-  document.addEventListener('click', (e) => {
-    if (e.target !== bgBtn && e.target !== themeBtn && !bgDropdown?.contains(e.target) && !themeDropdown?.contains(e.target)) {
-      bgDropdown?.classList.remove('active');
-      themeDropdown?.classList.remove('active');
-    }
-  });
+/* Floating action button for mobile */
+const fabStyle = document.createElement('style');
+fabStyle.textContent = `
+.fab{position:fixed;bottom:24px;right:24px;padding:14px 18px;background:linear-gradient(135deg,#10b981,#34d399);border:none;border-radius:999px;color:#000;font-weight:800;box-shadow:0 10px 24px rgba(16,185,129,0.35);z-index:1100;display:none;align-items:center;gap:8px}
+.fab:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(16,185,129,0.4)}
+@media(max-width:768px){.fab{display:inline-flex}}
+`;
+document.head.appendChild(fabStyle);
 
-  bgDropdown?.addEventListener('click', (e) => e.stopPropagation());
-  themeDropdown?.addEventListener('click', (e) => e.stopPropagation());
-}, 100);
+const fabBtn = document.createElement('button');
+fabBtn.className = 'fab';
+fabBtn.type = 'button';
+fabBtn.innerHTML = '+ New Change';
+fabBtn.addEventListener('click', openNewChangeModal);
+document.body.appendChild(fabBtn);
 
 </script>
 

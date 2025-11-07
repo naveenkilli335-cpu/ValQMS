@@ -1,16 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="cyan" data-bg="lavender">
+<html lang="en" data-theme="cyan" data-bg="mint">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ValQMS</title>
   <meta name="description" content="Validation tools and QMS Procedures/Applications.">
-  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+
+    /* Role-based feature visibility */
+.admin-only,
+.manager-only,
+.reviewer-only,
+.auditor-only {
+  display: none;
+}
+
+/* Role indicator pulse animation */
+@keyframes rolePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+[data-role-indicator] {
+  animation: rolePulse 2s ease-in-out infinite;
+}
+
+
+
+
     *{margin:0;padding:0;box-sizing:border-box}
     
     /* Theme Colors */
@@ -37,6 +67,9 @@
       --surface-hover:rgba(255,255,255,0.08);
       --border:rgba(255,255,255,0.1);
       --glass:rgba(255,255,255,0.03);
+      /* Header ribbon color (from header-glass background) */
+      --header-ribbon:#0f172a;           /* dark navy header */
+      --header-ribbon-bright:#1a2742;    /* slightly lighter for gradient */
     }
 
     /* ANIMATED BACKGROUNDS */
@@ -171,8 +204,8 @@
 [data-bg="mint"] footer,
 [data-bg="pearl"] footer,
 [data-bg="lavender"] footer {
-  background: rgba(255,255,255,0.5);
-  border-top: 1px solid rgba(0,0,0,0.1);
+  background: #0f172a !important;
+  border-top: 1px solid rgba(255,255,255,0.08) !important;
 }
 
 /* Additional text elements for light backgrounds */
@@ -301,42 +334,118 @@
 
     html{scroll-behavior:smooth}
     body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background 0.5s ease;min-height:100vh;overflow-x:hidden}
-    .container{max-width:1280px;margin:0 auto;padding:0 24px}
+  .container{width:100%;max-width:none;margin:0;padding:0 24px}
 
     /* GLASSMORPHISM HEADER */
     header{position:sticky;top:12px;z-index:1000;padding:0 24px;margin-bottom:20px}
-    .header-glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.1)}
+  .header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff}
     header .container{display:flex;justify-content:space-between;align-items:center;height:72px;max-width:100%;padding:0}
     
-    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s}
+  .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s}
     .logo:hover{transform:translateY(-2px)}
-    .logo-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;box-shadow:0 4px 20px var(--accent-glow);transition:all 0.3s;position:relative}
+  .logo-mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;box-shadow:0 4px 20px var(--accent-glow);transition:all 0.3s;position:relative}
     .logo-mark::after{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;z-index:-1;opacity:0;filter:blur(10px);transition:opacity 0.3s}
     .logo-mark:hover::after{opacity:0.7}
-    .logo-mark img{width:100%;height:100%;object-fit:contain;padding:4px}
+  .logo-mark .brand-initials{font-weight:900;font-size:18px;letter-spacing:-0.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.25)}
 
-    nav{display:flex;gap:8px;align-items:center}
-    nav a{color:var(--text-dim);text-decoration:none;font-size:15px;font-weight:500;padding:10px 18px;border-radius:10px;transition:all 0.3s;position:relative}
-    nav a:hover{color:var(--text);background:var(--surface-hover)}
+  nav{display:flex;gap:8px;align-items:center}
+  nav a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:15px;font-weight:500;padding:10px 18px;border-radius:10px;transition:all 0.3s;position:relative}
+  nav a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+  /* Force light nav text inside dark header regardless of page background */
+  header .header-glass nav a { color: rgba(255,255,255,0.9) !important; }
+  header .header-glass nav a:hover { color: #fff !important; background: rgba(255,255,255,0.12); }
+  header .logo span { color: #fff !important; }
     nav a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--accent);transition:all 0.3s;transform:translateX(-50%)}
     nav a:hover::after{width:80%}
 
     /* Control Buttons Group */
     .header-controls{display:flex;gap:12px;align-items:center}
+    /* Header controls: white buttons like GxP tool */
+    header .bg-btn,
+    header .theme-btn,
+    header .mobile-menu-btn,
+    header .user-badge,
+    header .btn-login {
+      background: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      color: #0f172a !important;
+      box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03) !important;
+    }
+    header .bg-btn:hover,
+    header .theme-btn:hover,
+    header .mobile-menu-btn:hover,
+    header .user-badge:hover,
+    header .btn-login:hover {
+      background: #ffffff !important;
+      border-color: var(--accent) !important;
+      color: #0f172a !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.15) !important;
+    }
+
+    /* Brand button: make white (not green) */
+    #brandBtn.bg-btn {
+      background: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      color: #0f172a !important;
+      font-weight: 700;
+      box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03) !important;
+    }
+    #brandBtn.bg-btn:hover {
+      background: #ffffff !important;
+      border-color: var(--accent) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.15) !important;
+    }
+    
+    /* Optional outline variant for header controls */
+    header .btn-outline-light{
+      background:transparent !important;
+      border:1.5px solid rgba(255,255,255,0.85) !important;
+      color:#ffffff !important;
+      box-shadow:none !important;
+    }
+    header .btn-outline-light:hover{
+      background:#ffffff !important;
+      color:#0f172a !important;
+      border-color:#ffffff !important;
+      box-shadow:0 6px 24px rgba(16,185,129,0.2) !important;
+      transform:translateY(-2px);
+    }
     
     /* Background Selector */
     .bg-selector{position:relative}
     .bg-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
-    .bg-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
-    .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
+  .bg-btn:hover{background:var(--surface-hover);border-color:var(--border);color:var(--text)}
+  .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:12px;display:none;min-width:260px;box-shadow:0 20px 60px rgba(0,0,0,0.15);z-index:2000;color:#0f172a}
     .bg-dropdown.active{display:block}
-    .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;max-height:400px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
+  .bg-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:12px;display:none;min-width:260px;max-height:420px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15);z-index:2000;color:#0f172a}
     .bg-dropdown.active{display:block}
     .bg-dropdown::-webkit-scrollbar{width:6px}
     .bg-dropdown::-webkit-scrollbar-track{background:transparent}
     .bg-dropdown::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
     .bg-option{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;font-weight:500}
     .bg-option:hover{background:var(--surface-hover)}
+
+  /* Brand Colors section inside brand dropdown */
+  .brand-colors{padding:8px}
+  .brand-colors h4{margin:0 0 8px 0;font-size:13px;font-weight:800;color:var(--text);opacity:0.9}
+  .color-row{display:flex;align-items:center;justify-content:space-between;padding:8px 6px;border-radius:10px}
+  .color-row + .color-row{margin-top:6px}
+  .color-label{font-size:13px;color:var(--text);opacity:0.85}
+  .color-input-wrap{display:flex;align-items:center;gap:8px}
+  .color-chip{width:34px;height:22px;border-radius:6px;border:1px solid #e5e7eb;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.02)}
+  .color-input{appearance:none;-webkit-appearance:none;border:none;background:transparent;width:34px;height:22px;padding:0;cursor:pointer}
+  .brand-actions{display:flex;gap:8px;margin-top:10px}
+  .brand-actions .btn{padding:10px 14px;border-radius:10px;font-size:13px}
+    
+  /* Hide theme/background sections when in brand-only mode */
+  #brandDropdown.brand-only .theme-heading,
+  #brandDropdown.brand-only .theme-options,
+  #brandDropdown.brand-only .bg-heading,
+  #brandDropdown.brand-only .bg-options,
+  #brandDropdown.brand-only .divider-theme,
+  #brandDropdown.brand-only .divider-bg { display: none !important; }
     .bg-preview{width:32px;height:32px;border-radius:8px;border:2px solid rgba(255,255,255,0.2)}
     .bg-preview.mesh{background:radial-gradient(circle, #10b981 0%, #6366f1 100%)}
     .bg-preview.gradient{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%)}
@@ -357,7 +466,7 @@
     /* Theme Selector */
     .theme-selector{position:relative}
     .theme-btn{padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.3s}
-    .theme-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+  .theme-btn:hover{background:var(--surface-hover);border-color:var(--border);color:var(--text)}
     .theme-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:12px;display:none;min-width:200px;max-height:400px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:100}
     .theme-dropdown.active{display:block}
     .theme-dropdown::-webkit-scrollbar{width:6px}
@@ -384,8 +493,8 @@
     .theme-color.violet{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
 
     /* Login Button */
-    .btn-login{padding:10px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s}
-    .btn-login:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-glow)}
+  .btn-login{padding:10px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);border-radius:12px;color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s}
+  .btn-login:hover{background:#ffffff;border-color:#e5e7eb;transform:translateY(-2px);box-shadow:0 4px 16px rgba(15,23,42,0.18);color:#0f172a}
 
     /* User Menu - UPDATED TO MATCH OTHER BUTTONS */
     .user-menu{position:relative;display:none}
@@ -475,40 +584,75 @@
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.9)}}
     
     h1{font-size:clamp(52px,9vw,82px);font-weight:900;letter-spacing:-3px;line-height:1.05;margin-bottom:32px;background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 80px var(--accent-glow)}
-    .lead{font-size:21px;color:var(--text-dim);max-width:720px;margin:0 auto 48px;line-height:1.8;font-weight:300}
+  .lead{font-size:21px;color:var(--text-dim);margin:0 0 48px 0;line-height:1.8;font-weight:300}
     .cta-group{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
     .cta{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;text-decoration:none;border-radius:14px;font-weight:700;font-size:16px;transition:all 0.3s;box-shadow:0 8px 24px var(--accent-glow);position:relative;overflow:hidden}
     .cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-bright),var(--accent));opacity:0;transition:opacity 0.3s}
     .cta:hover::before{opacity:1}
     .cta:hover{transform:translateY(-3px);box-shadow:0 12px 32px var(--accent-glow)}
     .cta span{position:relative;z-index:1}
-    .cta-secondary{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text)}
-    .cta-secondary::before{background:var(--surface-hover)}
-    .cta-secondary:hover{border-color:var(--accent)}
+    .cta-secondary{
+      background:#ffffff;
+      border:1px solid #e5e7eb;
+      color:#0f172a;
+      backdrop-filter:none;
+      box-shadow:0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03);
+    }
+    .cta-secondary::before{background:transparent}
+    .cta-secondary:hover{
+      border-color:var(--accent);
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(16,185,129,0.18);
+    }
 
     /* Sections */
     section{padding:100px 0}
     .section-head{text-align:center;margin-bottom:64px}
     .section-head h2{font-size:clamp(36px,6vw,56px);font-weight:900;letter-spacing:-2px;margin-bottom:16px;color:#fff;background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .section-head p{font-size:19px;color:var(--text-dim);max-width:740px;margin:0 auto;line-height:1.8;font-weight:300}
+  .section-head p{font-size:19px;color:var(--text-dim);margin:0;line-height:1.8;font-weight:300}
 
-    /* Tools List */
-    .tools-scroll-wrapper{max-width:1100px;margin:0 auto;max-height:550px;overflow-y:auto;padding-right:12px;border-radius:20px}
-    .tools-scroll-wrapper::-webkit-scrollbar{width:10px}
-    .tools-scroll-wrapper::-webkit-scrollbar-track{background:var(--glass);border-radius:10px}
-    .tools-scroll-wrapper::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px;border:2px solid transparent;background-clip:padding-box}
-    .tools-list{display:flex;flex-direction:column;gap:16px}
-    .tool-item{display:flex;align-items:center;gap:20px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:20px 24px;text-decoration:none;color:inherit;transition:all 0.4s;position:relative;overflow:hidden}
-    .tool-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--accent),var(--accent-bright));transform:scaleY(0);transition:transform 0.4s}
-    .tool-item:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateX(8px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+    /* Tools List - modernized for full width */
+  .tools-scroll-wrapper{max-width:none;margin:0;overflow:visible;padding-right:0;border-radius:20px}
+    .tools-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px}
+  .tool-item{display:flex;align-items:center;gap:20px;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);border:1px solid #e5e7eb;border-radius:18px;padding:22px 26px;text-decoration:none;color:inherit;transition:all 0.35s ease;position:relative;overflow:hidden}
+  .tool-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--header-ribbon),var(--header-ribbon-bright));transform:scaleY(0);transition:transform 0.35s ease}
+  .tool-item:hover{background:linear-gradient(180deg,#ffffff 0%,#f1f5f9 100%);border-color:#dbeafe;transform:translateY(-4px);box-shadow:0 12px 40px rgba(15,23,42,0.18)}
     .tool-item:hover::before{transform:scaleY(1)}
-    .tool-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;transition:all 0.4s;box-shadow:0 8px 20px var(--accent-glow)}
-    .tool-item:hover .tool-icon{transform:scale(1.1) rotate(5deg)}
+  /* Subtle corner glow accents per card */
+  .tools-list .tool-item::after{content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;filter:blur(40px);opacity:0.0;transition:opacity 0.35s ease, transform 0.35s ease}
+  .tools-list .tool-item:nth-child(1)::after{background:radial-gradient(circle, rgba(16,185,129,0.4), transparent 60%)}
+  .tools-list .tool-item:nth-child(2)::after{background:radial-gradient(circle, rgba(99,102,241,0.35), transparent 60%)}
+  .tools-list .tool-item:nth-child(3)::after{background:radial-gradient(circle, rgba(234,88,12,0.35), transparent 60%)}
+  .tools-list .tool-item:nth-child(4)::after{background:radial-gradient(circle, rgba(59,130,246,0.35), transparent 60%)}
+  .tools-list .tool-item:nth-child(5)::after{background:radial-gradient(circle, rgba(244,114,182,0.35), transparent 60%)}
+  .tools-list .tool-item:nth-child(6)::after{background:radial-gradient(circle, rgba(139,92,246,0.35), transparent 60%)}
+  .tools-list .tool-item:hover::after{opacity:0.8;transform:scale(1.05)}
+    .tool-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;transition:all 0.35s ease;box-shadow:0 8px 20px var(--accent-glow)}
+    .tool-item:hover .tool-icon{transform:scale(1.06) rotate(3deg)}
     .tool-content{flex:1;min-width:0}
-    .tool-content h3{font-size:18px;font-weight:700;margin-bottom:6px;color:var(--text);letter-spacing:-0.4px}
+  .tool-content h3{font-size:18px;font-weight:700;margin-bottom:6px;color:var(--text);letter-spacing:-0.4px}
+  .tool-badges{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px}
+  .tool-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.2px;border:1px solid transparent;background:#f8fafc;color:#0f172a}
+  .tool-badge.ai{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#065f46}
+  .tool-badge.new{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.35);color:#1e3a8a}
+  .tool-badge.popular{background:rgba(234,88,12,0.12);border-color:rgba(234,88,12,0.35);color:#7c2d12}
     .tool-content p{color:var(--text-dim);font-size:14px;line-height:1.6;font-weight:300}
-    .tool-arrow{font-size:28px;color:var(--accent);transition:all 0.4s;flex-shrink:0}
-    .tool-item:hover .tool-arrow{transform:translateX(12px) scale(1.2)}
+  .tool-arrow{font-size:28px;color:var(--header-ribbon-bright);transition:all 0.35s ease;flex-shrink:0}
+    .tool-item:hover .tool-arrow{transform:translateX(10px) scale(1.1)}
+    @media (max-width: 980px){.tools-list{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}}
+    @media (max-width: 640px){.tool-item{padding:18px 20px}}
+
+    /* Smart Tools filter pills */
+    .tools-filters{display:flex;justify-content:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+    .pill-btn{padding:8px 14px;border-radius:9999px;background:#ffffff;border:1px solid #e5e7eb;color:#0f172a;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.25s}
+    .pill-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,0.15)}
+    .pill-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
+    .tool-item.hidden{display:none}
+
+    /* Emoji icons inside badges */
+    .tool-badge.ai::before{content:"🤖"}
+    .tool-badge.new::before{content:"✨"}
+    .tool-badge.popular::before{content:"🔥"}
 
     /* APP CARDS - Modern Application Style */
     .app-grid {
@@ -541,11 +685,22 @@
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-bright));
-      transform: scaleX(0);
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--header-ribbon), var(--header-ribbon-bright));
+      transform: scaleY(0);
+      transform-origin: top;
       transition: transform 0.4s;
+    }
+    /* In list-view, use a subtle top horizontal bar instead of vertical ribbon */
+    .list-view .app-card::before{
+      width: 100%;
+      height: 3px;
+      left: 0;
+      top: 0;
+      background: linear-gradient(90deg, var(--header-ribbon), var(--header-ribbon-bright));
+      transform: scaleX(0);
+      transform-origin: left;
     }
 
     .app-card:hover {
@@ -554,9 +709,8 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
     }
 
-    .app-card:hover::before {
-      transform: scaleX(1);
-    }
+    .app-card:hover::before { transform: scaleY(1); }
+    .list-view .app-card:hover::before { transform: scaleX(1); }
 
     .app-icon {
       width: 80px;
@@ -587,8 +741,8 @@
     }
 
     .app-card p {
-      font-size: 13px;
-      color: var(--text-dim);
+      font-size: 14px;
+      color: var(--text);
       line-height: 1.6;
       margin-bottom: 16px;
       flex: 1;
@@ -616,54 +770,231 @@
     /* QMS Grid */
     .qms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
     .module-card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:32px;transition:all 0.4s;position:relative;overflow:hidden}
-    .module-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:5px;background:linear-gradient(90deg,var(--accent),var(--accent-bright));transform:scaleX(0);transform-origin:left;transition:transform 0.5s ease}
+  .module-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:5px;background:linear-gradient(90deg,var(--header-ribbon),var(--header-ribbon-bright));transform:scaleX(0);transform-origin:left;transition:transform 0.5s ease}
     .module-card:hover{transform:translateY(-8px);border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
     .module-card:hover::before{transform:scaleX(1)}
     .module-card h4{font-size:19px;font-weight:700;margin-bottom:12px;color:var(--text);letter-spacing:-0.3px}
     .module-card p{font-size:14px;color:var(--text-dim);line-height:1.7;font-weight:300}
     .qms-cta-wrapper{text-align:center;margin-top:56px}
 
-    /* Resources Grid */
-    .resources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
-    .resource-card{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:18px;padding:32px;transition:all 0.4s;position: relative;overflow: hidden;}
-    .resource-card::before {
+  /* Resources Grid (modernized) */
+  /* About: STAT-BAND presentation with stronger contrast */
+  #about .qms-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:0;
+    background:var(--glass);
+    backdrop-filter:blur(14px);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:12px 12px; /* slimmer band */
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 12px 36px rgba(0,0,0,0.35);
+  }
+  #about .module-card{
+    background:transparent;
+    border:0;
+    padding:16px 20px;
+    box-shadow:none;
+    transition:background 0.25s, transform 0.25s;
+    position:relative;
+    min-height:100%;
+  }
+  /* Remove top ribbon; add subtle alternating row tints */
+  #about .qms-grid::before{content:none}
+  #about .qms-grid::after{
+    content:'';
+    position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.04),
+      rgba(255,255,255,0.04) 56px,
+      rgba(0,0,0,0.0) 56px,
+      rgba(0,0,0,0.0) 112px
+    );
+  }
+  #about .module-card::before{content:none}
+  /* Vertical separators between items */
+  #about .module-card + .module-card{border-left:1px solid rgba(255,255,255,0.08)}
+  #about .module-card:hover{background:rgba(255,255,255,0.04);transform:translateY(-2px)}
+  #about .module-card h4{margin-bottom:4px}
+  #about .module-card p{color:var(--text);opacity:0.9}
+  @media (max-width: 720px){
+    #about .qms-grid{grid-template-columns:1fr;gap:0}
+    #about .module-card + .module-card{border-left:0;border-top:1px solid rgba(255,255,255,0.12)}
+  }
+  /* QMS Applications: List view overrides */
+  /* Generic list-view styles (apply to any section with class 'list-view') */
+  .view-toggle{display:flex;justify-content:flex-end;gap:8px;margin:8px 0 12px}
+  .list-view .app-grid{grid-template-columns:1fr;gap:14px}
+  .list-view .qms-grid{grid-template-columns:1fr;gap:14px}
+  /* Switch to grid layout for precise alignment */
+  .list-view .app-card{display:grid;grid-template-columns:72px 1fr 260px;align-items:center;gap:16px;text-align:left;padding:16px 18px}
+  .list-view .app-icon{grid-column:1;grid-row:1 / span 2;width:56px;height:56px;border-radius:14px;margin:0;box-shadow:0 8px 24px rgba(0,0,0,0.25)}
+  .list-view .app-card h4{grid-column:2;margin:0 0 4px}
+  .list-view .app-card p{grid-column:2;margin:0;color:var(--text)}
+  .list-view .app-badge{grid-column:3;justify-self:start;margin:0}
+  .list-view .app-card > .price-tag{grid-column:3;justify-self:start;margin:0 0 6px}
+  .list-view .app-card > div:last-child{grid-column:3;justify-self:stretch;margin:0;display:flex;flex-direction:column;gap:8px}
+  /* Reveal price tag in list view even if generated with .hidden */
+  .list-view .app-card .price-tag.hidden{display:inline-block !important}
+  /* Premium ribbon styles */
+  .premium-ribbon{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#f59e0b,#fb923c);padding:4px 8px;border-radius:999px;color:#000;font-size:11px;font-weight:700;letter-spacing:.3px;z-index:5}
+  .list-view .premium-ribbon{position:static;grid-column:3;justify-self:start;margin:0 0 6px}
+  /* Price tag visual */
+  .price-tag{background:#ffffff;border:1px solid #e5e7eb;color:#0f172a;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;display:inline-block}
+
+  /* QMS-specific ribbon orientation: Tiles = top bar, List = left ribbon */
+  /* Default for QMS (tiles view): horizontal top bar */
+  #qms .app-card::before{
+    width:100%;
+    height:3px;
+    left:0;top:0;
+    background: linear-gradient(90deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  #qms .app-card:hover::before{ transform: scaleX(1); }
+  /* QMS list view: vertical left ribbon */
+  #qms.list-view .app-card::before{
+    width:4px;
+    height:100%;
+    left:0;top:0;
+    background: linear-gradient(180deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  #qms.list-view .app-card:hover::before{ transform: scaleY(1); }
+
+  /* Procedures: Tiles = top bar, List = left ribbon */
+  section[id="QMS Procedures"] .app-card::before{
+    width:100%;height:3px;left:0;top:0;
+    background: linear-gradient(90deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleX(0);transform-origin:left;
+  }
+  section[id="QMS Procedures"] .app-card:hover::before{ transform: scaleX(1); }
+  section[id="QMS Procedures"].list-view .app-card::before{
+    width:4px;height:100%;left:0;top:0;
+    background: linear-gradient(180deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleY(0);transform-origin:top;
+  }
+  section[id="QMS Procedures"].list-view .app-card:hover::before{ transform: scaleY(1); }
+
+  /* Courses: Tiles = top bar, List = left ribbon */
+  section[id="ValQMS Academy"] .app-card::before{
+    width:100%;height:3px;left:0;top:0;
+    background: linear-gradient(90deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleX(0);transform-origin:left;
+  }
+  section[id="ValQMS Academy"] .app-card:hover::before{ transform: scaleX(1); }
+  section[id="ValQMS Academy"].list-view .app-card::before{
+    width:4px;height:100%;left:0;top:0;
+    background: linear-gradient(180deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleY(0);transform-origin:top;
+  }
+  section[id="ValQMS Academy"].list-view .app-card:hover::before{ transform: scaleY(1); }
+
+  /* Validation: Tiles = top bar, List = left ribbon */
+  #validation .app-card::before{
+    width:100%;height:3px;left:0;top:0;
+    background: linear-gradient(90deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleX(0);transform-origin:left;
+  }
+  #validation .app-card:hover::before{ transform: scaleX(1); }
+  #validation.list-view .app-card::before{
+    width:4px;height:100%;left:0;top:0;
+    background: linear-gradient(180deg, var(--header-ribbon), var(--header-ribbon-bright));
+    transform: scaleY(0);transform-origin:top;
+  }
+  #validation.list-view .app-card:hover::before{ transform: scaleY(1); }
+
+  .resources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:24px}
+  .resource-card{background:linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:28px;transition:all 0.4s;position: relative;overflow: hidden;}
+  .resource-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 5px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  background: linear-gradient(90deg, var(--header-ribbon), var(--header-ribbon-bright));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.5s ease;
     }
-    .resource-card:hover{border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,0.3);transform:translateY(-4px)}
+  .resource-card:hover{border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,0.3);transform:translateY(-4px)}
     .resource-card:hover::before {
     transform: scaleX(1);
     }
-    .resource-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:20px;box-shadow:0 8px 20px var(--accent-glow)}
-    .resource-card h3{font-size:20px;font-weight:700;margin-bottom:16px;letter-spacing:-0.3px}
-    .resource-card ul{list-style:none;padding:0;font-size:14px;line-height:2.2;font-weight:300}
-    .resource-card a{color:var(--accent);text-decoration:none;font-weight:500;transition:all 0.3s}
-    .resource-card a:hover{color:var(--accent-bright);padding-left:4px}
+  .resource-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+  .resource-title{display:flex;align-items:center;gap:14px}
+  .resource-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 18px var(--accent-glow);flex-shrink:0}
+  .resource-card h3{font-size:20px;font-weight:800;margin:0;letter-spacing:-0.3px;color:var(--text)}
+  .resource-desc{margin-top:4px;color:var(--text-dim);font-size:13px;font-weight:500}
+  .link-count{background:#ffffff;border:1px solid #e5e7eb;color:#0f172a;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;min-width:32px;text-align:center}
+  .resource-card ul{list-style:none;padding:0;margin-top:12px;font-size:14px;line-height:2.0;font-weight:300;columns:2;column-gap:24px}
+  @media (max-width: 920px){.resource-card ul{columns:1}}
+  .resource-card li{break-inside:avoid}
+  .resource-card a{color:var(--text);text-decoration:none;font-weight:400;position:relative;display:inline-block;transition:all 0.25s}
+  .resource-card a::after{content:'\2197'; /* ↗ */ position:absolute;right:-16px;top:0;color:var(--accent-bright);opacity:0;transform:translateY(2px);transition:all 0.25s}
+  .resource-card a:hover{color:var(--text);padding-left:2px}
+  .resource-card a:hover::after{opacity:1;right:-12px}
+  /* Keep icon and link on same row */
+  #resources .resource-card li{display:flex;align-items:center;gap:8px}
+  #resources .resource-card li a{word-break:break-word}
+  /* Lightweight flag icons */
+  .flag{display:inline-block;width:18px;height:12px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.12);background-size:cover;background-position:center;flex-shrink:0}
+  /* Japan flag */
+  .flag-jp{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23ffffff'/><circle cx='9' cy='6' r='3.5' fill='%23bc002d'/></svg>")}
+  /* India flag (no chakra for simplicity) */
+  .flag-in{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23ffffff'/><rect width='18' height='4' y='0' fill='%23ff9933'/><rect width='18' height='4' y='8' fill='%23128807'/></svg>")}
+  /* EU flag (simplified) */
+  .flag-eu{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23003399'/><g fill='%23ffcc00'><circle cx='9' cy='3' r='0.6'/><circle cx='11.1' cy='3.6' r='0.6'/><circle cx='12.6' cy='5.1' r='0.6'/><circle cx='13.2' cy='7.2' r='0.6'/><circle cx='12.6' cy='9.1' r='0.6'/><circle cx='11.1' cy='10.4' r='0.6'/><circle cx='9' cy='11' r='0.6'/><circle cx='6.9' cy='10.4' r='0.6'/><circle cx='5.4' cy='9.1' r='0.6'/><circle cx='4.8' cy='7.2' r='0.6'/><circle cx='5.4' cy='5.1' r='0.6'/><circle cx='6.9' cy='3.6' r='0.6'/></g></svg>")}
+  /* United States flag (simplified) */
+  .flag-us{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23b22234'/><g fill='%23ffffff'><rect y='1' width='18' height='1'/><rect y='3' width='18' height='1'/><rect y='5' width='18' height='1'/><rect y='7' width='18' height='1'/><rect y='9' width='18' height='1'/><rect y='11' width='18' height='1'/></g><rect width='7.6' height='5.6' fill='%233c3b6e'/></svg>")}
+  /* United Kingdom flag (very simplified) */
+  .flag-uk{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23001285'/><rect x='7' width='4' height='12' fill='%23ffffff'/><rect y='4' width='18' height='4' fill='%23ffffff'/><rect x='7.6' width='2.8' height='12' fill='%23cf142b'/><rect y='4.6' width='18' height='2.8' fill='%23cf142b'/></svg>")}
+  /* Australia flag (simplified) */
+  .flag-au{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23001285'/><circle cx='12.5' cy='6' r='1.6' fill='%23ffffff'/></svg>")}
+  /* China flag (simplified) */
+  .flag-cn{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23de2910'/><circle cx='5' cy='4' r='1.3' fill='%23ffde00'/></svg>")}
+  /* Canada flag (simplified) */
+  .flag-ca{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23ffffff'/><rect width='4' height='12' x='0' fill='%23d52b1e'/><rect width='4' height='12' x='14' fill='%23d52b1e'/><path d='M9 3.5 l1 1.5 h1.2 l-1 1 0.4 1.4 L9 7.6 7.4 7.4 7.8 6 6.8 5 h1.2 L9 3.5z' fill='%23d52b1e'/></svg>")}
+  /* Globe icon for WHO */
+  .flag-globe{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' fill='%23e5f2ff'/><circle cx='9' cy='6' r='4' fill='none' stroke='%230482c9' stroke-width='1.2'/><path d='M5 6h8M9 2c-1.5 1.5-1.5 6 0 8c1.5-2 1.5-6 0-8z' stroke='%230482c9' stroke-width='1.2' fill='none'/></svg>")}
+  /* Simple brand-style icons for ISO and ICH (original, not official logos) */
+  .flag-iso{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' rx='2' ry='2' fill='%230055a4'/><text x='9' y='8.5' text-anchor='middle' font-size='7' font-family='Arial, Helvetica, sans-serif' fill='%23ffffff'>ISO</text></svg>")}
+  .flag-ich{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='12' viewBox='0 0 18 12'><rect width='18' height='12' rx='2' ry='2' fill='%23088da5'/><text x='9' y='8.5' text-anchor='middle' font-size='7' font-family='Arial, Helvetica, sans-serif' fill='%23ffffff'>ICH</text></svg>")}
+  /* Hide filtered links */
+  #resources .resource-card li.hidden{display:none !important}
 
-    /* MODERN MINIMAL FOOTER */
-    footer{margin-top:120px;border-top:1px solid var(--border);background:var(--glass);backdrop-filter:blur(20px)}
+  /* Small-screen refinements for resource cards */
+  @media (max-width: 480px){
+    .resource-icon{width:42px;height:42px;font-size:22px}
+    .resource-card{padding:22px}
+    .resource-header{gap:10px}
+    .resource-card ul{column-gap:16px;line-height:1.9}
+  }
+
+    /* MODERN MINIMAL FOOTER (match dark header) */
+    footer{margin-top:120px;border-top:1px solid rgba(255,255,255,0.08);background:#0f172a;color:#ffffff}
     .footer-content{padding:56px 0 32px}
     .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
     .footer-brand{display:flex;flex-direction:column;gap:20px}
-    .footer-brand .logo{font-size:24px}
-    .footer-brand p{color:var(--text-dim);font-size:14px;line-height:1.8;max-width:320px;font-weight:300}
-    .footer-col h5{font-size:13px;font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;color:var(--text)}
+  .footer-brand .logo{font-size:26px;font-weight:900;color:#ffffff}
+  .footer-brand p{color:rgba(255,255,255,0.7);font-size:14px;line-height:1.8;font-weight:300}
+    .footer-col h5{font-size:13px;font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;color:#ffffff}
     .footer-col ul{list-style:none}
     .footer-col li{margin-bottom:12px}
-    .footer-col a{color:var(--text-dim);text-decoration:none;font-size:14px;transition:all 0.3s;display:inline-block;font-weight:400}
-    .footer-col a:hover{color:var(--accent);transform:translateX(4px)}
-    .footer-bottom{padding:24px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--text-dim);font-size:13px}
+  .footer-col a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:14px;transition:all 0.3s;display:inline-block;font-weight:400;position:relative}
+  .footer-col a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--accent);transition:all 0.3s;transform:translateX(-50%)}
+  .footer-col a:hover{color:#ffffff;transform:translateX(4px)}
+  .footer-col a:hover::after{width:80%}
+    .footer-bottom{padding:24px 0;border-top:1px solid rgba(255,255,255,0.12);display:flex;justify-content:space-between;align-items:center;color:rgba(255,255,255,0.7);font-size:13px}
     .footer-socials{display:flex;gap:16px}
-    .footer-socials a{width:36px;height:36px;border-radius:10px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);text-decoration:none;transition:all 0.3s}
-    .footer-socials a:hover{background:var(--accent);color:#000;border-color:var(--accent);transform:translateY(-2px)}
+    .footer-socials a{width:36px;height:36px;border-radius:10px;background:#ffffff;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;color:#0f172a;text-decoration:none;transition:all 0.3s}
+    .footer-socials a:hover{background:#ffffff;color:#0f172a;border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,185,129,0.15)}
 
     /* Project Management Icons */
     .pm-icon {
@@ -804,15 +1135,17 @@
 }
 
 .pm-quick-actions .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text);
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  color:#0f172a;
+  box-shadow:0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03);
 }
 
 .pm-quick-actions .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  background:#ffffff;
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(16,185,129,0.18);
 }
 
 .pm-quick-actions svg {
@@ -1029,6 +1362,68 @@
   transform:translateY(-2px);
 }
 
+/* === Profile Panel: match white-card + brand accents === */
+#profilePanel .profile-content{
+  background:#ffffff !important;
+  border:1px solid #e5e7eb !important;
+  box-shadow:0 24px 64px rgba(15,23,42,0.18) !important;
+  backdrop-filter:none !important;
+}
+
+#profilePanel .close-btn{
+  background:#ffffff !important;
+  border:1px solid #e5e7eb !important;
+  color:#0f172a !important;
+}
+#profilePanel .close-btn:hover{
+  background:#ffffff !important;
+  border-color:var(--accent) !important;
+  color:var(--accent) !important;
+}
+
+#profilePanel .profile-content h2{ color:#0f172a !important; }
+
+#profilePanel #profileMsg{
+  background:#f8fafc !important;
+  border:1px solid #e5e7eb !important;
+  color:#475569 !important;
+}
+
+#profilePanel label{ color:#475569 !important; }
+
+#profilePanel input{
+  background:#ffffff !important;
+  border:1px solid #e5e7eb !important;
+  color:#0f172a !important;
+}
+#profilePanel input:focus{
+  border-color:var(--accent) !important;
+  background:#ffffff !important;
+  box-shadow:0 0 0 3px var(--accent-dim), 0 4px 20px rgba(16,185,129,0.12) !important;
+}
+
+#profilePanel .btn-secondary{
+  background:#ffffff !important;
+  border:1px solid #e5e7eb !important;
+  color:#0f172a !important;
+  box-shadow:0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03) !important;
+}
+#profilePanel .btn-secondary:hover{
+  border-color:var(--accent) !important;
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(16,185,129,0.18) !important;
+}
+
+#profilePanel .btn-primary{
+  background:linear-gradient(135deg, var(--accent), var(--accent-bright)) !important;
+  color:#000 !important;
+  box-shadow:0 6px 24px var(--accent-glow) !important;
+}
+#profilePanel .btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 32px var(--accent-glow) !important;
+}
+
 @media(max-width:968px){
   header{top:8px;padding:0 16px}
   .header-glass{padding:0 20px;border-radius:16px}
@@ -1151,8 +1546,11 @@
   margin: 1rem 0;
 }
 
+.price-tag.hidden { display: none; }
+
   </style>
 
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 
 <body>
@@ -1161,62 +1559,88 @@
     <div class="header-glass">
       <div class="container">
         <a href="index.html" class="logo">
-          <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+          <div class="logo-mark"><span class="brand-initials">VQ</span></div>
           <span>ValQMS</span>
         </a>
         
     <nav id="mainNav">
+      <a href="#validation">GxP Validation & Project Managmement</a>
       <a href="#tools">Smart Tools</a>
       <a href="#qms">QMS Applications</a>
       <a href="#QMS Procedures">QMS Procedures</a>
-      <a href="#validation">GxP Validation & Project Managmement</a>
       <a href="#ValQMS Academy">ValQMS Academy</a>
       <a href="#resources">Resources</a>
+      <a href="admin-users.html" class="admin-only" style="display: none;">
+        Manage Users
+      </a>
       <a href="#about">About</a>
     </nav>
 
         <div class="header-controls">
-          <!-- Background Selector -->
-          <div class="bg-selector">
-            <button class="bg-btn" id="bgBtn"><span>🎨</span><span>Background</span></button>
-            <div class="bg-dropdown" id="bgDropdown">
-              <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh Gradient</span></div>
-              <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Purple Gradient</span></div>
-              <div class="bg-option" data-bg="dots"><div class="bg-preview dots"></div><span>Dot Pattern</span></div>
-              <div class="bg-option" data-bg="waves"><div class="bg-preview waves"></div><span>Wave Motion</span></div>
-              <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark Mode</span></div>
-              <div class="bg-option" data-bg="blobs"><div class="bg-preview blobs"></div><span>Blob Motion</span></div>
-              <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
-              <div class="bg-option" data-bg="aurora"><div class="bg-preview aurora"></div><span>Aurora Light</span></div>
-              <div class="bg-option" data-bg="sunset"><div class="bg-preview sunset"></div><span>Sunset Glow</span></div>
-              <div class="bg-option" data-bg="ocean"><div class="bg-preview ocean"></div><span>Ocean Breeze</span></div>
-              <div class="bg-option" data-bg="mint"><div class="bg-preview mint"></div><span>Mint Fresh</span></div>
-              <div class="bg-option" data-bg="pearl"><div class="bg-preview pearl"></div><span>Pearl Gold</span></div>
-              <div class="bg-option" data-bg="lavender"><div class="bg-preview lavender"></div><span>Lavender Dream</span></div>
-              <div class="bg-option" data-bg="cosmic"><div class="bg-preview cosmic"></div><span>Cosmic Dark</span></div>
-              <div class="bg-option" data-bg="neon"><div class="bg-preview neon"></div><span>Neon Nights</span></div>
-            </div>
-          </div>
+          <!-- Brand Selector (combined Theme + Background) -->
+          <div class="brand-selector">
+            <button class="bg-btn" id="brandBtn"><span>🎨</span><span>Brand</span></button>
+            <div class="bg-dropdown brand-only" id="brandDropdown">
+              <div class="theme-heading" style="font-size:12px; font-weight:700; opacity:0.9; padding:8px 8px 4px;">Theme</div>
+              <div class="theme-options" style="padding: 4px 0 8px;">
+                <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
+                <div class="theme-option" data-theme="cyan"><div class="theme-color cyan"></div><span>Cyan</span></div>
+                <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
+                <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
+                <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
+                <div class="theme-option" data-theme="red"><div class="theme-color red"></div><span>Red</span></div>
+                <div class="theme-option" data-theme="pink"><div class="theme-color pink"></div><span>Pink</span></div>
+                <div class="theme-option" data-theme="teal"><div class="theme-color teal"></div><span>Teal</span></div>
+                <div class="theme-option" data-theme="indigo"><div class="theme-color indigo"></div><span>Indigo</span></div>
+                <div class="theme-option" data-theme="yellow"><div class="theme-color yellow"></div><span>Yellow</span></div>
+                <div class="theme-option" data-theme="magenta"><div class="theme-color magenta"></div><span>Magenta</span></div>
+                <div class="theme-option" data-theme="emerald"><div class="theme-color emerald"></div><span>Emerald</span></div>
+                <div class="theme-option" data-theme="amber"><div class="theme-color amber"></div><span>Amber</span></div>
+                <div class="theme-option" data-theme="lime"><div class="theme-color lime"></div><span>Lime</span></div>
+                <div class="theme-option" data-theme="violet"><div class="theme-color violet"></div><span>Violet</span></div>
+              </div>
+              <div class="divider-theme" style="height:1px; background: var(--border); margin: 6px 0 8px;"></div>
+              <div class="bg-heading" style="font-size:12px; font-weight:700; opacity:0.9; padding:8px 8px 4px;">Background</div>
+              <div class="bg-options">
+                <div class="bg-option" data-bg="mesh"><div class="bg-preview mesh"></div><span>Mesh Gradient</span></div>
+                <div class="bg-option" data-bg="gradient"><div class="bg-preview gradient"></div><span>Purple Gradient</span></div>
+                <div class="bg-option" data-bg="dots"><div class="bg-preview dots"></div><span>Dot Pattern</span></div>
+                <div class="bg-option" data-bg="waves"><div class="bg-preview waves"></div><span>Wave Motion</span></div>
+                <div class="bg-option" data-bg="dark"><div class="bg-preview dark"></div><span>Dark Mode</span></div>
+                <div class="bg-option" data-bg="blobs"><div class="bg-preview blobs"></div><span>Blob Motion</span></div>
+                <div class="bg-option" data-bg="mesh2"><div class="bg-preview mesh2"></div><span>Mesh 2</span></div>
+                <div class="bg-option" data-bg="aurora"><div class="bg-preview aurora"></div><span>Aurora Light</span></div>
+                <div class="bg-option" data-bg="sunset"><div class="bg-preview sunset"></div><span>Sunset Glow</span></div>
+                <div class="bg-option" data-bg="ocean"><div class="bg-preview ocean"></div><span>Ocean Breeze</span></div>
+                <div class="bg-option" data-bg="mint"><div class="bg-preview mint"></div><span>Mint Fresh</span></div>
+                <div class="bg-option" data-bg="pearl"><div class="bg-preview pearl"></div><span>Pearl Gold</span></div>
+                <div class="bg-option" data-bg="lavender"><div class="bg-preview lavender"></div><span>Lavender Dream</span></div>
+                <div class="bg-option" data-bg="cosmic"><div class="bg-preview cosmic"></div><span>Cosmic Dark</span></div>
+                <div class="bg-option" data-bg="neon"><div class="bg-preview neon"></div><span>Neon Nights</span></div>
+              </div>
 
-          <!-- Theme Selector -->
-          <div class="theme-selector">
-            <button class="theme-btn" id="themeBtn"><span>🎨</span><span>Theme</span></button>
-            <div class="theme-dropdown" id="themeDropdown">
-              <div class="theme-option" data-theme="green"><div class="theme-color green"></div><span>Green</span></div>
-              <div class="theme-option" data-theme="cyan"><div class="theme-color cyan"></div><span>Cyan</span></div>
-              <div class="theme-option" data-theme="purple"><div class="theme-color purple"></div><span>Purple</span></div>
-              <div class="theme-option" data-theme="orange"><div class="theme-color orange"></div><span>Orange</span></div>
-              <div class="theme-option" data-theme="blue"><div class="theme-color blue"></div><span>Blue</span></div>
-              <div class="theme-option" data-theme="red"><div class="theme-color red"></div><span>Red</span></div>
-              <div class="theme-option" data-theme="pink"><div class="theme-color pink"></div><span>Pink</span></div>
-              <div class="theme-option" data-theme="teal"><div class="theme-color teal"></div><span>Teal</span></div>
-              <div class="theme-option" data-theme="indigo"><div class="theme-color indigo"></div><span>Indigo</span></div>
-              <div class="theme-option" data-theme="yellow"><div class="theme-color yellow"></div><span>Yellow</span></div>
-              <div class="theme-option" data-theme="magenta"><div class="theme-color magenta"></div><span>Magenta</span></div>
-              <div class="theme-option" data-theme="emerald"><div class="theme-color emerald"></div><span>Emerald</span></div>
-              <div class="theme-option" data-theme="amber"><div class="theme-color amber"></div><span>Amber</span></div>
-              <div class="theme-option" data-theme="lime"><div class="theme-color lime"></div><span>Lime</span></div>
-              <div class="theme-option" data-theme="violet"><div class="theme-color violet"></div><span>Violet</span></div>
+              <div class="divider-bg" style="height:1px; background: var(--border); margin: 8px 0 10px;"></div>
+              <div class="brand-colors">
+                <h4>Brand Colors</h4>
+                <div class="color-row">
+                  <div class="color-label">Primary (accent)</div>
+                  <div class="color-input-wrap">
+                    <div class="color-chip" id="accentChip"></div>
+                    <input type="color" id="accentColorInput" class="color-input" aria-label="Primary accent color" />
+                  </div>
+                </div>
+                <div class="color-row">
+                  <div class="color-label">Accent bright</div>
+                  <div class="color-input-wrap">
+                    <div class="color-chip" id="accentBrightChip"></div>
+                    <input type="color" id="accentBrightInput" class="color-input" aria-label="Accent bright color" />
+                  </div>
+                </div>
+                <div class="brand-actions">
+                  <button id="brandApplyBtn" class="btn btn-primary" type="button">Apply</button>
+                  <button id="brandResetBtn" class="btn btn-secondary" type="button">Reset</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1250,25 +1674,94 @@
       </div>
     </section>
 
+<!-- GxP Validation & Project Management -->
+
+<section id="validation">
+  <div class="container">
+    <div class="section-head">
+      <h2>GxP Validation & Project Management</h2>
+      <p>Manage validation and compliance projects with Agile, Waterfall, and Hybrid methodologies</p>
+    </div>
+
+        
+        <div class="qms-grid" style="gap: 24px; margin-top: 0;">
+
+   
+<a href="GxP Validation & Project Management Tool.html" class="app-card">
+  <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 12l2 2 4-4"/>
+      <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      <path d="M12 2v4m0 12v4m8-10h-4m-12 0H2"/>
+    </svg>
+  </div>
+  <h4>End-to-End Validation</h4>
+  <p>Complete lifecycle validation and project management application for GxP computerized systems meeting regulatory requirements</p>
+  <div class="app-badge">Application</div>
+</a>
+
+     
+     <!-- <div class="module-card" onclick="window.location.href='RTMtool.html'" style="cursor: pointer;">
+        <h4>📊 Traceability Matrix</h4>
+        <p>Auto-link requirements to specifications, test scripts, and execution results with full audit trail</p>
+      </div> -->
+      
+    </div>
+    </div>
+  </div>
+</section>
+
+
     <!-- Smart Tools -->
     <section id="tools">
       <div class="container">
         <div class="section-head">
           <h2>Smart Tools</h2>
-          <p>Smart, compliant, and production-ready tools for validation documentation</p>
+          <p>Smart, compliant, and production-ready tools to enhance productivity and streamline validation processes.</p>
+        </div>
+        <div class="tools-filters" aria-label="Smart Tools filter">
+          <button class="pill-btn active" data-filter="all">All</button>
+          <button class="pill-btn" data-filter="ai">AI</button>
+          <button class="pill-btn" data-filter="new">New</button>
+          <button class="pill-btn" data-filter="popular">Popular</button>
         </div>
         <div class="tools-scroll-wrapper">
           <div class="tools-list">
-            <a href="ComparisionTool.html" class="tool-item"><div class="tool-icon">📊</div><div class="tool-content"><h3>Excel Comparison Tool</h3><p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="MasterDataTool.html" class="tool-item"><div class="tool-icon">🧬</div><div class="tool-content"><h3>LIMS Master Data Tool</h3><p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="SOPComparisionTool.html" class="tool-item"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="AdvancedUserAcessMatrixTool.html" class="tool-item"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="AdvancedRiskAssessmentTool.html" class="tool-item"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="ComparisionTool.html" class="tool-item" data-tags="popular"><div class="tool-icon">📊</div><div class="tool-content"><h3>Excel Comparison Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="MasterDataTool.html" class="tool-item" data-tags="new"><div class="tool-icon">🧬</div><div class="tool-content"><h3>LIMS Master Data Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="SOPComparisionTool.html" class="tool-item" data-tags="ai"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="AdvancedUserAcessMatrixTool.html" class="tool-item" data-tags="ai"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item" data-tags="new"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="AdvancedRiskAssessmentTool.html" class="tool-item" data-tags="popular"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
           </div>
         </div>
       </div>
     </section>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        // Scope Smart Tools filter to the Tools section only to avoid interfering with Resources pills
+        const pills = document.querySelectorAll('#tools .tools-filters .pill-btn');
+        const cards = document.querySelectorAll('#tools .tools-list .tool-item');
+        pills.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // toggle active
+            pills.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.getAttribute('data-filter');
+            cards.forEach(card => {
+              card.classList.remove('hidden');
+              if(filter !== 'all'){
+                const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+                if(!tags.split(/\s+/).includes(filter)){
+                  card.classList.add('hidden');
+                }
+              }
+            });
+          });
+        });
+      });
+    </script>
 
 <!-- QMS Applications -->
 <section id="qms">
@@ -1277,6 +1770,7 @@
       <h2>Quality Management System Applications</h2>
       <p>Interactive pharmaceutical QMS applications aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
     </div>
+    
 
     <div class="app-grid">
       <a href="change-management.html" class="app-card">
@@ -1365,46 +1859,9 @@
       <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
     </div>
     
+    
     <div class="app-grid" id="qmsProceduresGrid">
       <!-- QMS Procedures will be rendered dynamically by JavaScript -->
-    </div>
-  </div>
-</section>
-
-
-
-<!-- GxP Validation & Project Management -->
-
-<section id="validation">
-  <div class="container">
-    <div class="section-head">
-      <h2>GxP Validation & Project Management</h2>
-      <p>Manage validation and compliance projects with Agile, Waterfall, and Hybrid methodologies</p>
-    </div>
-
-        <div class="qms-grid" style="gap: 24px; margin-top: 0;">
-
-   
-<a href="GxP Validation & Project Management Tool.html" class="app-card">
-  <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M9 12l2 2 4-4"/>
-      <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      <path d="M12 2v4m0 12v4m8-10h-4m-12 0H2"/>
-    </svg>
-  </div>
-  <h4>End-to-End Validation</h4>
-  <p>Complete lifecycle validation and project management application for GxP computerized systems meeting regulatory requirements</p>
-  <div class="app-badge">Application</div>
-</a>
-
-     
-     <!-- <div class="module-card" onclick="window.location.href='RTMtool.html'" style="cursor: pointer;">
-        <h4>📊 Traceability Matrix</h4>
-        <p>Auto-link requirements to specifications, test scripts, and execution results with full audit trail</p>
-      </div> -->
-      
-    </div>
     </div>
   </div>
 </section>
@@ -1417,6 +1874,7 @@
       <h2>ValQMS Academy</h2>
       <p>Purchase individual courses or subscribe for unlimited access to all training content</p>
     </div>
+    
 
     <div class="app-grid" id="coursesGrid">
       <!-- Courses will be rendered dynamically by JavaScript -->
@@ -1442,85 +1900,166 @@
           <h2>Regulatory Resources</h2>
           <p>Stay compliant with latest guidelines and regulatory updates</p>
         </div>
+        <!-- Resources Filters -->
+        <div class="tools-filters resources-filters" aria-label="Resources filter">
+          <button class="pill-btn active" data-filter="all">All</button>
+          <button class="pill-btn" data-filter="fda">FDA</button>
+          <button class="pill-btn" data-filter="ema">EMA</button>
+          <button class="pill-btn" data-filter="who">WHO</button>
+          <button class="pill-btn" data-filter="ich">ICH</button>
+          <button class="pill-btn" data-filter="iso">ISO</button>
+          <button class="pill-btn" data-filter="pics">PIC/S</button>
+          <button class="pill-btn" data-filter="mhra">MHRA</button>
+          <button class="pill-btn" data-filter="tga">TGA</button>
+          <button class="pill-btn" data-filter="pmda">PMDA</button>
+          <button class="pill-btn" data-filter="cdsco">CDSCO</button>
+          <button class="pill-btn" data-filter="nmpa">NMPA</button>
+        </div>
         <div class="resources-grid">
           <div class="resource-card">
-            <div class="resource-icon">📚</div>
-            <h3>Key Guidelines</h3>
+            <div class="resource-header">
+              <div class="resource-title">
+                <div class="resource-icon">📚</div>
+                <div>
+                  <h3>Key Guidelines</h3>
+                  <p class="resource-desc">Core frameworks for quality, validation, and data integrity</p>
+                </div>
+              </div>
+              <span class="link-count" aria-label="Links">0</span>
+            </div>
             <ul>
-              <li>📄 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application" target="_blank">FDA 21 CFR Part 11 - Electronic Records</a></li>
-              <li>📄 <a href="https://www.fda.gov/medical-devices/quality-system-qs-regulationdevice-good-manufacturing-practices" target="_blank">FDA 21 CFR Part 820 - Quality System Regulation</a></li>
-              <li>📄 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines/multidisciplinary/multidisciplinary-quality" target="_blank">EU GMP Guidelines - Annex 11</a></li>
-              <li>📄 <a href="https://database.ich.org/sites/default/files/Q10%20Guideline.pdf" target="_blank">ICH Q10 - Pharmaceutical Quality System</a></li>
-              <li>📄 <a href="https://database.ich.org/sites/default/files/Q9_Guideline.pdf" target="_blank">ICH Q9 - Quality Risk Management</a></li>
-              <li>📄 <a href="https://www.iso.org/standard/59752.html" target="_blank">ISO 13485 - Medical Devices QMS</a></li>
-              <li>📄 <a href="https://www.iso.org/standard/62085.html" target="_blank">ISO 9001 - Quality Management Systems</a></li>
-              <li>📄 <a href="https://www.fda.gov/media/116573/download" target="_blank">FDA Computer System Validation Guidance</a></li>
-              <li>📄 <a href="https://www.ema.europa.eu/en/data-integrity" target="_blank">EMA Data Integrity Guidelines</a></li>
-              <li>📄 <a href="https://www.fda.gov/vaccines-blood-biologics/guidance-compliance-regulatory-information-biologics/biologics-guidances" target="_blank">FDA Biologics Guidances</a></li>
-              <li>📄 <a href="https://www.raps.org" target="_blank">RAPS - Regulatory Affairs Professionals Society</a></li>
+              <li data-tags="fda guideline"><span class="flag flag-us"></span> <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application" target="_blank">FDA 21 CFR Part 11 - Electronic Records</a></li>
+              <li data-tags="fda guideline"><span class="flag flag-us"></span> <a href="https://www.fda.gov/medical-devices/quality-system-qs-regulationdevice-good-manufacturing-practices" target="_blank">FDA 21 CFR Part 820 - Quality System Regulation</a></li>
+              <li data-tags="ema gmp guideline"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines/multidisciplinary/multidisciplinary-quality" target="_blank">EU GMP Guidelines - Annex 11</a></li>
+              <li data-tags="ich guideline"><span class="flag flag-ich"></span> <a href="https://database.ich.org/sites/default/files/Q10%20Guideline.pdf" target="_blank">ICH Q10 - Pharmaceutical Quality System</a></li>
+              <li data-tags="ich guideline"><span class="flag flag-ich"></span> <a href="https://database.ich.org/sites/default/files/Q9_Guideline.pdf" target="_blank">ICH Q9 - Quality Risk Management</a></li>
+              <li data-tags="iso guideline"><span class="flag flag-iso"></span> <a href="https://www.iso.org/standard/59752.html" target="_blank">ISO 13485 - Medical Devices QMS</a></li>
+              <li data-tags="iso guideline"><span class="flag flag-iso"></span> <a href="https://www.iso.org/standard/62085.html" target="_blank">ISO 9001 - Quality Management Systems</a></li>
+              <li data-tags="fda csv guideline"><span class="flag flag-us"></span> <a href="https://www.fda.gov/media/116573/download" target="_blank">FDA Computer System Validation Guidance</a></li>
+              <li data-tags="ema data-integrity guideline"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/data-integrity" target="_blank">EMA Data Integrity Guidelines</a></li>
+              <li data-tags="fda biologics guideline"><span class="flag flag-us"></span> <a href="https://www.fda.gov/vaccines-blood-biologics/guidance-compliance-regulatory-information-biologics/biologics-guidances" target="_blank">FDA Biologics Guidances</a></li>
+              <li data-tags="raps community">👥 <a href="https://www.raps.org" target="_blank">RAPS - Regulatory Affairs Professionals Society</a></li>
             </ul>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">📰</div>
-            <h3>Regulatory Updates</h3>
+            <div class="resource-header">
+              <div class="resource-title">
+                <div class="resource-icon">📰</div>
+                <div>
+                  <h3>Regulatory Updates</h3>
+                  <p class="resource-desc">Latest guidance, news, and agency publications</p>
+                </div>
+              </div>
+              <span class="link-count" aria-label="Links">0</span>
+            </div>
             <ul>
-              <li>🌐 <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
-              <li>🌐 <a href="https://www.who.int" target="_blank">WHO Quality Assurance</a></li>
-              <li>🌐 <a href="https://www.fda.gov/news-events/fda-newsroom" target="_blank">FDA Newsroom - Latest Updates</a></li>
-              <li>🌐 <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents" target="_blank">FDA Guidance Documents</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/news-events" target="_blank">EMA News & Events</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines" target="_blank">EMA Scientific Guidelines</a></li>
-              <li>🌐 <a href="https://www.ich.org/page/news" target="_blank">ICH News & Updates</a></li>
-              <li>🌐 <a href="https://www.who.int/news-room" target="_blank">WHO News Room</a></li>
-              <li>🌐 <a href="https://www.picscheme.org/en/news" target="_blank">PIC/S News & Updates</a></li>
-              <li>🌐 <a href="https://www.fda.gov/drugs/drug-approvals-and-databases/drug-safety-communications" target="_blank">FDA Drug Safety Communications</a></li>
-              <li>🌐 <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/medical-device-recalls" target="_blank">FDA Medical Device Recalls</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/pharmacovigilance" target="_blank">EMA Pharmacovigilance Updates</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities" target="_blank">FDA Compliance Actions</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/news-events/regulatory-updates" target="_blank">EMA Regulatory Updates</a></li>
-              <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/applications-submissions/guidance-documents.html" target="_blank">Health Canada Guidance</a></li>
-              <li>🌐 <a href="https://www.mhra.gov.uk/news-and-events/" target="_blank">MHRA News & Publications</a></li>
-              <li>🌐 <a href="https://www.tga.gov.au/news-and-events" target="_blank">TGA (Australia) News</a></li>
-              <li>🌐 <a href="https://www.pmda.go.jp/english/index.html" target="_blank">PMDA (Japan) Updates</a></li>
-              <li>🌐 <a href="https://cdsco.gov.in/opencms/opencms/en/Home/" target="_blank">CDSCO (India) - Central Drugs Standard Control</a></li>
-              <li>🌐 <a href="https://www.nmpa.gov.cn/en/" target="_blank">NMPA (China) News</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov" target="_blank">FDA Guidance Documents</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu" target="_blank">EMA News & Events</a></li>
+              <li data-tags="who"><span class="flag flag-globe"></span> <a href="https://www.who.int" target="_blank">WHO Quality Assurance</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/news-events/fda-newsroom" target="_blank">FDA Newsroom - Latest Updates</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents" target="_blank">FDA Guidance Documents</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/news-events" target="_blank">EMA News & Events</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/scientific-guidelines" target="_blank">EMA Scientific Guidelines</a></li>
+              <li data-tags="ich"><span class="flag flag-ich"></span> <a href="https://www.ich.org/page/news" target="_blank">ICH News & Updates</a></li>
+              <li data-tags="who"><span class="flag flag-globe"></span> <a href="https://www.who.int/news-room" target="_blank">WHO News Room</a></li>
+              <li data-tags="pics">🤝 <a href="https://www.picscheme.org/en/news" target="_blank">PIC/S News & Updates</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/drugs/drug-approvals-and-databases/drug-safety-communications" target="_blank">FDA Drug Safety Communications</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/medical-device-recalls" target="_blank">FDA Medical Device Recalls</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/pharmacovigilance" target="_blank">EMA Pharmacovigilance Updates</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities" target="_blank">FDA Compliance Actions</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/news-events/regulatory-updates" target="_blank">EMA Regulatory Updates</a></li>
+              <li data-tags="health-canada"><span class="flag flag-ca"></span> <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/applications-submissions/guidance-documents.html" target="_blank">Health Canada Guidance</a></li>
+              <li data-tags="mhra"><span class="flag flag-uk"></span> <a href="https://www.mhra.gov.uk/news-and-events/" target="_blank">MHRA News & Publications</a></li>
+              <li data-tags="tga"><span class="flag flag-au"></span> <a href="https://www.tga.gov.au/news-and-events" target="_blank">TGA (Australia) News</a></li>
+              <li data-tags="pmda"><span class="flag flag-jp"></span> <a href="https://www.pmda.go.jp/english/index.html" target="_blank">PMDA (Japan) Updates</a></li>
+              <li data-tags="cdsco"><span class="flag flag-in"></span> <a href="https://cdsco.gov.in/opencms/opencms/en/Home/" target="_blank">CDSCO (India) - Central Drugs Standard Control</a></li>
+              <li data-tags="nmpa"><span class="flag flag-cn"></span> <a href="https://www.nmpa.gov.cn/en/" target="_blank">NMPA (China) News</a></li>
             </ul>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">📰</div>
-            <h3>Regulatory Observations</h3>
+            <div class="resource-header">
+              <div class="resource-title">
+                <div class="resource-icon">🔎</div>
+                <div>
+                  <h3>Regulatory Observations</h3>
+                  <p class="resource-desc">Inspection guides, letters, and remediation insights</p>
+                </div>
+              </div>
+              <span class="link-count" aria-label="Links">0</span>
+            </div>
             <ul>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-guides" target="_blank">FDA Inspection Guides</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-reports" target="_blank">FDA Establishment Inspection Reports (EIRs)</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters Database</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters" target="_blank">FDA Recent Warning Letters</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/untitled-letters" target="_blank">FDA Untitled Letters</a></li>
-              <li>🌐 <a href="https://www.accessdata.fda.gov/scripts/cder/clia/index.cfm" target="_blank">FDA Clinical Laboratory Improvement Amendments (CLIA)</a></li>
-              <li>🌐 <a href="https://datadashboard.fda.gov/ora/firmssearch.htm" target="_blank">FDA Inspection Classifications Database</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/compliance/good-manufacturing-practice/inspection-database" target="_blank">EMA GMP Inspection Database</a></li>
-              <li>🌐 <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/compliance/non-compliance" target="_blank">EMA Non-Compliance Reports</a></li>
-              <li>🌐 <a href="https://www.picscheme.org/en/inspection-reliance" target="_blank">PIC/S Inspection Reliance Database</a></li>
-              <li>🌐 <a href="https://www.mhra.gov.uk/inspection-and-enforcement/" target="_blank">MHRA Inspection Reports</a></li>
-              <li>🌐 <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/inspections.html" target="_blank">Health Canada Inspection Reports</a></li>
-              <li>🌐 <a href="https://www.tga.gov.au/compliance-action" target="_blank">TGA Compliance Actions</a></li>
-              <li>🌐 <a href="https://www.who.int/teams/regulation-prequalification/inspection" target="_blank">WHO Inspection Reports</a></li>
-              <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/fda-warning-letters" target="_blank">GMP Compliance - FDA Warning Letters Analysis</a></li>
-              <li>🌐 <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/responding-form-fda-483" target="_blank">FDA - Responding to Form 483</a></li>
-              <li>🌐 <a href="https://www.raps.org/news-and-articles/news-articles/how-to-respond-to-fda-warning-letter" target="_blank">RAPS - How to Respond to Warning Letters</a></li>
-              <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/warning-letter-response" target="_blank">GMP Compliance - Warning Letter Response Guide</a></li>
-              <li>🌐 <a href="https://www.ispe.org/pharmaceutical-engineering/ispeak/inspection-readiness-and-response" target="_blank">ISPE - Inspection Readiness & Response</a></li>
-              <li>🌐 <a href="https://www.pda.org/resources/regulatory-resources/inspection-remediation" target="_blank">PDA - Inspection & Remediation Resources</a></li>
-              <li>🌐 <a href="https://www.fda.gov/drugs/pharmaceutical-quality-resources/facts-about-current-good-manufacturing-practices-cgmps" target="_blank">FDA CGMP Change Control Findings</a></li>
-              <li>🌐 <a href="https://www.gmp-compliance.org/gmp-news/change-control" target="_blank">GMP Compliance - Change Control Violations</a></li>
-              <li>🌐 <a href="https://www.pharmaceutical-technology.com/features/change-control-common-inspection-findings/" target="_blank">Pharma Tech - Change Control Inspection Findings</a></li>
-              <li>🌐 <a href="https://www.in-pharmatechnologist.com/Article/Common-change-control-deficiencies-in-pharma" target="_blank">In-Pharma - Change Control Deficiencies</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-guides" target="_blank">FDA Inspection Guides</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-reports" target="_blank">FDA Establishment Inspection Reports (EIRs)</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters" target="_blank">FDA Warning Letters Database</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters" target="_blank">FDA Recent Warning Letters</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/untitled-letters" target="_blank">FDA Untitled Letters</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.accessdata.fda.gov/scripts/cder/clia/index.cfm" target="_blank">FDA Clinical Laboratory Improvement Amendments (CLIA)</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://datadashboard.fda.gov/ora/firmssearch.htm" target="_blank">FDA Inspection Classifications Database</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/human-regulatory/research-development/compliance/good-manufacturing-practice/inspection-database" target="_blank">EMA GMP Inspection Database</a></li>
+              <li data-tags="ema"><span class="flag flag-eu"></span> <a href="https://www.ema.europa.eu/en/human-regulatory/post-authorisation/compliance/non-compliance" target="_blank">EMA Non-Compliance Reports</a></li>
+              <li data-tags="pics">🤝 <a href="https://www.picscheme.org/en/inspection-reliance" target="_blank">PIC/S Inspection Reliance Database</a></li>
+              <li data-tags="mhra"><span class="flag flag-uk"></span> <a href="https://www.mhra.gov.uk/inspection-and-enforcement/" target="_blank">MHRA Inspection Reports</a></li>
+              <li data-tags="health-canada"><span class="flag flag-ca"></span> <a href="https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/inspections.html" target="_blank">Health Canada Inspection Reports</a></li>
+              <li data-tags="tga"><span class="flag flag-au"></span> <a href="https://www.tga.gov.au/compliance-action" target="_blank">TGA Compliance Actions</a></li>
+              <li data-tags="who"><span class="flag flag-globe"></span> <a href="https://www.who.int/teams/regulation-prequalification/inspection" target="_blank">WHO Inspection Reports</a></li>
+              <li data-tags="gmp">🧰 <a href="https://www.gmp-compliance.org/gmp-news/fda-warning-letters" target="_blank">GMP Compliance - FDA Warning Letters Analysis</a></li>
+              <li data-tags="fda"><span class="flag flag-us"></span> <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/responding-form-fda-483" target="_blank">FDA - Responding to Form 483</a></li>
+              <li data-tags="raps">👥 <a href="https://www.raps.org/news-and-articles/news-articles/how-to-respond-to-fda-warning-letter" target="_blank">RAPS - How to Respond to Warning Letters</a></li>
+              <li data-tags="gmp">🧰 <a href="https://www.gmp-compliance.org/gmp-news/warning-letter-response" target="_blank">GMP Compliance - Warning Letter Response Guide</a></li>
+              <li data-tags="ispe">🧪 <a href="https://www.ispe.org/pharmaceutical-engineering/ispeak/inspection-readiness-and-response" target="_blank">ISPE - Inspection Readiness & Response</a></li>
+              <li data-tags="pda">🧪 <a href="https://www.pda.org/resources/regulatory-resources/inspection-remediation" target="_blank">PDA - Inspection & Remediation Resources</a></li>
+              <li data-tags="fda change-control">🦅 <a href="https://www.fda.gov/drugs/pharmaceutical-quality-resources/facts-about-current-good-manufacturing-practices-cgmps" target="_blank">FDA CGMP Change Control Findings</a></li>
+              <li data-tags="gmp change-control">🧰 <a href="https://www.gmp-compliance.org/gmp-news/change-control" target="_blank">GMP Compliance - Change Control Violations</a></li>
+              <li data-tags="news change-control">🗞️ <a href="https://www.pharmaceutical-technology.com/features/change-control-common-inspection-findings/" target="_blank">Pharma Tech - Change Control Inspection Findings</a></li>
+              <li data-tags="news change-control">🗞️ <a href="https://www.in-pharmatechnologist.com/Article/Common-change-control-deficiencies-in-pharma" target="_blank">In-Pharma - Change Control Deficiencies</a></li>
             </ul>
           </div>
         </div>
       </div>
     </section>
+
+    <script>
+      // Resources filters + dynamic counts
+      document.addEventListener('DOMContentLoaded', function(){
+        const resSection = document.getElementById('resources');
+        const filterBtns = resSection?.querySelectorAll('.resources-filters .pill-btn') || [];
+        const allItems = resSection?.querySelectorAll('.resource-card li') || [];
+
+        function updateCounts() {
+          document.querySelectorAll('#resources .resource-card').forEach(card => {
+            const countEl = card.querySelector('.link-count');
+            const visible = card.querySelectorAll('ul li:not(.hidden)').length;
+            if (countEl) {
+              countEl.textContent = String(visible);
+              countEl.setAttribute('aria-label', visible + ' links');
+            }
+          });
+        }
+
+        function applyResFilter(filter) {
+          allItems.forEach(li => {
+            li.classList.remove('hidden');
+            if (filter !== 'all') {
+              const tags = (li.dataset.tags || '').toLowerCase().split(/\s+/);
+              if (!tags.includes(filter)) li.classList.add('hidden');
+            }
+          });
+          updateCounts();
+        }
+
+        // Init counts for All
+        applyResFilter('all');
+
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyResFilter(btn.dataset.filter);
+          });
+        });
+      });
+    </script>
 
     <!-- About -->
     <section id="about">
@@ -1549,11 +2088,11 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="index.html" class="logo">
-              <div class="logo-mark"><img src="favicon.jpg" alt="ValQMS"></div>
+            <a href="index.html" class="logo" style="color:#0f172a !important;">
+              <div class="logo-mark"><span class="brand-initials">VQ</span></div>
               <span>ValQMS</span>
             </a>
-            <p>Empowering Life Sciences organizations with browser-native advanced tools for validation, automation, and regulatory compliance.</p><p>For any help or support please drop an email at <b>support@valqms.com</b></p>
+            <p>Empowering Life Sciences organizations with browser-native advanced tools for validation, automation, and regulatory compliance.</p><p>For any help or support please drop an email at <u>support@valqms.com</u></p>
           </div>
       <div class="footer-col">
         <h5>Product</h5>
@@ -1669,6 +2208,8 @@
         const displayName = session.user.user_metadata?.full_name || session.user.email.split('@')[0];
         userBadge.textContent = getInitials(displayName);
       }
+
+       await displayUserRole()  // ← ADD THIS!
       
       // Save to localStorage
       localStorage.setItem('valqmsUser', JSON.stringify({
@@ -1688,66 +2229,108 @@
   document.documentElement.setAttribute('data-theme', savedTheme);
   document.documentElement.setAttribute('data-bg', savedBg);
 
+  // Apply saved custom brand colors if any
+  const savedAccent = localStorage.getItem('valqmsAccent');
+  const savedAccentBright = localStorage.getItem('valqmsAccentBright');
+  if (savedAccent) document.documentElement.style.setProperty('--accent', savedAccent);
+  if (savedAccentBright) document.documentElement.style.setProperty('--accent-bright', savedAccentBright);
+
   // Background selector
-  const bgBtn = document.getElementById('bgBtn');
-  const bgDropdown = document.getElementById('bgDropdown');
-  const themeBtn = document.getElementById('themeBtn');
-  const themeDropdown = document.getElementById('themeDropdown');
+  // Brand selector (combined Theme + Background)
+  const brandBtn = document.getElementById('brandBtn');
+  const brandDropdown = document.getElementById('brandDropdown');
+  const accentInput = document.getElementById('accentColorInput');
+  const accentBrightInput = document.getElementById('accentBrightInput');
+  const accentChip = document.getElementById('accentChip');
+  const accentBrightChip = document.getElementById('accentBrightChip');
+  const brandApplyBtn = document.getElementById('brandApplyBtn');
+  const brandResetBtn = document.getElementById('brandResetBtn');
 
-if (bgBtn && bgDropdown) {
-  bgBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (themeDropdown) {
-      themeDropdown.classList.remove('active');
-    }
-    bgDropdown.classList.toggle('active');
+  function getCssVar(name){
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function initBrandColorInputs(){
+    if (!accentInput || !accentBrightInput) return;
+    const currentAccent = savedAccent || getCssVar('--accent') || '#06b6d4';
+    const currentAccentBright = savedAccentBright || getCssVar('--accent-bright') || '#22d3ee';
+    // Ensure hex format for inputs
+    accentInput.value = currentAccent.startsWith('#') ? currentAccent : '#06b6d4';
+    accentBrightInput.value = currentAccentBright.startsWith('#') ? currentAccentBright : '#22d3ee';
+    if (accentChip) accentChip.style.background = accentInput.value;
+    if (accentBrightChip) accentBrightChip.style.background = accentBrightInput.value;
+  }
+
+  // Live update chips when picking colors
+  accentInput?.addEventListener('input', () => {
+    if (accentChip) accentChip.style.background = accentInput.value;
   });
-
-    document.querySelectorAll('.bg-option').forEach(opt => {
+  accentBrightInput?.addEventListener('input', () => {
+    if (accentBrightChip) accentBrightChip.style.background = accentBrightInput.value;
+  });
+  if (brandBtn && brandDropdown) {
+    brandBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      brandDropdown.classList.toggle('active');
+      if (brandDropdown.classList.contains('active')) {
+        initBrandColorInputs();
+        // Scroll the color controls into view so Primary/Accent bright are visible immediately
+        const colorsSection = brandDropdown.querySelector('.brand-colors');
+        if (colorsSection) {
+          colorsSection.scrollIntoView({ block: 'start' });
+        }
+      }
+      // Close user menu if open to avoid overlap
+      if (userDropdown) userDropdown.classList.remove('active');
+    });
+    // Theme selection inside brand dropdown
+    brandDropdown.querySelectorAll('.theme-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const theme = opt.dataset.theme;
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('valqmsTheme', theme);
+        brandDropdown.classList.remove('active');
+      });
+    });
+    // Background selection inside brand dropdown
+    brandDropdown.querySelectorAll('.bg-option').forEach(opt => {
       opt.addEventListener('click', () => {
         const bg = opt.dataset.bg;
         document.documentElement.setAttribute('data-bg', bg);
         localStorage.setItem('valqmsBg', bg);
-        bgDropdown.classList.remove('active');
+        brandDropdown.classList.remove('active');
       });
+    });
+    // Prevent close when clicking inside dropdown
+    brandDropdown.addEventListener('click', (e) => e.stopPropagation());
+
+    // Apply and Reset
+    brandApplyBtn?.addEventListener('click', () => {
+      if (accentInput) {
+        document.documentElement.style.setProperty('--accent', accentInput.value);
+        localStorage.setItem('valqmsAccent', accentInput.value);
+      }
+      if (accentBrightInput) {
+        document.documentElement.style.setProperty('--accent-bright', accentBrightInput.value);
+        localStorage.setItem('valqmsAccentBright', accentBrightInput.value);
+      }
+      brandDropdown.classList.remove('active');
+    });
+
+    brandResetBtn?.addEventListener('click', () => {
+      localStorage.removeItem('valqmsAccent');
+      localStorage.removeItem('valqmsAccentBright');
+      document.documentElement.style.removeProperty('--accent');
+      document.documentElement.style.removeProperty('--accent-bright');
+      initBrandColorInputs();
     });
   }
 
-// Theme selector
-if (themeBtn && themeDropdown) {
-  themeBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    // Close background dropdown if it's open
-    if (bgDropdown) {
-      bgDropdown.classList.remove('active');
-    }
-    // Toggle theme dropdown
-    themeDropdown.classList.toggle('active');
+  // Close brand dropdown on outside click
+  document.addEventListener('click', () => {
+    if (brandDropdown) brandDropdown.classList.remove('active');
+    if (userDropdown) userDropdown.classList.remove('active');
   });
-
-  document.querySelectorAll('.theme-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      const theme = opt.dataset.theme;
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('valqmsTheme', theme);
-      themeDropdown.classList.remove('active');
-    });
-  });
-}
-
-// Close dropdowns on outside click
-document.addEventListener('click', () => {
-  if (bgDropdown) bgDropdown.classList.remove('active');
-  if (themeDropdown) themeDropdown.classList.remove('active');
-});
-
-// Prevent dropdown close when clicking inside
-if (bgDropdown) {
-  bgDropdown.addEventListener('click', (e) => e.stopPropagation());
-}
-if (themeDropdown) {
-  themeDropdown.addEventListener('click', (e) => e.stopPropagation());
-}
 
   // User menu setup
   const loginLink = document.getElementById('loginLink');
@@ -1757,6 +2340,191 @@ if (themeDropdown) {
   const profileBtn = document.getElementById('profileBtn');
   const logoutBtn = document.getElementById('logoutBtn');
   const profilePanel = document.getElementById('profilePanel');
+
+
+  // Add this RIGHT AFTER the checkAuth function (around line 950-1000)
+
+// ============================================
+// ROLE-BASED ACCESS CONTROL FUNCTIONS
+// ============================================
+
+// Helper: Parse JWT token to get custom claims
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const jsonPayload = decodeURIComponent(
+      atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      }).join('')
+    )
+    return JSON.parse(jsonPayload)
+  } catch (error) {
+    console.error('Error parsing JWT:', error)
+    return null
+  }
+}
+
+// Get current user role and permissions from JWT
+async function getUserRole() {
+  try {
+    const { data: { session }, error } = await sb.auth.getSession()
+    
+    if (error || !session) {
+      return null
+    }
+    
+    // Decode JWT to get custom claims
+    const jwt = parseJwt(session.access_token)
+    
+    if (!jwt) {
+      return null
+    }
+    
+    return {
+      userId: session.user.id,
+      email: session.user.email,
+      role: jwt.user_role || 'No role assigned',
+      roleId: jwt.role_id,
+      permissions: jwt.permissions || {},
+      fullUser: session.user
+    }
+  } catch (error) {
+    console.error('Error getting user role:', error)
+    return null
+  }
+}
+
+// Check if user has specific permission
+function hasPermission(permissions, resource, action) {
+  // Check for admin (all: true)
+  if (permissions?.all === true) {
+    return true
+  }
+  
+  // Check resource-specific permissions
+  if (permissions && permissions[resource]) {
+    if (Array.isArray(permissions[resource])) {
+      return permissions[resource].includes(action)
+    }
+  }
+  
+  return false
+}
+
+// Check if user is admin
+function isAdmin(permissions) {
+  return permissions?.all === true
+}
+
+// Display user role in the UI
+async function displayUserRole() {
+  const userInfo = await getUserRole()
+  
+  if (!userInfo) {
+    console.log('No user info available')
+    return
+  }
+  
+  console.log('═══════════════════════════════════')
+  console.log('USER AUTHENTICATION INFO')
+  console.log('═══════════════════════════════════')
+  console.log('Email:', userInfo.email)
+  console.log('Role:', userInfo.role)
+  console.log('Permissions:', userInfo.permissions)
+  console.log('Is Admin:', isAdmin(userInfo.permissions))
+  console.log('═══════════════════════════════════')
+  
+  // Update user badge to show role
+  const userBadge = document.getElementById('userBadge')
+  if (userBadge && userInfo.role) {
+    // Show first letter + role name on hover
+    userBadge.title = `${userInfo.email} - ${userInfo.role}`
+    
+    // Optional: Add role indicator
+    const roleIndicator = document.createElement('div')
+    roleIndicator.style.cssText = `
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 14px;
+      height: 14px;
+      background: ${getRoleColor(userInfo.role)};
+      border-radius: 50%;
+      border: 2px solid #0f172a;
+      box-shadow: 0 0 10px ${getRoleColor(userInfo.role)};
+    `
+    roleIndicator.title = userInfo.role
+    
+    userBadge.style.position = 'relative'
+    
+    // Remove existing indicator if any
+    const existing = userBadge.querySelector('[data-role-indicator]')
+    if (existing) existing.remove()
+    
+    roleIndicator.dataset.roleIndicator = 'true'
+    userBadge.appendChild(roleIndicator)
+  }
+  
+  // Show/hide features based on permissions
+  setupPermissionBasedUI(userInfo)
+  
+  return userInfo
+}
+
+// Get color based on role
+function getRoleColor(role) {
+  const colors = {
+    'System Admin': '#ef4444',
+    'QA Manager': '#3b82f6',
+    'QA Reviewer': '#f59e0b',
+    'Department User': '#10b981',
+    'Auditor': '#8b5cf6',
+    'CAPA Owner': '#ec4899'
+  }
+  return colors[role] || '#00ff88'
+}
+
+// Setup UI based on permissions
+function setupPermissionBasedUI(userInfo) {
+  const { permissions, role } = userInfo
+  
+  console.log('Setting up UI for role:', role)
+  
+  // Admin-only features
+  if (isAdmin(permissions)) {
+    console.log('✓ Admin access granted')
+    // Enable all admin features
+    document.querySelectorAll('.admin-only').forEach(el => {
+      el.style.display = 'block'
+    })
+  }
+  
+  // Manager features (reports approval)
+  if (hasPermission(permissions, 'deviations', 'approve')) {
+    console.log('✓ Manager access granted')
+    document.querySelectorAll('.manager-only').forEach(el => {
+      el.style.display = 'block'
+    })
+  }
+  
+  // Reviewer features
+  if (hasPermission(permissions, 'deviations', 'update')) {
+    console.log('✓ Reviewer access granted')
+    document.querySelectorAll('.reviewer-only').forEach(el => {
+      el.style.display = 'block'
+    })
+  }
+  
+  // Auditor features (read-only)
+  if (hasPermission(permissions, 'audit', 'read')) {
+    console.log('✓ Auditor access granted')
+    document.querySelectorAll('.auditor-only').forEach(el => {
+      el.style.display = 'block'
+    })
+  }
+}
+
 
   function getInitials(name) {
     if (!name) return 'U';
@@ -1803,6 +2571,209 @@ if (themeDropdown) {
     }
   }
 
+// ============================================
+// PERMISSION-BASED NAVIGATION CONTROL
+// ============================================
+
+// Load user's feature permissions from database
+async function loadUserPermissions() {
+    try {
+        const { data: { session } } = await sb.auth.getSession()
+        
+        if (!session) {
+            console.log('No session - permissions not loaded')
+            return {}
+        }
+
+        console.log('🔍 Loading permissions for:', session.user.email)
+
+        // Get user's role ID
+        const { data: userRole, error: roleError } = await sb
+            .from('user_roles')
+            .select('role_id')
+            .eq('user_id', session.user.id)
+            .eq('is_active', true)
+            .maybeSingle()
+
+        if (roleError || !userRole) {
+            console.log('No role found for user')
+            return {}
+        }
+
+        console.log('User role ID:', userRole.role_id)
+
+        // Get permissions for this role
+        const { data: permissions, error: permError } = await sb
+            .from('role_permissions')
+            .select(`
+                can_view,
+                features!inner (
+                    feature_key,
+                    feature_name
+                )
+            `)
+            .eq('role_id', userRole.role_id)
+            .eq('can_view', true)
+
+        if (permError) {
+            console.error('Error loading permissions:', permError)
+            return {}
+        }
+
+        console.log('✅ Permissions loaded:', permissions)
+
+        // Convert to lookup map
+        const permMap = {}
+        permissions.forEach(perm => {
+            if (perm.features) {
+                permMap[perm.features.feature_key] = true
+                console.log(`  ✓ ${perm.features.feature_name}`)
+            }
+        })
+
+        return permMap
+
+    } catch (error) {
+        console.error('Exception loading permissions:', error)
+        return {}
+    }
+}
+
+// Apply permissions - hide navigation items user shouldn't see
+async function applyNavigationPermissions() {
+    console.log('🔒 Applying navigation permissions...')
+    
+    const permissions = await loadUserPermissions()
+    
+    if (Object.keys(permissions).length === 0) {
+        console.log('⚠️ No permissions loaded - showing all by default')
+        return
+    }
+
+    console.log('📋 Permission map:', permissions)
+
+    // Get all navigation links
+    const nav = document.querySelector('#mainNav')
+    if (!nav) {
+        console.log('⚠️ Navigation not found')
+        return
+    }
+
+    const navLinks = nav.querySelectorAll('a')
+    
+    console.log(`Found ${navLinks.length} navigation links`)
+
+    // Check each link and hide if no permission
+    navLinks.forEach(link => {
+        const linkText = link.textContent.trim()
+        const href = link.getAttribute('href')
+        
+        // Map link text to feature keys
+        let featureKey = null
+        let shouldShow = true
+        
+        if (linkText.includes('Smart Tools') || href === '#tools') {
+            featureKey = 'smart_tools'
+            shouldShow = permissions.smart_tools
+        }
+        else if (linkText.includes('QMS Applications') || href === '#qms') {
+            featureKey = 'qms_applications'
+            shouldShow = permissions.qms_applications
+        }
+        else if (linkText.includes('QMS Procedures') || href === '#QMS Procedures') {
+            featureKey = 'qms_procedures'
+            shouldShow = permissions.qms_procedures
+        }
+        else if (linkText.includes('GxP') || linkText.includes('Validation') || href === '#validation') {
+            featureKey = 'gxp_validation'
+            shouldShow = permissions.gxp_validation
+        }
+        else if (linkText.includes('Academy') || href === '#ValQMS Academy') {
+            featureKey = 'valqms_academy'
+            shouldShow = permissions.valqms_academy
+        }
+        else if (linkText.includes('Resources') || href === '#resources') {
+            featureKey = 'resources'
+            shouldShow = permissions.resources
+        }
+        else if (linkText.includes('About') || href === '#about') {
+            featureKey = 'about'
+            shouldShow = permissions.about
+        }
+        else if (linkText.includes('Manage Users') || href === 'admin-users.html') {
+            featureKey = 'manage_users'
+            shouldShow = permissions.manage_users
+        }
+        
+        if (featureKey) {
+            if (!shouldShow) {
+                link.style.display = 'none'
+                console.log(`❌ Hiding: ${linkText} (no permission for ${featureKey})`)
+            } else {
+                // Force show with inline-block to override hidden classes
+                link.style.display = 'inline-block'
+                link.style.visibility = 'visible'
+                console.log(`✅ Showing: ${linkText}`)
+            }
+        }
+    })
+
+    // IMPORTANT: Handle admin-only class elements separately
+    if (permissions.manage_users) {
+        // Show all admin-only elements
+        document.querySelectorAll('.admin-only').forEach(el => {
+            el.style.display = 'inline-block'
+            el.style.visibility = 'visible'
+            console.log('✅ Showing admin-only element:', el.textContent?.trim())
+        })
+    } else {
+        // Hide all admin-only elements
+        document.querySelectorAll('.admin-only').forEach(el => {
+            el.style.display = 'none'
+            console.log('❌ Hiding admin-only element:', el.textContent?.trim())
+        })
+    }
+
+    // Hide section content if no permission
+    if (!permissions.smart_tools) {
+        const toolsSection = document.querySelector('#tools')
+        if (toolsSection) toolsSection.style.display = 'none'
+    }
+    if (!permissions.qms_applications) {
+        const qmsSection = document.querySelector('#qms')
+        if (qmsSection) qmsSection.style.display = 'none'
+    }
+    if (!permissions.qms_procedures) {
+        const proceduresSection = document.querySelector('#QMS\\ Procedures')
+        if (proceduresSection) proceduresSection.style.display = 'none'
+    }
+    if (!permissions.gxp_validation) {
+        const validationSection = document.querySelector('#validation')
+        if (validationSection) validationSection.style.display = 'none'
+    }
+    if (!permissions.valqms_academy) {
+        const academySection = document.querySelector('#ValQMS\\ Academy')
+        if (academySection) academySection.style.display = 'none'
+    }
+    if (!permissions.resources) {
+        const resourcesSection = document.querySelector('#resources')
+        if (resourcesSection) resourcesSection.style.display = 'none'
+    }
+    if (!permissions.about) {
+        const aboutSection = document.querySelector('#about')
+        if (aboutSection) aboutSection.style.display = 'none'
+    }
+
+    console.log('✅ Permissions applied successfully')
+}
+
+
+// Call permissions after user UI is updated
+window.addEventListener('load', async () => {
+    await updateUserUI()
+    await applyNavigationPermissions()
+})
+
   // Initialize user UI
   updateUserUI();
 
@@ -1811,8 +2782,7 @@ if (themeDropdown) {
     userBadge.addEventListener('click', (e) => {
       e.stopPropagation();
       userDropdown.classList.toggle('active');
-      if (themeDropdown) themeDropdown.classList.remove('active');
-      if (bgDropdown) bgDropdown.classList.remove('active');
+      if (brandDropdown) brandDropdown.classList.remove('active');
     });
 
     userDropdown.addEventListener('click', e => e.stopPropagation());
@@ -2015,6 +2985,8 @@ if (themeDropdown) {
     }
   });
 
+
+
 // ========================================
 // RAZORPAY PAYMENT INTEGRATION WITH SUPABASE
 // ========================================
@@ -2098,7 +3070,7 @@ const { data: products, error } = await sb
     
     grid.innerHTML = '';
     
-    products.forEach(product => {
+  products.forEach(product => {
       const priceInRupees = product.price_in_paise / 100;
       const iconKey = product.slug.includes('csv') ? 'csv' :
                      product.slug.includes('annex') ? 'annex' :
@@ -2109,19 +3081,19 @@ const { data: products, error } = await sb
       const priceDisplay = isSubscription ? `₹${priceInRupees}/month` : `₹${priceInRupees}`;
       
 grid.innerHTML += `
-  <div class="app-card">
+  <div class="app-card" data-slug="${product.slug}">
     <div class="app-icon" style="background: ${courseGradients[iconKey]};">
       ${courseIcons[iconKey]}
     </div>
     <h4>${product.title}</h4>
     <p>${product.description || ''}</p>
-    <div class="price-tag">${priceDisplay}</div>
+  <div class="price-tag hidden">${priceDisplay}</div>
     <div class="app-badge" style="background: ${isSubscription ? courseGradients.subscription : 'linear-gradient(135deg, var(--accent), var(--accent-bright))'}">${isSubscription ? 'Subscription' : 'Course'}</div>
     <div style="margin-top: 14px; display: flex; gap: 8px;">
       <button onclick="previewCourse('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-size: 14px; cursor: pointer; transition: all 0.3s;">
         <span>Preview</span>
       </button>
-      <button onclick="${isSubscription ? 'subscribe' : 'buyCourse'}('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+      <button onclick="${isSubscription ? 'subscribe' : 'buyCourse'}('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="${product.slug}" data-intent="purchase">
         <span>${isSubscription ? 'Subscribe' : 'Buy'}</span>
       </button>
     </div>
@@ -2194,34 +3166,28 @@ async function renderQMSProcedures() {
       
       // Determine correct filename
       const fileName = product.slug === 'change-control-sop' ? 
-        'change-control-sop_2.html' : 
+        'change-control-sop.html' : 
         `${product.slug}.html`;
       
       console.log(`${product.slug}: isPurchased=${isPurchased}, isFree=${isFree}, in array=${purchasedSlugs.includes(product.slug)}`);
       
       grid.innerHTML += `
-        <div class="app-card" style="position: relative; overflow: visible;">
-          ${!isFree && !isPurchased ? 
-            `<div style="position: absolute; top: 0; left: 0; width: 80px; height: 80px; overflow: hidden; z-index: 10;">
-              <div style="position: absolute; top: 18px; left: -25px; width: 120px; text-align: center; transform: rotate(-45deg); background: linear-gradient(135deg, #f59e0b, #fb923c); padding: 4px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.3);">
-                <span style="color: #000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Premium</span>
-              </div>
-            </div>` : ''
-          }
+        <div class="app-card ${(!isFree && !isPurchased) ? 'is-premium' : ''}" style="position: relative; overflow: hidden;" data-slug="${product.slug}">
+          ${!isFree && !isPurchased ? `<div class="premium-ribbon"><span>Premium</span></div>` : ''}
           <div class="app-icon" style="background: ${qmsGradients[iconKey] || 'linear-gradient(135deg, #8b5cf6, #a78bfa)'};">
             ${qmsIcons[iconKey] || qmsIcons['document-management']}
           </div>
           <h4>${product.title}</h4>
           <p>${product.description || ''}</p>
-          <div class="price-tag">${isFree ? 'FREE' : (isPurchased ? 'PURCHASED' : '₹' + priceInRupees)}</div>
+          <div class="price-tag ${isFree || isPurchased ? '' : 'hidden'}">${isFree ? 'FREE' : (isPurchased ? 'PURCHASED' : '₹' + priceInRupees)}</div>
           <div class="app-badge" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa)">SOP</div>
           <div style="margin-top: 14px;">
             ${isFree || isPurchased ? 
               `<button onclick="window.location.href='${fileName}'" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #10b981, #34d399); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
                 <span>Access Now</span>
               </button>` :
-              `<button onclick="buyProcedure('${product.slug}');" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
-                <span>Buy Now - ₹${priceInRupees}</span>
+              `<button onclick="buyProcedure('${product.slug}');" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="${product.slug}" data-intent="purchase">
+                <span>Buy Now</span>
               </button>`
             }
           </div>
@@ -2412,6 +3378,16 @@ function grantAccess(productTitle) {
 
 // Buy course
 window.buyCourse = async function(productSlug) {
+  // First click reveals price, second proceeds
+  const card = document.querySelector(`.app-card[data-slug="${productSlug}"]`);
+  const priceEl = card?.querySelector('.price-tag');
+  const btn = card?.querySelector('button[data-intent="purchase"]');
+  if (priceEl && priceEl.classList.contains('hidden')) {
+    priceEl.classList.remove('hidden');
+    if (btn) btn.querySelector('span').textContent = 'Proceed to Pay';
+    return;
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
     alert('Please login to purchase courses');
@@ -2464,6 +3440,16 @@ window.buyCourse = async function(productSlug) {
 
 // Subscribe
 window.subscribe = async function(productSlug) {
+  // First click reveals price, second proceeds
+  const card = document.querySelector(`.app-card[data-slug="${productSlug}"]`);
+  const priceEl = card?.querySelector('.price-tag');
+  const btn = card?.querySelector('button[data-intent="purchase"]');
+  if (priceEl && priceEl.classList.contains('hidden')) {
+    priceEl.classList.remove('hidden');
+    if (btn) btn.querySelector('span').textContent = 'Proceed to Pay';
+    return;
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
     alert('Please login to subscribe');
@@ -2544,6 +3530,16 @@ async function createOrderRecord(productSlug, amount) {
 
 // Buy QMS Procedure - COMPLETE WITH DEBUGGING
 window.buyProcedure = async function(procedureSlug) {
+  // First click reveals price, second proceeds
+  const card = document.querySelector(`.app-card[data-slug="${procedureSlug}"]`);
+  const priceEl = card?.querySelector('.price-tag');
+  const btn = card?.querySelector('button[data-intent="purchase"]');
+  if (priceEl && priceEl.classList.contains('hidden')) {
+    priceEl.classList.remove('hidden');
+    if (btn) btn.querySelector('span').textContent = 'Proceed to Pay';
+    return;
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
     alert('Please login to purchase procedures');
@@ -2652,7 +3648,6 @@ sb.auth.getSession().then(({ data: { session } }) => {
     loadMyPurchases();
   }
 });
-
 
 
 </script>

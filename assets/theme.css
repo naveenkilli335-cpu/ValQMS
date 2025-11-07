@@ -1,0 +1,65 @@
+/* ValQMS global theme — modal dark headers */
+:root{
+  --modal-header-bg: #0f172a;
+  --modal-header-fg: #ffffff;
+  --modal-header-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Default: dark header on all app modals */
+.modal .modal-header{
+  background: var(--modal-header-bg);
+  color: var(--modal-header-fg);
+  padding: 20px 24px;
+  border-bottom: none;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  box-shadow: var(--modal-header-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.modal .modal-title{ color: var(--modal-header-fg); }
+.modal .close-btn{
+  color: var(--modal-header-fg);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 22px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+  transition: background 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+}
+.modal .close-btn:hover{
+  background: rgba(255,255,255,0.08);
+  opacity: 1;
+}
+.modal .close-btn:active{ transform: scale(0.96); }
+.modal .close-btn:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.6);
+  outline-offset: 2px;
+}
+
+/* Opt-out: light header on specific modals by adding class="modal light-header" */
+.modal.light-header .modal-header{
+  background: #ffffff;
+  color: #1e293b;
+  padding: 20px 24px;
+  border-bottom: 2px solid #e5e7eb;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  box-shadow: none;
+}
+.modal.light-header .modal-title{ color:#1e293b; }
+.modal.light-header .close-btn{ 
+  color:#6b7280; 
+}
+.modal.light-header .close-btn:hover{
+  background: rgba(0,0,0,0.06);
+}

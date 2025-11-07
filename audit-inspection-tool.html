@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bg="mint">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audit & Inspection Management | ValQMS</title>
-    <link rel="icon" href="favicon.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/theme.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -17,62 +20,51 @@
 
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: #d1fae5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
+        
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-box {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 20px;
-        }
 
         .logo-text {
             font-size: 24px;
             font-weight: 700;
-            color: #1e293b;
+            color: #ffffff; /* white text on dark header */
         }
 
         .logo-subtitle {
             font-size: 12px;
-            color: #6b7280;
+            color: #e2e8f0;
             font-weight: 400;
         }
 
         .header-actions {
             display: flex;
             gap: 12px;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: #ffffff; /* white chip like index controls */
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            color: #0f172a;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #334155;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
         }
 
         /* Buttons */
@@ -87,13 +79,20 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-secondary {
@@ -103,13 +102,23 @@
         }
 
         .btn-secondary:hover {
-            border-color: #8b5cf6;
-            color: #8b5cf6;
+            border-color: #10b981;
+            color: #10b981;
         }
+
 
         .btn-sm {
             padding: 6px 12px;
             font-size: 12px;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
         }
 
         /* Dashboard Cards */
@@ -125,6 +134,12 @@
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-label {
@@ -184,13 +199,14 @@
         }
 
         .tab.active {
-            color: #8b5cf6;
-            border-bottom-color: #8b5cf6;
+            color: #10b981;
+            border-bottom-color: #10b981;
         }
 
         .tab:hover {
-            color: #8b5cf6;
+            color: #10b981;
         }
+
 
         .tab-content {
             display: none;
@@ -217,52 +233,56 @@
             grid-column: 1 / -1;
         }
 
-        .form-label {
+        .form-group label {
             font-weight: 600;
             color: #374151;
             margin-bottom: 8px;
             font-size: 14px;
         }
 
-        .form-label.required::after {
-            content: ' *';
-            color: #ef4444;
-        }
-
-        .form-input, .form-select, .form-textarea {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             padding: 12px;
             border: 2px solid #e5e7eb;
             border-radius: 8px;
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
-            transition: all 0.3s;
+            transition: border-color 0.3s;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: #8b5cf6;
         }
 
-        .form-textarea {
+        .form-group textarea {
             min-height: 100px;
             resize: vertical;
-            font-family: inherit;
         }
 
-        /* Table Styles */
-        .table-container {
-            overflow-x: auto;
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        outline: none;
+        border-color: #10b981;
         }
 
-        table {
+
+        .required::after {
+            content: ' *';
+            color: #dc2626;
+        }
+
+        /* Table */
+        .data-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        thead {
+        .data-table th {
             background: #f9fafb;
-        }
-
-        th {
             padding: 12px;
             text-align: left;
             font-weight: 600;
@@ -271,43 +291,16 @@
             font-size: 13px;
         }
 
-        td {
+        .data-table td {
             padding: 12px;
             border-bottom: 1px solid #e5e7eb;
             font-size: 13px;
+            color: #374151;
         }
 
-        tr:hover {
+        .data-table tr:hover {
             background: #f9fafb;
         }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-planned { background: #dbeafe; color: #1e40af; }
-        .status-progress { background: #fef3c7; color: #92400e; }
-        .status-completed { background: #d1fae5; color: #065f46; }
-        .status-issued { background: #e9d5ff; color: #6b21a8; }
-        .status-capa { background: #fed7aa; color: #9a3412; }
-        .status-closed { background: #d1fae5; color: #065f46; }
-
-        .finding-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .finding-critical { background: #fee2e2; color: #991b1b; }
-        .finding-major { background: #fed7aa; color: #9a3412; }
-        .finding-minor { background: #fef3c7; color: #92400e; }
-        .finding-observation { background: #dbeafe; color: #1e40af; }
 
         .action-btn {
             padding: 6px 12px;
@@ -317,51 +310,98 @@
             font-weight: 600;
             cursor: pointer;
             margin-right: 5px;
-            margin-bottom: 5px;
+            transition: all 0.3s;
         }
 
-        .action-btn.view { background: #dbeafe; color: #1e40af; }
-        .action-btn.findings { background: #fed7aa; color: #9a3412; }
-        .action-btn.report { background: #e9d5ff; color: #6b21a8; }
-        .action-btn.complete { background: #d1fae5; color: #065f46; }
-        .action-btn.history { background: #f3f4f6; color: #6b7280; }
+        .action-btn.view {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .action-btn.edit {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .action-btn.complete {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .action-btn.delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-planned { background: #dbeafe; color: #1e40af; }
+        .status-progress { background: #fef3c7; color: #92400e; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-issued { background: #e0e7ff; color: #4338ca; }
+        .status-capa { background: #fed7aa; color: #9a3412; }
+        .status-closed { background: #d1d5db; color: #374151; }
+
+        .finding-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .finding-critical { background: #fee2e2; color: #991b1b; }
+        .finding-major { background: #fed7aa; color: #9a3412; }
+        .finding-minor { background: #fef3c7; color: #92400e; }
+        .finding-observation { background: #dbeafe; color: #1e40af; }
 
         /* Modal */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
+            z-index: 1000;
+            overflow-y: auto;
         }
 
         .modal.active {
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .modal-content {
             background: white;
-            padding: 30px;
             border-radius: 12px;
-            max-width: 1000px;
-            width: 90%;
+            width: 100%;
+            max-width: 900px;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         .modal-header {
+            padding: 25px 30px;
+            border-bottom: 2px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e5e7eb;
         }
 
         .modal-title {
@@ -370,61 +410,227 @@
             color: #1e293b;
         }
 
-        .close-btn {
+        .close-modal {
             background: none;
             border: none;
             font-size: 24px;
-            cursor: pointer;
             color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: #f3f4f6;
+            color: #1e293b;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 2px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
         }
 
         /* Alert */
         .alert {
-            padding: 15px 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
             border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
+            font-weight: 600;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s;
+        }
+
+        .alert.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .alert.success {
             background: #d1fae5;
             color: #065f46;
-            border-left: 4px solid #10b981;
         }
 
         .alert.error {
             background: #fee2e2;
             color: #991b1b;
-            border-left: 4px solid #ef4444;
         }
 
-        .alert.active {
-            display: block;
+        .alert.warning {
+            background: #fef3c7;
+            color: #92400e;
         }
 
-        /* Info Box */
-        .info-box {
-            background: #eff6ff;
-            border-left: 4px solid #3b82f6;
-            padding: 15px;
-            margin-bottom: 20px;
+        .alert.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: #f9fafb;
+            padding: 20px;
             border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50%;
+            border-top-color: #8b5cf6;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .info-box {
+        background: #ecfdf5;
+        border-left: 4px solid #10b981;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
         }
 
         .info-box h4 {
-            color: #1e40af;
-            margin-bottom: 8px;
-            font-size: 14px;
+        color: #059669;
+        margin-bottom: 8px;
+        font-size: 14px;
         }
 
-        .info-box p {
-            font-size: 13px;
-            color: #374151;
-            line-height: 1.5;
+        .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 10px;
+        width: 12px;
+        height: 12px;
+        background: #10b981;
+        border-radius: 50%;
+        border: 3px solid white;
+        }
+
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .action-btn {
+                padding: 4px 8px;
+                font-size: 11px;
+            }
+        }
+
+        /* Access Control */
+        .access-denied {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .access-denied-icon {
+            font-size: 64px;
+            color: #dc2626;
+            margin-bottom: 20px;
+        }
+
+        .access-denied-text {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        /* Audit Trail Specific */
+        .trail-entry {
+            padding: 15px;
+            border-left: 3px solid #8b5cf6;
+            background: #f9fafb;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .trail-timestamp {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .trail-action {
+            font-size: 14px;
+            color: #1e293b;
+            font-weight: 600;
             margin: 5px 0;
         }
 
-        /* Readiness Cards */
+        .trail-details {
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .trail-user {
+            font-size: 12px;
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+
+                /* Readiness Cards */
         .readiness-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -470,6 +676,7 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            body { padding: 12px; }
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -495,45 +702,38 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <div class="logo-box">AI</div>
-                <div>
-                    <div class="logo-text">Audit & Inspection Management</div>
-                    <div class="logo-subtitle">FDA | MHRA | EMA | PIC/S | ICH Q10 Compliant</div>
-                </div>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="location.href='index.html'">← Back to Home</button>
-                <button class="btn btn-primary" onclick="openNewAuditModal()">+ Schedule Audit</button>
-            </div>
-        </div>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading"></div>
+    </div>
 
-        <!-- Alert -->
-        <div id="alert" class="alert"></div>
+    <!-- Alert -->
+    <div id="alert" class="alert"></div>
+
+    <div class="container">
+        
 
         <!-- Dashboard Stats -->
-        <div class="dashboard">
-            <div class="stat-card">
-                <div class="stat-label">Total Audits</div>
+        <div class="dashboard" id="dashboard">
+            <div class="stat-card" onclick="filterByStatus('all')">
+                <div class="stat-label">Total Audits/Inspections</div>
                 <div class="stat-value" id="totalAudits">0</div>
+                <span class="stat-badge badge-info">All Time</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Upcoming Inspections</div>
-                <div class="stat-value" id="upcomingAudits">0</div>
-                <span class="stat-badge badge-info">Next 30 Days</span>
+            <div class="stat-card" onclick="filterByStatus('In Progress')">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value" id="inProgressAudits">0</div>
+                <span class="stat-badge badge-minor">Active</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Open Findings</div>
-                <div class="stat-value" id="openFindings">0</div>
-                <span class="stat-badge badge-major">Requires CAPA</span>
-            </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="filterFindingsByType('Critical')">
                 <div class="stat-label">Critical Findings</div>
                 <div class="stat-value" id="criticalFindings">0</div>
-                <span class="stat-badge badge-critical">High Priority</span>
+                <span class="stat-badge badge-critical">Urgent</span>
+            </div>
+            <div class="stat-card" onclick="filterFindingsByStatus('Open')">
+                <div class="stat-label">Open Findings</div>
+                <div class="stat-value" id="openFindings">0</div>
+                <span class="stat-badge badge-major">Pending</span>
             </div>
         </div>
 
@@ -541,83 +741,209 @@
         <div class="content-card">
             <div class="tabs">
                 <button class="tab active" onclick="switchTab('audits')">Audits & Inspections</button>
-                <button class="tab" onclick="switchTab('findings')">Findings & 483s</button>
+                <button class="tab" onclick="switchTab('findings')">Findings & Observations</button>
                 <button class="tab" onclick="switchTab('readiness')">Inspection Readiness</button>
                 <button class="tab" onclick="switchTab('checklists')">Audit Checklists</button>
-                <button class="tab" onclick="switchTab('reports')">Reports</button>
+                <button class="tab" onclick="switchTab('capa')">CAPA Management</button>
+                <button class="tab" onclick="switchTab('reports')">Reports & Analytics</button>
+                <button class="tab" onclick="switchTab('auditTrail')">Audit Trail</button>
+
             </div>
 
-            <!-- Audits & Inspections Tab -->
+            <!-- Audits Tab -->
             <div id="auditsTab" class="tab-content active">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Audit & Inspection Schedule</h3>
+                    <h2 style="color: #1e293b; font-size: 20px;">Audits & Inspections</h2>
+                    <button class="btn btn-primary" onclick="openNewAuditModal()" id="btnNewAudit">
+                        + Schedule New Audit
+                    </button>
                 </div>
 
-                <div class="info-box">
-                    <h4>📋 Regulatory Audit Types Supported</h4>
-                    <p><strong>FDA:</strong> Pre-Approval Inspection (PAI), GMP Surveillance, For-Cause, Data Integrity</p>
-                    <p><strong>MHRA:</strong> Routine GMP, For-Cause, License Renewal, PIC/S Mutual Recognition</p>
-                    <p><strong>ICH Q10:</strong> Internal Quality System Audits, Supplier Audits, Management Review</p>
+                <div class="filter-section">
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label>Audit Type</label>
+                            <select id="filterAuditType" onchange="loadAudits()">
+                                <option value="">All Types</option>
+                                <option value="Internal">Internal</option>
+                                <option value="External - Regulatory">External - Regulatory</option>
+                                <option value="External - Customer">External - Customer</option>
+                                <option value="Vendor">Vendor</option>
+                                <option value="Certification">Certification</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="filterAuditStatus" onchange="loadAudits()">
+                                <option value="">All Status</option>
+                                <option value="Planned">Planned</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Report Issued">Report Issued</option>
+                                <option value="CAPA Pending">CAPA Pending</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date Range</label>
+                            <input type="date" id="filterDateFrom" onchange="loadAudits()">
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="date" id="filterDateTo" onchange="loadAudits()">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="table-container">
-                    <table id="auditsTable">
-                        <thead>
-                            <tr>
-                                <th>Audit Number</th>
-                                <th>Type</th>
-                                <th>Scope</th>
-                                <th>Planned Date</th>
-                                <th>Status</th>
-                                <th>Rating</th>
-                                <th>Findings</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="auditsTableBody">
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">
-                                    Loading audits and inspections...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Audit #</th>
+                            <th>Type</th>
+                            <th>Area/Scope</th>
+                            <th>Lead Auditor</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <div class="loading"></div>
+                                <div style="margin-top: 10px; color: #6b7280;">Loading audits...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Findings Tab -->
             <div id="findingsTab" class="tab-content">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Findings & Observations</h3>
-                    <button class="btn btn-primary btn-sm" onclick="openFindingModal()">+ Add Finding</button>
+                    <h2 style="color: #1e293b; font-size: 20px;">Findings & Observations</h2>
+                    <button class="btn btn-primary" onclick="openFindingModal()" id="btnNewFinding">
+                        + Add Finding
+                    </button>
                 </div>
 
-                <div class="table-container">
-                    <table id="findingsTable">
-                        <thead>
-                            <tr>
-                                <th>Finding #</th>
-                                <th>Audit</th>
-                                <th>Type</th>
-                                <th>Category</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Target Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="findingsTableBody">
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">
-                                    Loading findings...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="filter-section">
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label>Finding Type</label>
+                            <select id="filterFindingType" onchange="loadFindings()">
+                                <option value="">All Types</option>
+                                <option value="Critical">Critical</option>
+                                <option value="Major">Major</option>
+                                <option value="Minor">Minor</option>
+                                <option value="Observation">Observation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="filterFindingStatus" onchange="loadFindings()">
+                                <option value="">All Status</option>
+                                <option value="Open">Open</option>
+                                <option value="Under Investigation">Under Investigation</option>
+                                <option value="CAPA in Progress">CAPA in Progress</option>
+                                <option value="Pending Verification">Pending Verification</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="filterFindingCategory" onchange="loadFindings()">
+                                <option value="">All Categories</option>
+                                <option value="Documentation">Documentation</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Personnel">Personnel</option>
+                                <option value="Process">Process</option>
+                                <option value="Quality System">Quality System</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Finding #</th>
+                            <th>Audit #</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Target Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="findingsTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px;">
+                                <div class="loading"></div>
+                                <div style="margin-top: 10px; color: #6b7280;">Loading findings...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Inspection Readiness Tab -->
+            <!-- CAPA Tab -->
+            <div id="capaTab" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="color: #1e293b; font-size: 20px;">CAPA Management</h2>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label>CAPA Status</label>
+                            <select id="filterCapaStatus" onchange="loadCapaRecords()">
+                                <option value="">All Status</option>
+                                <option value="Initiated">Initiated</option>
+                                <option value="Investigation">Investigation</option>
+                                <option value="Implementation">Implementation</option>
+                                <option value="Verification">Verification</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="filterCapaPriority" onchange="loadCapaRecords()">
+                                <option value="">All Priorities</option>
+                                <option value="Critical">Critical</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>CAPA #</th>
+                            <th>Finding #</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Owner</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="capaTableBody">
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px;">
+                                <div style="color: #6b7280;">No CAPA records to display</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+             <!-- Inspection Readiness Tab -->
             <div id="readinessTab" class="tab-content">
                 <h3>Inspection Readiness Status</h3>
                 <p style="margin-bottom: 20px; color: #6b7280;">Monitor key compliance areas for regulatory inspection preparedness</p>
@@ -691,8 +1017,89 @@
 
             <!-- Reports Tab -->
             <div id="reportsTab" class="tab-content">
-                <h3>Audit Reports & Analytics (Coming Soon)</h3>
-                <p>Generate compliance reports, trend analysis, CAPA effectiveness metrics.</p>
+                <div style="margin-bottom: 20px;">
+                    <h2 style="color: #1e293b; font-size: 20px; margin-bottom: 20px;">Reports & Analytics</h2>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+                        <h3 style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">📊 Audit Summary Report</h3>
+                        <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">
+                            Comprehensive overview of all audits and inspections
+                        </p>
+                        <button class="btn btn-primary btn-sm" onclick="generateAuditSummaryReport()">Generate Report</button>
+                    </div>
+
+                    <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+                        <h3 style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">📋 Findings Analysis</h3>
+                        <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">
+                            Detailed analysis of findings by type, category, and status
+                        </p>
+                        <button class="btn btn-primary btn-sm" onclick="generateFindingsReport()">Generate Report</button>
+                    </div>
+
+                    <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+                        <h3 style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">🔧 CAPA Effectiveness</h3>
+                        <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">
+                            CAPA implementation and effectiveness metrics
+                        </p>
+                        <button class="btn btn-primary btn-sm" onclick="generateCapaReport()">Generate Report</button>
+                    </div>
+
+                    <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+                        <h3 style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">📈 Trend Analysis</h3>
+                        <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">
+                            Audit and finding trends over time
+                        </p>
+                        <button class="btn btn-primary btn-sm" onclick="generateTrendReport()">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Trail Tab -->
+            <div id="auditTrailTab" class="tab-content">
+                <div style="margin-bottom: 20px;">
+                    <h2 style="color: #1e293b; font-size: 20px; margin-bottom: 20px;">Complete Audit Trail</h2>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-grid">
+                       <div class="form-group">
+                            <label>Entity Type</label>
+                            <select id="filterTrailEntity" onchange="loadAuditTrail()">
+                                <option value="">All Entities</option>
+                                <option value="Audit">Audits</option>
+                                <option value="Finding">Findings</option>
+                                <option value="CAPA">CAPA</option>
+                            </select>
+                        </div> 
+                        <div class="form-group">
+                            <label>Action Type</label>
+                            <select id="filterTrailAction" onchange="loadAuditTrail()">
+                                <option value="">All Actions</option>
+                                <option value="Created">Created</option>
+                                <option value="Updated">Updated</option>
+                                <option value="Deleted">Deleted</option>
+                                <option value="Status Changed">Status Changed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date From</label>
+                            <input type="datetime-local" id="filterTrailDateFrom" onchange="loadAuditTrail()">
+                        </div>
+                        <div class="form-group">
+                            <label>Date To</label>
+                            <input type="datetime-local" id="filterTrailDateTo" onchange="loadAuditTrail()">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="auditTrailContent" style="max-height: 600px; overflow-y: auto;">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="loading"></div>
+                        <div style="margin-top: 10px; color: #6b7280;">Loading audit trail...</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -701,30 +1108,48 @@
     <div id="auditModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Schedule New Audit/Inspection</h2>
-                <button class="close-btn" onclick="closeAuditModal()">&times;</button>
+                <h3 class="modal-title">Schedule New Audit/Inspection</h3>
+                <button class="close-modal" onclick="closeAuditModal()">×</button>
             </div>
-            
-            <form id="auditForm">
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label class="form-label required">Audit/Inspection Type</label>
-                        <select class="form-select" id="auditType" required>
-                            <option value="">Select Type</option>
-                            <option value="Internal Audit">Internal Audit</option>
-                            <option value="Supplier Audit">Supplier Audit</option>
-                            <option value="FDA Inspection">FDA Inspection</option>
-                            <option value="MHRA Inspection">MHRA Inspection (UK)</option>
-                            <option value="EMA Inspection">EMA Inspection (EU)</option>
-                            <option value="PIC/S Inspection">PIC/S Inspection</option>
-                            <option value="Mock Audit">Mock Audit (Pre-Inspection)</option>
-                            <option value="Client Audit">Client Audit</option>
-                            <option value="Certification Audit">Certification Audit (ISO)</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
+            <div class="modal-body">
+                <form id="auditForm">
+                    <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">Audit Type</label>
+                                <select id="auditType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Internal Audit">Internal Audit</option>
+                                    <option value="Supplier Audit">Supplier Audit</option>
+                                    <option value="FDA Inspection">FDA Inspection</option>
+                                    <option value="MHRA Inspection">MHRA Inspection (UK)</option>
+                                    <option value="EMA Inspection">EMA Inspection (EU)</option>
+                                    <option value="PICS Inspection">PICS Inspection</option>
+                                    <option value="Mock Audit">Mock Audit (Pre-Inspection)</option>
+                                    <option value="Client Audit">Client Audit</option>
+                                    <option value="Certification Audit">Certification Audit (ISO)</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        <div class="form-group">
+                            <label class="required">Audit Scope</label>
+                            <select id="auditScope" required>
+                                    <option value="">Select Area</option>
+                                    <option value="GMP Compliance">GMP Compliance</option>
+                                    <option value="GDP">GDP (Distribution)</option>
+                                    <option value="Quality System">Quality System (ICH Q10)</option>
+                                    <option value="Manufacturing">Manufacturing Operations</option>
+                                    <option value="Quality Control">Quality Control Laboratory</option>
+                                    <option value="Warehouse">Warehouse & Materials</option>
+                                    <option value="Data Integrity">Data Integrity</option>
+                                    <option value="Validation">Validation (Process, Cleaning, CSV)</option>
+                                    <option value="Computerized Systems">Computerized Systems</option>
+                                    <option value="Documentation">Documentation Control</option>
+                                    <option value="Cleaning">Cleaning & Sanitation</option>
+                                    <option value="Laboratory">Laboratory Practices</option>
+                                    <option value="Other">Other</option>
+                            </select>
+                        </div>
+                                            <div class="form-group">
                         <label class="form-label required">Audit Scope</label>
                         <input type="text" class="form-input" id="auditScope" placeholder="e.g., GMP Compliance - Manufacturing" required>
                     </div>
@@ -748,79 +1173,95 @@
                             <option value="Other">Other</option>
                         </select>
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">Planned Date</label>
-                        <input type="date" class="form-input" id="plannedDate" required>
+                        <div class="form-group">
+                            <label class="required">Area/Department</label>
+                            <input type="text" id="auditArea" placeholder="e.g., Manufacturing, QC Lab" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Planned Date</label>
+                            <input type="date" id="plannedDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Duration (Days)</label>
+                            <input type="number" id="duration" min="1" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Lead Auditor</label>
+                            <input type="text" id="leadAuditor" placeholder="Auditor Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Audit Team</label>
+                            <input type="text" id="auditTeam" placeholder="Team member names (comma separated)">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Auditee Department</label>
+                            <input type="text" id="auditeeDept" placeholder="Department being audited" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Regulatory Authority (if external)</label>
+                            <select id="regulatoryAuthority">
+                                <option value="">N/A</option>
+                                <option value="FDA">FDA</option>
+                                <option value="EMA">EMA</option>
+                                <option value="MHRA">MHRA</option>
+                                <option value="Health Canada">Health Canada</option>
+                                <option value="TGA">TGA</option>
+                                <option value="ANVISA">ANVISA</option>
+                                <option value="ISO Certification Body">ISO Certification Body</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="required">Scope Description</label>
+                            <textarea id="scopeDesc" placeholder="Detailed description of audit scope" required></textarea>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Duration (Days)</label>
-                        <input type="number" class="form-input" id="duration" min="1" value="1">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">Lead Auditor</label>
-                        <input type="text" class="form-input" id="leadAuditor" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Auditee Department</label>
-                        <input type="text" class="form-input" id="auditeeDept">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Regulatory Authority</label>
-                        <input type="text" class="form-input" id="regulatoryAuthority" placeholder="e.g., FDA, MHRA, EMA">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label class="form-label">Inspection Scope Description</label>
-                        <textarea class="form-textarea" id="scopeDesc"></textarea>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label class="form-label">Audit Team Members</label>
-                        <textarea class="form-textarea" id="auditTeam" placeholder="Enter team member names (comma-separated)"></textarea>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
-                    <button type="button" class="btn btn-secondary" onclick="closeAuditModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Schedule Audit</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeAuditModal()">Cancel</button>
+                <button type="submit" form="auditForm" class="btn btn-primary">Schedule Audit</button>
+            </div>
         </div>
     </div>
 
-    <!-- Add Finding Modal -->
+    <!-- New Finding Modal -->
     <div id="findingModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Add Audit Finding</h2>
-                <button class="close-btn" onclick="closeFindingModal()">&times;</button>
+                <h3 class="modal-title">Add New Finding/Observation</h3>
+                <button class="close-modal" onclick="closeFindingModal()">×</button>
             </div>
-            
-            <form id="findingForm">
-                <input type="hidden" id="findingAuditId">
-                
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label required">Finding Type</label>
-                        <select class="form-select" id="findingType" required>
-                            <option value="">Select Type</option>
-                            <option value="Critical">Critical - GMP Deficiency</option>
-                            <option value="Major">Major - Significant Deviation</option>
-                            <option value="Minor">Minor - Documentation</option>
-                            <option value="Observation">Observation (OFI)</option>
-                            <option value="Positive">Positive Finding</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label required">Category</label>
-                        <select class="form-select" id="findingCategory" required>
-                            <option value="">Select Category</option>
+            <div class="modal-body">
+                <form id="findingForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Related Audit</label>
+                            <select id="findingAuditId">
+                                <option value="">Select Audit (Optional)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Finding Type</label>
+                            <select id="findingType" required>
+                                <option value="">Select Type</option>
+                                <option value="Critical">Critical</option>
+                                <option value="Major">Major</option>
+                                <option value="Minor">Minor</option>
+                                <option value="Observation">Observation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Category</label>
+                            <select id="findingCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="Documentation">Documentation</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Personnel">Personnel</option>
+                                <option value="Process">Process</option>
+                                <option value="Quality System">Quality System</option>
+                                <option value="Facility">Facility</option>
+                                <option value="Materials">Materials</option>
+                                                            <option value="">Select Category</option>
                             <option value="Documentation">Documentation</option>
                             <option value="Personnel & Training">Personnel & Training</option>
                             <option value="Facilities & Equipment">Facilities & Equipment</option>
@@ -835,180 +1276,662 @@
                             <option value="Deviation Management">Deviation Management</option>
                             <option value="CAPA">CAPA System</option>
                             <option value="Other">Other</option>
-                        </select>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Regulation Reference</label>
+                            <input type="text" id="regulationRef" placeholder="e.g., 21 CFR 211.100">
+                        </div>
+                        <div class="form-group">
+                            <label>GMP Clause</label>
+                            <input type="text" id="gmpClause" placeholder="e.g., EU GMP Chapter 4">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Responsible Person</label>
+                            <input type="text" id="responsiblePerson" placeholder="Person responsible for resolution" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Target Completion Date</label>
+                            <input type="date" id="targetDate" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="required">Finding Description</label>
+                            <textarea id="findingDesc" placeholder="Detailed description of the finding" required></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Evidence/Supporting Information</label>
+                            <textarea id="findingEvidence" placeholder="Evidence supporting the finding"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Impact Assessment</label>
+                            <textarea id="impactAssessment" placeholder="Assessment of potential impact"></textarea>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Regulation Reference</label>
-                        <input type="text" class="form-input" id="regulationRef" placeholder="e.g., 21 CFR 211.100">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">GMP Clause</label>
-                        <input type="text" class="form-input" id="gmpClause" placeholder="e.g., EU GMP Chapter 4">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label class="form-label required">Finding Description</label>
-                        <textarea class="form-textarea" id="findingDesc" required></textarea>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label class="form-label">Evidence</label>
-                        <textarea class="form-textarea" id="findingEvidence"></textarea>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label class="form-label">Impact Assessment</label>
-                        <textarea class="form-textarea" id="impactAssessment"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Responsible Person</label>
-                        <input type="text" class="form-input" id="responsiblePerson">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Target Completion Date</label>
-                        <input type="date" class="form-input" id="targetDate">
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 30px;">
-                    <button type="button" class="btn btn-secondary" onclick="closeFindingModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Finding</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeFindingModal()">Cancel</button>
+                <button type="submit" form="findingForm" class="btn btn-primary">Add Finding</button>
+            </div>
         </div>
     </div>
 
-    <!-- Audit Trail Modal -->
-    <div id="auditTrailModal" class="modal">
+    
+
+    <!-- View Audit Details Modal -->
+    <div id="viewAuditModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Audit Trail</h2>
-                <button class="close-btn" onclick="closeAuditTrailModal()">&times;</button>
+                <h3 class="modal-title">Audit Details</h3>
+                <button class="close-modal" onclick="closeViewAuditModal()">×</button>
             </div>
-            <div id="auditTrailContent">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date/Time</th>
-                            <th>Action</th>
-                            <th>Field Changed</th>
-                            <th>Changed By</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody id="auditTrailTableBody"></tbody>
-                </table>
+            <div class="modal-body" id="viewAuditContent">
+                <!-- Content loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeViewAuditModal()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateAuditStatus()">Update Status</button>
             </div>
         </div>
     </div>
 
+    <!-- View Finding Details Modal -->
+    <div id="viewFindingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Finding Details</h3>
+                <button class="close-modal" onclick="closeViewFindingModal()">×</button>
+            </div>
+            <div class="modal-body" id="viewFindingContent">
+                <!-- Content loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeViewFindingModal()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="initiateCAPA()">Initiate CAPA</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/access-control.js"></script>
     <script>
-        // **REPLACE WITH YOUR SUPABASE CREDENTIALS**
-        const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+        // ===== CONFIGURATION =====
+const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
         
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Initialize Supabase
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDashboardStats();
-            loadAudits();
-            loadFindings();
-        });
+        // ===== GLOBAL STATE =====
+        let currentUser = null;
+        let currentUserRole = null;
+        let userPermissions = {};
+        let currentAudit = null;
+        let currentFinding = null;
 
-        // Load Dashboard Statistics
-        async function loadDashboardStats() {
+        // ===== ROLE-BASED PERMISSIONS =====
+        // Default permissions for roles in your database
+        const PERMISSIONS = {
+            'System Admin': {
+                canCreateAudit: true,
+                canEditAudit: true,
+                canDeleteAudit: true,
+                canViewAllAudits: true,
+                canCreateFinding: true,
+                canEditFinding: true,
+                canCreateCAPA: true,
+                canApproveCAPA: true,
+                canViewAuditTrail: true,
+                canGenerateReports: true
+            },
+            'QA Manager': {
+                canCreateAudit: true,
+                canEditAudit: true,
+                canDeleteAudit: true,
+                canViewAllAudits: true,
+                canCreateFinding: true,
+                canEditFinding: true,
+                canCreateCAPA: true,
+                canApproveCAPA: true,
+                canViewAuditTrail: true,
+                canGenerateReports: true
+            },
+            'QA Reviewer': {
+                canCreateAudit: true,
+                canEditAudit: true,
+                canDeleteAudit: false,
+                canViewAllAudits: true,
+                canCreateFinding: true,
+                canEditFinding: true,
+                canCreateCAPA: true,
+                canApproveCAPA: false,
+                canViewAuditTrail: true,
+                canGenerateReports: true
+            },
+            'Auditor': {
+                canCreateAudit: false,
+                canEditAudit: false,
+                canDeleteAudit: false,
+                canViewAllAudits: true,
+                canCreateFinding: false,
+                canEditFinding: false,
+                canCreateCAPA: false,
+                canApproveCAPA: false,
+                canViewAuditTrail: true,
+                canGenerateReports: true
+            },
+            'CAPA Owner': {
+                canCreateAudit: false,
+                canEditAudit: false,
+                canDeleteAudit: false,
+                canViewAllAudits: false,
+                canCreateFinding: false,
+                canEditFinding: true,
+                canCreateCAPA: true,
+                canApproveCAPA: false,
+                canViewAuditTrail: false,
+                canGenerateReports: false
+            },
+            'Department User': {
+                canCreateAudit: false,
+                canEditAudit: false,
+                canDeleteAudit: false,
+                canViewAllAudits: false,
+                canCreateFinding: false,
+                canEditFinding: false,
+                canCreateCAPA: false,
+                canApproveCAPA: false,
+                canViewAuditTrail: false,
+                canGenerateReports: false
+            }
+        };
+
+        // ===== INITIALIZATION =====
+    async function initializeApp() {
+            showLoading(true);
+            
             try {
-                const { data: audits } = await supabase.from('audits_inspections').select('*');
-                const { data: findings } = await supabase.from('audit_findings').select('*');
+                // Check authentication
+                const { data: { user } } = await supabase.auth.getUser();
+                currentUser = user || null;
 
-                const totalAudits = audits?.length || 0;
-                
-                const today = new Date();
-                const thirtyDaysFromNow = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-                const upcomingAudits = audits?.filter(a => {
-                    const plannedDate = new Date(a.planned_date);
-                    return plannedDate >= today && plannedDate <= thirtyDaysFromNow;
-                }).length || 0;
+        // Access control init (RBAC + e-signature)
+        await AccessControl.init({ supabase, moduleKey: 'audit_inspection', requireESigFor: ['approve','delete'] });
 
-                const openFindings = findings?.filter(f => f.status === 'Open' || f.status === 'Under Investigation' || f.status === 'CAPA In Progress').length || 0;
-                const criticalFindings = findings?.filter(f => f.finding_type === 'Critical' && f.status !== 'Closed').length || 0;
+                let profile = null;
+                let userRoleData = null;
 
-                document.getElementById('totalAudits').textContent = totalAudits;
-                document.getElementById('upcomingAudits').textContent = upcomingAudits;
-                document.getElementById('openFindings').textContent = openFindings;
-                document.getElementById('criticalFindings').textContent = criticalFindings;
+                if (currentUser) {
+                    // Get user profile
+                    const profRes = await supabase
+                        .from('user_profiles')
+                        .select('*')
+                        .eq('id', currentUser.id)
+                        .maybeSingle();
+                    profile = profRes.data || null;
+
+                    // Get user role through user_roles junction table
+                    const roleRes = await supabase
+                        .from('user_roles')
+                        .select(`
+                            *,
+                            roles (
+                                id,
+                                role_name,
+                                description,
+                                permissions
+                            )
+                        `)
+                        .eq('user_id', currentUser.id)
+                        .maybeSingle();
+                    userRoleData = roleRes.data || null;
+                    if (roleRes.error && roleRes.error.code !== 'PGRST116') {
+                        console.error('Error loading user role:', roleRes.error);
+                    }
+                }
+
+                // Set role and permissions (no login required). Default to QA Manager for full access.
+                if (userRoleData && userRoleData.roles) {
+                    currentUserRole = userRoleData.roles.role_name;
+                    if (userRoleData.roles.permissions) {
+                        userPermissions = {
+                            ...PERMISSIONS[currentUserRole],
+                            ...userRoleData.roles.permissions
+                        };
+                    } else {
+                        userPermissions = PERMISSIONS[currentUserRole] || PERMISSIONS['QA Manager'];
+                    }
+                } else {
+                    currentUserRole = currentUser ? 'QA Reviewer' : 'QA Manager';
+                    userPermissions = PERMISSIONS[currentUserRole] || PERMISSIONS['QA Manager'];
+                }
+
+                // Update UI with user info (hide if no user) - guarded in case user bar is removed
+                const displayName = profile?.full_name || profile?.employee_id || currentUser?.email || 'Guest';
+                const nameEl = document.getElementById('currentUserName');
+                if (nameEl) nameEl.textContent = displayName;
+                const roleEl = document.getElementById('currentUserRole');
+                if (roleEl) roleEl.textContent = currentUserRole;
+                const userInfoBox = document.getElementById('userInfoBox');
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (userInfoBox) userInfoBox.style.display = currentUser ? 'flex' : 'none';
+                if (logoutBtn) logoutBtn.style.display = currentUser ? 'inline-block' : 'none';
+
+                // Apply role-based UI restrictions (RBAC)
+                applyRoleBasedRestrictions();
+
+                // Load initial data
+                await loadDashboardStats();
+                await loadAudits();
+                await loadFindings();
+                await loadAuditTrail();
+                await populateAuditDropdown();
+
             } catch (error) {
-                console.error('Error loading stats:', error);
+                console.error('Initialization error:', error);
+                showAlert('Error initializing application', 'error');
+            } finally {
+                showLoading(false);
             }
         }
 
-        // Load Audits
+        // ===== ROLE-BASED ACCESS CONTROL =====
+        function applyRoleBasedRestrictions() {
+            // Applications scope RBAC
+            const canCreate = AccessControl.has('applications','audit_inspection','create');
+            const canExport = AccessControl.has('applications','audit_inspection','export');
+            const canViewTrail = userPermissions.canViewAuditTrail; // keep existing until RBAC for trail defined
+
+            const newAuditBtn = document.getElementById('btnNewAudit');
+            const newFindingBtn = document.getElementById('btnNewFinding');
+            if (newAuditBtn) newAuditBtn.style.display = canCreate ? 'block' : 'none';
+            if (newFindingBtn) newFindingBtn.style.display = canCreate ? 'block' : 'none';
+
+            // Hide tabs based on permissions
+            if (!canViewTrail) {
+                const auditTrailTab = Array.from(document.querySelectorAll('.tab'))
+                    .find(tab => tab.textContent.includes('Audit Trail'));
+                if (auditTrailTab) auditTrailTab.style.display = 'none';
+            }
+
+            if (!canExport) {
+                const reportsTab = Array.from(document.querySelectorAll('.tab'))
+                    .find(tab => tab.textContent.includes('Reports'));
+                if (reportsTab) reportsTab.style.display = 'none';
+            }
+        }
+
+        function checkPermission(permission) {
+            if (!userPermissions[permission]) {
+                showAlert('You do not have permission to perform this action', 'warning');
+                return false;
+            }
+            return true;
+        }
+
+        // ===== DASHBOARD STATS =====
+        async function loadDashboardStats() {
+            try {
+                // Total audits
+                const { count: totalCount } = await supabase
+                    .from('audits_inspections')
+                    .select('*', { count: 'exact', head: true });
+
+                document.getElementById('totalAudits').textContent = totalCount || 0;
+
+                // In progress audits
+                const { count: inProgressCount } = await supabase
+                    .from('audits_inspections')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'In Progress');
+
+                document.getElementById('inProgressAudits').textContent = inProgressCount || 0;
+
+                // Critical findings
+                const { count: criticalCount } = await supabase
+                    .from('audit_findings')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('finding_type', 'Critical');
+
+                document.getElementById('criticalFindings').textContent = criticalCount || 0;
+
+                // Open findings
+                const { count: openCount } = await supabase
+                    .from('audit_findings')
+                    .select('*', { count: 'exact', head: true })
+                    .in('status', ['Open', 'Under Investigation']);
+
+                document.getElementById('openFindings').textContent = openCount || 0;
+
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        // ===== AUDIT MANAGEMENT =====
         async function loadAudits() {
             try {
-                const { data, error } = await supabase
+                let query = supabase
                     .from('audits_inspections')
                     .select('*')
-                    .order('planned_date', { ascending: false });
+                    .order('created_at', { ascending: false });
+
+                // Apply filters
+                const typeFilter = document.getElementById('filterAuditType')?.value;
+                const statusFilter = document.getElementById('filterAuditStatus')?.value;
+                const dateFrom = document.getElementById('filterDateFrom')?.value;
+                const dateTo = document.getElementById('filterDateTo')?.value;
+
+                if (typeFilter) query = query.eq('audit_type', typeFilter);
+                if (statusFilter) query = query.eq('status', statusFilter);
+                if (dateFrom) query = query.gte('planned_date', dateFrom);
+                if (dateTo) query = query.lte('planned_date', dateTo);
+
+                // Role-based filtering
+                if (!userPermissions.canViewAllAudits) {
+                    query = query.or(`lead_auditor.eq.${currentUser.email},audit_team.cs.{${currentUser.email}}`);
+                }
+
+                const { data, error } = await query;
 
                 if (error) throw error;
 
                 const tbody = document.getElementById('auditsTableBody');
                 
-                if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">No audits scheduled. Click "Schedule Audit" to create one.</td></tr>`;
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                                No audits found. Click "Schedule New Audit" to create one.
+                            </td>
+                        </tr>
+                    `;
                     return;
                 }
 
                 tbody.innerHTML = data.map(audit => `
                     <tr>
                         <td><strong>${audit.audit_number}</strong></td>
-                        <td><span class="status-badge status-planned">${audit.audit_type}</span></td>
-                        <td>${audit.audit_scope}</td>
-                        <td>${new Date(audit.planned_date).toLocaleDateString()}</td>
+                        <td>${audit.audit_type}</td>
+                        <td>${audit.audit_area}</td>
+                        <td>${audit.lead_auditor}</td>
+                        <td>${audit.planned_date ? new Date(audit.planned_date).toLocaleDateString() : '-'}</td>
                         <td><span class="status-badge status-${getStatusClass(audit.status)}">${audit.status}</span></td>
-                        <td>${audit.overall_rating || 'Pending'}</td>
-                        <td>
-                            ${audit.critical_findings ? `<span class="finding-badge finding-critical">${audit.critical_findings} Critical</span>` : ''}
-                            ${audit.major_findings ? `<span class="finding-badge finding-major">${audit.major_findings} Major</span>` : ''}
-                            ${audit.total_findings === 0 ? '-' : ''}
-                        </td>
                         <td>
                             <button class="action-btn view" onclick="viewAudit('${audit.id}')">View</button>
-                            <button class="action-btn findings" onclick="viewAuditFindings('${audit.id}')">Findings</button>
-                            <button class="action-btn report" onclick="generateReport('${audit.id}')">Report</button>
-                            <button class="action-btn history" onclick="viewAuditTrail('${audit.id}')">History</button>
+                            ${AccessControl.has('applications','audit_inspection','edit') ? 
+                                `<button class="action-btn edit" onclick="editAudit('${audit.id}')">Edit</button>` : ''}
+                            <button class="action-btn complete" onclick="viewAuditFindings('${audit.id}')">Findings</button>
+                            ${AccessControl.has('applications','audit_inspection','export') ? 
+                                `<button class="action-btn view" onclick="generateAuditReport('${audit.id}')">Report</button>` : ''}
                         </td>
                     </tr>
                 `).join('');
+
             } catch (error) {
                 console.error('Error loading audits:', error);
                 showAlert('Error loading audits', 'error');
             }
         }
 
-        // Load Findings
-        async function loadFindings() {
+        async function generateAuditNumber() {
+            const year = new Date().getFullYear();
+            const { data, error } = await supabase
+                .from('audits_inspections')
+                .select('audit_number')
+                .like('audit_number', `AUD-${year}-%`)
+                .order('audit_number', { ascending: false })
+                .limit(1);
+
+            if (error || !data || data.length === 0) {
+                return `AUD-${year}-0001`;
+            }
+
+            const lastNumber = parseInt(data[0].audit_number.split('-')[2]);
+            const newNumber = (lastNumber + 1).toString().padStart(4, '0');
+            return `AUD-${year}-${newNumber}`;
+        }
+
+        document.getElementById('auditForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!checkPermission('canCreateAudit')) return;
+
+            showLoading(true);
+
+            try {
+                const auditNumber = await generateAuditNumber();
+                const formData = {
+                    audit_number: auditNumber,
+                    audit_type: document.getElementById('auditType').value,
+                    audit_scope: document.getElementById('auditScope').value,
+                    audit_area: document.getElementById('auditArea').value,
+                    planned_date: document.getElementById('plannedDate').value,
+                    duration_days: parseInt(document.getElementById('duration').value) || 1,
+                    lead_auditor: document.getElementById('leadAuditor').value,
+                    audit_team: document.getElementById('auditTeam').value,
+                    auditee_department: document.getElementById('auditeeDept').value,
+                    regulatory_authority: document.getElementById('regulatoryAuthority').value || null,
+                    inspection_scope_desc: document.getElementById('scopeDesc').value,
+                    status: 'Planned',
+                    created_by: currentUser.email,
+                    updatedby: currentUser.email,
+                    updatedat: new Date().toISOString()
+                };
+
+                const { data, error } = await supabase
+                    .from('audits_inspections')
+                    .insert([formData])
+                    .select();
+
+                if (error) throw error;
+
+                // Create audit trail entry
+                await createAuditTrail({
+                    auditid: 'Audit',
+                    entity_id: data[0].id,
+                    action: 'Created',
+                    field_changed: null,
+                    old_value: null,
+                    new_value: JSON.stringify(formData),
+                    changed_by: currentUser.email,
+                    comments: 'Audit scheduled in the system'
+                });
+
+                showAlert('✓ Audit scheduled successfully!', 'success');
+                closeAuditModal();
+                await loadDashboardStats();
+                await loadAudits();
+                await loadAuditTrail();
+
+            } catch (error) {
+                console.error('Error scheduling audit:', error);
+                showAlert('Error scheduling audit: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        async function viewAudit(auditId) {
             try {
                 const { data, error } = await supabase
+                    .from('audits_inspections')
+                    .select('*')
+                    .eq('id', auditId)
+                    .single();
+
+                if (error) throw error;
+
+                currentAudit = data;
+
+                const content = document.getElementById('viewAuditContent');
+                content.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                        <div class="form-group">
+                            <label>Audit Number</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                <strong>${data.audit_number}</strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.audit_type}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Scope</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.audit_scope}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Area/Department</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.audit_area}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Planned Date</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.planned_date ? new Date(data.planned_date).toLocaleDateString() : '-'}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.duration_days} days
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Lead Auditor</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.lead_auditor}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div style="padding: 10px;">
+                                ${userPermissions.canEditAudit ? 
+                                    `<select id="viewAuditStatus" style="width: 100%; padding: 8px; border: 2px solid #e5e7eb; border-radius: 6px;">
+                                        <option value="Planned" ${data.status === 'Planned' ? 'selected' : ''}>Planned</option>
+                                        <option value="In Progress" ${data.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                        <option value="Completed" ${data.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                        <option value="Report Issued" ${data.status === 'Report Issued' ? 'selected' : ''}>Report Issued</option>
+                                        <option value="CAPA Pending" ${data.status === 'CAPA Pending' ? 'selected' : ''}>CAPA Pending</option>
+                                        <option value="Closed" ${data.status === 'Closed' ? 'selected' : ''}>Closed</option>
+                                    </select>` :
+                                    `<span class="status-badge status-${getStatusClass(data.status)}">${data.status}</span>`
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group full-width" style="grid-column: 1 / -1;">
+                            <label>Scope Description</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.inspection_scope_desc || '-'}
+                            </div>
+                        </div>
+                        ${data.regulatory_authority ? `
+                        <div class="form-group full-width" style="grid-column: 1 / -1;">
+                            <label>Regulatory Authority</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.regulatory_authority}
+                            </div>
+                        </div>` : ''}
+                    </div>
+                `;
+
+                document.getElementById('viewAuditModal').classList.add('active');
+
+            } catch (error) {
+                console.error('Error viewing audit:', error);
+                showAlert('Error loading audit details', 'error');
+            }
+        }
+
+        async function updateAuditStatus() {
+            if (!checkPermission('canEditAudit')) return;
+
+            const newStatus = document.getElementById('viewAuditStatus')?.value;
+            if (!newStatus || !currentAudit) return;
+
+            showLoading(true);
+
+            try {
+                const oldStatus = currentAudit.status;
+
+                // E-signature before status change
+                const es = await AccessControl.requireESign({ action: 'approve', moduleKey: 'audit_inspection', entityId: currentAudit.id, reasonLabel: 'Reason for status change' });
+                if (!es.ok) { showAlert('Status update cancelled', 'info'); return; }
+
+                const { error } = await supabase
+                    .from('audits_inspections')
+                    .update({ status: newStatus, updated_at: new Date().toISOString() })
+                    .eq('id', currentAudit.id);
+
+                if (error) throw error;
+
+                // Create audit trail entry
+                await createAuditTrail({
+                    auditid: 'Audit',
+                    entity_id: currentAudit.id,
+                    action: 'Status Changed',
+                    field_changed: 'status',
+                    old_value: oldStatus,
+                    new_value: newStatus,
+                    changed_by: currentUser.email,
+                    comments: `Status changed from ${oldStatus} to ${newStatus}`
+                });
+
+                showAlert('✓ Audit status updated successfully!', 'success');
+                closeViewAuditModal();
+                await loadAudits();
+                await loadAuditTrail();
+
+            } catch (error) {
+                console.error('Error updating audit status:', error);
+                showAlert('Error updating status: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ===== FINDINGS MANAGEMENT =====
+        async function loadFindings() {
+            try {
+                let query = supabase
                     .from('audit_findings')
                     .select(`
                         *,
-                        audits_inspections (audit_number, audit_type)
+                        audits_inspections (
+                            audit_number,
+                            audit_type
+                        )
                     `)
                     .order('created_at', { ascending: false });
+
+                // Apply filters
+                const typeFilter = document.getElementById('filterFindingType')?.value;
+                const statusFilter = document.getElementById('filterFindingStatus')?.value;
+                const categoryFilter = document.getElementById('filterFindingCategory')?.value;
+
+                if (typeFilter) query = query.eq('finding_type', typeFilter);
+                if (statusFilter) query = query.eq('status', statusFilter);
+                if (categoryFilter) query = query.eq('category', categoryFilter);
+
+                const { data, error } = await query;
 
                 if (error) throw error;
 
                 const tbody = document.getElementById('findingsTableBody');
                 
-                if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">No findings recorded.</td></tr>`;
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #6b7280;">
+                                No findings found. Click "Add Finding" to create one.
+                            </td>
+                        </tr>
+                    `;
                     return;
                 }
 
@@ -1023,15 +1946,748 @@
                         <td>${finding.target_completion_date ? new Date(finding.target_completion_date).toLocaleDateString() : '-'}</td>
                         <td>
                             <button class="action-btn view" onclick="viewFinding('${finding.id}')">View</button>
-                            <button class="action-btn complete" onclick="completeFinding('${finding.id}')">CAPA</button>
+                            ${AccessControl.has('applications','audit_inspection','edit') ? 
+                                `<button class="action-btn edit" onclick="editFinding('${finding.id}')">Edit</button>` : ''}
+                            ${AccessControl.has('applications','capa','create') ? 
+                                `<button class="action-btn complete" onclick="initiateCAPAfromFinding('${finding.id}')">CAPA</button>` : ''}
                         </td>
                     </tr>
                 `).join('');
+
             } catch (error) {
                 console.error('Error loading findings:', error);
+                showAlert('Error loading findings', 'error');
             }
         }
 
+        async function populateAuditDropdown() {
+            try {
+                const { data, error } = await supabase
+                    .from('audits_inspections')
+                    .select('id, audit_number, audit_type')
+                    .order('audit_number', { ascending: false });
+
+                if (error) throw error;
+
+                const select = document.getElementById('findingAuditId');
+                select.innerHTML = '<option value="">Select Audit (Optional)</option>' +
+                    data.map(audit => 
+                        `<option value="${audit.id}">${audit.audit_number} - ${audit.audit_type}</option>`
+                    ).join('');
+
+            } catch (error) {
+                console.error('Error loading audit dropdown:', error);
+            }
+        }
+
+        document.getElementById('findingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!checkPermission('canCreateFinding')) return;
+
+            showLoading(true);
+
+            try {
+                const auditId = document.getElementById('findingAuditId').value;
+                const findingNumber = `F-${Date.now()}`;
+
+                const formData = {
+                    audit_id: auditId || null,
+                    finding_number: findingNumber,
+                    finding_type: document.getElementById('findingType').value,
+                    category: document.getElementById('findingCategory').value,
+                    regulation_reference: document.getElementById('regulationRef').value || null,
+                    gmp_clause: document.getElementById('gmpClause').value || null,
+                    finding_description: document.getElementById('findingDesc').value,
+                    evidence: document.getElementById('findingEvidence').value || null,
+                    impact_assessment: document.getElementById('impactAssessment').value || null,
+                    responsible_person: document.getElementById('responsiblePerson').value,
+                    target_completion_date: document.getElementById('targetDate').value,
+                    status: 'Open',
+                    created_by: currentUser.email
+                };
+
+                const { data, error } = await supabase
+                    .from('audit_findings')
+                    .insert([formData])
+                    .select();
+
+                if (error) throw error;
+
+                // Create audit trail entry
+                await createAuditTrail({
+                    auditid: 'Finding',
+                    entity_id: data[0].id,
+                    action: 'Created',
+                    field_changed: null,
+                    old_value: null,
+                    new_value: JSON.stringify(formData),
+                    changed_by: currentUser.email,
+                    comments: 'Finding created in the system'
+                });
+
+                showAlert('✓ Finding added successfully!', 'success');
+                closeFindingModal();
+                await loadDashboardStats();
+                await loadFindings();
+                await loadAuditTrail();
+
+            } catch (error) {
+                console.error('Error adding finding:', error);
+                showAlert('Error adding finding: ' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        async function viewFinding(findingId) {
+            try {
+                const { data, error } = await supabase
+                    .from('audit_findings')
+                    .select(`
+                        *,
+                        audits_inspections (
+                            audit_number,
+                            audit_type
+                        )
+                    `)
+                    .eq('id', findingId)
+                    .single();
+
+                if (error) throw error;
+
+                currentFinding = data;
+
+                const content = document.getElementById('viewFindingContent');
+                content.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                        <div class="form-group">
+                            <label>Finding Number</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                <strong>${data.finding_number}</strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Related Audit</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.audits_inspections?.audit_number || 'N/A'}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <div style="padding: 10px;">
+                                <span class="finding-badge finding-${data.finding_type.toLowerCase()}">${data.finding_type}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.category}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Regulation Reference</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.regulation_reference || '-'}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>GMP Clause</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.gmp_clause || '-'}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Responsible Person</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.responsible_person}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Completion Date</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px;">
+                                ${data.target_completion_date ? new Date(data.target_completion_date).toLocaleDateString() : '-'}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div style="padding: 10px;">
+                                <span class="status-badge status-${getFindingStatusClass(data.status)}">${data.status}</span>
+                            </div>
+                        </div>
+                        <div class="form-group full-width" style="grid-column: 1 / -1;">
+                            <label>Finding Description</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px; white-space: pre-wrap;">
+                                ${data.finding_description}
+                            </div>
+                        </div>
+                        ${data.evidence ? `
+                        <div class="form-group full-width" style="grid-column: 1 / -1;">
+                            <label>Evidence</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px; white-space: pre-wrap;">
+                                ${data.evidence}
+                            </div>
+                        </div>` : ''}
+                        ${data.impact_assessment ? `
+                        <div class="form-group full-width" style="grid-column: 1 / -1;">
+                            <label>Impact Assessment</label>
+                            <div style="padding: 10px; background: #f9fafb; border-radius: 6px; white-space: pre-wrap;">
+                                ${data.impact_assessment}
+                            </div>
+                        </div>` : ''}
+                    </div>
+                `;
+
+                document.getElementById('viewFindingModal').classList.add('active');
+
+            } catch (error) {
+                console.error('Error viewing finding:', error);
+                showAlert('Error loading finding details', 'error');
+            }
+        }
+
+        // ===== AUDIT TRAIL =====
+async function createAuditTrail(trailData) {
+    try {
+        const auditTrailEntry = {
+            audit_id: trailData.entityid,  // ✅ With underscore
+            action: trailData.action,
+            field_changed: trailData.fieldchanged,  // ✅ With underscore
+            old_value: trailData.oldvalue,  // ✅ With underscore
+            new_value: trailData.newvalue,  // ✅ With underscore
+            changed_by: trailData.changedby,  // ✅ With underscore
+            changed_at: new Date().toISOString(),  // ✅ With underscore
+            comments: trailData.comments,
+            ip_address: await getUserIPAddress()  // ✅ With underscore
+        };
+
+        const { error } = await supabase
+            .from('audit_trail_log')  // ✅ Correct table name
+            .insert(auditTrailEntry);
+
+
+                if (error) throw error;
+
+            } catch (error) {
+                console.error('Error creating audit trail:', error);
+                // Don't show error to user - audit trail should be silent
+            }
+        }
+
+        async function getUserIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch {
+                return 'Unknown';
+            }
+        }
+
+        async function loadAuditTrail() {
+            if (!userPermissions.canViewAuditTrail) {
+                document.getElementById('auditTrailContent').innerHTML = `
+                    <div class="access-denied">
+                        <div class="access-denied-icon">🔒</div>
+                        <div class="access-denied-text">Access Denied</div>
+                        <p style="color: #6b7280; font-size: 14px;">
+                            You do not have permission to view the audit trail.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+let query = supabase
+    .from('audit_trail_log')  // ✅ Correct
+    .select('*')
+    .order('changed_at', { ascending: false })  // ✅ With underscore
+    .limit(100);
+
+                // Apply filters
+                const entityFilter = document.getElementById('filterTrailEntity')?.value;
+                const actionFilter = document.getElementById('filterTrailAction')?.value;
+                const dateFrom = document.getElementById('filterTrailDateFrom')?.value;
+                const dateTo = document.getElementById('filterTrailDateTo')?.value;
+
+if (entityFilter) query = query.eq('audit_id', entityFilter);  // ✅ With underscore
+if (actionFilter) query = query.eq('action', actionFilter);
+if (dateFrom) query = query.gte('changed_at', dateFrom);  // ✅ With underscore
+if (dateTo) query = query.lte('changed_at', dateTo);  // ✅ With underscore
+
+                const { data, error } = await query;
+
+                if (error) throw error;
+
+                const content = document.getElementById('auditTrailContent');
+                
+                if (!data || data.length === 0) {
+                    content.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #6b7280;">
+                            No audit trail entries found.
+                        </div>
+                    `;
+                    return;
+                }
+
+                content.innerHTML = data.map(entry => {
+const timestamp = new Date(entry.changed_at);  // ✅ With underscore
+return `
+    <div class="trail-entry">
+        <div class="trail-timestamp">
+            ${timestamp.toLocaleString()}
+        </div>
+        <div class="trail-action">
+            Audit - ${entry.action}
+            ${entry.field_changed ? ` (${entry.field_changed})` : ''}  // ✅ With underscore
+        </div>
+        ${entry.old_value && entry.new_value ? `  // ✅ With underscores
+            <div class="trail-details">
+                Changed from: <code>${entry.old_value}</code> to <code>${entry.new_value}</code>
+            </div>
+        ` : ''}
+        ${entry.comments ? `
+            <div class="trail-details">
+                ${entry.comments}
+            </div>
+        ` : ''}
+        <div class="trail-user">
+            Changed by: ${entry.changed_by}  // ✅ With underscore
+        </div>
+    </div>
+`;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading audit trail:', error);
+                showAlert('Error loading audit trail', 'error');
+            }
+        }
+
+        // ===== REPORTS =====
+        async function generateAuditSummaryReport() {
+            if (!AccessControl.has('applications','audit_inspection','export')) { showAlert('You do not have permission to export', 'warning'); return; }
+
+            showLoading(true);
+            
+            try {
+                const { data, error } = await supabase
+                    .from('audits_inspections')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                // Generate report content
+                let reportContent = `
+                    AUDIT SUMMARY REPORT
+                    Generated: ${new Date().toLocaleString()}
+                    Generated by: ${currentUser.email}
+                    
+                    TOTAL AUDITS: ${data.length}
+                    
+                    ==========================================
+                    
+                `;
+
+                data.forEach(audit => {
+                    reportContent += `
+                    Audit #: ${audit.audit_number}
+                    Type: ${audit.audit_type}
+                    Area: ${audit.audit_area}
+                    Lead Auditor: ${audit.lead_auditor}
+                    Status: ${audit.status}
+                    Date: ${audit.planned_date ? new Date(audit.planned_date).toLocaleDateString() : 'N/A'}
+                    
+                    ------------------------------------------
+                    `;
+                });
+
+                // Create downloadable file
+                const blob = new Blob([reportContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Audit_Summary_Report_${Date.now()}.txt`;
+                a.click();
+
+                showAlert('✓ Report generated successfully!', 'success');
+
+            } catch (error) {
+                console.error('Error generating report:', error);
+                showAlert('Error generating report', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function generateFindingsReport() {
+            if (!AccessControl.has('applications','audit_inspection','export')) { showAlert('You do not have permission to export', 'warning'); return; }
+            showAlert('Findings report generation in progress...', 'info');
+        }
+
+        async function generateCapaReport() {
+            if (!AccessControl.has('applications','audit_inspection','export')) { showAlert('You do not have permission to export', 'warning'); return; }
+            showAlert('CAPA report generation in progress...', 'info');
+        }
+
+        async function generateTrendReport() {
+            if (!AccessControl.has('applications','audit_inspection','export')) { showAlert('You do not have permission to export', 'warning'); return; }
+            showAlert('Trend analysis report generation in progress...', 'info');
+        }
+
+        async function generateAuditReport(auditId) {
+            if (!checkPermission('canGenerateReports')) return;
+            showAlert(`Generating detailed report for audit: ${auditId}`, 'info');
+        }
+
+        // ===== CAPA MANAGEMENT =====
+// COMPLETE CAPA MANAGEMENT
+async function loadCapaRecords() {
+    try {
+        let query = supabase
+            .from('capa')
+            .select(`
+                *,
+                auditfindings (
+                    findingnumber,
+                    findingdescription
+                )
+            `)
+            .order('createdat', { ascending: false });
+
+        // Apply filters
+        const statusFilter = document.getElementById('filterCapaStatus')?.value;
+        const priorityFilter = document.getElementById('filterCapaPriority')?.value;
+
+        if (statusFilter) query = query.eq('status', statusFilter);
+        if (priorityFilter) query = query.eq('priority', priorityFilter);
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        const tbody = document.getElementById('capaTableBody');
+        
+        if (!data || data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280;">No CAPA records found.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = data.map(capa => `
+            <tr>
+                <td><strong>${capa.capanumber}</strong></td>
+                <td>${capa.auditfindings?.findingnumber || 'N/A'}</td>
+                <td style="max-width:250px;">${capa.rootcauseanalysis?.substring(0, 80) || 'Pending'}...</td>
+                <td><span class="finding-badge finding-${capa.priority?.toLowerCase()}">${capa.priority}</span></td>
+                <td>${capa.responsibleperson || 'Unassigned'}</td>
+                <td>${capa.targetdate ? new Date(capa.targetdate).toLocaleDateString() : '-'}</td>
+                <td><span class="status-badge status-${getCapaStatusClass(capa.status)}">${capa.status}</span></td>
+                <td>
+                    <button class="action-btn view" onclick="viewCapaDetails('${capa.id}')">View</button>
+                    ${userPermissions.canEditFinding ? `<button class="action-btn edit" onclick="updateCapaStatus('${capa.id}')">Update</button>` : ''}
+                    ${userPermissions.canApproveCAPA ? `<button class="action-btn complete" onclick="approveCapaCompletion('${capa.id}')">Approve</button>` : ''}
+                </td>
+            </tr>
+        `).join('');
+
+    } catch (error) {
+        console.error('Error loading CAPA records:', error);
+        showAlert('Error loading CAPA records', 'error');
+    }
+}
+
+// Generate CAPA Number
+async function generateCapaNumber() {
+    const year = new Date().getFullYear();
+    const { data, error } = await supabase
+        .from('capa')
+        .select('capanumber')
+        .like('capanumber', `CAPA-${year}-%`)
+        .order('capanumber', { ascending: false })
+        .limit(1);
+
+    if (error || !data || data.length === 0) {
+        return `CAPA-${year}-0001`;
+    }
+
+    const lastNumber = parseInt(data.capanumber.split('-'));
+    const newNumber = (lastNumber + 1).toString().padStart(4, '0');
+    return `CAPA-${year}-${newNumber}`;
+}
+
+// Initiate CAPA from Finding
+async function initiateCAPAfromFinding(findingId) {
+    if (!checkPermission('canCreateCAPA')) return;
+
+    try {
+        // Get finding details
+        const { data: finding, error: findingError } = await supabase
+            .from('auditfindings')
+            .select('*')
+            .eq('id', findingId)
+            .single();
+
+        if (findingError) throw findingError;
+
+        const capaNumber = await generateCapaNumber();
+
+        // Create CAPA modal HTML
+        const modalHTML = `
+            <div id="capaModal" class="modal active">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Initiate CAPA for Finding ${finding.findingnumber}</h3>
+                        <button class="close-modal" onclick="closeCapaModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="capaForm">
+                            <input type="hidden" id="capaFindingId" value="${findingId}">
+                            <input type="hidden" id="capaNumber" value="${capaNumber}">
+                            
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label>CAPA Number</label>
+                                    <div style="padding:10px;background:#f9fafb;border-radius:6px;"><strong>${capaNumber}</strong></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="required">Priority</label>
+                                    <select id="capaPriority" required>
+                                        <option value="">Select Priority</option>
+                                        <option value="Critical" ${finding.findingtype === 'Critical' ? 'selected' : ''}>Critical</option>
+                                        <option value="High" ${finding.findingtype === 'Major' ? 'selected' : ''}>High</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Low">Low</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="required">Responsible Person</label>
+                                    <input type="text" id="capaResponsiblePerson" value="${finding.responsibleperson || ''}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="required">Target Date</label>
+                                    <input type="date" id="capaTargetDate" value="${finding.targetcompletiondate || ''}" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Estimated Hours</label>
+                                    <input type="number" id="capaEstimatedHours" min="1" value="8">
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="required">Root Cause Analysis</label>
+                                    <textarea id="capaRootCause" rows="4" required placeholder="Describe the root cause using 5 Whys or Fishbone analysis"></textarea>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="required">Corrective Action</label>
+                                    <textarea id="capaCorrectiveAction" rows="3" required placeholder="Immediate action to correct the issue"></textarea>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label class="required">Preventive Action</label>
+                                    <textarea id="capaPreventiveAction" rows="3" required placeholder="Long-term action to prevent recurrence"></textarea>
+                                </div>
+                                
+                                <div class="form-group full-width">
+                                    <label>Effectiveness Check Method</label>
+                                    <textarea id="capaEffectivenessCheck" rows="2" placeholder="How will you verify the CAPA is effective?"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeCapaModal()">Cancel</button>
+                        <button type="submit" form="capaForm" class="btn btn-primary">Initiate CAPA</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Insert modal
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        // Handle form submission
+        document.getElementById('capaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showLoading(true);
+
+            try {
+                const formData = {
+                    capanumber: document.getElementById('capaNumber').value,
+                    findingid: document.getElementById('capaFindingId').value,
+                    priority: document.getElementById('capaPriority').value,
+                    responsibleperson: document.getElementById('capaResponsiblePerson').value,
+                    targetdate: document.getElementById('capaTargetDate').value,
+                    estimatedhours: parseInt(document.getElementById('capaEstimatedHours').value) || null,
+                    rootcauseanalysis: document.getElementById('capaRootCause').value,
+                    correctiveaction: document.getElementById('capaCorrectiveAction').value,
+                    preventiveaction: document.getElementById('capaPreventiveAction').value,
+                    effectivenesscheck: document.getElementById('capaEffectivenessCheck').value || null,
+                    status: 'Initiated',
+                    initiatedby: currentUser.email,
+                    initiatedat: new Date().toISOString()
+                };
+
+                const { data, error } = await supabase
+                    .from('capa')
+                    .insert([formData])
+                    .select();
+
+                if (error) throw error;
+
+                // Update finding status
+                await supabase
+                    .from('auditfindings')
+                    .update({ status: 'CAPA In Progress' })
+                    .eq('id', findingId);
+
+                // Create audit trail
+                await createAuditTrail({
+                    entitytype: 'CAPA',
+                    entityid: data.id,
+                    action: 'Created',
+                    fieldchanged: null,
+                    oldvalue: null,
+                    newvalue: JSON.stringify(formData),
+                    changedby: currentUser.email,
+                    comments: `CAPA initiated for finding ${finding.findingnumber}`
+                });
+
+                showAlert('CAPA initiated successfully!', 'success');
+                closeCapaModal();
+                await loadCapaRecords();
+                await loadFindings();
+                switchTab('capa');
+
+            } catch (error) {
+                console.error('Error initiating CAPA:', error);
+                showAlert(`Error: ${error.message}`, 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+        showAlert('Error initiating CAPA', 'error');
+    }
+}
+
+function closeCapaModal() {
+    const modal = document.getElementById('capaModal');
+    if (modal) modal.remove();
+}
+
+function getCapaStatusClass(status) {
+    const map = {
+        'Initiated': 'planned',
+        'Investigation': 'progress',
+        'Implementation': 'progress',
+        'Verification': 'capa',
+        'Closed': 'closed',
+        'Effective': 'completed',
+        'Ineffective': 'capa'
+    };
+    return map[status] || 'planned';
+}
+
+async function viewCapaDetails(capaId) {
+    try {
+        const { data, error } = await supabase
+            .from('capa')
+            .select(`
+                *,
+                auditfindings (
+                    findingnumber,
+                    findingdescription,
+                    findingtype
+                )
+            `)
+            .eq('id', capaId)
+            .single();
+
+        if (error) throw error;
+
+        const modalHTML = `
+            <div id="viewCapaModal" class="modal active">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">CAPA Details: ${data.capanumber}</h3>
+                        <button class="close-modal" onclick="closeViewCapaModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
+                            <div class="form-group">
+                                <label>CAPA Number</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;"><strong>${data.capanumber}</strong></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <div style="padding:10px;"><span class="finding-badge finding-${data.priority?.toLowerCase()}">${data.priority}</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Finding Reference</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;">${data.auditfindings?.findingnumber || 'N/A'}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div style="padding:10px;"><span class="status-badge status-${getCapaStatusClass(data.status)}">${data.status}</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Responsible Person</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;">${data.responsibleperson}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Date</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;">${data.targetdate ? new Date(data.targetdate).toLocaleDateString() : '-'}</div>
+                            </div>
+                            <div class="form-group full-width" style="grid-column:1/-1;">
+                                <label>Root Cause Analysis</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;white-space:pre-wrap;">${data.rootcauseanalysis || 'Pending'}</div>
+                            </div>
+                            <div class="form-group full-width" style="grid-column:1/-1;">
+                                <label>Corrective Action</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;white-space:pre-wrap;">${data.correctiveaction || 'Pending'}</div>
+                            </div>
+                            <div class="form-group full-width" style="grid-column:1/-1;">
+                                <label>Preventive Action</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;white-space:pre-wrap;">${data.preventiveaction || 'Pending'}</div>
+                            </div>
+                            ${data.effectivenesscheck ? `
+                            <div class="form-group full-width" style="grid-column:1/-1;">
+                                <label>Effectiveness Check</label>
+                                <div style="padding:10px;background:#f9fafb;border-radius:6px;white-space:pre-wrap;">${data.effectivenesscheck}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeViewCapaModal()">Close</button>
+                        ${userPermissions.canEditFinding ? `<button type="button" class="btn btn-primary" onclick="updateCapaStatusModal('${capaId}')">Update Status</button>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    } catch (error) {
+        console.error('Error viewing CAPA:', error);
+        showAlert('Error loading CAPA details', 'error');
+    }
+}
+
+function closeViewCapaModal() {
+    const modal = document.getElementById('viewCapaModal');
+    if (modal) modal.remove();
+}
+
+
+        // ===== UTILITY FUNCTIONS =====
         function getStatusClass(status) {
             const map = {
                 'Planned': 'planned',
@@ -1045,190 +2701,179 @@
         }
 
         function getFindingStatusClass(status) {
-            if (status.includes('Open') || status.includes('Investigation')) return 'capa';
-            if (status.includes('Progress')) return 'progress';
-            if (status.includes('Closed') || status.includes('Verified')) return 'closed';
+            if (status?.includes('Open') || status?.includes('Investigation')) return 'capa';
+            if (status?.includes('Progress')) return 'progress';
+            if (status?.includes('Closed') || status?.includes('Verified')) return 'closed';
             return 'planned';
         }
 
-        // Generate Audit Number
-        async function generateAuditNumber() {
-            const year = new Date().getFullYear();
-            const { data, error } = await supabase
-                .from('audits_inspections')
-                .select('audit_number')
-                .like('audit_number', `AUD-${year}-%`)
-                .order('audit_number', { ascending: false })
-                .limit(1);
-
-            if (error || data.length === 0) {
-                return `AUD-${year}-0001`;
-            }
-
-            const lastNumber = parseInt(data[0].audit_number.split('-')[2]);
-            const newNumber = (lastNumber + 1).toString().padStart(4, '0');
-            return `AUD-${year}-${newNumber}`;
+        // ===== MODAL FUNCTIONS =====
+        function openNewAuditModal() {
+            if (!checkPermission('canCreateAudit')) return;
+            document.getElementById('auditModal').classList.add('active');
         }
 
-        // Audit Form Submit
-        document.getElementById('auditForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            try {
-                const auditNumber = await generateAuditNumber();
-                const formData = {
-                    audit_number: auditNumber,
-                    audit_type: document.getElementById('auditType').value,
-                    audit_scope: document.getElementById('auditScope').value,
-                    audit_area: document.getElementById('auditArea').value,
-                    planned_date: document.getElementById('plannedDate').value,
-                    duration_days: parseInt(document.getElementById('duration').value) || 1,
-                    lead_auditor: document.getElementById('leadAuditor').value,
-                    audit_team: document.getElementById('auditTeam').value,
-                    auditee_department: document.getElementById('auditeeDept').value,
-                    regulatory_authority: document.getElementById('regulatoryAuthority').value,
-                    inspection_scope_desc: document.getElementById('scopeDesc').value,
-                    status: 'Planned',
-                    created_by: document.getElementById('leadAuditor').value
-                };
-
-                const { data, error } = await supabase
-                    .from('audits_inspections')
-                    .insert([formData])
-                    .select();
-
-                if (error) throw error;
-
-                await createAuditTrail(data[0].id, 'Audit Scheduled', null, null, null, formData.created_by, 'Audit/Inspection scheduled');
-
-                showAlert('Audit scheduled successfully!', 'success');
-                closeAuditModal();
-                loadDashboardStats();
-                loadAudits();
-            } catch (error) {
-                console.error('Error scheduling audit:', error);
-                showAlert('Error scheduling audit', 'error');
-            }
-        });
-
-        // Finding Form Submit
-        document.getElementById('findingForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            try {
-                const auditId = document.getElementById('findingAuditId').value;
-                const findingNumber = `F-${Date.now()}`; // Simplified for MVP
-
-                const formData = {
-                    audit_id: auditId || null,
-                    finding_number: findingNumber,
-                    finding_type: document.getElementById('findingType').value,
-                    category: document.getElementById('findingCategory').value,
-                    regulation_reference: document.getElementById('regulationRef').value,
-                    gmp_clause: document.getElementById('gmpClause').value,
-                    finding_description: document.getElementById('findingDesc').value,
-                    evidence: document.getElementById('findingEvidence').value,
-                    impact_assessment: document.getElementById('impactAssessment').value,
-                    responsible_person: document.getElementById('responsiblePerson').value,
-                    target_completion_date: document.getElementById('targetDate').value,
-                    status: 'Open'
-                };
-
-                const { data, error } = await supabase
-                    .from('audit_findings')
-                    .insert([formData])
-                    .select();
-
-                if (error) throw error;
-
-                showAlert('Finding added successfully!', 'success');
-                closeFindingModal();
-                loadDashboardStats();
-                loadFindings();
-            } catch (error) {
-                console.error('Error adding finding:', error);
-                showAlert('Error adding finding', 'error');
-            }
-        });
-
-        // Create Audit Trail
-        async function createAuditTrail(auditId, action, fieldChanged, oldValue, newValue, changedBy, comments) {
-            try {
-                await supabase.from('audit_trail_log').insert([{
-                    audit_id: auditId,
-                    action: action,
-                    field_changed: fieldChanged,
-                    old_value: oldValue,
-                    new_value: newValue,
-                    changed_by: changedBy,
-                    comments: comments
-                }]);
-            } catch (error) {
-                console.error('Error creating audit trail:', error);
-            }
+        function closeAuditModal() {
+            document.getElementById('auditModal').classList.remove('active');
+            document.getElementById('auditForm').reset();
         }
 
-        // View Audit Trail
-        async function viewAuditTrail(auditId) {
-            try {
-                const { data, error } = await supabase
-                    .from('audit_trail_log')
-                    .select('*')
-                    .eq('audit_id', auditId)
-                    .order('changed_at', { ascending: false });
-
-                if (error) throw error;
-
-                const tbody = document.getElementById('auditTrailTableBody');
-                tbody.innerHTML = data.map(entry => `
-                    <tr>
-                        <td>${new Date(entry.changed_at).toLocaleString()}</td>
-                        <td>${entry.action}</td>
-                        <td>${entry.field_changed || '-'}</td>
-                        <td>${entry.changed_by}</td>
-                        <td>${entry.comments || ''}</td>
-                    </tr>
-                `).join('');
-
-                document.getElementById('auditTrailModal').classList.add('active');
-            } catch (error) {
-                console.error('Error loading audit trail:', error);
-                showAlert('Error loading audit trail', 'error');
-            }
+        function openFindingModal() {
+            if (!checkPermission('canCreateFinding')) return;
+            document.getElementById('findingModal').classList.add('active');
         }
 
-        // Modal Functions
-        function openNewAuditModal() { document.getElementById('auditModal').classList.add('active'); }
-        function closeAuditModal() { document.getElementById('auditModal').classList.remove('active'); document.getElementById('auditForm').reset(); }
-        
-        function openFindingModal() { document.getElementById('findingModal').classList.add('active'); }
-        function closeFindingModal() { document.getElementById('findingModal').classList.remove('active'); document.getElementById('findingForm').reset(); }
-        
-        function closeAuditTrailModal() { document.getElementById('auditTrailModal').classList.remove('active'); }
+        function closeFindingModal() {
+            document.getElementById('findingModal').classList.remove('active');
+            document.getElementById('findingForm').reset();
+        }
 
-        // Switch Tabs
+        function closeViewAuditModal() {
+            document.getElementById('viewAuditModal').classList.remove('active');
+            currentAudit = null;
+        }
+
+        function closeViewFindingModal() {
+            document.getElementById('viewFindingModal').classList.remove('active');
+            currentFinding = null;
+        }
+
+        // ===== TAB SWITCHING =====
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
             event.target.classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
+
+            // Load data for specific tabs
+            if (tabName === 'auditTrail') {
+                loadAuditTrail();
+            } else if (tabName === 'capa') {
+                loadCapaRecords();
+            }
         }
 
-        // Show Alert
-        function showAlert(message, type) {
+        // ===== FILTER FUNCTIONS =====
+        function filterByStatus(status) {
+            if (status !== 'all') {
+                document.getElementById('filterAuditStatus').value = status;
+            } else {
+                document.getElementById('filterAuditStatus').value = '';
+            }
+            loadAudits();
+        }
+
+        function filterFindingsByType(type) {
+            document.getElementById('filterFindingType').value = type;
+            switchTab('findings');
+            loadFindings();
+        }
+
+        function filterFindingsByStatus(status) {
+            document.getElementById('filterFindingStatus').value = status;
+            switchTab('findings');
+            loadFindings();
+        }
+
+        function viewAuditFindings(auditId) {
+            switchTab('findings');
+            // Filter findings by audit ID - implement this filter
+            loadFindings();
+        }
+
+        function editAudit(auditId) {
+            if (!checkPermission('canEditAudit')) return;
+            showAlert('Edit audit functionality - opening editor...', 'info');
+        }
+
+        function editFinding(findingId) {
+            if (!checkPermission('canEditFinding')) return;
+            showAlert('Edit finding functionality - opening editor...', 'info');
+        }
+
+        // ===== ALERT & LOADING =====
+        function showAlert(message, type = 'info') {
             const alert = document.getElementById('alert');
             alert.textContent = message;
             alert.className = `alert ${type} active`;
             setTimeout(() => alert.classList.remove('active'), 5000);
         }
 
-        // Placeholder functions
-        function viewAudit(id) { alert('View detailed audit: ' + id); }
-        function viewAuditFindings(id) { alert('View findings for audit: ' + id); }
-        function generateReport(id) { alert('Generate audit report: ' + id); }
-        function viewFinding(id) { alert('View finding details: ' + id); }
-        function completeFinding(id) { alert('Complete CAPA for finding: ' + id); }
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // ===== LOGOUT =====
+        async function logout() {
+            try {
+                await supabase.auth.signOut();
+                window.location.href = '/login.html'; // Redirect to login page
+            } catch (error) {
+                console.error('Error logging out:', error);
+                showAlert('Error logging out', 'error');
+            }
+        }
+
+        // ===== INITIALIZE ON PAGE LOAD =====
+        window.addEventListener('DOMContentLoaded', initializeApp);
     </script>
+    <script>
+        // Downloadable PDF export for Audits Register (uses html2pdf)
+        window.exportToPDF = function () {
+            if (!AccessControl.has('applications','audit_inspection','export')) { showAlert('You do not have permission to export', 'warning'); return; }
+            try {
+                const tbody = document.getElementById('auditsTableBody');
+                const table = tbody ? tbody.closest('table') : null;
+                if (!table) { window.print(); return; }
+
+                // Build a clean export container without template literals to avoid parser issues
+                const wrapper = document.createElement('div');
+                wrapper.style.background = '#ffffff';
+                wrapper.style.padding = '16px';
+                wrapper.style.color = '#111827';
+                wrapper.style.fontFamily = 'Inter, Arial, sans-serif';
+
+                const h1 = document.createElement('h1');
+                h1.textContent = 'Audits & Inspections Register';
+                h1.style.margin = '0 0 6px 0';
+                h1.style.fontSize = '18px';
+                h1.style.fontWeight = '800';
+                h1.style.color = '#111827';
+
+                const sub = document.createElement('div');
+                sub.textContent = 'Generated: ' + new Date().toLocaleString();
+                sub.style.color = '#6b7280';
+                sub.style.fontSize = '12px';
+                sub.style.marginBottom = '10px';
+
+                const clonedTable = table.cloneNode(true);
+
+                wrapper.appendChild(h1);
+                wrapper.appendChild(sub);
+                wrapper.appendChild(clonedTable);
+
+                const ymd = new Date().toISOString().slice(0,10);
+                const opt = {
+                    margin: 10,
+                    filename: 'Audits_Inspections_Register_' + ymd + '.pdf',
+                    image: { type: 'jpeg', quality: 0.95 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'pt', format: 'a4', orientation: 'landscape' }
+                };
+                html2pdf().set(opt).from(wrapper).save();
+            } catch (e) {
+                console.error('PDF export failed, falling back to print()', e);
+                window.print();
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-YcsIP4S3qGS42Qx1C0n7hQGv3q8kH2Qf5QmO6c3bI9kH8W8sQx0v8G0a6Kj5f3Q0KxqZ7Otz4o0R/MR6fX6eGw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="assets/global-header.js"></script>
 </body>
 </html>

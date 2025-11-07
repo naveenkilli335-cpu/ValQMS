@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSV Masterclass Preview - ValQMS Academy</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,22 +23,22 @@
     :root {
       --primary-green: #10b981;
       --primary-blue: #06b6d4;
-      --dark-bg: #0a1628;
-      --card-bg: #0f1f38;
-      --text-primary: #f0f9ff;
-      --text-secondary: #94a3b8;
-      --border: rgba(255, 255, 255, 0.1);
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border: rgba(16, 185, 129, 0.2);
       --gradient-green: linear-gradient(135deg, #10b981 0%, #34d399 100%);
     }
 
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(180deg, #0a1628 0%, #051120 100%);
-      color: var(--text-primary);
+      background: #d1fae5;
+      color: #1e293b;
       min-height: 100vh;
       line-height: 1.6;
       padding: 2rem 1rem;
     }
+
 
     .container {
       max-width: 900px;
@@ -45,7 +48,7 @@
     .back-btn {
       display: inline-block;
       padding: 0.75rem 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
+      background: white;
       border: 1px solid var(--border);
       border-radius: 10px;
       color: var(--text-primary);
@@ -53,12 +56,14 @@
       margin-bottom: 2rem;
       font-weight: 600;
       transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .back-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(16, 185, 129, 0.05);
       border-color: var(--primary-green);
     }
+
 
     h1 {
       font-size: 2.5rem;
@@ -82,12 +87,14 @@
     }
 
     .preview-box {
-      background: rgba(255, 255, 255, 0.03);
+      background: white;
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 2rem;
       margin: 2rem 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
+
 
     h2 {
       font-size: 1.5rem;
@@ -119,11 +126,13 @@
     }
 
     .info-card {
-      background: rgba(255, 255, 255, 0.03);
+      background: white;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
+
 
     .info-card h4 {
       font-size: 0.875rem;
@@ -143,10 +152,12 @@
       text-align: center;
       margin: 3rem 0;
       padding: 2rem;
-      background: rgba(16, 185, 129, 0.05);
-      border: 1px solid rgba(16, 185, 129, 0.2);
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px solid rgba(16, 185, 129, 0.3);
       border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
     }
+
 
     .price {
       font-size: 3rem;
@@ -191,6 +202,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
   <div class="container">
@@ -309,7 +321,7 @@
     </div>
 
     <p style="text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-top: 2rem;">
-      Questions? Contact us at <strong style="color: var(--text-primary);">contact@valqms.academy</strong>
+      Questions? Contact us at <strong style="color: var(--text-primary);">support@valqms.com</strong>
     </p>
   </div>
 </body>

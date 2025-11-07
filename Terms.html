@@ -1,41 +1,364 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="green" data-bg="mesh">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Terms of Service — ValQMS</title>
-  <link rel="icon" href="favicon.jpg?v=5">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    [data-theme="green"]{--accent:#10b981;--accent-bright:#34d399;--accent-dim:rgba(16,185,129,0.15);--accent-glow:rgba(16,185,129,0.4)}
-    :root{--text:#ffffff;--text-dim:#94a3b8;--surface:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.1)}
-    [data-bg="mesh"] body{background:#0f172a;position:relative}
-    [data-bg="mesh"] body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%, rgba(16,185,129,0.15) 0%, transparent 50%),radial-gradient(circle at 80% 80%, rgba(99,102,241,0.15) 0%, transparent 50%);animation:meshMove 15s ease-in-out infinite alternate;z-index:-1}
-    @keyframes meshMove{0%{transform:scale(1)}100%{transform:scale(1.1)}}
-    body{font-family:'Inter',sans-serif;color:var(--text);padding:40px 20px;line-height:1.6}
-    .container{max-width:900px;margin:0 auto;background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:60px;position:relative;z-index:1}
-    h1{font-size:36px;font-weight:800;margin-bottom:10px;color:var(--text)}
-    .subtitle{color:var(--text-dim);margin-bottom:40px;font-size:14px}
-    h2{font-size:24px;font-weight:700;margin:40px 0 20px 0;color:var(--accent-bright)}
-    h3{font-size:18px;font-weight:600;margin:30px 0 15px 0;color:var(--text)}
-    p,li{margin-bottom:15px;color:var(--text-dim)}
-    ul{margin-left:20px}
-    a{color:var(--accent);text-decoration:none;transition:color 0.3s}
-    a:hover{color:var(--accent-bright)}
-    .back-link{display:inline-block;margin-bottom:30px;color:var(--accent);font-weight:600}
-    @media(max-width:768px){.container{padding:30px 20px}h1{font-size:28px}h2{font-size:20px}}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #10b981;
+      --primary-light: #d1fae5;
+      --primary-dark: #059669;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-light: #94a3b8;
+      --bg-white: #ffffff;
+      --bg-gray: #f1f5f9;
+      --bg-light: #e2e8f0;
+      --border: #cbd5e1;
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #d1fae5;
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      width: 100%;
+      max-width: none;
+      margin: 0 0 30px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 30px;
+      background: #0f172a; /* match index header color */
+      color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff; /* white text on dark header */
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background: #ffffff; /* white button on dark header */
+      color: #0f172a;
+    }
+
+    .back-link:hover {
+      background: #ffffff;
+      color: #0f172a;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.15);
+    }
+
+    /* Main Container */
+    .container {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 60px 70px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    /* Hero Section - Changed to white/light gray */
+    .hero {
+      text-align: center;
+      padding-bottom: 50px;
+      border-bottom: 3px solid var(--bg-gray);
+      margin-bottom: 50px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      margin: -60px -70px 50px -70px;
+      padding: 60px 70px 50px 70px;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 15px;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    /* Section Styling */
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 50px 0 20px 0;
+      padding-top: 20px;
+      position: relative;
+    }
+
+    h2::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 32px;
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 30px 0 15px 0;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      font-size: 15px;
+    }
+
+    /* Lists */
+    ul {
+      margin: 20px 0 30px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 14px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    /* Links */
+    a:not(.back-link):not(.logo) {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    a:not(.back-link):not(.logo):hover {
+      color: var(--primary-dark);
+      border-bottom-color: var(--primary-dark);
+    }
+
+    /* Contact Box */
+    .contact-box {
+      background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 40px 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .contact-box p {
+      margin: 8px 0;
+      color: #064e3b;
+      font-weight: 500;
+    }
+
+    .contact-box strong {
+      color: #065f46;
+      font-weight: 700;
+    }
+
+    .contact-box a {
+      color: #065f46 !important;
+      font-weight: 600;
+    }
+
+    .contact-box a:hover {
+      color: #064e3b !important;
+    }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 20px 25px;
+      margin: 25px 0;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .highlight-box p {
+      color: #92400e;
+      margin: 0;
+    }
+
+    .highlight-box strong {
+      color: #b45309;
+    }
+
+    /* Footer Navigation */
+    .footer-nav {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 3px solid var(--bg-gray);
+    }
+
+    .footer-nav .back-link {
+      background: var(--primary);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 600;
+      box-shadow: var(--shadow-md);
+    }
+
+    .footer-nav .back-link:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .container {
+        padding: 40px 30px;
+      }
+
+      .hero {
+        margin: -40px -30px 40px -30px;
+        padding: 40px 30px 40px 30px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      h2::before {
+        left: -20px;
+      }
+
+      ul li {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      .hero {
+        margin: -30px -20px 30px -20px;
+        padding: 30px 20px 30px 20px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      h2::before {
+        display: none;
+      }
+    }
+
+    /* Smooth Scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
   </style>
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
+  <!-- Header -->
+  <div class="header">
+    <a href="index.html" class="logo">ValQMS</a>
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to Home
+    </a>
+  </div>
+
+  <!-- Main Container -->
   <div class="container">
-    <a href="index.html" class="back-link">← Back to Home</a>
-    
-    <h1>Terms of Service</h1>
-    <p class="subtitle">Last Updated: October 15, 2025</p>
+    <div class="hero">
+      <h1>Terms of Service</h1>
+      <p class="subtitle">Last Updated: October 15, 2025</p>
+    </div>
 
     <p>Welcome to ValQMS. By accessing or using our platform, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our services.</p>
 
@@ -97,7 +420,9 @@
       <li>ISO 13485 (Medical Devices Quality Management)</li>
       <li>ICH guidelines and GxP requirements</li>
     </ul>
-    <p><strong>Disclaimer:</strong> While ValQMS provides tools to assist with compliance, ultimate responsibility for regulatory compliance rests with you and your organization.</p>
+    <div class="highlight-box">
+      <p><strong>Disclaimer:</strong> While ValQMS provides tools to assist with compliance, ultimate responsibility for regulatory compliance rests with you and your organization.</p>
+    </div>
 
     <h2>8. Service Availability and Modifications</h2>
     <p>We strive to provide continuous service but do not guarantee uninterrupted access. We reserve the right to:</p>
@@ -157,13 +482,14 @@
 
     <h2>15. Contact Information</h2>
     <p>For questions about these Terms, contact us at:</p>
-    <p>
-      <strong>Email:</strong> <a href="mailto:support@valqms.com">support@valqms.com</a><br>
-      <strong>Website:</strong> <a href="https://valqms.com">valqms.com</a>
-    </p>
+    <div class="contact-box">
+      <p><strong>Email:</strong> <a href="mailto:support@valqms.com">support@valqms.com</a></p>
+      <p><strong>Website:</strong> <a href="https://valqms.com">valqms.com</a></p>
+    </div>
 
-    <br><br>
-    <a href="index.html" class="back-link">← Back to Home</a>
+    <div class="footer-nav">
+      <a href="index.html" class="back-link">Back to Home</a>
+    </div>
   </div>
 </body>
 </html>

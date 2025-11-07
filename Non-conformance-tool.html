@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bg="mint">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Non-Conformance Management | ValQMS</title>
-    <link rel="icon" href="favicon.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <style>
         * {
@@ -17,22 +20,25 @@
 
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: #d1fae5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
+
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: none;
+            margin: 0;
         }
 
         /* Header */
         .header {
-            background: white;
+            background: #0f172a; /* match index header color */
+            color: #ffffff;
             padding: 20px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
@@ -48,7 +54,7 @@
         .logo-box {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #ef4444, #f87171);
+            background: linear-gradient(135deg, #10b981, #34d399);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -58,10 +64,11 @@
             font-size: 20px;
         }
 
+
         .logo-text {
             font-size: 24px;
             font-weight: 700;
-            color: #1e293b;
+            color: #ffffff; /* white on dark header */
         }
 
         .header-actions {
@@ -81,14 +88,15 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
+
 
         .btn-secondary {
             background: white;
@@ -97,9 +105,10 @@
         }
 
         .btn-secondary:hover {
-            border-color: #ef4444;
-            color: #ef4444;
+            border-color: #10b981;
+            color: #10b981;
         }
+
 
         /* Dashboard Cards */
         .dashboard {
@@ -168,13 +177,14 @@
         }
 
         .tab.active {
-            color: #ef4444;
-            border-bottom-color: #ef4444;
+            color: #10b981;
+            border-bottom-color: #10b981;
         }
 
         .tab:hover {
-            color: #ef4444;
+            color: #10b981;
         }
+
 
         .tab-content {
             display: none;
@@ -223,8 +233,9 @@
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: #ef4444;
+            border-color: #10b981;
         }
+
 
         .form-textarea {
             min-height: 100px;
@@ -273,9 +284,53 @@
 
         .status-open { background: #dbeafe; color: #1e40af; }
         .status-investigation { background: #fef3c7; color: #92400e; }
+        .status-impact { background: #e0f2fe; color: #075985; }
         .status-action { background: #fed7aa; color: #9a3412; }
+        .status-implementation { background: #f0fdf4; color: #166534; }
         .status-effectiveness { background: #e9d5ff; color: #6b21a8; }
         .status-closed { background: #d1fae5; color: #065f46; }
+
+        /* Subtabs (modal) */
+        .subtabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 6px; }
+        .subtab { padding: 8px 14px; background:none; border:none; font-weight:600; color:#6b7280; cursor:pointer; border-bottom:3px solid transparent; transition:all .3s; }
+        .subtab.active { color:#10b981; border-bottom-color:#10b981; }
+
+    /* Inline fields utility (single-line layout) */
+    .inline-fields { display:flex; gap:12px; align-items:flex-end; }
+    .inline-fields .form-group { flex:1; margin-bottom:0; }
+
+        /* Overdue badge */
+        .overdue-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 8px;
+            border: 1px solid #fecaca;
+        }
+
+        /* Modal summary line */
+        .nc-summary {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #374151;
+            margin-bottom: 12px;
+            font-size: 13px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .nc-summary .dot {
+            width: 6px; height: 6px; background:#9ca3af; border-radius:50%; display:inline-block;
+        }
+        .nc-summary .pill { background:#eef2ff; color:#3730a3; border-radius:9999px; padding:2px 8px; font-weight:600; font-size:12px; }
+        .nc-summary .overdue { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
 
         .action-btn {
             padding: 6px 12px;
@@ -369,6 +424,7 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            body { padding: 12px; }
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -378,20 +434,11 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <div class="logo-box">NC</div>
-                <div class="logo-text">Non-Conformance Management</div>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="location.href='index.html'">← Back to Home</button>
-                <button class="btn btn-primary" onclick="openNewNCModal()">+ New NC Report</button>
-            </div>
-        </div>
+        
 
         <!-- Alert -->
         <div id="alert" class="alert"></div>
@@ -429,6 +476,10 @@
 
             <!-- NC List Tab -->
             <div id="listTab" class="tab-content active">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <h3>Non-Conformance Register</h3>
+                    <button class="btn btn-primary" onclick="openNewNCModal()">+ New NC Report</button>
+                </div>
                 <div class="table-container">
                     <table id="ncTable">
                         <thead>
@@ -455,18 +506,291 @@
 
             <!-- Analytics Tab -->
             <div id="analyticsTab" class="tab-content">
-                <h3>Analytics Dashboard (Coming Soon)</h3>
-                <p>Charts and trends will be displayed here.</p>
+                <h3>Analytics Dashboard</h3>
+                <p style="color:#6b7280;margin-bottom:16px">Trends by status and severity</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+                    <div class="content-card" style="padding:16px">
+                        <div style="font-weight:700;margin-bottom:8px">By Status</div>
+                        <canvas id="ncChartByStatus" height="220"></canvas>
+                    </div>
+                    <div class="content-card" style="padding:16px">
+                        <div style="font-weight:700;margin-bottom:8px">By Severity</div>
+                        <canvas id="ncChartBySeverity" height="220"></canvas>
+                    </div>
+                </div>
             </div>
 
             <!-- Reports Tab -->
             <div id="reportsTab" class="tab-content">
-                <h3>Reports (Coming Soon)</h3>
-                <p>Generate and download reports.</p>
+                <h3>Reports</h3>
+                <p style="color:#6b7280">Generate and download reports.</p>
+                <div style="display:flex;gap:10px;margin:16px 0 24px">
+                    <button class="btn btn-primary" onclick="exportNCsCSV()">Export NC Register (CSV)</button>
+                    <button class="btn btn-secondary" onclick="exportNCSummaryCSV()">Export Summary (CSV)</button>
+                </div>
+                <div class="info-box">
+                    <h4>Summary</h4>
+                    <p id="ncReportsSummaryText" style="margin:6px 0 0"></p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- View/Edit NC Modal -->
+    <div id="ncEditModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">View / Edit Non-Conformance</h2>
+                <button class="close-btn" onclick="closeNcEditModal()">&times;</button>
+            </div>
+            <form id="ncEditForm">
+                <input type="hidden" id="editNcId">
+                <!-- Summary line for quick context -->
+                <div id="ncSummaryLine" class="nc-summary" aria-live="polite"></div>
+                <div class="subtabs">
+                    <button type="button" class="subtab" id="editTab-details" onclick="switchEditTab('details')">Details</button>
+                    <button type="button" class="subtab" id="editTab-investigation" onclick="switchEditTab('investigation')">Investigation</button>
+                    <button type="button" class="subtab" id="editTab-impact" onclick="switchEditTab('impact')">Impact Assessment</button>
+                    <button type="button" class="subtab" id="editTab-rootcause" onclick="switchEditTab('rootcause')">Root Cause</button>
+                    <button type="button" class="subtab" id="editTab-actionplan" onclick="switchEditTab('actionplan')">Action Plan</button>
+                    <button type="button" class="subtab" id="editTab-implementation" onclick="switchEditTab('implementation')">Implementation</button>
+                    <button type="button" class="subtab" id="editTab-effectiveness" onclick="switchEditTab('effectiveness')">Effectiveness/Closure</button>
+                </div>
+
+                <!-- Details -->
+                <div class="form-grid editpane" id="editPane-details">
+                    <div class="form-group">
+                        <label class="form-label">NC Number</label>
+                        <input id="editNcNumber" class="form-input" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Title</label>
+                        <input id="editTitle" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Source</label>
+                        <select id="editSource" class="form-select" required>
+                            <option value="">Select Source</option>
+                            <option>Production</option>
+                            <option>Quality Control</option>
+                            <option>Customer Complaint</option>
+                            <option>Internal Audit</option>
+                            <option>Regulatory Inspection</option>
+                            <option>Supplier</option>
+                            <option>Environmental Monitoring</option>
+                            <option>Equipment</option>
+                            <option>Documentation</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Severity</label>
+                        <select id="editSeverity" class="form-select" required>
+                            <option>Critical</option>
+                            <option>Major</option>
+                            <option>Minor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Department</label>
+                        <select id="editDepartment" class="form-select" required>
+                            <option value="">Select Department</option>
+                            <option>Manufacturing</option>
+                            <option>Quality Assurance</option>
+                            <option>Quality Control</option>
+                            <option>Warehouse</option>
+                            <option>Engineering</option>
+                            <option>R&D</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Affected Product</label>
+                        <input id="editAffectedProduct" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Affected Batch</label>
+                        <input id="editAffectedBatch" class="form-input">
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label required">Description</label>
+                        <textarea id="editDescription" class="form-textarea" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Status</label>
+                        <select id="editStatus" class="form-select" required>
+                            <option>Open</option>
+                            <option>Under Investigation</option>
+                            <option>Impact Assessment</option>
+                            <option>Action Plan</option>
+                            <option>Implementation</option>
+                            <option>Effectiveness Check</option>
+                            <option>Closed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Target Closure Date</label>
+                        <input type="date" id="editTargetClosureDate" class="form-input" required>
+                    </div>
+                </div>
+
+                <!-- Investigation -->
+                <div class="form-grid editpane" id="editPane-investigation" style="display:none">
+                    <div class="form-group">
+                        <label class="form-label">Investigator</label>
+                        <input id="editInvestigator" class="form-input" placeholder="Assigned investigator">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Investigation Start Date</label>
+                        <input type="date" id="editInvestigationStart" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Analysis Method</label>
+                        <select id="editInvestigationMethod" class="form-select">
+                            <option value="">Select Method</option>
+                            <option>5-Whys</option>
+                            <option>Fishbone (Ishikawa)</option>
+                            <option>FMEA</option>
+                            <option>Fault Tree Analysis</option>
+                            <option>Pareto Analysis</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Investigation Summary</label>
+                        <textarea id="editInvestigationSummary" class="form-textarea" placeholder="What happened? What data was reviewed?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Impact Assessment -->
+                <div class="form-grid editpane" id="editPane-impact" style="display:none">
+                    <div class="form-group">
+                        <label class="form-label">Impact Area</label>
+                        <select id="editImpactArea" class="form-select">
+                            <option value="">Select Impact Area</option>
+                            <option>Product</option>
+                            <option>Process</option>
+                            <option>Patient/Customer</option>
+                            <option>Regulatory</option>
+                            <option>Data Integrity</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Risk Rating</label>
+                        <select id="editRiskRating" class="form-select">
+                            <option value="">Select Risk</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Impact Assessment</label>
+                        <textarea id="editImpactAssessment" class="form-textarea" placeholder="Scope, batches affected, regulatory/customer impact"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Immediate Containment</label>
+                        <textarea id="editContainmentActions" class="form-textarea" placeholder="Containment performed to stop further impact"></textarea>
+                    </div>
+                </div>
+
+                <!-- Root Cause -->
+                <div class="form-grid editpane" id="editPane-rootcause" style="display:none">
+                    <div class="form-group">
+                        <label class="form-label">Analysis Method</label>
+                        <select id="editAnalysisMethod" class="form-select">
+                            <option value="">Select Method</option>
+                            <option>5-Whys</option>
+                            <option>Fishbone (Ishikawa)</option>
+                            <option>FMEA</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Root Cause</label>
+                        <textarea id="editRootCause" class="form-textarea" placeholder="Primary root cause identified"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Contributing Factors</label>
+                        <textarea id="editContributingFactors" class="form-textarea" placeholder="List contributing/secondary causes"></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Plan -->
+                <div class="form-grid editpane" id="editPane-actionplan" style="display:none">
+                    <div class="form-group full-width">
+                        <label class="form-label">Corrective Actions</label>
+                        <textarea id="editCorrectiveActions" class="form-textarea" placeholder="Steps to correct the non-conformance"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Preventive Actions</label>
+                        <textarea id="editPreventiveActions" class="form-textarea" placeholder="Steps to prevent recurrence"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Action Owner</label>
+                        <input id="editActionOwner" class="form-input" placeholder="Responsible person/team">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Action Due Date</label>
+                        <input type="date" id="editActionDueDate" class="form-input">
+                    </div>
+                </div>
+
+                <!-- Implementation -->
+                <div class="form-grid editpane" id="editPane-implementation" style="display:none">
+                    <div class="form-group full-width">
+                        <label class="form-label">Implementation Notes</label>
+                        <textarea id="editImplementationNotes" class="form-textarea" placeholder="What was implemented and how"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Implemented By</label>
+                        <input id="editImplementedBy" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Implementation Date</label>
+                        <input type="date" id="editImplementationDate" class="form-input">
+                    </div>
+                </div>
+
+                <!-- Effectiveness / Closure (single line layout for key fields) -->
+                <div class="form-grid editpane" id="editPane-effectiveness" style="display:none">
+                    <div class="inline-fields full-width">
+                        <div class="form-group">
+                            <label class="form-label">Effectiveness Result</label>
+                            <select id="editEffectivenessResult" class="form-select">
+                                <option value="">Select</option>
+                                <option>Pass</option>
+                                <option>Fail</option>
+                                <option>Pending</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Closed By</label>
+                            <input id="editClosedBy" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Closed Date</label>
+                            <input type="date" id="editClosedDate" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Effectiveness Notes</label>
+                        <textarea id="editEffectivenessNotes" class="form-textarea"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Closure Remarks</label>
+                        <textarea id="editClosureRemarks" class="form-textarea" placeholder="Final approval comments"></textarea>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+                    <button type="button" class="btn btn-secondary" onclick="previousStage()">◀ Previous Stage</button>
+                    <button type="button" class="btn btn-secondary" onclick="nextStage()">Next Stage ▶</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeNcEditModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <!-- New/Edit NC Modal -->
     <div id="ncModal" class="modal">
         <div class="modal-content">
@@ -538,8 +862,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label required">Initiated By</label>
-                        <input type="text" class="form-input" id="initiatedBy" required>
+                        <label class="form-label">Initiated By</label>
+                        <input type="text" class="form-input" id="initiatedByDisplay" disabled placeholder="Auto (current user)">
                     </div>
 
                     <div class="form-group">
@@ -585,11 +909,19 @@
         const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
         
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    let currentUserEmail = null;
+    let ncsCache = [];
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const { data: { user } } = await sb.auth.getUser();
+                currentUserEmail = user?.email || user?.user_metadata?.email || user?.user_metadata?.full_name || null;
+                const disp = document.getElementById('initiatedByDisplay');
+                if (disp) disp.value = currentUserEmail || 'System';
+            } catch (e) { console.warn('Auth not available for NC; defaulting Initiated By to System'); }
             loadDashboardStats();
             loadNCList();
             setMinDate();
@@ -603,7 +935,7 @@
         // Load Dashboard Statistics
         async function loadDashboardStats() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await sb
                     .from('non_conformances')
                     .select('status, initiated_date');
 
@@ -634,7 +966,7 @@
         // Load NC List
         async function loadNCList() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await sb
                     .from('non_conformances')
                     .select('*')
                     .order('initiated_date', { ascending: false });
@@ -654,30 +986,48 @@
                     return;
                 }
 
-                tbody.innerHTML = data.map(nc => `
+                ncsCache = data;
+                tbody.innerHTML = data.map(nc => {
+                    const overdue = isNcOverdue(nc) ? '<span class="overdue-badge">Overdue</span>' : '';
+                    const initiated = nc.initiated_date ? new Date(nc.initiated_date).toLocaleDateString() : '-';
+                    return `
                     <tr>
                         <td><strong>${nc.nc_number}</strong></td>
-                        <td>${nc.title}</td>
-                        <td>${nc.source}</td>
-                        <td><span class="stat-badge badge-${nc.severity.toLowerCase()}">${nc.severity}</span></td>
-                        <td><span class="status-badge status-${getStatusClass(nc.status)}">${nc.status}</span></td>
-                        <td>${new Date(nc.initiated_date).toLocaleDateString()}</td>
+                        <td>${nc.title || ''}</td>
+                        <td>${nc.source || ''}</td>
+                        <td><span class="stat-badge badge-${(nc.severity||'Minor').toLowerCase()}">${nc.severity || ''}</span></td>
+                        <td><span class="status-badge status-${getStatusClass(nc.status)}">${nc.status || 'Open'}</span> ${overdue}</td>
+                        <td>${initiated}</td>
                         <td>
                             <button class="action-btn view" onclick="viewNC('${nc.id}')">View</button>
                             <button class="action-btn history" onclick="viewAuditTrail('${nc.id}')">History</button>
                         </td>
-                    </tr>
-                `).join('');
+                    </tr>`;
+                }).join('');
             } catch (error) {
                 console.error('Error loading NC list:', error);
                 showAlert('Error loading non-conformances', 'error');
             }
         }
 
+        // Helper: determine if an NC is overdue (target date passed and not Closed)
+        function isNcOverdue(nc){
+            try{
+                if (!nc || !nc.target_closure_date) return false;
+                if ((nc.status||'') === 'Closed') return false;
+                const today = new Date(); today.setHours(0,0,0,0);
+                const due = new Date(nc.target_closure_date); due.setHours(0,0,0,0);
+                return due < today;
+            }catch{ return false; }
+        }
+
         function getStatusClass(status) {
             const map = {
                 'Open': 'open',
                 'Under Investigation': 'investigation',
+                'Impact Assessment': 'impact',
+                'Action Plan': 'action',
+                'Implementation': 'implementation',
                 'Action Pending': 'action',
                 'Effectiveness Check': 'effectiveness',
                 'Closed': 'closed'
@@ -688,7 +1038,7 @@
         // Generate NC Number
         async function generateNCNumber() {
             const year = new Date().getFullYear();
-            const { data, error } = await supabase
+            const { data, error } = await sb
                 .from('non_conformances')
                 .select('nc_number')
                 .like('nc_number', `NC-${year}-%`)
@@ -714,6 +1064,8 @@
             document.getElementById('ncModal').classList.add('active');
             document.getElementById('modalTitle').textContent = 'New Non-Conformance Report';
             document.getElementById('ncForm').reset();
+            const disp = document.getElementById('initiatedByDisplay');
+            if (disp) disp.value = currentUserEmail || 'System';
         }
 
         function closeModal() {
@@ -735,12 +1087,12 @@
                     department: document.getElementById('department').value,
                     affected_product: document.getElementById('affectedProduct').value,
                     affected_batch: document.getElementById('affectedBatch').value,
-                    initiated_by: document.getElementById('initiatedBy').value,
+                    initiated_by: currentUserEmail || 'System',
                     target_closure_date: document.getElementById('targetClosureDate').value,
                     status: 'Open'
                 };
 
-                const { data, error } = await supabase
+                const { data, error } = await sb
                     .from('non_conformances')
                     .insert([formData])
                     .select();
@@ -756,14 +1108,14 @@
                 loadNCList();
             } catch (error) {
                 console.error('Error creating NC:', error);
-                showAlert('Error creating non-conformance', 'error');
+                showAlert(`Error creating non-conformance: ${error.message || error}`, 'error');
             }
         });
 
         // Create Audit Trail Entry
         async function createAuditEntry(ncId, action, fieldChanged, oldValue, newValue, changedBy, comments) {
             try {
-                await supabase
+                await sb
                     .from('audit_trail')
                     .insert([{
                         nc_id: ncId,
@@ -772,7 +1124,8 @@
                         old_value: oldValue,
                         new_value: newValue,
                         changed_by: changedBy,
-                        comments: comments
+                        comments: comments,
+                        changed_at: new Date().toISOString()
                     }]);
             } catch (error) {
                 console.error('Error creating audit entry:', error);
@@ -782,7 +1135,7 @@
         // View Audit Trail
         async function viewAuditTrail(ncId) {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await sb
                     .from('audit_trail')
                     .select('*')
                     .eq('nc_id', ncId)
@@ -812,10 +1165,277 @@
             document.getElementById('auditModal').classList.remove('active');
         }
 
-        // View NC (Placeholder)
-        function viewNC(id) {
-            alert('View/Edit functionality will open detailed NC form. NC ID: ' + id);
-            // Implement full view/edit modal here
+        // View/Edit NC Modal
+        async function viewNC(id) {
+            try {
+                const { data, error } = await sb.from('non_conformances').select('*').eq('id', id).single();
+                if (error) throw error;
+                document.getElementById('editNcId').value = data.id;
+                document.getElementById('editNcNumber').value = data.nc_number || '';
+                document.getElementById('editTitle').value = data.title || '';
+                document.getElementById('editSource').value = data.source || '';
+                document.getElementById('editSeverity').value = data.severity || 'Minor';
+                document.getElementById('editDepartment').value = data.department || '';
+                document.getElementById('editAffectedProduct').value = data.affected_product || '';
+                document.getElementById('editAffectedBatch').value = data.affected_batch || '';
+                document.getElementById('editDescription').value = data.description || '';
+                document.getElementById('editStatus').value = data.status || 'Open';
+                document.getElementById('editTargetClosureDate').value = data.target_closure_date ? new Date(data.target_closure_date).toISOString().split('T')[0] : '';
+                // Extended workflow fields
+                const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+                const setDate = (id, v) => { const el = document.getElementById(id); if (el) el.value = v ? new Date(v).toISOString().split('T')[0] : ''; };
+                setVal('editInvestigator', data.investigator);
+                setDate('editInvestigationStart', data.investigation_start);
+                setVal('editInvestigationSummary', data.investigation_summary);
+                setVal('editInvestigationMethod', data.investigation_method);
+                setVal('editImpactArea', data.impact_area);
+                setVal('editRiskRating', data.risk_rating);
+                setVal('editImpactAssessment', data.impact_assessment);
+                setVal('editContainmentActions', data.containment_actions);
+                setVal('editAnalysisMethod', data.analysis_method);
+                setVal('editRootCause', data.root_cause);
+                setVal('editContributingFactors', data.contributing_factors);
+                setVal('editCorrectiveActions', data.corrective_actions);
+                setVal('editPreventiveActions', data.preventive_actions);
+                setVal('editActionOwner', data.action_owner);
+                setDate('editActionDueDate', data.action_due_date);
+                setVal('editImplementationNotes', data.implementation_notes);
+                setVal('editImplementedBy', data.implemented_by);
+                setDate('editImplementationDate', data.implementation_date);
+                setVal('editEffectivenessResult', data.effectiveness_result);
+                setVal('editEffectivenessNotes', data.effectiveness_notes);
+                setVal('editClosureRemarks', data.closure_remarks);
+                setVal('editClosedBy', data.closed_by);
+                setDate('editClosedDate', data.closed_date);
+                // Update modal summary line
+                updateNcSummary({
+                    severity: data.severity,
+                    department: data.department,
+                    status: data.status,
+                    target_closure_date: data.target_closure_date
+                });
+                document.getElementById('ncEditModal').classList.add('active');
+                if (typeof switchEditTab === 'function') switchEditTab('details');
+            } catch (e) {
+                console.error('Error loading NC', e);
+                showAlert('Error loading NC details','error');
+            }
+        }
+
+        function closeNcEditModal(){ document.getElementById('ncEditModal').classList.remove('active'); }
+
+        // Save edit with diff-based audit trail
+        document.getElementById('ncEditForm').addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const id = document.getElementById('editNcId').value;
+            const payload = collectEditPayload();
+            try{
+                await updateNC(id, payload, 'NC fields updated');
+                showAlert('NC updated','success');
+                closeNcEditModal();
+                loadDashboardStats();
+                loadNCList();
+            }catch(err){
+                console.error(err);
+                showAlert(`Failed to update NC: ${err.message || err}`,'error');
+            }
+        });
+
+        function collectEditPayload(){
+            return {
+                title: document.getElementById('editTitle').value,
+                source: document.getElementById('editSource').value,
+                severity: document.getElementById('editSeverity').value,
+                department: document.getElementById('editDepartment').value,
+                affected_product: document.getElementById('editAffectedProduct').value,
+                affected_batch: document.getElementById('editAffectedBatch').value,
+                description: document.getElementById('editDescription').value,
+                status: document.getElementById('editStatus').value,
+                target_closure_date: document.getElementById('editTargetClosureDate').value || null,
+                investigator: (document.getElementById('editInvestigator')||{}).value || null,
+                investigation_start: (document.getElementById('editInvestigationStart')||{}).value || null,
+                investigation_summary: (document.getElementById('editInvestigationSummary')||{}).value || null,
+                investigation_method: (document.getElementById('editInvestigationMethod')||{}).value || null,
+                impact_area: (document.getElementById('editImpactArea')||{}).value || null,
+                risk_rating: (document.getElementById('editRiskRating')||{}).value || null,
+                impact_assessment: (document.getElementById('editImpactAssessment')||{}).value || null,
+                containment_actions: (document.getElementById('editContainmentActions')||{}).value || null,
+                analysis_method: (document.getElementById('editAnalysisMethod')||{}).value || null,
+                root_cause: (document.getElementById('editRootCause')||{}).value || null,
+                contributing_factors: (document.getElementById('editContributingFactors')||{}).value || null,
+                corrective_actions: (document.getElementById('editCorrectiveActions')||{}).value || null,
+                preventive_actions: (document.getElementById('editPreventiveActions')||{}).value || null,
+                action_owner: (document.getElementById('editActionOwner')||{}).value || null,
+                action_due_date: (document.getElementById('editActionDueDate')||{}).value || null,
+                implementation_notes: (document.getElementById('editImplementationNotes')||{}).value || null,
+                implemented_by: (document.getElementById('editImplementedBy')||{}).value || null,
+                implementation_date: (document.getElementById('editImplementationDate')||{}).value || null,
+                effectiveness_result: (document.getElementById('editEffectivenessResult')||{}).value || null,
+                effectiveness_notes: (document.getElementById('editEffectivenessNotes')||{}).value || null,
+                closure_remarks: (document.getElementById('editClosureRemarks')||{}).value || null,
+                closed_by: (document.getElementById('editClosedBy')||{}).value || null,
+                closed_date: (document.getElementById('editClosedDate')||{}).value || null
+            };
+        }
+
+        async function updateNC(id, payload, generalComment){
+            const { data: existing, error: getErr } = await sb.from('non_conformances').select('*').eq('id', id).single();
+            if (getErr) throw getErr;
+            const prev = existing || {};
+            const { error: updErr } = await sb.from('non_conformances').update(payload).eq('id', id);
+            if (updErr) throw updErr;
+            const changedBy = currentUserEmail || 'System';
+            for (const k of Object.keys(payload)){
+                const oldV = norm(prev[k]);
+                const newV = norm(payload[k]);
+                if (!valuesEqual(oldV, newV)){
+                    await createAuditEntry(id, 'Field Updated', k, stringify(oldV), stringify(newV), changedBy, generalComment || '');
+                }
+            }
+            if (!valuesEqual(prev.status, payload.status)){
+                await createAuditEntry(id, 'Status Changed', 'status', prev.status, payload.status, changedBy, `Transition ${prev.status || 'N/A'} → ${payload.status}`);
+            }
+        }
+
+        function norm(v){ return (v===undefined)? null : v; }
+        function stringify(v){ if (v===null||v===undefined) return null; return typeof v==='string'? v : JSON.stringify(v); }
+        function valuesEqual(a,b){
+            if (a===b) return true;
+            const da = (typeof a==='string' && /^\d{4}-\d{2}-\d{2}$/.test(a)) ? a : a;
+            const db = (typeof b==='string' && /^\d{4}-\d{2}-\d{2}$/.test(b)) ? b : b;
+            return da===db;
+        }
+
+        // Subtab management for workflow panes
+        function switchEditTab(name){
+            document.querySelectorAll('.editpane').forEach(p=>p.style.display='none');
+            ['details','investigation','impact','rootcause','actionplan','implementation','effectiveness']
+                .forEach(n=>{ const t=document.getElementById(`editTab-${n}`); if(t){ t.classList.remove('active'); }});
+            const pane = document.getElementById(`editPane-${name}`);
+            const tab = document.getElementById(`editTab-${name}`);
+            if (pane) pane.style.display = 'grid';
+            if (tab) tab.classList.add('active');
+        }
+
+        // Quick status transitions
+        const stageOrder = ['Open','Under Investigation','Impact Assessment','Action Plan','Implementation','Effectiveness Check','Closed'];
+        function nextStage(){
+            const sel = document.getElementById('editStatus');
+            const idx = stageOrder.indexOf(sel.value);
+            if (idx>=0 && idx<stageOrder.length-1){ sel.value = stageOrder[idx+1]; switchEditTab(tabForStatus(sel.value)); refreshNcSummaryFromForm(); }
+        }
+        function previousStage(){
+            const sel = document.getElementById('editStatus');
+            const idx = stageOrder.indexOf(sel.value);
+            if (idx>0){ sel.value = stageOrder[idx-1]; switchEditTab(tabForStatus(sel.value)); refreshNcSummaryFromForm(); }
+        }
+        function tabForStatus(status){
+            switch(status){
+                case 'Under Investigation': return 'investigation';
+                case 'Impact Assessment': return 'impact';
+                case 'Action Plan': return 'actionplan';
+                case 'Implementation': return 'implementation';
+                case 'Effectiveness Check': return 'effectiveness';
+                default: return 'details';
+            }
+        }
+
+        // Charts rendering
+        let ncByStatusChart, ncBySeverityChart;
+        function renderNcAnalytics(){
+            const data = ncsCache || [];
+            const statusCounts = {};
+            const severityCounts = { Critical:0, Major:0, Minor:0 };
+            data.forEach(n=>{
+                const s=n.status||'Open'; statusCounts[s]=(statusCounts[s]||0)+1;
+                const v=n.severity||'Minor'; if(severityCounts[v]!==undefined) severityCounts[v]++;
+            });
+            const ctx1 = document.getElementById('ncChartByStatus');
+            const ctx2 = document.getElementById('ncChartBySeverity');
+            if(ctx1){ if(ncByStatusChart) ncByStatusChart.destroy(); ncByStatusChart=new Chart(ctx1,{type:'bar',data:{labels:Object.keys(statusCounts),datasets:[{data:Object.values(statusCounts),backgroundColor:'#10b981'}]},options:{plugins:{legend:{display:false}}}});}            
+            if(ctx2){ if(ncBySeverityChart) ncBySeverityChart.destroy(); ncBySeverityChart=new Chart(ctx2,{type:'doughnut',data:{labels:Object.keys(severityCounts),datasets:[{data:Object.values(severityCounts),backgroundColor:['#ef4444','#f59e0b','#10b981']} ]},options:{plugins:{legend:{position:'bottom'}}}});}            
+            const rs = document.getElementById('ncReportsSummaryText');
+            if (rs){ rs.textContent = `Total NCs: ${data.length}. Closed: ${(statusCounts['Closed']||0)}. Under Investigation: ${(statusCounts['Under Investigation']||0)}. Action Pending: ${(statusCounts['Action Pending']||0)}.`; }
+        }
+
+        // Modal summary helpers
+        function updateNcSummary({severity, department, status, target_closure_date}){
+            const line = document.getElementById('ncSummaryLine');
+            if (!line) return;
+            const sev = severity || '—';
+            const dept = department || '—';
+            const st = status || 'Open';
+            const tgt = target_closure_date ? new Date(target_closure_date).toISOString().split('T')[0] : '—';
+            const pseudoNc = { status: st, target_closure_date: target_closure_date };
+            const overdue = isNcOverdue(pseudoNc);
+            line.innerHTML = `
+                <span><strong>Summary:</strong></span>
+                <span class="pill">${sev}</span>
+                <span class="dot"></span>
+                <span>${dept}</span>
+                <span class="dot"></span>
+                <span><span class="status-badge status-${getStatusClass(st)}">${st}</span></span>
+                <span class="dot"></span>
+                <span>Target: ${tgt}</span>
+                ${overdue ? '<span class="overdue-badge">Overdue</span>' : ''}
+            `;
+        }
+
+        function refreshNcSummaryFromForm(){
+            updateNcSummary({
+                severity: (document.getElementById('editSeverity')||{}).value,
+                department: (document.getElementById('editDepartment')||{}).value,
+                status: (document.getElementById('editStatus')||{}).value,
+                target_closure_date: (document.getElementById('editTargetClosureDate')||{}).value
+            });
+        }
+
+        // Update summary when key fields change
+        ['editSeverity','editDepartment','editStatus','editTargetClosureDate'].forEach(id=>{
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', refreshNcSummaryFromForm);
+        });
+
+        // Exports
+                function exportNCsCSV(){
+                        const header = ['NC #','Title','Source','Severity','Status','Initiated Date','Target Closure','Investigator','Investigation Method','Impact Area','Risk','Root Cause','Action Owner','Implementation Date','Effectiveness','Closed Date'];
+                        const toDate = (d)=> d ? new Date(d).toISOString().split('T')[0] : '';
+                        const rows = [header].concat(
+                            (ncsCache||[]).map(n=>[
+                                n.nc_number||'',
+                                n.title||'',
+                                n.source||'',
+                                n.severity||'',
+                                n.status||'',
+                                toDate(n.initiated_date),
+                                toDate(n.target_closure_date),
+                                n.investigator||'',
+                                n.investigation_method||'',
+                                n.impact_area||'',
+                                n.risk_rating||'',
+                                n.root_cause||'',
+                                n.action_owner||'',
+                                toDate(n.implementation_date),
+                                n.effectiveness_result||'',
+                                toDate(n.closed_date)
+                            ])
+                        );
+                        downloadCsv('nc_register.csv', rows);
+                }
+
+        function exportNCSummaryCSV(){
+            const data = ncsCache||[];
+            const statusCounts = {};
+            data.forEach(n=>{ const s=n.status||'Open'; statusCounts[s]=(statusCounts[s]||0)+1; });
+            const rows = [['Status','Count']].concat(Object.entries(statusCounts));
+            downloadCsv('nc_summary.csv', rows);
+        }
+
+        function downloadCsv(filename, rows){
+            const csvContent = rows.map(r=>r.map(x=>`"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+            const blob = new Blob([csvContent],{type:'text/csv;charset=utf-8;'});
+            const link = document.createElement('a');
+            link.href=URL.createObjectURL(blob); link.download=filename; document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
         // Switch Tabs
@@ -825,6 +1445,7 @@
             
             event.target.classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
+            if (tabName === 'analytics') { renderNcAnalytics(); }
         }
 
         // Show Alert
@@ -838,5 +1459,71 @@
             }, 5000);
         }
     </script>
+    <!-- Downloadable PDF support -->
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script>
+        // Export Non-Conformance register to a downloadable PDF
+        window.exportToPDF = function(){
+            try{
+                const table = document.querySelector('#ncTable');
+                if(!table){ alert('No Non-Conformance table found'); return; }
+
+                const wrap = document.createElement('div');
+                wrap.style.padding = '16px';
+                wrap.style.background = '#ffffff';
+                wrap.style.color = '#111827';
+                wrap.style.fontFamily = "Inter, Arial, sans-serif";
+                wrap.style.width = '100%';
+
+                const h1 = document.createElement('h2');
+                h1.textContent = 'Non-Conformance Register';
+                h1.style.margin = '0 0 4px';
+                h1.style.fontWeight = '800';
+                h1.style.fontSize = '20px';
+
+                const sub = document.createElement('div');
+                const dstr = new Date().toLocaleString();
+                sub.textContent = `Generated on ${dstr}`;
+                sub.style.fontSize = '12px';
+                sub.style.margin = '0 0 12px';
+                sub.style.color = '#6b7280';
+
+                const cloned = table.cloneNode(true);
+                cloned.style.width = '100%';
+                cloned.style.borderCollapse = 'collapse';
+                cloned.querySelectorAll('th, td').forEach(cell=>{ cell.style.border = '1px solid #e5e7eb'; cell.style.padding = '8px 10px'; });
+                const thead = cloned.querySelector('thead');
+                if(thead){ thead.style.background = '#f9fafb'; }
+
+                wrap.appendChild(h1);
+                wrap.appendChild(sub);
+                wrap.appendChild(cloned);
+
+                wrap.style.position = 'fixed';
+                wrap.style.left = '-99999px';
+                document.body.appendChild(wrap);
+
+                const ymd = new Date().toISOString().slice(0,10);
+                const opt = {
+                    margin: 10,
+                    filename: `Non_Conformance_Register_${ymd}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                };
+                html2pdf().set(opt).from(wrap).save().then(()=>{
+                    document.body.removeChild(wrap);
+                }).catch(err=>{
+                    console.error('PDF export failed', err);
+                    document.body.removeChild(wrap);
+                    window.print();
+                });
+            }catch(e){
+                console.error(e);
+                window.print();
+            }
+        };
+    </script>
+    <script src="assets/global-header.js"></script>
 </body>
 </html>

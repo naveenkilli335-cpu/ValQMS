@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" data-bg="mint">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - ValQMS</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/theme.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #d1fae5;
+            color: #2d3748;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+        }
+
+        /* Header */
+        .header {
+            background: #0f172a; /* match index header color */
+            color: #ffffff;
+            padding: 24px 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+
+        .btn-secondary {
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 16px 10px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        th {
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f7fafc;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+        }
+
+        /* Role Badges */
+        .role-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .role-system-admin {
+            background: #fee;
+            color: #c53030;
+        }
+
+        .role-qa-manager {
+            background: #ebf8ff;
+            color: #2c5282;
+        }
+
+        .role-qa-reviewer {
+            background: #fef5e7;
+            color: #c05621;
+        }
+
+        .role-department-user {
+            background: #e6fffa;
+            color: #234e52;
+        }
+
+        .role-auditor {
+            background: #f3e8ff;
+            color: #553c9a;
+        }
+
+        .role-capa-owner {
+            background: #fce7f3;
+            color: #97266d;
+        }
+
+        /* Status Badge */
+        .status-active {
+            color: #22543d;
+            font-weight: 600;
+        }
+
+        .status-inactive {
+            color: #c53030;
+            font-weight: 600;
+        }
+
+        /* Action Button */
+        .btn-action {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background: #10b981;
+            border-color: #10b981;
+            color: #fff;
+        }
+
+
+        /* Loading State */
+        .loading {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #10b981;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #718096;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            min-width: 450px;
+            max-width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, -45%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .user-email {
+            font-weight: 600;
+            color: #10b981;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <span class="header-icon">👥</span>
+                User Management
+            </h1>
+            <div class="header-actions">
+<button class="btn btn-primary" onclick="window.location.href='register-employee.html'">
+    + Add New User
+</button>
+
+<button class="btn btn-primary" onclick="window.location.href='manage-permissions.html'">
+    🔐 Manage Permissions
+</button>
+
+
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    ← Back to Dashboard
+                </button>
+            </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">All Employees</div>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search users..." id="searchInput" onkeyup="filterUsers()">
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Current Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td colspan="7">
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                                <div class="loading-text">Loading users...</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Change Role Modal -->
+    <div id="changeRoleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                ⚙️ Change User Role
+            </div>
+            <div class="form-group">
+                <label>User</label>
+                <div class="user-email" id="modalUserName"></div>
+            </div>
+            <div class="form-group">
+                <label for="newRole">Select New Role</label>
+                <select id="newRole">
+                    <option value="">Select Role</option>
+                    <option value="System Admin">System Admin</option>
+                    <option value="QA Manager">QA Manager</option>
+                    <option value="QA Reviewer">QA Reviewer</option>
+                    <option value="Department User">Department User</option>
+                    <option value="Auditor">Auditor</option>
+                    <option value="CAPA Owner">CAPA Owner</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="updateUserRole()">Update Role</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                ➕ Add New User
+            </div>
+            <p style="color: #718096; margin-bottom: 20px; font-size: 14px;">
+                Note: Please use the <strong>Employee Registration</strong> page to create new users.
+            </p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="window.location.href='register-employee.html'">
+                    Go to Registration
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Initialize Supabase - REPLACE WITH YOUR CREDENTIALS
+        const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY'
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+        let currentUserId = null
+        let allUsers = []
+
+        // Parse JWT
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1]
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                }).join(''))
+                return JSON.parse(jsonPayload)
+            } catch (error) {
+                console.error('Error parsing JWT:', error)
+                return null
+            }
+        }
+
+        // Check admin access
+        async function checkAdminAccess() {
+            try {
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+                
+                if (sessionError || !session) {
+                    console.error('No session found')
+                    alert('⚠️ Please login first')
+                    window.location.href = 'login.html'
+                    return false
+                }
+
+                const jwt = parseJwt(session.access_token)
+                
+                console.log('Checking admin access...')
+                console.log('User:', session.user.email)
+                console.log('Permissions:', jwt.permissions)
+                
+                if (!jwt.permissions || jwt.permissions.all !== true) {
+                    console.error('Access Denied: Not an admin')
+                    alert('⚠️ Access Denied\n\nThis page is only accessible to System Admins.')
+                    window.location.href = 'index.html'
+                    return false
+                }
+
+                console.log('✓ Admin access granted')
+                return true
+
+            } catch (error) {
+                console.error('Error checking admin access:', error)
+                alert('Error verifying admin access. Please login again.')
+                window.location.href = 'login.html'
+                return false
+            }
+        }
+
+        // Load all users
+        async function loadUsers() {
+            try {
+                console.log('Loading users...')
+                
+                const { data, error } = await supabase
+                    .from('user_profiles')
+                    .select(`
+                        id,
+                        email,
+                        full_name,
+                        employee_id,
+                        department,
+                        is_active,
+                        user_roles (
+                            roles (
+                                role_name
+                            )
+                        )
+                    `)
+                    .order('created_at', { ascending: false })
+
+                if (error) {
+                    console.error('Error loading users:', error)
+                    showError('Failed to load users: ' + error.message)
+                    return
+                }
+
+                console.log('Users loaded:', data)
+                allUsers = data
+                displayUsers(data)
+
+            } catch (error) {
+                console.error('Exception loading users:', error)
+                showError('Failed to load users')
+            }
+        }
+
+function displayUsers(users) {
+    const tbody = document.getElementById('usersTableBody')
+    
+    if (!users || users.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    <div class="empty-state">
+                        <div class="empty-icon">👤</div>
+                        <div class="empty-title">No users found</div>
+                        <div class="empty-text">Start by adding your first user</div>
+                    </div>
+                </td>
+            </tr>
+        `
+        return
+    }
+
+    tbody.innerHTML = users.map(user => {
+        // Extract role from nested structure
+        // user_roles is an array, get first element
+        const userRoles = user.user_roles || []
+        const firstRole = userRoles[0] // Get first role
+        const role = firstRole?.roles?.role_name || 'No role'
+        
+        const roleClass = 'role-' + role.toLowerCase().replace(/ /g, '-')
+        const statusClass = user.is_active ? 'status-active' : 'status-inactive'
+        const statusText = user.is_active ? '✅ Active' : '❌ Inactive'
+        
+        return `
+            <tr>
+                <td><strong>${user.employee_id || 'N/A'}</strong></td>
+                <td>${user.full_name || 'N/A'}</td>
+                <td>${user.email}</td>
+                <td>${user.department || 'N/A'}</td>
+                <td><span class="role-badge ${roleClass}">${role}</span></td>
+                <td><span class="${statusClass}">${statusText}</span></td>
+                <td>
+                    <button class="btn-action" onclick="openChangeRoleModal('${user.id}', '${user.full_name}', '${user.email}', '${role}')">
+                        Change Role
+                    </button>
+                </td>
+            </tr>
+        `
+    }).join('')
+}
+
+        // Show error
+        function showError(message) {
+            const tbody = document.getElementById('usersTableBody')
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <div class="empty-icon">⚠️</div>
+                            <div class="empty-title">Error Loading Users</div>
+                            <div class="empty-text">${message}</div>
+                        </div>
+                    </td>
+                </tr>
+            `
+        }
+
+        // Filter users
+        function filterUsers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase()
+            const filtered = allUsers.filter(user => {
+                return (user.full_name?.toLowerCase().includes(searchTerm)) ||
+                       (user.email?.toLowerCase().includes(searchTerm)) ||
+                       (user.employee_id?.toLowerCase().includes(searchTerm)) ||
+                       (user.department?.toLowerCase().includes(searchTerm))
+            })
+            displayUsers(filtered)
+        }
+
+        // Show add user modal
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'block'
+        }
+
+        // Open change role modal
+        function openChangeRoleModal(userId, userName, userEmail, currentRole) {
+            currentUserId = userId
+            document.getElementById('modalUserName').textContent = `${userName} (${userEmail})`
+            document.getElementById('newRole').value = currentRole
+            document.getElementById('changeRoleModal').style.display = 'block'
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('changeRoleModal').style.display = 'none'
+            document.getElementById('addUserModal').style.display = 'none'
+        }
+
+        // Update user role
+        async function updateUserRole() {
+            const newRole = document.getElementById('newRole').value
+            
+            if (!newRole) {
+                alert('Please select a role')
+                return
+            }
+
+            try {
+                // Get role ID
+                const { data: roleData, error: roleError } = await supabase
+                    .from('roles')
+                    .select('id')
+                    .eq('role_name', newRole)
+                    .single()
+
+                if (roleError) {
+                    alert('Error finding role: ' + roleError.message)
+                    return
+                }
+
+                // Delete old role
+                await supabase
+                    .from('user_roles')
+                    .delete()
+                    .eq('user_id', currentUserId)
+
+                // Assign new role
+                const { error } = await supabase
+                    .from('user_roles')
+                    .insert({
+                        user_id: currentUserId,
+                        role_id: roleData.id,
+                        assigned_at: new Date().toISOString(),
+                        valid_from: new Date().toISOString(),
+                        is_active: true
+                    })
+
+                if (error) {
+                    alert('Error updating role: ' + error.message)
+                    return
+                }
+
+                alert('✅ Role updated successfully!\n\nUser needs to log out and log back in for changes to take effect.')
+                closeModal()
+                loadUsers()
+
+            } catch (error) {
+                console.error('Error updating role:', error)
+                alert('Error updating role')
+            }
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                closeModal()
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            const hasAccess = await checkAdminAccess()
+            if (hasAccess) {
+                await loadUsers()
+            }
+        })
+    </script>
+</body>
+</html>

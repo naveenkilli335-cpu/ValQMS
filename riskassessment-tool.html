@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bg="mint">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Risk Assessment Management | ValQMS</title>
-    <link rel="icon" href="favicon.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <script src="assets/access-control.js"></script>
     
     <style>
         * {
@@ -17,22 +22,24 @@
 
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: #d1fae5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: none;
+            margin: 0;
         }
 
         /* Header */
         .header {
-            background: white;
+            background: #0f172a; /* match index header color */
+            color: #ffffff;
             padding: 20px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
@@ -48,7 +55,7 @@
         .logo-box {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, #f59e0b, #f97316);
+            background: linear-gradient(135deg, #10b981, #34d399);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -58,15 +65,16 @@
             font-size: 20px;
         }
 
+
         .logo-text {
             font-size: 24px;
             font-weight: 700;
-            color: #1e293b;
+            color: #ffffff; /* white on dark header */
         }
 
         .logo-subtitle {
             font-size: 12px;
-            color: #6b7280;
+            color: #e2e8f0;
             font-weight: 400;
         }
 
@@ -87,14 +95,15 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
+            background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
+
 
         .btn-secondary {
             background: white;
@@ -103,9 +112,10 @@
         }
 
         .btn-secondary:hover {
-            border-color: #f59e0b;
-            color: #f59e0b;
+            border-color: #10b981;
+            color: #10b981;
         }
+
 
         .btn-sm {
             padding: 6px 12px;
@@ -161,6 +171,21 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
+        /* Content card header (prevents mixing with table header) */
+        .card-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #e5e7eb}
+        .card-header h3{margin:0;color:#1e293b}
+
+        /* Charts sizing */
+    .chart-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:16px;align-items:flex-start;justify-content:flex-start}
+    .chart-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px;max-width:100%}
+    canvas.chart-canvas{height:200px !important;max-height:220px}
+    @media(max-width: 900px){ .chart-grid{ grid-template-columns: 1fr; } }
+
+    /* Heatmap */
+    .heatmap-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;margin-top:8px}
+    .heatmap-cell{height:20px;border-radius:4px;background:#f1f5f9}
+    .heatmap-legend{display:flex;align-items:center;gap:8px;margin-top:8px}
+    .legend-bar{height:8px;background:linear-gradient(90deg,#f1f5f9,#fecaca,#ef4444);border-radius:999px;flex:1}
 
         .tabs {
             display: flex;
@@ -168,6 +193,27 @@
             border-bottom: 2px solid #e5e7eb;
             margin-bottom: 30px;
         }
+
+        /* Fixed glass header (match Change Management) */
+        header{position:fixed;top:12px;left:0;right:0;z-index:1000;padding:0 24px;pointer-events:none}
+        .header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;padding:0 32px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff;pointer-events:auto}
+        .header-container{display:flex;justify-content:space-between;align-items:center;height:72px;width:100%;max-width:none;margin:0}
+    /* Offset content for fixed header (prevent overlap with page content) */
+    body { padding-top: 132px; }
+    @media(max-width:768px){ body{ padding-top: 112px; } }
+        /* Nav links on dark header */
+        header .header-glass nav a{color:rgba(255,255,255,0.9) !important;text-decoration:none;font-size:14px;font-weight:600;padding:8px 12px;border-radius:8px;transition:all 0.3s}
+        header .header-glass nav a:hover, header .header-glass nav a.active{color:#fff !important;background:rgba(255,255,255,0.12)}
+        /* Logo */
+        .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:800;font-size:22px;letter-spacing:-0.7px}
+        .logo-mark{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,#10b981,#34d399);border-radius:12px;box-shadow:0 4px 20px rgba(16,185,129,0.4)}
+        .brand-initials{font-weight:900;font-size:18px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.25)}
+        .brand-text{display:flex;flex-direction:column;gap:2px}
+        .brand-text h1{font-size:20px;font-weight:800;margin:0;line-height:1.2;color:#fff}
+        .brand-text .subtitle{font-size:13px;color:rgba(255,255,255,0.8);font-weight:500}
+        .header-controls{display:flex;gap:12px;align-items:center}
+        .btn-home{padding:10px 20px;background:linear-gradient(135deg,#10b981,#34d399);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(16,185,129,0.4)}
+        .btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,185,129,0.4)}
 
         .tab {
             padding: 12px 24px;
@@ -181,13 +227,14 @@
         }
 
         .tab.active {
-            color: #f59e0b;
-            border-bottom-color: #f59e0b;
+            color: #10b981;
+            border-bottom-color: #10b981;
         }
 
         .tab:hover {
-            color: #f59e0b;
+            color: #10b981;
         }
+
 
         .tab-content {
             display: none;
@@ -236,8 +283,9 @@
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: #f59e0b;
+            border-color: #10b981;
         }
+
 
         .form-textarea {
             min-height: 100px;
@@ -301,7 +349,7 @@
         }
 
         .risk-critical { background: #fee2e2; color: #991b1b; }
-        .risk-high { background: #fed7aa; color: #9a3412; }
+        .risk-high { background: #fed7aa; color: #9a3412; border-left: 4px solid #ef4444;  }
         .risk-medium { background: #fef3c7; color: #92400e; }
         .risk-low { background: #d1fae5; color: #065f46; }
 
@@ -372,6 +420,20 @@
             color: #6b7280;
         }
 
+        /* Dark header for Initiate New modal */
+        #raModal .modal-header{
+            background:#0f172a;
+            color:#fff;
+            margin:-30px -30px 20px -30px; /* stretch to modal edges */
+            padding:20px 30px;
+            border-bottom:none;
+            border-top-left-radius:12px;
+            border-top-right-radius:12px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        #raModal .modal-title{ color:#fff; }
+        #raModal .close-btn{ color:#fff; }
+
         /* Alert */
         .alert {
             padding: 15px 20px;
@@ -398,17 +460,19 @@
 
         /* Info Box */
         .info-box {
-            background: #eff6ff;
-            border-left: 4px solid #3b82f6;
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 8px;
         }
 
         .info-box h4 {
-            color: #1e40af;
+            color: #059669;
             margin-bottom: 8px;
+            font-size: 14px;
         }
+
 
         .info-box p {
             font-size: 13px;
@@ -469,6 +533,7 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            body { padding: 12px; }
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -489,27 +554,38 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <div class="logo-box">RA</div>
-                <div>
-                    <div class="logo-text">Risk Assessment Management</div>
-                    <div class="logo-subtitle">ICH Q9(R1) Quality Risk Management</div>
+    <header>
+        <div class="header-glass">
+            <div class="header-container">
+                <a href="index.html" class="logo">
+                    <div class="logo-mark"><span class="brand-initials">VQ</span></div>
+                    <div class="brand-text">
+                        <h1>ValQMS Applications</h1>
+                        <div class="subtitle">Risk Assessment</div>
+                    </div>
+                </a>
+                <div class="header-controls">
+                    <nav class="app-nav" style="display:flex;gap:8px;align-items:center">
+                        <a href="#" class="active" data-section="dashboard" onclick="goToDashboard(event)">Dashboard</a>
+                        <a href="#" data-section="assessments" onclick="goToAssessments(event)">Risk Assessments</a>
+                        <a href="#" data-section="new" onclick="goToNew(event)" data-action="new-ra">Initiate New</a>
+                    </nav>
+                    <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="location.href='index.html'">← Back to Home</button>
-                <button class="btn btn-primary" onclick="openNewRAModal()">+ New Risk Assessment</button>
-            </div>
         </div>
+    </header>
+
+    <div class="container">
+
 
         <!-- Alert -->
         <div id="alert" class="alert"></div>
 
-        <!-- Dashboard Stats -->
-        <div class="dashboard">
+    <!-- DASHBOARD SECTION -->
+    <section id="section-dashboard" style="display:block">
+    <!-- Dashboard Stats -->
+    <div class="dashboard">
             <div class="stat-card">
                 <div class="stat-label">Total Assessments</div>
                 <div class="stat-value" id="totalRA">0</div>
@@ -529,23 +605,142 @@
                 <div class="stat-value" id="pendingActions">0</div>
                 <span class="stat-badge badge-medium">Requires Mitigation</span>
             </div>
+            <div class="stat-card">
+                <div class="stat-label">Average Item RPN</div>
+                <div class="stat-value" id="avgRPN">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Highest Item RPN</div>
+                <div class="stat-value" id="maxRPN">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Open Actions</div>
+                <div class="stat-value" id="openMitigations">0</div>
+                <span class="stat-badge badge-low">Mitigation tasks</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Overdue Actions</div>
+                <div class="stat-value" id="overdueMitigations">0</div>
+                <span class="stat-badge badge-high">Past target date</span>
+            </div>
+    </div>
+
+    <!-- Executive KPIs -->
+    <div class="content-card" style="margin-top:10px">
+        <h3 style="margin-bottom:12px;color:#1e293b">Executive KPIs</h3>
+        <div class="dashboard" id="execKpiRow">
+            <div class="stat-card"><div class="stat-label">Risk Velocity</div><div class="stat-value" id="kpiRiskVelocity">-</div><span class="stat-badge" id="kpiRiskVelocityBadge" style="background:#eef2ff;color:#3730a3">Avg RPN Δ MoM</span></div>
+            <div class="stat-card"><div class="stat-label">Mitigation Progress</div><div class="stat-value" id="kpiMitProgress">0%</div><span class="stat-badge" style="background:#ecfeff;color:#0369a1">Completed / Total</span></div>
+            <div class="stat-card"><div class="stat-label">SLA Compliance</div><div class="stat-value" id="kpiSLA">0%</div><span class="stat-badge" style="background:#f0fdf4;color:#166534">On-time completions</span></div>
+            <div class="stat-card"><div class="stat-label">Overdue Actions</div><div class="stat-value" id="kpiOverdue">0</div><span class="stat-badge badge-high">Past target date</span></div>
+            <div class="stat-card"><div class="stat-label">30d Closure Rate</div><div class="stat-value" id="kpiClosure">0%</div><span class="stat-badge" style="background:#fff7ed;color:#9a3412">Closed / Created (30d)</span></div>
+            <div class="stat-card"><div class="stat-label">Predicted Critical (Next Mo.)</div><div class="stat-value" id="kpiPredCritical">-</div><span class="stat-badge" id="kpiPredBadge" style="background:#f1f5f9;color:#111827">Forecast</span></div>
+        </div>
+        <div class="chart-grid" style="margin-top:8px">
+            <div class="chart-card">
+                <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Assessments per Year</div>
+                <canvas id="execYoYChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="chart-card">
+                <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Category Trend (Top 3)</div>
+                <canvas id="execCategoryTrendChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="chart-card">
+                <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Department Breakdown</div>
+                <canvas id="execDeptChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="chart-card">
+                <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">On-time % by Owner</div>
+                <canvas id="execOwnerOnTimeChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="chart-card" style="grid-column:1/-1">
+                <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Critical Items per Month + Forecast</div>
+                <canvas id="execCriticalForecastChart" class="chart-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+        <!-- Risk Analytics -->
+        <div class="content-card" style="margin-top: 10px;">
+            <h3 style="margin-bottom:16px;color:#1e293b">Risk Analytics</h3>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Items by Risk Level</div>
+                    <canvas id="riskLevelChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Assessments by Status</div>
+                    <canvas id="statusChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">By Category</div>
+                    <canvas id="categoryChart" class="chart-canvas"></canvas>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Risk Heatmap -->
         <div class="content-card">
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('assessments')">Risk Assessments</button>
-                <button class="tab" onclick="switchTab('riskItems')">Risk Register</button>
-                <button class="tab" onclick="switchTab('tools')">Risk Tools</button>
-                <button class="tab" onclick="switchTab('reports')">Reports</button>
-            </div>
+            <h3 style="margin-bottom:8px;color:#1e293b">Risk Heatmap (Severity × Occurrence)</h3>
+            <div id="heatmapGrid" class="heatmap-grid" aria-label="Risk Heatmap"></div>
+            <div class="heatmap-legend"><span style="font-size:12px;color:#64748b">Low density</span><div class="legend-bar"></div><span style="font-size:12px;color:#64748b">High density</span></div>
+        </div>
 
-            <!-- Risk Assessments Tab -->
-            <div id="assessmentsTab" class="tab-content active">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Risk Assessment List</h3>
+        <!-- RPN Trend -->
+        <div class="content-card">
+            <h3 style="margin-bottom:8px;color:#1e293b">RPN Trend Over Time</h3>
+            <canvas id="rpnTrendChart" class="chart-canvas"></canvas>
+        </div>
+
+        <!-- Mitigation Analytics -->
+        <div class="content-card">
+            <h3 style="margin-bottom:16px;color:#1e293b">Mitigation Analytics</h3>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Actions by Status</div>
+                    <canvas id="actionsStatusChart" class="chart-canvas"></canvas>
                 </div>
+                <div class="chart-card">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Actions by Owner (Top 5)</div>
+                    <canvas id="actionsOwnerChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-card" style="grid-column:1/-1">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Actions Trend (Completed per Month)</div>
+                    <canvas id="actionsTrendChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-card" style="grid-column:1/-1">
+                    <div style="font-weight:700;color:#374151;margin-bottom:6px;font-size:13px">Average Effectiveness by Month</div>
+                    <canvas id="actionsEffectivenessTrendChart" class="chart-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+        </section>
 
+        <!-- ASSESSMENTS SECTION -->
+        <section id="section-assessments" style="display:none">
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>Risk Assessment List</h3>
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap: wrap;">
+                        <select id="filterRAStatus" class="form-select" style="min-width:160px">
+                            <option value="all">All Status</option>
+                            <option>Draft</option>
+                            <option>Under Review</option>
+                            <option>Approved</option>
+                            <option>In Progress</option>
+                            <option>Completed</option>
+                        </select>
+                        <select id="filterRAType" class="form-select" style="min-width:180px">
+                            <option value="all">All Types</option>
+                            <option>FMEA</option>
+                            <option>HACCP</option>
+                            <option>HAZOP</option>
+                            <option>Risk Ranking</option>
+                            <option>Preliminary Hazard Analysis</option>
+                        </select>
+                        <button class="btn btn-secondary btn-sm" onclick="exportAssessmentsCSV()">Export CSV</button>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table id="raTable">
                         <thead>
@@ -570,63 +765,7 @@
                     </table>
                 </div>
             </div>
-
-            <!-- Risk Items Tab -->
-            <div id="riskItemsTab" class="tab-content">
-                <h3>Risk Register (Coming Soon)</h3>
-                <p>All risk items from all assessments will be displayed here with filtering options.</p>
-            </div>
-
-            <!-- Risk Tools Tab -->
-            <div id="toolsTab" class="tab-content">
-                <h3>ICH Q9 Risk Assessment Tools</h3>
-                <div class="info-box">
-                    <h4>📋 Risk Management Tools (ICH Q9(R1))</h4>
-                    <p><strong>Available Tools:</strong> FMEA, HACCP, HAZOP, Risk Ranking, Preliminary Hazard Analysis</p>
-                    <p><strong>RPN Calculation:</strong> Severity × Occurrence × Detection (Scale 1-10 each)</p>
-                    <p><strong>Risk Levels:</strong> Critical (RPN ≥200), High (100-199), Medium (40-99), Low (<40)</p>
-                </div>
-
-                <div class="rating-guide">
-                    <div class="rating-card">
-                        <h5>Severity (S)</h5>
-                        <div class="rating-scale">
-                            <strong>10:</strong> Hazardous - Patient safety risk<br>
-                            <strong>8-9:</strong> Major - Product quality impact<br>
-                            <strong>5-7:</strong> Moderate - Minor quality impact<br>
-                            <strong>3-4:</strong> Minor - Detectable deviation<br>
-                            <strong>1-2:</strong> Negligible - No significant impact
-                        </div>
-                    </div>
-                    <div class="rating-card">
-                        <h5>Occurrence (O)</h5>
-                        <div class="rating-scale">
-                            <strong>10:</strong> Very High - Almost inevitable<br>
-                            <strong>8-9:</strong> High - Frequent failures<br>
-                            <strong>5-7:</strong> Moderate - Occasional failures<br>
-                            <strong>3-4:</strong> Low - Rare failures<br>
-                            <strong>1-2:</strong> Remote - Highly unlikely
-                        </div>
-                    </div>
-                    <div class="rating-card">
-                        <h5>Detection (D)</h5>
-                        <div class="rating-scale">
-                            <strong>10:</strong> Cannot detect - No controls<br>
-                            <strong>8-9:</strong> Very Low - Minimal detection<br>
-                            <strong>5-7:</strong> Moderate - Some controls exist<br>
-                            <strong>3-4:</strong> High - Good detection methods<br>
-                            <strong>1-2:</strong> Very High - Almost certain detection
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reports Tab -->
-            <div id="reportsTab" class="tab-content">
-                <h3>Risk Reports & Analytics (Coming Soon)</h3>
-                <p>Generate compliance reports, risk trend analysis, and effectiveness metrics.</p>
-            </div>
-        </div>
+        </section>
     </div>
 
     <!-- New Risk Assessment Modal -->
@@ -725,8 +864,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label required">Item Number</label>
-                        <input type="text" class="form-input" id="itemNumber" required>
+                        <label class="form-label">Item Number (auto)</label>
+                        <input type="text" class="form-input" id="itemNumber" placeholder="Auto-assigned" disabled>
                     </div>
 
                     <div class="form-group full-width">
@@ -830,17 +969,69 @@
 
     <script>
         // **REPLACE WITH YOUR SUPABASE CREDENTIALS**
-        const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
         
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(location.search);
+            const fromHash = (location.hash||'').replace('#','');
+            const initial = (params.get('section')||fromHash||'').toLowerCase();
+            showSection(initial === 'assessments' ? 'assessments' : 'dashboard');
             loadDashboardStats();
             loadRiskAssessments();
+            bindFilters();
+            initRBAC();
+            detectNotifications();
         });
+
+        function bindFilters(){
+            document.getElementById('filterRAStatus')?.addEventListener('change', loadRiskAssessments);
+            document.getElementById('filterRAType')?.addEventListener('change', loadRiskAssessments);
+            document.getElementById('filterRiskLevel')?.addEventListener('change', loadRiskItems);
+            document.getElementById('filterItemStatus')?.addEventListener('change', loadRiskItems);
+            document.getElementById('filterSearch')?.addEventListener('input', debounce(loadRiskItems, 250));
+        }
+
+        function debounce(fn, wait){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), wait); }; }
+
+    // RBAC init and enforcement
+        async function initRBAC(){
+            try{
+                if(!window.AccessControl) return; // leave buttons visible by default
+                await window.AccessControl.init({ supabase: supabaseClient, requireESigFor: ['approve'] });
+                // Only enforce (which may hide) when a role is resolved; otherwise keep visible
+                if(window.AccessControl.role){
+                    window.AccessControl.enforce('tools','risk', {
+                        create: ['[data-action="new-ra"]'],
+                        add: ['[data-action="add-risk"]'],
+                        approve: ['[data-action="change-status"]']
+                    });
+                }
+            }catch(e){ console.warn('RBAC init failed', e); }
+        }
+
+        // Section/nav helpers
+        function showSection(name){
+            const sections = ['dashboard','assessments'];
+            sections.forEach(s => {
+                const el = document.getElementById('section-'+s);
+                if (el) el.style.display = (s===name) ? 'block' : 'none';
+            });
+            setNavActive(name);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function setNavActive(key){
+            document.querySelectorAll('.app-nav a').forEach(a=>{
+                a.classList.toggle('active', a.getAttribute('data-section')===key);
+            });
+        }
+        function goToDashboard(e){ e?.preventDefault(); showSection('dashboard'); }
+        function goToAssessments(e){ e?.preventDefault(); showSection('assessments'); }
+        function goToNew(e){ e?.preventDefault(); setNavActive('new'); openNewRAModal(); }
 
         // Calculate RPN
         function calculateRPN() {
@@ -862,18 +1053,35 @@
         // Load Dashboard Statistics
         async function loadDashboardStats() {
             try {
-                const { data: assessments } = await supabase.from('risk_assessments').select('*');
-                const { data: items } = await supabase.from('risk_items').select('rpn, status');
+                const [{ data: assessments }, { data: items }, { data: actions }] = await Promise.all([
+                    supabaseClient.from('risk_assessments').select('*'),
+                    supabaseClient.from('risk_items').select('rpn, status, severity, occurrence, created_at, ra_id'),
+                    supabaseClient.from('mitigation_actions').select('status, owner_name, target_date, actual_date, effectiveness_rating, created_at')
+                ]);
 
                 const totalRA = assessments?.length || 0;
-                const criticalRisks = items?.filter(i => i.rpn >= 200).length || 0;
-                const highRisks = items?.filter(i => i.rpn >= 100 && i.rpn < 200).length || 0;
+                const criticalRisks = items?.filter(i => (Number(i.rpn)||0) >= 200).length || 0;
+                const highRisks = items?.filter(i => (Number(i.rpn)||0) >= 100 && (Number(i.rpn)||0) < 200).length || 0;
                 const pendingActions = items?.filter(i => i.status === 'Open' || i.status === 'In Progress').length || 0;
+                const rpnVals = (items||[]).map(i=>Number(i.rpn)||0).filter(v=>!isNaN(v));
+                const avgRpn = rpnVals.length ? Math.round((rpnVals.reduce((a,b)=>a+b,0)/rpnVals.length)) : 0;
+                const maxRpn = rpnVals.length ? Math.max(...rpnVals) : 0;
 
                 document.getElementById('totalRA').textContent = totalRA;
                 document.getElementById('criticalRisks').textContent = criticalRisks;
                 document.getElementById('highRisks').textContent = highRisks;
                 document.getElementById('pendingActions').textContent = pendingActions;
+                const avgEl = document.getElementById('avgRPN'); if(avgEl) avgEl.textContent = avgRpn;
+                const maxEl = document.getElementById('maxRPN'); if(maxEl) maxEl.textContent = maxRpn;
+                // Mitigation KPIs
+                const today = new Date(); today.setHours(0,0,0,0);
+                const openActions = (actions||[]).filter(a=>['Open','In Progress'].includes(a.status)).length;
+                const overdueActions = (actions||[]).filter(a=> a.target_date && a.status!=='Completed' && new Date(a.target_date) < today).length;
+                const om = document.getElementById('openMitigations'); if(om) om.textContent = openActions;
+                const odm = document.getElementById('overdueMitigations'); if(odm) odm.textContent = overdueActions;
+
+                updateCharts({ assessments, items, actions });
+                updateExecutive({ assessments, items, actions });
             } catch (error) {
                 console.error('Error loading stats:', error);
             }
@@ -882,7 +1090,7 @@
         // Load Risk Assessments
         async function loadRiskAssessments() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('risk_assessments')
                     .select('*')
                     .order('initiated_date', { ascending: false });
@@ -896,22 +1104,36 @@
                     return;
                 }
 
-                tbody.innerHTML = data.map(ra => `
+                // Preload item RPNs to compute RA risk level
+                const { data: itemAgg } = await supabaseClient.from('risk_items').select('ra_id, rpn');
+                const maxMap = (itemAgg||[]).reduce((m,it)=>{ const rpn=Number(it.rpn)||0; m[it.ra_id]=Math.max(m[it.ra_id]||0,rpn); return m; },{});
+                const fStatus = (document.getElementById('filterRAStatus')?.value||'all').toLowerCase();
+                const fType = (document.getElementById('filterRAType')?.value||'all').toLowerCase();
+                const rows = (data||[]).filter(ra=>{
+                    const okS = fStatus==='all' || (String(ra.status||'').toLowerCase()===fStatus);
+                    const okT = fType==='all' || (String(ra.assessment_type||'').toLowerCase().startsWith(fType));
+                    return okS && okT;
+                });
+                tbody.innerHTML = rows.map(ra => {
+                    const maxRpn = maxMap[ra.id]||0;
+                    const level = rpnToLevel(maxRpn) || (ra.risk_level||'TBD');
+                    return `
                     <tr>
                         <td><strong>${ra.ra_number}</strong></td>
                         <td>${ra.title}</td>
                         <td><span class="status-badge status-draft">${ra.assessment_type}</span></td>
                         <td>${ra.category}</td>
-                        <td><span class="risk-badge risk-${(ra.risk_level || 'low').toLowerCase()}">${ra.risk_level || 'TBD'}</span></td>
+                        <td><span class="risk-badge risk-${level.toLowerCase()}">${level}</span></td>
                         <td><span class="status-badge status-${getStatusClass(ra.status)}">${ra.status}</span></td>
                         <td>${new Date(ra.initiated_date).toLocaleDateString()}</td>
                         <td>
                             <button class="action-btn view" onclick="viewRA('${ra.id}')">View</button>
-                            <button class="action-btn add" onclick="addRiskItem('${ra.id}')">Add Risk</button>
+                            <button class="action-btn add" data-action="add-risk" onclick="addRiskItem('${ra.id}')">Add Risk</button>
+                            <button class="action-btn edit" data-action="change-status" onclick="openStatusModal('${ra.id}','${ra.status||''}')">Change Status</button>
                             <button class="action-btn history" onclick="viewAuditTrail('${ra.id}')">History</button>
                         </td>
-                    </tr>
-                `).join('');
+                    </tr>`;
+                }).join('');
             } catch (error) {
                 console.error('Error loading risk assessments:', error);
                 showAlert('Error loading risk assessments', 'error');
@@ -932,7 +1154,7 @@
         // Generate RA Number
         async function generateRANumber() {
             const year = new Date().getFullYear();
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('risk_assessments')
                 .select('ra_number')
                 .like('ra_number', `RA-${year}-%`)
@@ -964,10 +1186,11 @@
                     product_name: document.getElementById('raProduct').value,
                     initiated_by: document.getElementById('raInitiatedBy').value,
                     review_date: document.getElementById('raReviewDate').value,
+                    initiated_date: new Date().toISOString(),
                     status: 'Draft'
                 };
 
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('risk_assessments')
                     .insert([formData])
                     .select();
@@ -991,9 +1214,11 @@
             e.preventDefault();
 
             try {
+                const raId = document.getElementById('riskItemRAId').value;
+                const autoItemNum = await generateNextItemNumber(raId);
                 const formData = {
-                    ra_id: document.getElementById('riskItemRAId').value,
-                    item_number: document.getElementById('itemNumber').value,
+                    ra_id: raId,
+                    item_number: autoItemNum,
                     process_step: document.getElementById('processStep').value,
                     potential_failure_mode: document.getElementById('failureMode').value,
                     potential_effects: document.getElementById('effects').value,
@@ -1008,26 +1233,29 @@
                     status: 'Open'
                 };
 
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('risk_items')
-                    .insert([formData])
+                    // rpn and (in your DB) risk_level are computed; do not insert them explicitly
+                    .insert([{...formData}])
                     .select();
 
                 if (error) throw error;
 
-                showAlert('Risk item added successfully!', 'success');
+                showAlert(`Risk item ${formData.item_number} added successfully!`, 'success');
                 closeRiskItemModal();
+                await updateRaRiskLevel(formData.ra_id);
                 loadDashboardStats();
-            } catch (error) {
-                console.error('Error adding risk item:', error);
-                showAlert('Error adding risk item', 'error');
+                loadRiskItems();
+            } catch (e) {
+                console.error('Error adding risk item:', e);
+                showAlert(`Error adding risk item${e?.message?': '+e.message:''}`, 'error');
             }
         });
 
         // Create Audit Trail Entry
         async function createAuditEntry(raId, action, fieldChanged, oldValue, newValue, changedBy, comments) {
             try {
-                await supabase.from('risk_audit_trail').insert([{
+                await supabaseClient.from('risk_audit_trail').insert([{
                     ra_id: raId,
                     action: action,
                     field_changed: fieldChanged,
@@ -1044,7 +1272,7 @@
         // View Audit Trail
         async function viewAuditTrail(raId) {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('risk_audit_trail')
                     .select('*')
                     .eq('ra_id', raId)
@@ -1074,8 +1302,13 @@
         function openNewRAModal() { document.getElementById('raModal').classList.add('active'); }
         function closeRAModal() { document.getElementById('raModal').classList.remove('active'); document.getElementById('raForm').reset(); }
         
-        function addRiskItem(raId) {
+        async function addRiskItem(raId) {
             document.getElementById('riskItemRAId').value = raId;
+            try{
+                const nextNum = await generateNextItemNumber(raId);
+                const input = document.getElementById('itemNumber');
+                if (input) input.value = nextNum;
+            }catch(_){ /* ignore prefill errors */ }
             document.getElementById('riskItemModal').classList.add('active');
         }
         function closeRiskItemModal() { 
@@ -1087,14 +1320,53 @@
         
         function closeAuditModal() { document.getElementById('auditModal').classList.remove('active'); }
 
-        // Switch Tabs
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName + 'Tab').classList.add('active');
-        }
+                // Status change modal
+                function openStatusModal(raId, current){
+                        const modal = document.createElement('div');
+                        modal.id = 'statusModal';
+                        modal.className = 'modal active';
+                        modal.innerHTML = `
+                                <div class="modal-content">
+                                    <div class="modal-header"><h2 class="modal-title">Change Status</h2><button class="close-btn" onclick="closeStatusModal()">&times;</button></div>
+                                    <div class="modal-body">
+                                        <div class="form-group"><label class="form-label">New Status</label>
+                                            <select id=\"newStatus\" class=\"form-select\">
+                                                <option ${current==='Draft'?'selected':''}>Draft</option>
+                                                <option ${current==='Under Review'?'selected':''}>Under Review</option>
+                                                <option ${current==='Approved'?'selected':''}>Approved</option>
+                                                <option ${current==='In Progress'?'selected':''}>In Progress</option>
+                                                <option ${current==='Completed'?'selected':''}>Completed</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group full-width"><label class="form-label">Comment</label>
+                                            <textarea id=\"statusComment\" class=\"form-textarea\" placeholder=\"Reason or note\"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="display:flex;gap:10px;justify-content:flex-end;padding-top:12px">
+                                        <button class="btn btn-secondary" onclick="closeStatusModal()">Cancel</button>
+                                        <button class="btn btn-primary" onclick="submitStatusChange('${raId}')">Update</button>
+                                    </div>
+                                </div>`
+                        document.body.appendChild(modal);
+                }
+                function closeStatusModal(){ document.getElementById('statusModal')?.remove(); }
+                async function submitStatusChange(raId){
+                        try{
+                                const newStatus = document.getElementById('newStatus').value;
+                                const comment = document.getElementById('statusComment').value;
+                                if(newStatus==='Approved' && window.AccessControl){
+                                        const ok = await window.AccessControl.requireESign({ action:'approve', moduleKey:'risk', entityId: raId, reasonLabel: 'Reason for approval' });
+                                        if(!ok?.ok) return;
+                                }
+                                await supabaseClient.from('risk_assessments').update({ status: newStatus }).eq('id', raId);
+                                await createAuditEntry(raId, `Status Changed`, 'status', null, newStatus, 'system', comment||`Updated to ${newStatus}`);
+                                closeStatusModal();
+                                loadRiskAssessments();
+                                showAlert('Status updated', 'success');
+                        }catch(e){ console.error('status update failed', e); showAlert('Failed to update status','error'); }
+                }
+
+        // Removed tabs; using sections via header nav
 
         // Show Alert
         function showAlert(message, type) {
@@ -1104,8 +1376,499 @@
             setTimeout(() => alert.classList.remove('active'), 5000);
         }
 
-        // Placeholder functions
-        function viewRA(id) { alert('View detailed risk assessment: ' + id); }
+    // Placeholder functions
+    function viewRA(id) { window.location.href = `risk-details.html?id=${id}`; }
+
+        function rpnToLevel(rpn){ if(rpn>=200) return 'Critical'; if(rpn>=100) return 'High'; if(rpn>=40) return 'Medium'; return 'Low'; }
+
+        // Generate next item number (001, 002, ...) per RA
+        async function generateNextItemNumber(raId){
+            // Fetch current RA number and existing items
+            const [{ data: raRow }, { data: items }] = await Promise.all([
+                supabaseClient.from('risk_assessments').select('ra_number').eq('id', raId).single(),
+                supabaseClient.from('risk_items').select('item_number').eq('ra_id', raId)
+            ]);
+            const raNum = raRow?.ra_number || '';
+            // Extract trailing numeric sequence from existing item_number values
+            const nums = (items||[])
+                .map(r => {
+                    const m = String(r.item_number||'').match(/(\d+)$/);
+                    return m ? parseInt(m[1], 10) : 0;
+                })
+                .filter(n => !isNaN(n));
+            const next = (nums.length ? Math.max(...nums) : 0) + 1;
+            const seq = String(next).padStart(3,'0');
+            return raNum ? `${raNum}-${seq}` : seq;
+        }
+
+        async function updateRaRiskLevel(raId){
+            try{
+                const { data } = await supabaseClient.from('risk_items').select('rpn').eq('ra_id', raId);
+                const maxRpn = (data||[]).reduce((m,i)=>Math.max(m, Number(i.rpn)||0), 0);
+                const level = rpnToLevel(maxRpn);
+                await supabaseClient.from('risk_assessments').update({ risk_level: level }).eq('id', raId);
+                await createAuditEntry(raId, 'UPDATE', 'risk_level', null, level, 'system', `Auto-updated from items (max RPN ${maxRpn})`);
+                loadRiskAssessments();
+            }catch(e){ console.warn('Update RA level failed', e); }
+        }
+
+        async function loadRiskItems(){
+            try{
+                const { data: items } = await supabaseClient.from('risk_items').select('*');
+                const { data: ras } = await supabaseClient.from('risk_assessments').select('id, ra_number, title');
+                const map = new Map(ras?.map(r=>[r.id, r])||[]);
+                let rows = (items||[]).map(i=>({
+                    ra_number: map.get(i.ra_id)?.ra_number||'',
+                    title: map.get(i.ra_id)?.title||'',
+                    ...i,
+                    rpn: i.rpn ?? (Number(i.severity||0)*Number(i.occurrence||0)*Number(i.detection||0)),
+                    risk_level: i.rpn ? rpnToLevel(i.rpn) : rpnToLevel((Number(i.severity||0)*Number(i.occurrence||0)*Number(i.detection||0)))
+                }));
+                const fLevel = (document.getElementById('filterRiskLevel')?.value||'all').toLowerCase();
+                const fStatus = (document.getElementById('filterItemStatus')?.value||'all').toLowerCase();
+                const q = (document.getElementById('filterSearch')?.value||'').toLowerCase();
+                rows = rows.filter(r=>{
+                    const okL = fLevel==='all' || String(r.risk_level||'').toLowerCase()===fLevel;
+                    const okS = fStatus==='all' || String(r.status||'').toLowerCase()===fStatus;
+                    const okQ = !q || String(r.potential_failure_mode||'').toLowerCase().includes(q) || String(r.ra_number||'').toLowerCase().includes(q);
+                    return okL && okS && okQ;
+                });
+                const tbody = document.getElementById('riskItemsTbody');
+                if(!tbody){ return; }
+                if(!rows.length){
+                    tbody.innerHTML = `<tr><td colspan="12" style="text-align:center;padding:40px;color:#6b7280">No risk items found.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = rows.map(r=>{
+                    const level = r.risk_level || rpnToLevel(Number(r.rpn)||0);
+                    return `<tr>
+                        <td>${r.ra_number||''}</td>
+                        <td>${r.title||''}</td>
+                        <td>${r.item_number||''}</td>
+                        <td>${r.potential_failure_mode||''}</td>
+                        <td>${r.severity||''}</td>
+                        <td>${r.occurrence||''}</td>
+                        <td>${r.detection||''}</td>
+                        <td><strong>${r.rpn|| (Number(r.severity||0)*Number(r.occurrence||0)*Number(r.detection||0))}</strong></td>
+                        <td><span class="risk-badge risk-${level.toLowerCase()}">${level}</span></td>
+                        <td>${r.status||''}</td>
+                        <td>${r.responsibility||''}</td>
+                        <td>${r.target_date? new Date(r.target_date).toLocaleDateString(): '-'}</td>
+                    </tr>`;
+                }).join('');
+            }catch(e){ console.error('loadRiskItems failed', e); }
+        }
+
+        function toCSV(rows){ return rows.map(r=>r.map(x=>`"${String(x??'').replace(/"/g,'""')}"`).join(',')).join('\n'); }
+        function downloadCSV(filename, rows){ const blob=new Blob([toCSV(rows)],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.style.display='none'; document.body.appendChild(a); a.click(); a.remove(); }
+        async function exportAssessmentsCSV(){
+            const { data } = await supabaseClient.from('risk_assessments').select('*').order('initiated_date',{ascending:false});
+            const { data: itemAgg } = await supabaseClient.from('risk_items').select('ra_id, rpn');
+            const maxMap = (itemAgg||[]).reduce((m,it)=>{ const rpn=Number(it.rpn)||0; m[it.ra_id]=Math.max(m[it.ra_id]||0,rpn); return m; },{});
+            const rows = [['RA Number','Title','Type','Category','Risk Level (max)','Status','Initiated Date']];
+            (data||[]).forEach(ra=>{ const level=rpnToLevel(maxMap[ra.id]||0); rows.push([ra.ra_number, ra.title, ra.assessment_type, ra.category, level, ra.status, ra.initiated_date]); });
+            downloadCSV(`risk_assessments_${new Date().toISOString().slice(0,10)}.csv`, rows);
+        }
+        async function exportRiskItemsCSV(){
+            const { data: items } = await supabaseClient.from('risk_items').select('*');
+            const { data: ras } = await supabaseClient.from('risk_assessments').select('id, ra_number, title');
+            const map = new Map(ras?.map(r=>[r.id, r])||[]);
+            const rows = [['RA Number','Title','Item #','Failure Mode','S','O','D','RPN','Level','Status','Owner','Target Date']];
+            (items||[]).forEach(i=>{ const rpn=i.rpn ?? (i.severity*i.occurrence*i.detection); const level = rpnToLevel(rpn); const ra=map.get(i.ra_id)||{}; rows.push([ra.ra_number||'', ra.title||'', i.item_number||'', i.potential_failure_mode||'', i.severity||'', i.occurrence||'', i.detection||'', rpn, level, i.status||'', i.responsibility||'', i.target_date||'']); });
+            downloadCSV(`risk_items_${new Date().toISOString().slice(0,10)}.csv`, rows);
+        }
+
+        async function openViewRAModal(id){
+            try{
+                const { data: ra } = await supabaseClient.from('risk_assessments').select('*').eq('id', id).single();
+                const { data: items } = await supabaseClient.from('risk_items').select('*').eq('ra_id', id);
+                const wrapper = document.createElement('div');
+                wrapper.id='viewRAModal'; wrapper.className='modal active';
+                wrapper.innerHTML = `
+                <div class="modal-content">
+                  <div class="modal-header"><h2 class="modal-title">${ra.ra_number} — ${ra.title}</h2><button class="close-btn" onclick="document.getElementById('viewRAModal').remove()">&times;</button></div>
+                  <div class="info-box"><strong>Type:</strong> ${ra.assessment_type} &nbsp; | &nbsp; <strong>Category:</strong> ${ra.category} &nbsp; | &nbsp; <strong>Status:</strong> ${ra.status}</div>
+                  <div class="table-container"><table><thead><tr><th>#</th><th>Failure Mode</th><th>S</th><th>O</th><th>D</th><th>RPN</th><th>Level</th><th>Status</th></tr></thead><tbody>
+                  ${ (items||[]).map(i=>{ const rpn=i.rpn ?? (i.severity*i.occurrence*i.detection); const lvl=rpnToLevel(rpn); return `<tr><td>${i.item_number||''}</td><td>${i.potential_failure_mode||''}</td><td>${i.severity}</td><td>${i.occurrence}</td><td>${i.detection}</td><td><strong>${rpn}</strong></td><td><span class='risk-badge risk-${lvl.toLowerCase()}'>${lvl}</span></td><td>${i.status||''}</td></tr>`; }).join('') }
+                  </tbody></table></div>
+                </div>`;
+                document.body.appendChild(wrapper);
+            }catch(e){ console.error('openViewRAModal', e); }
+        }
+
+        // Downloadable PDF export for Risk Assessments Register (uses html2pdf)
+        window.exportToPDF = function () {
+            try {
+                const viewModal = document.querySelector('#viewRAModal .modal-content');
+                if (viewModal) {
+                    const wrapper = viewModal.cloneNode(true);
+                    const optM = { margin: 10, filename: `RA_Detail_${new Date().toISOString().slice(0,10)}.pdf`, image:{type:'jpeg',quality:0.95}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'pt',format:'a4',orientation:'landscape'} };
+                    html2pdf().set(optM).from(wrapper).save();
+                    return;
+                }
+                const table = document.getElementById('raTable');
+                if (!table) { window.print(); return; }
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = `
+                    <h1 style=\"font-family:Inter,Arial,sans-serif;font-size:18px;margin:0 0 6px 0;color:#111827\">Risk Assessments Register</h1>
+                    <div style=\"color:#6b7280;font-size:12px;margin-bottom:10px\">Generated: ${new Date().toLocaleString()}</div>
+                `;
+                wrapper.appendChild(table.cloneNode(true));
+                const opt = {
+                    margin: 10,
+                    filename: `Risk_Assessments_Register_${new Date().toISOString().slice(0,10)}.pdf`,
+                    image: { type: 'jpeg', quality: 0.95 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'pt', format: 'a4', orientation: 'landscape' }
+                };
+                html2pdf().set(opt).from(wrapper).save();
+            } catch (e) {
+                console.error('PDF export failed, falling back to print()', e);
+                window.print();
+            }
+        };
+
+        // Charts
+    let riskLevelChart, statusChart, categoryChart, trendChart, actionsStatusChart, actionsOwnerChart, actionsTrendChart, actionsEffectivenessTrendChart;
+    let execYoYChart, execCategoryTrendChart, execDeptChart, execOwnerOnTimeChart, execCriticalForecastChart;
+    let HAS_NOTIFICATIONS=false;
+    let prevHeatmapSig = '';
+
+    async function detectNotifications(){
+        try{ const { error } = await supabaseClient.from('notifications').select('id').limit(1); HAS_NOTIFICATIONS = !error; }catch(_){ HAS_NOTIFICATIONS=false; }
+    }
+    function updateCharts({ assessments = [], items = [], actions = [] } = {}){
+            try{
+                const ctx1 = document.getElementById('riskLevelChart')?.getContext('2d');
+                if(ctx1){
+                    const levels = { Critical:0, High:0, Medium:0, Low:0 };
+                    items.forEach(i=>{
+                        const rpn = Number(i.rpn)||0;
+                        const lvl = rpn>=200?'Critical': rpn>=100?'High': rpn>=40?'Medium':'Low';
+                        levels[lvl]++;
+                    });
+                    const data1 = { labels:Object.keys(levels), datasets:[{ data:Object.values(levels), backgroundColor:['#ef4444','#f59e0b','#fbbf24','#10b981'] }] };
+                    if(riskLevelChart){ riskLevelChart.data = data1; riskLevelChart.update(); }
+                    else {
+                        riskLevelChart = new Chart(ctx1, {
+                            type:'doughnut',
+                            data: data1,
+                            options:{
+                                maintainAspectRatio:false,
+                                plugins:{
+                                    legend:{ position:'bottom', labels:{ boxWidth:10, boxHeight:10, font:{ size:11 } } }
+                                },
+                                layout:{ padding:0 }
+                            }
+                        });
+                    }
+                }
+
+                const ctx2 = document.getElementById('statusChart')?.getContext('2d');
+                if(ctx2){
+                    const sCounts = { 'Draft':0, 'Under Review':0, 'Approved':0, 'In Progress':0, 'Completed':0 };
+                    assessments.forEach(a=>{ if(sCounts[a.status]!==undefined) sCounts[a.status]++; });
+                    const data2 = { labels:Object.keys(sCounts), datasets:[{ label:'Assessments', data:Object.values(sCounts), backgroundColor:'#60a5fa', borderRadius:3, maxBarThickness:18 }] };
+                    if(statusChart){ statusChart.data = data2; statusChart.update(); }
+                    else {
+                        statusChart = new Chart(ctx2, {
+                            type:'bar',
+                            data: data2,
+                            options:{
+                                maintainAspectRatio:false,
+                                plugins:{ legend:{ display:false } },
+                                scales:{
+                                    x:{ ticks:{ font:{ size:11 } } },
+                                    y:{ beginAtZero:true, ticks:{ font:{ size:11 } } }
+                                },
+                                layout:{ padding:0 }
+                            }
+                        });
+                    }
+                }
+
+                // Category breakdown (from assessments)
+                const ctx3 = document.getElementById('categoryChart')?.getContext('2d');
+                if(ctx3 && assessments){
+                    const cCounts = {};
+                    (assessments||[]).forEach(a=>{ const k=a.category||'Uncategorized'; cCounts[k]=(cCounts[k]||0)+1; });
+                    const labels = Object.keys(cCounts);
+                    const data3 = { labels, datasets:[{ data:Object.values(cCounts), backgroundColor: labels.map((_,i)=>['#10b981','#60a5fa','#f59e0b','#f43f5e','#a78bfa','#fbbf24','#34d399','#fb7185'][i%8]) }] };
+                    if(categoryChart){ categoryChart.data = data3; categoryChart.update(); }
+                    else {
+                        categoryChart = new Chart(ctx3, { type:'doughnut', data: data3, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}} });
+                    }
+                }
+
+                // Render Heatmap (Severity x Occurrence)
+                renderHeatmap(items||[]);
+
+                // RPN Trend Over Time (average per day)
+                const tctx = document.getElementById('rpnTrendChart')?.getContext('2d');
+                if(tctx){
+                    const buckets = new Map();
+                    (items||[]).forEach(i=>{
+                        const dt = i.created_at ? new Date(i.created_at) : new Date();
+                        const key = dt.toISOString().slice(0,10);
+                        const rpn = Number(i.rpn)||0;
+                        if(!buckets.has(key)) buckets.set(key, {sum:0,count:0});
+                        const b = buckets.get(key); b.sum+=rpn; b.count++;
+                    });
+                    const keys = Array.from(buckets.keys()).sort();
+                    const data = keys.map(k=>{ const b=buckets.get(k); return b.count? Math.round(b.sum/b.count):0; });
+                    const trendData = { labels: keys, datasets:[{ label:'Avg RPN', data, borderColor:'#10b981', backgroundColor:'rgba(16,185,129,.2)', fill:true, tension:.25 }] };
+                    if(trendChart){ trendChart.data = trendData; trendChart.update(); }
+                    else { trendChart = new Chart(tctx, { type:'line', data: trendData, options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true }}} }); }
+                }
+
+                // Mitigation: Actions by Status
+                const asCtx = document.getElementById('actionsStatusChart')?.getContext('2d');
+                if(asCtx){
+                    const sCounts = { 'Open':0, 'In Progress':0, 'Completed':0 };
+                    (actions||[]).forEach(a=>{ if(sCounts[a.status]!==undefined) sCounts[a.status]++; });
+                    const data = { labels:Object.keys(sCounts), datasets:[{ data:Object.values(sCounts), backgroundColor:['#f59e0b','#60a5fa','#10b981'] }] };
+                    if(actionsStatusChart){ actionsStatusChart.data = data; actionsStatusChart.update(); }
+                    else { actionsStatusChart = new Chart(asCtx, { type:'doughnut', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}} }); }
+                }
+
+                // Mitigation: Actions by Owner (Top 5)
+                const aoCtx = document.getElementById('actionsOwnerChart')?.getContext('2d');
+                if(aoCtx){
+                    const ownerCounts = new Map();
+                    (actions||[]).forEach(a=>{ const k=(a.owner_name||'Unassigned'); ownerCounts.set(k,(ownerCounts.get(k)||0)+1); });
+                    const sorted = Array.from(ownerCounts.entries()).sort((a,b)=>b[1]-a[1]).slice(0,5);
+                    const labels = sorted.map(x=>x[0]); const values = sorted.map(x=>x[1]);
+                    const data = { labels, datasets:[{ label:'Actions', data: values, backgroundColor:'#34d399', borderRadius:3, maxBarThickness:18 }] };
+                    if(actionsOwnerChart){ actionsOwnerChart.data = data; actionsOwnerChart.update(); }
+                    else { actionsOwnerChart = new Chart(aoCtx, { type:'bar', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ ticks:{ font:{ size:11 } }}, y:{ beginAtZero:true }}}}); }
+                }
+
+                // Mitigation: Completions per Month trend
+                const atCtx = document.getElementById('actionsTrendChart')?.getContext('2d');
+                if(atCtx){
+                    const bucket = new Map();
+                    (actions||[]).filter(a=>a.actual_date && a.status==='Completed').forEach(a=>{
+                        const d = new Date(a.actual_date); const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+                        bucket.set(key,(bucket.get(key)||0)+1);
+                    });
+                    const labels = Array.from(bucket.keys()).sort();
+                    const values = labels.map(k=>bucket.get(k)||0);
+                    const data = { labels, datasets:[{ label:'Completed', data: values, borderColor:'#10b981', backgroundColor:'rgba(16,185,129,.2)', fill:true, tension:.25 }] };
+                    if(actionsTrendChart){ actionsTrendChart.data = data; actionsTrendChart.update(); }
+                    else { actionsTrendChart = new Chart(atCtx, { type:'line', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}, scales:{ y:{ beginAtZero:true }}}}); }
+                }
+
+                // Mitigation: Average Effectiveness by Month
+                const aefCtx = document.getElementById('actionsEffectivenessTrendChart')?.getContext('2d');
+                if(aefCtx){
+                    const bucket = new Map();
+                    (actions||[]).filter(a=>a.actual_date && a.status==='Completed' && a.effectiveness_rating!=null).forEach(a=>{
+                        const d = new Date(a.actual_date); const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+                        if(!bucket.has(key)) bucket.set(key, {sum:0,count:0});
+                        const b=bucket.get(key); b.sum += Number(a.effectiveness_rating)||0; b.count++;
+                    });
+                    const labels = Array.from(bucket.keys()).sort();
+                    const values = labels.map(k=>{ const b=bucket.get(k); return b.count? +(b.sum/b.count).toFixed(2): 0; });
+                    const data = { labels, datasets:[{ label:'Avg Effectiveness', data: values, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,.15)', fill:true, tension:.25 }] };
+                    if(actionsEffectivenessTrendChart){ actionsEffectivenessTrendChart.data = data; actionsEffectivenessTrendChart.update(); }
+                    else { actionsEffectivenessTrendChart = new Chart(aefCtx, { type:'line', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}, scales:{ y:{ beginAtZero:true, max:5 }}}}); }
+                }
+            }catch(e){ /* chart area may not exist */ }
+        }
+
+        function renderHeatmap(items){
+            const grid = document.getElementById('heatmapGrid');
+            if(!grid) return;
+            // Build 10x10 counts for S (rows) x O (cols)
+            const counts = Array.from({length:10},()=>Array(10).fill(0));
+            (items||[]).forEach(i=>{
+                const s = Math.max(1, Math.min(10, Number(i.severity)||0));
+                const o = Math.max(1, Math.min(10, Number(i.occurrence)||0));
+                if(s>=1 && o>=1) counts[10-s][o-1]++; // row invert so top is severity 10
+            });
+            // Smart re-render: skip if unchanged
+            const sig = counts.flat().join(',');
+            if(sig === prevHeatmapSig) return; // no change -> no re-render
+            prevHeatmapSig = sig;
+            const max = counts.flat().reduce((m,v)=>Math.max(m,v),0) || 1;
+            grid.innerHTML = counts.map(row=> row.map(v=>{
+                const alpha = v===0? 0.05 : (0.15 + 0.85*(v/max));
+                const color = `rgba(239,68,68,${alpha.toFixed(2)})`;
+                return `<div class="heatmap-cell" title="Count: ${v}" style="background:${v?color:'#f1f5f9'}"></div>`;
+            }).join('')).join('');
+        }
+
+        // Executive KPIs & Charts
+        function updateExecutive({assessments = [], items = [], actions = []} = {}){
+            try{
+                // Risk velocity: month-over-month change in average RPN
+                const byMonth = new Map();
+                (items||[]).forEach(i=>{
+                    const d = i.created_at ? new Date(i.created_at) : new Date();
+                    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+                    const rpn = Number(i.rpn)||0; if(!byMonth.has(key)) byMonth.set(key,{sum:0,count:0});
+                    const b=byMonth.get(key); b.sum+=rpn; b.count++;
+                });
+                const months = Array.from(byMonth.keys()).sort();
+                const last = months[months.length-1];
+                const prev = months[months.length-2];
+                let delta='-';
+                if(last && prev){
+                    const a = (byMonth.get(prev).sum / Math.max(1,byMonth.get(prev).count));
+                    const b = (byMonth.get(last).sum / Math.max(1,byMonth.get(last).count));
+                    const change = a ? ((b-a)/a)*100 : 0;
+                    const dir = change>=0 ? '▲' : '▼';
+                    delta = `${dir} ${Math.abs(change).toFixed(1)}%`;
+                    const badge=document.getElementById('kpiRiskVelocityBadge');
+                    if(badge){ badge.style.background = change>=0? '#fee2e2':'#dcfce7'; badge.style.color = change>=0? '#991b1b':'#166534'; }
+                }
+                const k1=document.getElementById('kpiRiskVelocity'); if(k1) k1.textContent = delta;
+
+                // Mitigation progress
+                const totalAct = (actions||[]).length; const doneAct = (actions||[]).filter(a=>a.status==='Completed').length;
+                const prog = totalAct? Math.round((doneAct/totalAct)*100):0; const k2=document.getElementById('kpiMitProgress'); if(k2) k2.textContent = `${prog}%`;
+
+                // SLA compliance (completed on/before target)
+                const completed = (actions||[]).filter(a=>a.status==='Completed' && a.target_date);
+                const onTime = completed.filter(a=> a.actual_date && new Date(a.actual_date) <= new Date(a.target_date));
+                const sla = completed.length? Math.round((onTime.length/completed.length)*100):0; const k3=document.getElementById('kpiSLA'); if(k3) k3.textContent = `${sla}%`;
+
+                // Overdue
+                const today=new Date(); today.setHours(0,0,0,0);
+                const overdue = (actions||[]).filter(a=> a.target_date && a.status!=='Completed' && new Date(a.target_date) < today).length;
+                const k4=document.getElementById('kpiOverdue'); if(k4) k4.textContent = overdue;
+
+                // Rolling 30-day closure rate
+                const now = new Date(); const start30 = new Date(now.getTime()-30*86400000);
+                const recent = (items||[]).filter(i=> i.created_at && new Date(i.created_at) >= start30);
+                const closed30 = recent.filter(i=> String(i.status||'').toLowerCase()==='closed').length;
+                const closure = recent.length? Math.round((closed30/recent.length)*100):0; const k5=document.getElementById('kpiClosure'); if(k5) k5.textContent = `${closure}%`;
+
+                // Exec charts
+                renderExecYoY(assessments||[]);
+                renderExecCategoryTrend(assessments||[], items||[]);
+                renderExecDept(assessments||[]);
+                renderExecOwnerOnTime(actions||[]);
+                renderCriticalForecast(items||[]);
+            }catch(e){ /* ignore */ }
+        }
+
+        function renderExecYoY(assessments){
+            const ctx = document.getElementById('execYoYChart')?.getContext('2d'); if(!ctx) return;
+            const byYear = new Map();
+            (assessments||[]).forEach(a=>{ const d=a.initiated_date? new Date(a.initiated_date): null; if(!d) return; const y=d.getFullYear(); byYear.set(y,(byYear.get(y)||0)+1); });
+            const labels = Array.from(byYear.keys()).sort(); const values = labels.map(y=>byYear.get(y));
+            const data = { labels, datasets:[{ label:'Assessments', data: values, backgroundColor:'#60a5fa', borderRadius:3, maxBarThickness:18 }] };
+            if(execYoYChart){ execYoYChart.data=data; execYoYChart.update(); }
+            else { execYoYChart = new Chart(ctx, { type:'bar', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ beginAtZero:true }}}}); }
+        }
+
+        function renderExecCategoryTrend(assessments, items){
+            const ctx = document.getElementById('execCategoryTrendChart')?.getContext('2d'); if(!ctx) return;
+            const raMap = new Map((assessments||[]).map(a=>[a.id,a]));
+            const monthKey = d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+            const series = new Map();
+            (items||[]).forEach(i=>{ const ra=raMap.get(i.ra_id); const cat=(ra?.category)||'Other'; const d=i.created_at? new Date(i.created_at): new Date(); const key=monthKey(d); if(!series.has(cat)) series.set(cat,new Map()); const m=series.get(cat); m.set(key,(m.get(key)||0)+1); });
+            // pick top 3 categories total
+            const totals = Array.from(series.entries()).map(([k,m])=>[k, Array.from(m.values()).reduce((s,v)=>s+v,0)]).sort((a,b)=>b[1]-a[1]).slice(0,3);
+            const allMonths = Array.from(new Set([].concat(...Array.from(series.values()).map(m=>Array.from(m.keys()))))).sort();
+            const ds = totals.map(([cat,_],idx)=>({ label:cat, data: allMonths.map(k=> series.get(cat).get(k)||0), borderColor:['#10b981','#f59e0b','#3b82f6'][idx%3], backgroundColor:'transparent', tension:.25 }));
+            const data = { labels: allMonths, datasets: ds };
+            if(execCategoryTrendChart){ execCategoryTrendChart.data=data; execCategoryTrendChart.update(); }
+            else { execCategoryTrendChart = new Chart(ctx, { type:'line', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}, scales:{ y:{ beginAtZero:true }}}}); }
+        }
+
+        function renderExecDept(assessments){
+            const ctx = document.getElementById('execDeptChart')?.getContext('2d'); if(!ctx) return;
+            // Use department if present; else fall back to category
+            const hasDept = (assessments||[]).some(a=> 'department' in a);
+            const key = a=> hasDept? (a.department||'Unassigned') : (a.category||'Uncategorized');
+            const map = new Map();
+            (assessments||[]).forEach(a=>{ const k=key(a); map.set(k,(map.get(k)||0)+1); });
+            const labels = Array.from(map.keys()); const data = labels.map(k=>map.get(k));
+            const cfg = { labels, datasets:[{ data, backgroundColor: labels.map((_,i)=>['#34d399','#60a5fa','#f59e0b','#a78bfa','#fb7185','#fbbf24'][i%6]) }] };
+            if(execDeptChart){ execDeptChart.data=cfg; execDeptChart.update(); }
+            else { execDeptChart = new Chart(ctx, { type:'doughnut', data: cfg, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}}}); }
+        }
+
+        function renderExecOwnerOnTime(actions){
+            const ctx = document.getElementById('execOwnerOnTimeChart')?.getContext('2d'); if(!ctx) return;
+            const byOwner = new Map();
+            (actions||[]).forEach(a=>{
+                const k=a.owner_name||'Unassigned'; const rec=byOwner.get(k)||{on:0, total:0};
+                if(a.target_date){ rec.total++; if(a.status==='Completed' && a.actual_date && new Date(a.actual_date) <= new Date(a.target_date)) rec.on++; }
+                byOwner.set(k,rec);
+            });
+            const entries = Array.from(byOwner.entries()).map(([k,v])=>[k, v.total? Math.round((v.on/v.total)*100):0]).sort((a,b)=>b[1]-a[1]).slice(0,7);
+            const labels = entries.map(e=>e[0]); const vals = entries.map(e=>e[1]);
+            const data = { labels, datasets:[{ label:'On-time %', data: vals, backgroundColor:'#22c55e', borderRadius:3, maxBarThickness:18 }] };
+            if(execOwnerOnTimeChart){ execOwnerOnTimeChart.data=data; execOwnerOnTimeChart.update(); }
+            else { execOwnerOnTimeChart = new Chart(ctx, { type:'bar', data, options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false }}, scales:{ y:{ beginAtZero:true, max:100 }}}}); }
+        }
+
+        function renderCriticalForecast(items){
+            const ctx = document.getElementById('execCriticalForecastChart')?.getContext('2d'); if(!ctx) return;
+            // bucket critical items per month
+            const bucket = new Map();
+            (items||[]).forEach(i=>{ const rpn=Number(i.rpn)||0; if(rpn<200) return; const d = i.created_at? new Date(i.created_at): new Date(); const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; bucket.set(key,(bucket.get(key)||0)+1); });
+            const months = Array.from(bucket.keys()).sort();
+            const values = months.map(k=>bucket.get(k)||0);
+            const forecast = linearForecast(values);
+            const nextMonthLabel = nextMonthKey(months[months.length-1]||new Date());
+            const labels = months.concat([nextMonthLabel]);
+            const data = values.concat([forecast]);
+            const ds = [{ label:'Critical per Month', data: values, borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,.15)', fill:true, tension:.25 }, { label:'Forecast', data: data, borderColor:'#111827', borderDash:[6,4], pointRadius:0, fill:false, tension:0 }];
+            const chartData = { labels, datasets: ds };
+            if(execCriticalForecastChart){ execCriticalForecastChart.data = chartData; execCriticalForecastChart.update(); }
+            else { execCriticalForecastChart = new Chart(ctx, { type:'line', data: chartData, options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{ size:11 }}}}, scales:{ y:{ beginAtZero:true }}}}); }
+            // KPI + optional notification
+            const k = document.getElementById('kpiPredCritical'); if(k) k.textContent = isFinite(forecast)? Math.round(forecast): '-';
+            const badge = document.getElementById('kpiPredBadge'); if(badge){ const avg = avgOf(values); const spike = forecast > (avg*1.2) && (forecast > (values[values.length-1]||0)); badge.style.background = spike? '#fee2e2':'#f1f5f9'; badge.style.color = spike? '#991b1b':'#111827'; if(spike) maybeNotifyPredictiveSpike(nextMonthLabel, Math.round(forecast)); }
+        }
+
+        function linearForecast(values){
+            // simple linear regression y = a + b*x for x=1..n; forecast at n+1
+            const n = values.length; if(n===0) return 0; const xs = Array.from({length:n},(_,i)=>i+1);
+            const sumX = xs.reduce((a,b)=>a+b,0); const sumY = values.reduce((a,b)=>a+b,0);
+            const sumXY = xs.reduce((s,xi,i)=> s + xi*values[i], 0);
+            const sumX2 = xs.reduce((s,xi)=> s + xi*xi, 0);
+            const denom = (n*sumX2 - sumX*sumX)||1;
+            const b = (n*sumXY - sumX*sumY) / denom; const a = (sumY - b*sumX)/n;
+            const nextX = n+1; const y = a + b*nextX; return y<0?0:y;
+        }
+        function avgOf(arr){ return arr.length? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+        function nextMonthKey(from){
+            try{
+                let y, m; if(typeof from==='string'){ const [Y,M] = from.split('-'); y=Number(Y); m=Number(M); } else { const d=new Date(from); y=d.getFullYear(); m=d.getMonth()+1; }
+                m++; if(m>12){ m=1; y++; } return `${y}-${String(m).padStart(2,'0')}`;
+            }catch(_){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+2).padStart(2,'0')}`; }
+        }
+        async function maybeNotifyPredictiveSpike(monthKey, forecast){
+            try{
+                if(!HAS_NOTIFICATIONS) return;
+                // Avoid spamming: check if an open spike notification exists in the last 7 days
+                const sevenAgo = new Date(Date.now()-7*86400000).toISOString();
+                const { data: existing } = await supabaseClient.from('notifications')
+                  .select('id').eq('type','predictive_risk_spike').eq('status','open').gte('created_at', sevenAgo).limit(1);
+                if(existing && existing.length) return;
+                const payload = {
+                  type:'predictive_risk_spike',
+                  entity_table:'analytics',
+                  entity_id: cryptoUUID(),
+                  message:`Forecast indicates ~${forecast} critical items in ${monthKey}.`,
+                  severity:'high',
+                  status:'open'
+                };
+                await supabaseClient.from('notifications').insert([payload]);
+            }catch(e){ /* no-op */ }
+        }
+        function cryptoUUID(){
+            if(window.crypto?.randomUUID) return window.crypto.randomUUID();
+            const c=window.crypto||window.msCrypto; const b=new Uint8Array(16); (c&&c.getRandomValues)? c.getRandomValues(b): b.fill(0);
+            b[6]=(b[6]&0x0f)|0x40; b[8]=(b[8]&0x3f)|0x80; const h=[...b].map(x=>x.toString(16).padStart(2,'0')).join('');
+            return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+        }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-YcsIP4S3qGS42Qx1C0n7hQGv3q8kH2Qf5QmO6c3bI9kH8W8sQx0v8G0a6Kj5f3Q0KxqZ7Otz4o0R/MR6fX6eGw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

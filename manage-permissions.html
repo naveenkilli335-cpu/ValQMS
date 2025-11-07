@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en" data-bg="mint">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permission Management - ValQMS</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #d1fae5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+        }
+
+        .header {
+            background: #0f172a; /* match index header color */
+            color: #ffffff;
+            padding: 24px 32px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: #fff;
+        }
+
+
+        .btn-secondary {
+            background: white;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .permissions-grid {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+        /* Simple modal */
+        .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:5000; align-items:center; justify-content:center; padding:16px; }
+        .modal.active { display:flex; }
+        .modal-card { background:#fff; width:100%; max-width:820px; border-radius:16px; box-shadow:0 24px 80px rgba(2,6,23,.5); overflow:hidden; transform:translateY(8px); animation: modalIn .18s ease-out forwards; }
+        @keyframes modalIn { from { opacity:0; transform:translateY(10px) scale(.98);} to { opacity:1; transform:translateY(0) scale(1);} }
+        .modal-head { padding:18px 22px; border-bottom:1px solid #e5e7eb; display:flex; justify-content:space-between; align-items:center; background:#0f172a; color:#fff; }
+        .modal-title { font-weight:800; font-size:16px; }
+        .icon-btn { border:none; background:transparent; color:#94a3b8; cursor:pointer; padding:6px; border-radius:8px; }
+        .icon-btn:hover { background:rgba(148,163,184,.15); color:#e2e8f0; }
+        .modal-body { padding:18px 22px; display:grid; gap:16px; }
+        .pill-tabs { display:flex; gap:8px; background:#f1f5f9; padding:6px; border-radius:999px; width:max-content; }
+        .pill { padding:8px 14px; border-radius:999px; font-weight:700; font-size:13px; color:#334155; cursor:pointer; }
+        .pill.active { background:#10b981; color:#fff; }
+        .modal-section { display:none; }
+        .modal-section.active { display:block; }
+        .modal-actions { padding:14px 22px; border-top:1px solid #e5e7eb; display:flex; gap:8px; justify-content:flex-end; }
+        .input { padding:10px; border:2px solid #e5e7eb; border-radius:10px; }
+        .field { display:flex; flex-direction:column; gap:6px; }
+        .field label { font-size:13px; color:#475569; font-weight:700; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        @media(max-width: 720px){ .grid-2 { grid-template-columns:1fr; } }
+        .role-grid { border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
+        .checkbox-row { display:flex; align-items:center; gap:8px; }
+
+        .grid-header {
+            padding: 20px 24px;
+            border-bottom: 2px solid #e2e8f0;
+            background: #f7fafc;
+        }
+
+        .grid-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .permissions-table {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f7fafc;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        th.role-header {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        td.checkbox-cell {
+            text-align: center;
+        }
+
+        .feature-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .feature-category {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .category-navigation {
+            background: #ebf8ff;
+            color: #2c5282;
+        }
+
+        .category-admin {
+            background: #fee;
+            color: #c53030;
+        }
+
+        .category-tools {
+            background: #f3e8ff;
+            color: #553c9a;
+        }
+
+        /* Custom checkbox */
+        .permission-checkbox,
+        .rbac-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #10b981;
+        }
+
+        .permission-checkbox:checked,
+        .rbac-checkbox:checked {
+            background: #10b981;
+        }
+
+
+        .save-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            background: #10b981;
+            color: #fff;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        /* Controls styling */
+        .control-bar {
+            background: linear-gradient(180deg,#ecfdf5, #ffffff 60%);
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+        .control-group { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .label-sm { font-size: 13px; color:#4b5563; font-weight:600; }
+        .select {
+            height: 36px;
+            padding: 6px 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #111827;
+        }
+        .btn-compact { padding: 8px 14px; font-size: 13px; border-radius: 8px; }
+
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .role-header-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #718096;
+        }
+    </style>
+    <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span style="font-size: 32px;">🔐</span>
+                Permission Management
+            </h1>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-secondary" onclick="openRoleModal()">👤 Manage Roles</button>
+                <button class="btn btn-primary" onclick="saveAllChanges()">💾 Save All Changes</button>
+                <button class="btn btn-secondary" onclick="window.location.href='admin-users.html'">← Back to Users</button>
+            </div>
+        </div>
+
+        <div>
+            <!-- Tabs Navigation -->
+            <div class="control-bar" style="display:flex; gap:12px; margin-bottom:12px; align-items:center;">
+                <button id="tabFeatures" class="btn btn-secondary" onclick="switchTab('features')">Feature Access</button>
+                <button id="tabQmsApps" class="btn btn-secondary" onclick="switchTab('qmsApplications')">QMS Applications</button>
+                <button id="tabVpApps" class="btn btn-secondary" onclick="switchTab('vpApplications')">V&P Applications</button>
+                <button id="tabTools" class="btn btn-secondary" onclick="switchTab('tools')">Tools</button>
+                <!-- Quick copy role matrix utility -->
+                <div class="control-group" style="margin-left:auto;">
+                    <span class="label-sm">Copy Role Matrix</span>
+                    <select id="copySourceRole" class="select" title="Source role"></select>
+                    <span style="color:#718096;">→</span>
+                    <select id="copyTargetRole" class="select" title="Target role"></select>
+                    <button class="btn btn-secondary btn-compact" onclick="copyRoleMatrix()">Copy</button>
+                </div>
+            </div>
+
+            <!-- Feature Access Grid (existing) -->
+            <div id="featureGrid" class="permissions-grid">
+                <div class="grid-header">
+                    <h2>Feature Access Control</h2>
+                    <p style="color: #718096; font-size: 14px; margin-top: 8px;">
+                        Control which features each role can access by checking/unchecking the boxes below
+                    </p>
+                </div>
+
+                <div class="permissions-table">
+                    <table id="permissionsTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 300px;">Feature</th>
+                                <!-- Role headers will be inserted here -->
+                            </tr>
+                        </thead>
+                        <tbody id="permissionsBody">
+                            <tr>
+                                <td colspan="10" class="loading">Loading permissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- QMS Applications RBAC Grid -->
+            <div id="qmsApplicationsGrid" class="permissions-grid" style="display:none;">
+                <div class="grid-header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                        <div>
+                            <h2>QMS Applications – Role-based Actions</h2>
+                            <p style="color:#718096;font-size:14px;margin-top:8px;">Grant each role the ability to View, Create, Edit, Approve, Delete, Export per module.</p>
+                        </div>
+                        <div class="control-group">
+                            <label for="qmsModuleSelect" class="label-sm">Module</label>
+                            <select id="qmsModuleSelect" class="select" onchange="handleQmsModuleChange(event)"></select>
+                            <label for="qmsBulkActionSelect" class="label-sm">Bulk action</label>
+                            <select id="qmsBulkActionSelect" class="select">
+                                <option value="view">View</option>
+                                <option value="create">Create</option>
+                                <option value="edit">Edit</option>
+                                <option value="approve">Approve</option>
+                                <option value="delete">Delete</option>
+                                <option value="export">Export</option>
+                            </select>
+                            <button class="btn btn-secondary btn-compact" onclick="grantBulkQms()">Grant to All Roles</button>
+                            <button class="btn btn-secondary btn-compact" onclick="revokeBulkQms()">Revoke</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="permissions-table">
+                    <table id="qmsApplicationsTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 240px;">Action</th>
+                                <!-- Role headers injected here -->
+                            </tr>
+                        </thead>
+                        <tbody id="qmsApplicationsBody">
+                            <tr>
+                                <td colspan="10" class="loading">Loading application permissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- V&P Applications RBAC Grid -->
+            <div id="vpApplicationsGrid" class="permissions-grid" style="display:none;">
+                <div class="grid-header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                        <div>
+                            <h2>Validation & Project Management – Role-based Actions</h2>
+                            <p style="color:#718096;font-size:14px;margin-top:8px;">Grant each role the ability to View, Create, Edit, Approve, Delete, Export for validation workflows.</p>
+                        </div>
+                        <div class="control-group">
+                            <label for="vpModuleSelect" class="label-sm">App</label>
+                            <select id="vpModuleSelect" class="select" onchange="handleVpModuleChange(event)"></select>
+                            <label for="vpBulkActionSelect" class="label-sm">Bulk action</label>
+                            <select id="vpBulkActionSelect" class="select">
+                                <option value="view">View</option>
+                                <option value="create">Create</option>
+                                <option value="edit">Edit</option>
+                                <option value="approve">Approve</option>
+                                <option value="delete">Delete</option>
+                                <option value="export">Export</option>
+                            </select>
+                            <button class="btn btn-secondary btn-compact" onclick="grantBulkVp()">Grant to All Roles</button>
+                            <button class="btn btn-secondary btn-compact" onclick="revokeBulkVp()">Revoke</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="permissions-table">
+                    <table id="vpApplicationsTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 240px;">Action</th>
+                                <!-- Role headers injected here -->
+                            </tr>
+                        </thead>
+                        <tbody id="vpApplicationsBody">
+                            <tr>
+                                <td colspan="10" class="loading">Loading V&P permissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tools RBAC Grid -->
+            <div id="toolsGrid" class="permissions-grid" style="display:none;">
+                <div class="grid-header">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                        <div>
+                            <h2>Tools – Role-based Actions</h2>
+                            <p style="color:#718096;font-size:14px;margin-top:8px;">Control role capabilities across utility tools (View, Create, Edit, Approve, Delete, Export).</p>
+                        </div>
+                        <div class="control-group">
+                            <label for="toolModuleSelect" class="label-sm">Tool</label>
+                            <select id="toolModuleSelect" class="select" onchange="handleToolModuleChange(event)"></select>
+                            <label for="toolBulkActionSelect" class="label-sm">Bulk action</label>
+                            <select id="toolBulkActionSelect" class="select">
+                                <option value="view">View</option>
+                                <option value="create">Create</option>
+                                <option value="edit">Edit</option>
+                                <option value="approve">Approve</option>
+                                <option value="delete">Delete</option>
+                                <option value="export">Export</option>
+                            </select>
+                            <button class="btn btn-secondary btn-compact" onclick="grantBulkTools()">Grant to All Roles</button>
+                            <button class="btn btn-secondary btn-compact" onclick="revokeBulkTools()">Revoke</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="permissions-table">
+                    <table id="toolsTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 240px;">Action</th>
+                                <!-- Role headers injected here -->
+                            </tr>
+                        </thead>
+                        <tbody id="toolsBody">
+                            <tr>
+                                <td colspan="10" class="loading">Loading tool permissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="saveIndicator" class="save-indicator">
+            ✓ Changes saved successfully!
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY'
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+        let allRoles = []
+        let allFeatures = []
+        let currentPermissions = {}
+        let rolesPermissions = {} // JSON-based per-role RBAC map
+        let currentUserEmail = 'unknown'
+
+        // Modules and actions
+        const QMS_APPLICATIONS = [
+            { key: 'change_control', name: 'Change Control' },
+            { key: 'capa', name: 'CAPA Management' },
+            { key: 'risk_assessment', name: 'Risk Assessment' },
+            { key: 'audit_inspection', name: 'Audit & Inspection' },
+            { key: 'training', name: 'Training' },
+            { key: 'non_conformance', name: 'Non-Conformance' }
+        ]
+
+        const VP_APPLICATIONS = [
+            { key: 'validation_pm', name: 'GxP Validation & Project Management' }
+        ]
+
+        const TOOLS = [
+            { key: 'rtm_tool', name: 'RTM Tool' },
+            { key: 'sop_comparison', name: 'SOP Comparison Tool' },
+            { key: 'advanced_risk', name: 'Advanced Risk Assessment Tool' },
+            { key: 'access_matrix', name: 'Advanced User Access Matrix' },
+            { key: 'screenshot_evidence', name: 'Screenshot → Evidence Converter' },
+            { key: 'lims_master_data', name: 'LIMS Master Data Tool' }
+        ]
+
+    const ACTIONS = ['view', 'create', 'edit', 'approve', 'delete', 'export']
+
+    // UI state
+    let selectedQmsAppKey = null
+    let selectedVpAppKey = null
+    let selectedToolKey = null
+
+        // Load permissions
+        async function loadPermissions() {
+            try {
+                // who is doing changes
+                const { data: { user } } = await supabase.auth.getUser()
+                currentUserEmail = user?.email || 'unknown'
+                // Get all roles
+                const { data: roles } = await supabase
+                    .from('roles')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('role_name')
+
+                allRoles = roles || []
+                // Build rolesPermissions map
+                rolesPermissions = {}
+                allRoles.forEach(r => {
+                    rolesPermissions[r.id] = r.permissions || {}
+                    // ensure structure
+                    rolesPermissions[r.id].applications = rolesPermissions[r.id].applications || {}
+                    rolesPermissions[r.id].tools = rolesPermissions[r.id].tools || {}
+                })
+
+                // Get all features
+                const { data: features } = await supabase
+                    .from('features')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('display_order')
+
+                allFeatures = features || []
+
+                // Get all permissions
+                const { data: permissions } = await supabase
+                    .from('role_permissions')
+                    .select('*')
+
+                // Convert to lookup object
+                ;(permissions || []).forEach(perm => {
+                    const key = `${perm.role_id}_${perm.feature_id}`
+                    currentPermissions[key] = perm
+                })
+
+                displayPermissions()
+
+                // Initialize module selectors
+                initModuleSelectors()
+
+                // Populate copy role selects
+                populateRoleCopySelects()
+
+                // Render RBAC tables for initial selections
+                displayQmsApplicationsPermissions()
+                displayVpApplicationsPermissions()
+                displayToolsPermissions()
+
+                // default to features tab
+                setActiveTab('qmsApplications')
+
+            } catch (error) {
+                console.error('Error loading permissions:', error)
+            }
+        }
+
+        // Display permissions table
+        function displayPermissions() {
+            const table = document.getElementById('permissionsTable')
+            const tbody = document.getElementById('permissionsBody')
+
+            // Build header with roles
+            let headerHTML = '<tr><th style="min-width: 300px;">Feature</th>'
+            allRoles.forEach(role => {
+                headerHTML += `
+                    <th class="role-header">
+                        <div class="role-header-name">${role.role_name}</div>
+                    </th>
+                `
+            })
+            headerHTML += '</tr>'
+            table.querySelector('thead').innerHTML = headerHTML
+
+            // Build body with features
+            let bodyHTML = ''
+            allFeatures.forEach(feature => {
+                bodyHTML += `
+                    <tr>
+                        <td>
+                            <div class="feature-name">${feature.feature_name}</div>
+                            <div class="feature-desc">${feature.description || ''}</div>
+                            <span class="feature-category category-${feature.feature_category}">${feature.feature_category}</span>
+                        </td>
+                `
+
+                allRoles.forEach(role => {
+                    const key = `${role.id}_${feature.id}`
+                    const perm = currentPermissions[key]
+                    const isChecked = perm?.can_view ? 'checked' : ''
+
+                    bodyHTML += `
+                        <td class="checkbox-cell">
+                            <input type="checkbox" 
+                                   class="permission-checkbox" 
+                                   data-role-id="${role.id}" 
+                                   data-feature-id="${feature.id}"
+                                   ${isChecked}
+                                   onchange="updatePermission(this)">
+                        </td>
+                    `
+                })
+
+                bodyHTML += '</tr>'
+            })
+
+            tbody.innerHTML = bodyHTML
+        }
+
+        // Update single permission
+        async function updatePermission(checkbox) {
+            const roleId = checkbox.dataset.roleId
+            const featureId = checkbox.dataset.featureId
+            const canView = checkbox.checked
+
+            try {
+                const { data, error } = await supabase
+                    .from('role_permissions')
+                    .upsert({
+                        role_id: roleId,
+                        feature_id: featureId,
+                        can_view: canView,
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'role_id,feature_id'
+                    })
+
+                if (!error) {
+                    showSaveIndicator()
+                }
+
+            } catch (error) {
+                console.error('Error updating permission:', error)
+                checkbox.checked = !checkbox.checked // Revert on error
+            }
+        }
+
+        // Save all permissions
+        async function saveAllPermissions() {
+            const checkboxes = document.querySelectorAll('.permission-checkbox')
+            const updates = []
+
+            checkboxes.forEach(cb => {
+                updates.push({
+                    role_id: cb.dataset.roleId,
+                    feature_id: cb.dataset.featureId,
+                    can_view: cb.checked,
+                    updated_at: new Date().toISOString()
+                })
+            })
+
+            try {
+                const { error } = await supabase
+                    .from('role_permissions')
+                    .upsert(updates, {
+                        onConflict: 'role_id,feature_id'
+                    })
+
+                if (!error) {
+                    showSaveIndicator()
+                    alert('✓ All permissions saved successfully!')
+                }
+            } catch (error) {
+                console.error('Error saving permissions:', error)
+                alert('❌ Error saving permissions')
+            }
+        }
+
+        // Show save indicator
+        function showSaveIndicator() {
+            const indicator = document.getElementById('saveIndicator')
+            indicator.style.display = 'block'
+            setTimeout(() => {
+                indicator.style.display = 'none'
+            }, 2000)
+        }
+
+        // ================= RBAC (Applications/Tools) =================
+        function buildRBACTable(modules, tableId, tbodyId, scopeKey) {
+            const table = document.getElementById(tableId)
+            const tbody = document.getElementById(tbodyId)
+            if (!table || !tbody) return
+
+            // Header
+            let headerHTML = '<tr><th style="min-width:240px;">Action</th>'
+            allRoles.forEach(role => {
+                headerHTML += `
+                    <th class="role-header">
+                        <div class="role-header-name">${role.role_name}</div>
+                    </th>
+                `
+            })
+            headerHTML += '</tr>'
+            table.querySelector('thead').innerHTML = headerHTML
+
+            // Body
+            let bodyHTML = ''
+            modules.forEach(mod => {
+                ACTIONS.forEach(action => {
+                    bodyHTML += `<tr>
+                        <td>
+                            <div class="feature-name" style="text-transform:capitalize;">${action}</div>
+                            <div class="feature-desc">Grant ${action} permission for the selected module</div>
+                        </td>
+                    `
+                    allRoles.forEach(role => {
+                        const rp = rolesPermissions[role.id] || {}
+                        const scope = rp[scopeKey] || {}
+                        const modPerms = scope[mod.key] || {}
+                        const isChecked = !!modPerms[action]
+                        bodyHTML += `
+                            <td class="checkbox-cell">
+                                <input type="checkbox"
+                                       class="rbac-checkbox"
+                                       data-scope="${scopeKey}"
+                                       data-module="${mod.key}"
+                                       data-action="${action}"
+                                       data-role-id="${role.id}"
+                                       ${isChecked ? 'checked' : ''}
+                                       onchange="updateRBACPermission(this)">
+                            </td>
+                        `
+                    })
+                    bodyHTML += '</tr>'
+                })
+            })
+            tbody.innerHTML = bodyHTML
+        }
+
+        function displayQmsApplicationsPermissions() {
+            const mod = QMS_APPLICATIONS.find(m => m.key === selectedQmsAppKey) || QMS_APPLICATIONS[0]
+            if (!mod) return
+            buildRBACTable([mod], 'qmsApplicationsTable', 'qmsApplicationsBody', 'applications')
+        }
+
+        function displayVpApplicationsPermissions() {
+            const mod = VP_APPLICATIONS.find(m => m.key === selectedVpAppKey) || VP_APPLICATIONS[0]
+            if (!mod) return
+            buildRBACTable([mod], 'vpApplicationsTable', 'vpApplicationsBody', 'applications')
+        }
+
+        function displayToolsPermissions() {
+            const mod = TOOLS.find(m => m.key === selectedToolKey) || TOOLS[0]
+            buildRBACTable([mod], 'toolsTable', 'toolsBody', 'tools')
+        }
+
+        async function updateRBACPermission(checkbox) {
+            const roleId = checkbox.dataset.roleId
+            const scopeKey = checkbox.dataset.scope // 'applications' | 'tools'
+            const moduleKey = checkbox.dataset.module
+            const action = checkbox.dataset.action
+            const checked = checkbox.checked
+
+            try {
+                // Merge locally
+                const rp = rolesPermissions[roleId] || { applications: {}, tools: {} }
+                rp[scopeKey] = rp[scopeKey] || {}
+                rp[scopeKey][moduleKey] = rp[scopeKey][moduleKey] || {}
+                rp[scopeKey][moduleKey][action] = checked
+                rolesPermissions[roleId] = rp
+
+                // Persist to roles.permissions JSON
+                const { error } = await supabase
+                    .from('roles')
+                    .update({ permissions: rp, updated_at: new Date().toISOString() })
+                    .eq('id', roleId)
+
+                if (!error) {
+                    showSaveIndicator()
+                } else {
+                    checkbox.checked = !checked
+                }
+            } catch (e) {
+                console.error('Error updating role RBAC:', e)
+                checkbox.checked = !checked
+            }
+        }
+
+        async function saveAllRBACPermissions() {
+            const updates = Object.entries(rolesPermissions).map(([roleId, perms]) => ({
+                id: roleId,
+                permissions: perms,
+                updated_at: new Date().toISOString()
+            }))
+            if (!updates.length) return
+
+            try {
+                const { error } = await supabase
+                    .from('roles')
+                    .upsert(updates)
+                if (!error) showSaveIndicator()
+            } catch (e) {
+                console.error('Error saving RBAC permissions:', e)
+            }
+        }
+
+        // ================= Bulk grant/revoke: View for all roles on selected module =================
+        async function bulkSetModuleAction(scopeKey, moduleKey, action, value) {
+            try {
+                if (!action) throw new Error('No action selected')
+                // update local cache for every role
+                (allRoles || []).forEach(role => {
+                    const roleId = role.id
+                    const rp = rolesPermissions[roleId] || { applications: {}, tools: {} }
+                    rp[scopeKey] = rp[scopeKey] || {}
+                    rp[scopeKey][moduleKey] = rp[scopeKey][moduleKey] || {}
+                    rp[scopeKey][moduleKey][action] = !!value
+                    rolesPermissions[roleId] = rp
+                })
+
+                // persist in batch (conflict on id to ensure update path)
+                const updates = (allRoles || []).map(r => ({ id: r.id, permissions: rolesPermissions[r.id], updated_at: new Date().toISOString() }))
+                const { error } = await supabase.from('roles').upsert(updates, { onConflict: 'id' })
+                if (error) throw error
+                showSaveIndicator()
+            } catch (e) {
+                console.error('Bulk set action failed:', e)
+                alert('Error applying bulk change')
+            }
+        }
+
+        async function grantBulkQms(){
+            const modKey = selectedQmsAppKey || (QMS_APPLICATIONS[0] && QMS_APPLICATIONS[0].key)
+            const action = document.getElementById('qmsBulkActionSelect')?.value || 'view'
+            if (!modKey) return
+            await bulkSetModuleAction('applications', modKey, action, true)
+            displayQmsApplicationsPermissions()
+        }
+        async function revokeBulkQms(){
+            const modKey = selectedQmsAppKey || (QMS_APPLICATIONS[0] && QMS_APPLICATIONS[0].key)
+            const action = document.getElementById('qmsBulkActionSelect')?.value || 'view'
+            if (!modKey) return
+            await bulkSetModuleAction('applications', modKey, action, false)
+            displayQmsApplicationsPermissions()
+        }
+
+        async function grantBulkVp(){
+            const modKey = selectedVpAppKey || (VP_APPLICATIONS[0] && VP_APPLICATIONS[0].key)
+            const action = document.getElementById('vpBulkActionSelect')?.value || 'view'
+            if (!modKey) return
+            await bulkSetModuleAction('applications', modKey, action, true)
+            displayVpApplicationsPermissions()
+        }
+        async function revokeBulkVp(){
+            const modKey = selectedVpAppKey || (VP_APPLICATIONS[0] && VP_APPLICATIONS[0].key)
+            const action = document.getElementById('vpBulkActionSelect')?.value || 'view'
+            if (!modKey) return
+            await bulkSetModuleAction('applications', modKey, action, false)
+            displayVpApplicationsPermissions()
+        }
+
+        async function grantBulkTools(){
+            const modKey = selectedToolKey || (TOOLS[0] && TOOLS[0].key)
+            const action = document.getElementById('toolBulkActionSelect')?.value || 'view'
+            if (!modKey) return
+            await bulkSetModuleAction('tools', modKey, action, true)
+            displayToolsPermissions()
+        }
+        async function revokeBulkTools(){
+            const modKey = selectedToolKey || (TOOLS[0] && TOOLS[0].key)
+            const action = document.getElementById('toolBulkActionSelect')?.value || 'view'
+            if (!modKey) return
+            await bulkSetModuleAction('tools', modKey, action, false)
+            displayToolsPermissions()
+        }
+
+        // Tabs switching
+        function setActiveTab(name) {
+            const featureGrid = document.getElementById('featureGrid')
+            const qmsGrid = document.getElementById('qmsApplicationsGrid')
+            const vpGrid = document.getElementById('vpApplicationsGrid')
+            const toolsGrid = document.getElementById('toolsGrid')
+            const tabs = {
+                features: document.getElementById('tabFeatures'),
+                qmsApplications: document.getElementById('tabQmsApps'),
+                vpApplications: document.getElementById('tabVpApps'),
+                tools: document.getElementById('tabTools')
+            }
+            featureGrid.style.display = name === 'features' ? 'block' : 'none'
+            qmsGrid.style.display = name === 'qmsApplications' ? 'block' : 'none'
+            vpGrid.style.display = name === 'vpApplications' ? 'block' : 'none'
+            toolsGrid.style.display = name === 'tools' ? 'block' : 'none'
+            Object.keys(tabs).forEach(k => {
+                if (k === name) {
+                    tabs[k].classList.remove('btn-secondary')
+                    tabs[k].classList.add('btn-primary')
+                } else {
+                    tabs[k].classList.remove('btn-primary')
+                    tabs[k].classList.add('btn-secondary')
+                }
+            })
+        }
+        function switchTab(name) { setActiveTab(name) }
+
+        function initModuleSelectors() {
+            const qmsSel = document.getElementById('qmsModuleSelect')
+            const vpSel = document.getElementById('vpModuleSelect')
+            const toolSel = document.getElementById('toolModuleSelect')
+            if (QMS_APPLICATIONS.length) {
+                selectedQmsAppKey = selectedQmsAppKey || QMS_APPLICATIONS[0].key
+                if (qmsSel) qmsSel.innerHTML = QMS_APPLICATIONS.map(m => `<option value="${m.key}" ${m.key===selectedQmsAppKey?'selected':''}>${m.name}</option>`).join('')
+            }
+            if (VP_APPLICATIONS.length) {
+                selectedVpAppKey = selectedVpAppKey || VP_APPLICATIONS[0].key
+                if (vpSel) vpSel.innerHTML = VP_APPLICATIONS.map(m => `<option value="${m.key}" ${m.key===selectedVpAppKey?'selected':''}>${m.name}</option>`).join('')
+            }
+            if (TOOLS.length) {
+                selectedToolKey = selectedToolKey || TOOLS[0].key
+                toolSel.innerHTML = TOOLS.map(m => `<option value="${m.key}" ${m.key===selectedToolKey?'selected':''}>${m.name}</option>`).join('')
+            }
+        }
+
+        function handleQmsModuleChange(e) {
+            selectedQmsAppKey = e.target.value
+            displayQmsApplicationsPermissions()
+        }
+
+        function handleVpModuleChange(e) {
+            selectedVpAppKey = e.target.value
+            displayVpApplicationsPermissions()
+        }
+
+        function handleToolModuleChange(e) {
+            selectedToolKey = e.target.value
+            displayToolsPermissions()
+        }
+
+        function populateRoleCopySelects() {
+            const src = document.getElementById('copySourceRole')
+            const tgt = document.getElementById('copyTargetRole')
+            const opts = (allRoles || []).map(r => `<option value="${r.id}">${r.role_name}</option>`).join('')
+            src.innerHTML = `<option value="">Source role…</option>` + opts
+            tgt.innerHTML = `<option value="">Target role…</option>` + opts
+        }
+
+        async function copyRoleMatrix() {
+            const src = document.getElementById('copySourceRole').value
+            const tgt = document.getElementById('copyTargetRole').value
+            if (!src || !tgt) { alert('Select both source and target roles'); return }
+            if (src === tgt) { alert('Source and target cannot be the same'); return }
+
+            try {
+                const srcPerms = rolesPermissions[src] || { applications: {}, tools: {} }
+                const tgtPerms = rolesPermissions[tgt] || { applications: {}, tools: {} }
+                // Deep copy apps/tools
+                tgtPerms.applications = JSON.parse(JSON.stringify(srcPerms.applications || {}))
+                tgtPerms.tools = JSON.parse(JSON.stringify(srcPerms.tools || {}))
+
+                const { error } = await supabase
+                    .from('roles')
+                    .update({ permissions: tgtPerms, updated_at: new Date().toISOString() })
+                    .eq('id', tgt)
+
+                if (error) throw error
+
+                rolesPermissions[tgt] = tgtPerms
+                showSaveIndicator()
+                // Re-render in case target is visible
+                displayQmsApplicationsPermissions()
+                displayVpApplicationsPermissions()
+                displayToolsPermissions()
+                alert('✓ Role matrix copied')
+            } catch (e) {
+                console.error('Error copying role matrix:', e)
+                alert('❌ Error copying role matrix')
+            }
+        }
+
+        // Wrapper for the main save button
+        async function saveAllChanges() {
+            await saveAllPermissions() // features
+            await saveAllRBACPermissions() // applications/tools
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadPermissions)
+    </script>
+
+    <!-- Manage Roles Modal -->
+    <div id="roleModal" class="modal" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-labelledby="roleModalTitle">
+            <div class="modal-head">
+                <span id="roleModalTitle" class="modal-title">Manage Roles</span>
+                <button class="icon-btn" aria-label="Close" onclick="closeRoleModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="pill-tabs">
+                    <button id="roleTabCreate" class="pill active" onclick="setRoleTab('create')">Create Role</button>
+                    <button id="roleTabEdit" class="pill" onclick="setRoleTab('edit')">Edit Role</button>
+                </div>
+
+                <!-- Create Role -->
+                <section id="roleCreateSection" class="modal-section active">
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Role Name</label>
+                            <input id="newRoleName" class="input" placeholder="e.g., Validation Lead">
+                        </div>
+                        <div class="field">
+                            <label>Description</label>
+                            <input id="newRoleDesc" class="input" placeholder="Optional description">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Start from template (optional)</label>
+                        <select id="newRoleTemplate" class="select"></select>
+                        <small style="color:#64748b;">Copies feature access and Applications/Tools permissions from the selected role</small>
+                    </div>
+                    <div class="checkbox-row"><input id="newRoleActive" type="checkbox" checked> <span class="label-sm">Active</span></div>
+                    <div class="modal-actions" style="padding:0;">
+                        <button class="btn btn-primary btn-compact" onclick="createRole()">Create</button>
+                    </div>
+                </section>
+
+                <!-- Edit Role -->
+                <section id="roleEditSection" class="modal-section">
+                    <div class="role-grid">
+                        <div class="grid-2">
+                            <div class="field">
+                                <label>Search</label>
+                                <input id="roleSearch" class="input" placeholder="Type to filter roles" oninput="filterRoleSelect()">
+                            </div>
+                            <div class="field">
+                                <label>Select Role</label>
+                                <select id="editRoleSelect" class="select" onchange="prefillEditRole()"></select>
+                            </div>
+                        </div>
+                        <div class="grid-2" style="margin-top:10px;">
+                            <div class="field">
+                                <label>Role Name</label>
+                                <input id="editRoleName" class="input">
+                            </div>
+                            <div class="field">
+                                <label>Description</label>
+                                <input id="editRoleDesc" class="input">
+                            </div>
+                        </div>
+                        <div class="checkbox-row" style="margin-top:6px;"><input id="editRoleActive" type="checkbox"> <span class="label-sm">Active</span></div>
+                        <div class="modal-actions" style="padding:0;margin-top:8px;">
+                            <button class="btn btn-secondary btn-compact" onclick="resetEditRole()">Reset</button>
+                            <button class="btn btn-primary btn-compact" onclick="updateRole()">Save</button>
+                            <button class="btn btn-secondary btn-compact" style="margin-left:auto;" onclick="deactivateRole()">Deactivate</button>
+                            <button class="btn btn-secondary btn-compact" style="border-color:#fecaca;color:#b91c1c;background:#fff;" onclick="deleteRoleHard()">Delete</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openRoleModal(){
+            const modal = document.getElementById('roleModal')
+            modal.classList.add('active')
+            setRoleTab('create')
+            // populate edit select
+            const sel = document.getElementById('editRoleSelect')
+            sel.innerHTML = '<option value="">Select...</option>' + (allRoles||[]).map(r=>`<option value="${r.id}">${r.role_name}</option>`).join('')
+            // populate create template select
+            const tmplSel = document.getElementById('newRoleTemplate')
+            tmplSel.innerHTML = '<option value="">— None —</option>' + (allRoles||[]).map(r=>`<option value="${r.id}">${r.role_name}</option>`).join('')
+            resetEditRole()
+            modal.setAttribute('aria-hidden','false')
+            // esc to close
+            window.addEventListener('keydown', escCloseHandler)
+        }
+        function escCloseHandler(e){ if (e.key === 'Escape') closeRoleModal() }
+        function closeRoleModal(){ 
+            document.getElementById('roleModal').classList.remove('active')
+            document.getElementById('roleModal').setAttribute('aria-hidden','true')
+            window.removeEventListener('keydown', escCloseHandler)
+        }
+
+        function setRoleTab(name){
+            const createBtn = document.getElementById('roleTabCreate')
+            const editBtn = document.getElementById('roleTabEdit')
+            const createSec = document.getElementById('roleCreateSection')
+            const editSec = document.getElementById('roleEditSection')
+            const isCreate = name === 'create'
+            createBtn.classList.toggle('active', isCreate)
+            editBtn.classList.toggle('active', !isCreate)
+            createSec.classList.toggle('active', isCreate)
+            editSec.classList.toggle('active', !isCreate)
+        }
+
+        function filterRoleSelect(){
+            const q = (document.getElementById('roleSearch').value || '').toLowerCase()
+            const sel = document.getElementById('editRoleSelect')
+            const opts = (allRoles||[])
+                .filter(r => r.role_name?.toLowerCase().includes(q))
+                .map(r=>`<option value="${r.id}">${r.role_name}</option>`)
+                .join('')
+            sel.innerHTML = '<option value="">Select...</option>' + opts
+        }
+
+        async function getUserIP(){
+            try{ const r = await fetch('https://api.ipify.org?format=json'); const j = await r.json(); return j.ip }catch{ return 'Unknown' }
+        }
+        async function logRoleAudit({action, roleId=null, oldValue=null, newValue=null, comments=null}){
+            try{
+                await supabase.from('audit_trail_log').insert({
+                    audit_id: 'Role',
+                    entity_id: roleId,
+                    action,
+                    field_changed: null,
+                    old_value: oldValue ? JSON.stringify(oldValue) : null,
+                    new_value: newValue ? JSON.stringify(newValue) : null,
+                    changed_by: currentUserEmail,
+                    changed_at: new Date().toISOString(),
+                    comments,
+                    ip_address: await getUserIP()
+                })
+            }catch(e){ console.error('Audit trail insert failed', e) }
+        }
+
+        async function createRole(){
+            const name = document.getElementById('newRoleName').value?.trim()
+            const desc = document.getElementById('newRoleDesc').value?.trim() || null
+            const active = document.getElementById('newRoleActive').checked
+            const templateId = document.getElementById('newRoleTemplate').value || null
+            if (!name) { alert('Role name is required'); return }
+            // check duplicate
+            const { data: existing } = await supabase.from('roles').select('id, role_name').ilike('role_name', name).limit(1)
+            if (existing && existing.length){ alert('A role with this name already exists'); return }
+            // base permissions (clone if template chosen)
+            const basePerms = templateId ? (rolesPermissions[templateId] || { applications:{}, tools:{} }) : { applications:{}, tools:{} }
+            const payload = { role_name: name, description: desc, is_active: active, permissions: basePerms }
+            const { data, error } = await supabase.from('roles').insert([payload]).select('*').limit(1)
+            if (error){ alert('Error creating role'); console.error(error); return }
+            const newRole = data[0]
+            // If template selected, copy feature permissions too
+            if (templateId){
+                try{
+                    const { data: featPerms } = await supabase
+                        .from('role_permissions')
+                        .select('feature_id, can_view')
+                        .eq('role_id', templateId)
+                    const rows = (featPerms||[]).map(fp => ({ role_id: newRole.id, feature_id: fp.feature_id, can_view: fp.can_view, updated_at: new Date().toISOString() }))
+                    if (rows.length){ await supabase.from('role_permissions').upsert(rows, { onConflict: 'role_id,feature_id' }) }
+                }catch(e){ console.warn('Template feature copy failed', e) }
+            }
+            await logRoleAudit({ action: 'Role Created', roleId: newRole.id, newValue: payload, comments: templateId ? `Created from template role ${templateId}` : null })
+            showSaveIndicator(); closeRoleModal(); await loadPermissions()
+        }
+
+        function prefillEditRole(){
+            const id = document.getElementById('editRoleSelect').value
+            const r = (allRoles||[]).find(x=>String(x.id)===String(id))
+            document.getElementById('editRoleName').value = r?.role_name || ''
+            document.getElementById('editRoleDesc').value = r?.description || ''
+            document.getElementById('editRoleActive').checked = !!r?.is_active
+        }
+        function resetEditRole(){
+            document.getElementById('editRoleSelect').value = ''
+            document.getElementById('editRoleName').value = ''
+            document.getElementById('editRoleDesc').value = ''
+            document.getElementById('editRoleActive').checked = true
+        }
+        async function updateRole(){
+            const id = document.getElementById('editRoleSelect').value
+            if (!id){ alert('Select a role to edit'); return }
+            const before = (allRoles||[]).find(x=>String(x.id)===String(id)) || null
+            const name = document.getElementById('editRoleName').value?.trim()
+            const desc = document.getElementById('editRoleDesc').value?.trim() || null
+            const active = document.getElementById('editRoleActive').checked
+            if (!name){ alert('Role name is required'); return }
+            // prevent duplicate name to other roles
+            const { data: dup } = await supabase.from('roles').select('id, role_name').ilike('role_name', name)
+            const conflict = (dup||[]).find(x=>String(x.id)!==String(id))
+            if (conflict){ alert('Another role with this name already exists'); return }
+            const payload = { role_name: name, description: desc, is_active: active, updated_at: new Date().toISOString() }
+            const { error } = await supabase.from('roles').update(payload).eq('id', id)
+            if (error){ alert('Error updating role'); console.error(error); return }
+            await logRoleAudit({ action: 'Role Updated', roleId: id, oldValue: before, newValue: payload })
+            showSaveIndicator(); closeRoleModal(); await loadPermissions()
+        }
+
+        async function deactivateRole(){
+            const id = document.getElementById('editRoleSelect').value
+            if (!id){ alert('Select a role to deactivate'); return }
+            const before = (allRoles||[]).find(x=>String(x.id)===String(id)) || null
+            if (!confirm('Deactivate this role? Users will retain assignments but role becomes inactive.')) return
+            const { error } = await supabase.from('roles').update({ is_active: false, updated_at: new Date().toISOString() }).eq('id', id)
+            if (error){ alert('Error deactivating role'); console.error(error); return }
+            await logRoleAudit({ action: 'Role Deactivated', roleId: id, oldValue: before, newValue: { is_active:false } })
+            showSaveIndicator(); closeRoleModal(); await loadPermissions()
+        }
+
+        async function deleteRoleHard(){
+            const id = document.getElementById('editRoleSelect').value
+            if (!id){ alert('Select a role to delete'); return }
+            // Block if assigned to any user
+            const { data: refs, error: refErr } = await supabase.from('user_roles').select('id').eq('role_id', id).limit(1)
+            if (refErr){ alert('Error checking assignments'); console.error(refErr); return }
+            if (refs && refs.length){
+                alert('Role is assigned to users and cannot be hard-deleted. Consider deactivating instead.')
+                return
+            }
+            if (!confirm('This will permanently delete the role and its feature permissions. Continue?')) return
+            // delete feature perms first
+            await supabase.from('role_permissions').delete().eq('role_id', id)
+            // fetch before for audit
+            const before = (allRoles||[]).find(x=>String(x.id)===String(id)) || null
+            const { error } = await supabase.from('roles').delete().eq('id', id)
+            if (error){ alert('Error deleting role'); console.error(error); return }
+            await logRoleAudit({ action: 'Role Deleted', roleId: id, oldValue: before, newValue: null })
+            showSaveIndicator(); closeRoleModal(); await loadPermissions()
+        }
+    </script>
+</body>
+</html>
