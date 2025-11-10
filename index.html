@@ -1583,6 +1583,9 @@
       <a href="admin-users.html" class="admin-only" style="display: none;">
         Manage Users
       </a>
+      <a href="demo-requests.html" id="demoRequestsNav" class="admin-only" style="display:none;">
+        Demo Requests
+      </a>
       <a href="#about">About</a>
     </nav>
 
@@ -1680,6 +1683,8 @@
         <h1>Simplify Validation.<br>Strengthen Quality.<br>Accelerate Compliance.</h1>
         <p class="lead">ValQMS empowers Life Sciences organizations with various tools which aid in validation, automation, and regulatory compliance.</p>
         <div class="cta-group">
+          <a href="javascript:void(0)" onclick="openDemoModal()" class="cta"><span>📅 Book a Demo</span></a>
+          <a href="#validation" class="cta cta-secondary"><span>Explore Platform</span></a>
         </div>
       </div>
     </section>
@@ -2220,6 +2225,18 @@
       }
 
        await displayUserRole()  // ← ADD THIS!
+      // Load role via AccessControl and reveal admin-only items if admin
+      try {
+        await AccessControl.init({ supabase: sb })
+  const roleName = (AccessControl.role || '').toString().toUpperCase()
+  const isAdmin = roleName === 'SYSTEM ADMIN' || roleName === 'ADMIN' || AccessControl.permissions?.all === true
+        if (isAdmin) {
+          document.querySelectorAll('.admin-only').forEach(el => { el.style.display='inline-block' })
+          const demoNav = document.getElementById('demoRequestsNav')
+          if (demoNav) demoNav.style.display='inline-block'
+          initDemoWidget()
+        }
+      } catch(e){ console.warn('Admin link init failed', e) }
       
       // Save to localStorage
       localStorage.setItem('valqmsUser', JSON.stringify({
@@ -2232,6 +2249,42 @@
       }));
     }
   })();
+
+  // Admin demo widget logic (recent demo requests summary)
+  async function initDemoWidget(){
+    let widget = document.getElementById('adminDemoWidget')
+    if (!widget){
+      widget = document.createElement('section')
+      widget.id = 'adminDemoWidget'
+      widget.style.cssText = 'padding:40px 0'
+      widget.innerHTML = `<div class=\"container\" style=\"max-width:1100px;\">\n        <div style=\"display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;\">\n          <h3 style=\"margin:0;font-size:24px;font-weight:800;color:#0f172a;letter-spacing:-0.5px;\">Recent Demo Requests</h3>\n          <a href=\"demo-requests.html\" style=\"text-decoration:none;font-size:13px;font-weight:700;padding:8px 14px;background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;color:#0f172a;\">View All →</a>\n        </div>\n        <div id=\"demoWidgetBody\" style=\"display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;\"></div>\n      </div>`
+      const hero = document.querySelector('.hero')
+      if (hero && hero.parentElement){ hero.parentElement.insertBefore(widget, hero.nextSibling) }
+    }
+    loadRecentDemoRequests()
+  }
+
+  async function loadRecentDemoRequests(){
+    const body = document.getElementById('demoWidgetBody')
+    if (!body) return
+    body.innerHTML = '<div style="grid-column:1/-1;font-size:13px;color:#64748b;">Loading…</div>'
+    const { data, error } = await sb.from('demo_requests').select('*').order('created_at', { ascending:false }).limit(5)
+    if (error){ body.innerHTML = `<div style='grid-column:1/-1;color:#dc2626;font-size:13px;'>Error: ${error.message}</div>`; return }
+    if (!data.length){ body.innerHTML = '<div style="grid-column:1/-1;font-size:13px;color:#64748b;">No demo requests yet.</div>'; return }
+    body.innerHTML = data.map(r => demoCard(r)).join('')
+  }
+
+  function demoCard(r){
+    const statusColor = {
+      pending: 'background:rgba(234,179,8,0.15);color:#92400e;',
+      contacted: 'background:rgba(59,130,246,0.15);color:#1e3a8a;',
+      scheduled: 'background:rgba(16,185,129,0.15);color:#065f46;',
+      closed: 'background:#f1f5f9;color:#0f172a;'
+    }[r.status||'pending']
+    return `<div style=\"border:1px solid #e5e7eb;border-radius:12px;padding:14px;background:#ffffff;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 2px rgba(15,23,42,0.06);\">\n      <div style=\"display:flex;justify-content:space-between;align-items:center;gap:8px;\">\n        <div style=\"font-weight:700;font-size:14px;color:#0f172a;\">${escapeHtml(r.name)}</div>\n        <div style=\"font-size:10px;padding:4px 8px;border-radius:999px;font-weight:700;${statusColor}\">${(r.status||'pending').toUpperCase()}</div>\n      </div>\n      <div style=\"font-size:12px;color:#475569;word-break:break-word;\">${escapeHtml(r.company||'')}</div>\n      <a href=\"mailto:${escapeHtml(r.email)}\" style=\"font-size:12px;color:#0f172a;text-decoration:none;font-weight:600;\">${escapeHtml(r.email)}</a>\n      <div style=\"font-size:11px;color:#64748b;\">${escapeHtml(r.message||'No message')}</div>\n      <div style=\"font-size:10px;color:#64748b;\">${new Date(r.created_at).toLocaleString()}</div>\n    </div>`
+  }
+
+  function escapeHtml(v){ return (v||'').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
 
   // Initialize theme FIRST
   const savedTheme = localStorage.getItem('valqmsTheme') || 'green';
@@ -3674,6 +3727,114 @@ sb.auth.getSession().then(({ data: { session } }) => {
   </div>
 </div>
 
+<!-- Book a Demo Modal -->
+<div id="bookDemoModal" class="payment-modal">
+  <div class="modal-box" style="max-width: 500px; background: #ffffff; color: #0f172a;">
+    <button class="modal-close" onclick="closeDemoModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #64748b; line-height: 1;">&times;</button>
+    <h2 style="color: #0f172a; margin-bottom: 8px;">📅 Book a Demo</h2>
+    <p style="color: #64748b; margin-bottom: 24px; font-size: 15px;">Schedule a personalized demo with our team</p>
+    
+    <form id="demoForm" onsubmit="submitDemoRequest(event)" style="text-align: left;">
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; margin-bottom: 6px; color: #0f172a; font-weight: 600; font-size: 14px;">Full Name *</label>
+        <input type="text" id="demoName" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; background: #ffffff; color: #0f172a;" placeholder="John Doe">
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; margin-bottom: 6px; color: #0f172a; font-weight: 600; font-size: 14px;">Work Email *</label>
+        <input type="email" id="demoEmail" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; background: #ffffff; color: #0f172a;" placeholder="you@company.com">
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; margin-bottom: 6px; color: #0f172a; font-weight: 600; font-size: 14px;">Company Name *</label>
+        <input type="text" id="demoCompany" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; background: #ffffff; color: #0f172a;" placeholder="Your Company">
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; margin-bottom: 6px; color: #0f172a; font-weight: 600; font-size: 14px;">Phone Number</label>
+        <input type="tel" id="demoPhone" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; background: #ffffff; color: #0f172a;" placeholder="+1 (555) 000-0000">
+      </div>
+      
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; margin-bottom: 6px; color: #0f172a; font-weight: 600; font-size: 14px;">Job Title</label>
+        <input type="text" id="demoTitle" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; background: #ffffff; color: #0f172a;" placeholder="Quality Manager">
+      </div>
+      
+      <div style="margin-bottom: 24px;">
+        <label style="display: block; margin-bottom: 6px; color: #0f172a; font-weight: 600; font-size: 14px;">Message</label>
+        <textarea id="demoMessage" rows="3" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 15px; font-family: inherit; resize: vertical; background: #ffffff; color: #0f172a;" placeholder="Tell us about your validation needs..."></textarea>
+      </div>
+      
+      <button type="submit" class="cta" style="width: 100%; justify-content: center;">
+        <span>Submit Request</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+// Open demo modal
+window.openDemoModal = function() {
+  document.getElementById('bookDemoModal').classList.add('active');
+};
+
+// Close demo modal
+window.closeDemoModal = function() {
+  document.getElementById('bookDemoModal').classList.remove('active');
+};
+
+// Submit demo request
+window.submitDemoRequest = async function(event) {
+  event.preventDefault();
+  
+  const formData = {
+    name: document.getElementById('demoName').value,
+    email: document.getElementById('demoEmail').value,
+    company: document.getElementById('demoCompany').value,
+    phone: document.getElementById('demoPhone').value || null,
+    title: document.getElementById('demoTitle').value || null,
+    message: document.getElementById('demoMessage').value || null,
+    created_at: new Date().toISOString()
+  };
+  
+  try {
+    // Check if user is authenticated
+    const { data: { session } } = await sb.auth.getSession();
+    
+    // Save to Supabase
+    const { data, error } = await sb
+      .from('demo_requests')
+      .insert([formData])
+      .select();
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
+    
+    console.log('Demo request saved:', data);
+    
+    // Show success
+    alert('✅ Thank you! Your demo request has been submitted. Our team will contact you within 24 hours.');
+    
+    // Close modal and reset form
+    closeDemoModal();
+    document.getElementById('demoForm').reset();
+    
+  } catch (error) {
+    console.error('Error submitting demo request:', error);
+    
+    // Detailed error message
+    let errorMsg = '❌ There was an error submitting your request.\n\n';
+    if (error.message.includes('relation') || error.message.includes('does not exist')) {
+      errorMsg += 'Database table not found. Please contact the administrator.\n\n';
+    }
+    errorMsg += `Error: ${error.message}\n\nPlease email us directly at demo@valqms.com`;
+    
+    alert(errorMsg);
+  }
+};
+</script>
 
 
 </body>

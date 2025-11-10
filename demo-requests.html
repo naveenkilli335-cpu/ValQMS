@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" data-bg="mint">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Requests | ValQMS Admin</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" href="valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --text:#0f172a;--text-dim:#475569;--surface:#ffffff;--border:#e5e7eb;--accent:#10b981;--accent-bright:#34d399;--accent-glow:rgba(16,185,129,0.25)
+    }
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f0fdf4;color:var(--text);margin:0;min-height:100vh}
+    header{position:sticky;top:0;background:#0f172a;color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;z-index:10}
+    header .title{font-weight:800;letter-spacing:-0.4px}
+    header .actions a{color:#0f172a;background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 12px;text-decoration:none;font-weight:700}
+    .container{max-width:1200px;margin:24px auto;padding:0 16px}
+    .admin-guard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:0 4px 14px rgba(15,23,42,0.08)}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;background:#ffffff;border:1px solid var(--border);border-radius:12px;padding:12px;box-shadow:0 4px 14px rgba(15,23,42,0.06)}
+    .toolbar input,.toolbar select{padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;color:var(--text)}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#0f172a;font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-bright));color:#000;border:none;box-shadow:0 8px 20px var(--accent-glow)}
+    table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
+  thead th{position:sticky;top:0;background:#e7f7ef;color:#0f172a;text-align:left;padding:12px;border-bottom:1px solid #d1fae5;font-size:13px;font-weight:800;letter-spacing:.02em;z-index:1}
+    tbody td{padding:12px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0f172a;vertical-align:top}
+  tbody tr:nth-child(even){background:#f6fbf8}
+  tbody tr:hover{background:#edf9f3}
+    .status{padding:4px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#ffffff;font-weight:700;font-size:12px}
+    .status[data-val="pending"]{background:rgba(234,179,8,0.12);border-color:rgba(234,179,8,0.35);color:#7c2d12}
+    .status[data-val="contacted"]{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.35);color:#1e3a8a}
+    .status[data-val="scheduled"]{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#065f46}
+    .status[data-val="closed"]{background:rgba(2,6,23,0.08);border-color:#cbd5e1;color:#0f172a}
+    .pagination{display:flex;gap:8px;align-items:center;margin-top:12px}
+    .muted{color:#64748b;font-size:12px}
+    .nowrap{white-space:nowrap}
+    .w-200{max-width:200px}
+    /* Toast notifications */
+    .toast{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:1000}
+    .toast-message{padding:10px 12px;border-radius:10px;border:1px solid #e5e7eb;background:#ffffff;box-shadow:0 8px 20px rgba(15,23,42,0.08);font-weight:600;color:#0f172a}
+    .toast-message.success{border-color:rgba(16,185,129,0.45);background:rgba(16,185,129,0.12);color:#065f46}
+    .toast-message.error{border-color:#fecaca;background:#fff1f2;color:#7f1d1d}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title">📋 Demo Requests (Admin)</div>
+    <div class="actions"><a href="index.html">Back to Home</a></div>
+  </header>
+
+  <div class="container">
+    <div id="guard" class="admin-guard" style="display:none"></div>
+
+    <div id="content" style="display:none">
+      <div class="toolbar">
+        <input id="q" type="search" placeholder="Search name, email, company, message" style="flex:1;min-width:220px">
+        <select id="statusFilter">
+          <option value="">All Statuses</option>
+          <option>pending</option>
+          <option>contacted</option>
+          <option>scheduled</option>
+          <option>closed</option>
+        </select>
+        <input id="from" type="date">
+        <input id="to" type="date">
+        <button class="btn" id="refreshBtn">Refresh</button>
+        <button class="btn" id="exportBtn">Export CSV</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Company</th>
+            <th>Phone</th>
+            <th>Title</th>
+            <th class="w-200">Message</th>
+            <th>Created</th>
+            <th>Status</th>
+            <th>Owner</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr><td colspan="10" class="muted">Loading…</td></tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <button class="btn" id="prev">Prev</button>
+        <span id="pageInfo" class="muted"></span>
+        <button class="btn" id="next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/access-control.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co'
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY'
+    const { createClient } = supabase
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+    let page = 1, pageSize = 20, total = 0
+
+    const guard = document.getElementById('guard')
+    const content = document.getElementById('content')
+    const rowsEl = document.getElementById('rows')
+
+    function fmtDate(iso){ try{ return new Date(iso).toLocaleString() }catch{ return iso || '' } }
+
+    function setGuard(msg){ guard.style.display='block'; guard.innerHTML = msg }
+
+    async function ensureAdmin(){
+      const { data: { session } } = await sb.auth.getSession()
+      if (!session){ window.location.href = 'login.html'; return false }
+      await AccessControl.init({ supabase: sb })
+      const role = AccessControl.role
+      const roleName = (role||'').toString().trim().toUpperCase()
+      const isAdmin = roleName === 'SYSTEM ADMIN' || roleName === 'ADMIN' || AccessControl.permissions?.all === true
+      if (!isAdmin){
+        setGuard('<strong>403:</strong> You do not have access to this page. Please contact your administrator.')
+        return false
+      }
+      guard.style.display='none'; content.style.display='block'
+      return true
+    }
+
+    function buildQuery(){
+      const q = document.getElementById('q').value.trim()
+      const status = document.getElementById('statusFilter').value
+      const from = document.getElementById('from').value
+      const to = document.getElementById('to').value
+      return { q, status, from, to }
+    }
+
+    async function loadData(){
+      rowsEl.innerHTML = '<tr><td colspan="10" class="muted">Loading…</td></tr>'
+      const { q, status, from, to } = buildQuery()
+      let query = sb.from('demo_requests').select('*', { count: 'exact' })
+      if (status) query = query.eq('status', status)
+      if (from) query = query.gte('created_at', new Date(from).toISOString())
+      if (to) {
+        const toEnd = new Date(to); toEnd.setHours(23,59,59,999)
+        query = query.lte('created_at', toEnd.toISOString())
+      }
+      if (q){
+        // OR filter via text search across fields
+        query = query.or(
+          `name.ilike.%${q}%,email.ilike.%${q}%,company.ilike.%${q}%,message.ilike.%${q}%`
+        )
+      }
+      query = query.order('created_at', { ascending: false })
+      const fromIdx = (page-1)*pageSize
+      const toIdx = fromIdx + pageSize - 1
+      query = query.range(fromIdx, toIdx)
+
+      const { data, count, error } = await query
+      if (error){
+        rowsEl.innerHTML = `<tr><td colspan="10" class="muted">Error: ${error.message}</td></tr>`
+        return
+      }
+      total = count || 0
+      renderRows(data || [])
+      document.getElementById('pageInfo').textContent = `Page ${page} • ${total} total`
+    }
+
+    function renderRows(items){
+      if (!items.length){ rowsEl.innerHTML = '<tr><td colspan="10" class="muted">No results</td></tr>'; return }
+      rowsEl.innerHTML = items.map(r => `
+        <tr>
+          <td>${esc(r.name)}</td>
+          <td><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
+          <td>${esc(r.company)}</td>
+          <td class="nowrap">${esc(r.phone || '')}</td>
+          <td>${esc(r.title || '')}</td>
+          <td class="w-200">${esc(r.message || '')}</td>
+          <td class="nowrap">${fmtDate(r.created_at)}</td>
+          <td>
+            <select class="status" data-id="${r.id}" onchange="updateStatus(this)" data-val="${r.status || 'pending'}">
+              ${['pending','contacted','scheduled','closed'].map(s => `<option ${s===(r.status||'pending')?'selected':''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td><input class="ownerInput" data-id="${r.id}" value="${esc(r.owner || '')}" placeholder="Owner" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px"></td>
+          <td>
+            <button class="btn" onclick="saveOwner(this)" data-id="${r.id}">Save</button>
+            <button class="btn" onclick="addNote('${r.id}')">Note</button>
+          </td>
+        </tr>
+      `).join('')
+    }
+
+    function esc(v){ return (v||'').toString().replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s])) }
+
+    // Toast helper
+    function showToast(message, type='success'){
+      const wrap = document.getElementById('toast')
+      const el = document.createElement('div')
+      el.className = `toast-message ${type}`
+      el.textContent = message
+      wrap.appendChild(el)
+      setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; }, 10)
+      setTimeout(() => { wrap.removeChild(el) }, 1800)
+    }
+
+    window.updateStatus = async function(sel){
+      const id = sel.getAttribute('data-id')
+      const status = sel.value
+      sel.disabled = true
+      const { error } = await sb.from('demo_requests').update({ status }).eq('id', id)
+      sel.disabled = false
+      if (error){ alert('Update failed: '+error.message); return }
+      sel.setAttribute('data-val', status)
+      showToast(`Status updated to "${status}"`,'success')
+    }
+
+    window.saveOwner = async function(btn){
+      const id = btn.getAttribute('data-id')
+      const input = btn.parentElement.parentElement.querySelector('.ownerInput')
+      const prev = btn.textContent
+      btn.disabled = true; btn.textContent = 'Saving…'
+      const { error } = await sb.from('demo_requests').update({ owner: input.value || null }).eq('id', id)
+      btn.disabled = false
+      if (error){ btn.textContent = prev; alert('Owner update failed: '+error.message); showToast('Owner update failed','error'); return }
+      btn.textContent = 'Saved ✓'
+      showToast('Owner updated','success')
+      setTimeout(()=>{ btn.textContent = prev }, 1200)
+    }
+
+    window.addNote = async function(id){
+      const note = prompt('Add note for this request:')
+      if (note === null) return
+      const { error } = await sb.from('demo_requests').update({ notes: note }).eq('id', id)
+      if (error){ alert('Note update failed: '+error.message); showToast('Note update failed','error') }
+      else { showToast('Note saved','success') }
+    }
+
+    document.getElementById('refreshBtn').onclick = () => { page = 1; loadData() }
+    document.getElementById('exportBtn').onclick = exportCSV
+    document.getElementById('q').oninput = debounce(() => { page = 1; loadData() }, 300)
+    document.getElementById('statusFilter').onchange = () => { page = 1; loadData() }
+    document.getElementById('from').onchange = () => { page = 1; loadData() }
+    document.getElementById('to').onchange = () => { page = 1; loadData() }
+    document.getElementById('prev').onclick = () => { if (page>1){ page--; loadData() } }
+    document.getElementById('next').onclick = () => { if ((page*pageSize) < total){ page++; loadData() } }
+
+    function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms) } }
+
+    function toCSV(rows){
+      if (!rows.length) return ''
+      const headers = Object.keys(rows[0])
+      const escf = v => '"'+String(v??'').replace(/"/g,'""')+'"'
+      const lines = [headers.join(',')]
+      rows.forEach(r => { lines.push(headers.map(h => escf(r[h])).join(',')) })
+      return lines.join('\n')
+    }
+
+    async function exportCSV(){
+      const { q, status, from, to } = buildQuery()
+      let query = sb.from('demo_requests').select('*').order('created_at', { ascending:false }).limit(1000)
+      if (status) query = query.eq('status', status)
+      if (from) query = query.gte('created_at', new Date(from).toISOString())
+      if (to) { const toEnd = new Date(to); toEnd.setHours(23,59,59,999); query = query.lte('created_at', toEnd.toISOString()) }
+      if (q){ query = query.or(`name.ilike.%${q}%,email.ilike.%${q}%,company.ilike.%${q}%,message.ilike.%${q}%`) }
+      const { data, error } = await query
+      if (error){ alert('Export failed: '+error.message); return }
+      const csv = toCSV(data || [])
+      const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `demo-requests-${new Date().toISOString().slice(0,10)}.csv`
+      a.click()
+      URL.revokeObjectURL(url)
+    }
+
+    ;(async function init(){
+      const ok = await ensureAdmin()
+      if (!ok) return
+      loadData()
+    })()
+  </script>
+</body>
+</html>
