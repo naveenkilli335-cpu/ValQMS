@@ -4577,7 +4577,7 @@ window.submitDemoRequest = async function(event) {
     if (error.message.includes('relation') || error.message.includes('does not exist')) {
       errorMsg += 'Database table not found. Please contact the administrator.\n\n';
     }
-    errorMsg += `Error: ${error.message}\n\nPlease email us directly at demo@valqms.com`;
+    errorMsg += `Error: ${error.message}\n\nPlease email us directly at support@valqms.com`;
     
     alert(errorMsg);
   }
@@ -4781,7 +4781,12 @@ window.submitDemoRequest = async function(event) {
         return;
       }
       try {
-        const { error } = await window.sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/reset-password.html' });
+  // Configurable redirect URL for password reset
+  const RESET_REDIRECT_URL = window.RESET_REDIRECT_URL || (window.location.origin + '/reset-password.html');
+  const { error } = await window.sb.auth.resetPasswordForEmail(email, { redirectTo: RESET_REDIRECT_URL });
+// Set this variable at the top of your script or in a <script> tag to control the redirect URL:
+//window.RESET_REDIRECT_URL = 'http://127.0.0.1:5500/login.html'; // for local testing
+        window.RESET_REDIRECT_URL = 'https://valqms.com/index.html'; // for production
         if (error) {
           showToast(error.message || 'Failed to send reset link.');
         } else {
