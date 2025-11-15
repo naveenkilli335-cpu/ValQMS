@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" data-bg="mint">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defect Management SOP | ValQMS</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/theme.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #d1fae5;
+            min-height: 100vh;
+            padding: 24px;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .logo-subtitle {
+            font-size: 13px;
+            color: #cbd5e1;
+            font-weight: 400;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            color: #0f172a;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #ef4444;
+        }
+
+        /* Content */
+        .sop-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .sop-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            font-size: 15px;
+            font-weight: 500;
+            color: #0f172a;
+        }
+
+        /* Headings */
+        .sop-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #ef4444;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        /* Paragraphs */
+        p {
+            margin-bottom: 12px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: #475569;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.8;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #ffffff;
+        }
+
+        th {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Boxes */
+        .info-box {
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+            border-left: 4px solid #10b981;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .info-box strong {
+            color: #065f46;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fefce8, #fffbeb);
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .warning-box strong {
+            color: #92400e;
+        }
+
+        .critical-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .critical-box strong {
+            color: #7f1d1d;
+        }
+
+        /* Code blocks */
+        code {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Courier New', monospace;
+            color: #ef4444;
+        }
+
+        /* Flowchart */
+        .flowchart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .flowchart-box {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #0284c7;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            font-weight: 600;
+            color: #0c4a6e;
+        }
+
+        .flowchart-box.highlight {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-color: #ef4444;
+            color: #7f1d1d;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .toc {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 6px;
+        }
+
+        .toc a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+            color: #ef4444;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-right: 8px;
+        }
+
+        .badge-procedure {
+            background: #dbeafe;
+            color: #0c4a6e;
+        }
+
+        .badge-requirement {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .sop-content {
+                padding: 24px;
+            }
+
+            .sop-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .sop-title {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-box">🐛</div>
+                <div>
+                    <div class="logo-text">Defect Management SOP</div>
+                    <div class="logo-subtitle">Standard Operating Procedure</div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="window.location.href='index.html'">← Back to Home</button>
+        </div>
+
+        <!-- SOP Content -->
+        <div class="sop-content">
+            <!-- Title -->
+            <div class="sop-title">Standard Operating Procedure (SOP): Defect Management</div>
+
+            <!-- Metadata -->
+            <div class="sop-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Document ID</span>
+                    <span class="meta-value">SOP-DM-001</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Version</span>
+                    <span class="meta-value">1.0</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Effective Date</span>
+                    <span class="meta-value" id="effectiveDate"></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Regulatory Reference</span>
+                    <span class="meta-value">FDA 21 CFR Part 820, EU GMP Annex 1</span>
+                </div>
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📋 Table of Contents</h3>
+                <ul>
+                    <li><a href="#purpose">1. Purpose</a></li>
+                    <li><a href="#scope">2. Scope</a></li>
+                    <li><a href="#definitions">3. Definitions</a></li>
+                    <li><a href="#responsibilities">4. Responsibilities</a></li>
+                    <li><a href="#procedure">5. Procedure</a></li>
+                    <li><a href="#documentation">6. Documentation & Records</a></li>
+                    <li><a href="#training">7. Training Requirements</a></li>
+                    <li><a href="#records">8. Records & Archives</a></li>
+                </ul>
+            </div>
+
+            <!-- 1. Purpose -->
+            <div class="section" id="purpose">
+                <h2>1. Purpose</h2>
+                <p>This SOP establishes a systematic approach for the identification, investigation, correction, and verification of product and process defects to ensure continuous quality improvement and regulatory compliance with FDA 21 CFR Part 820 and EU GMP guidelines.</p>
+                <div class="info-box">
+                    <strong>Key Objective:</strong> To manage the entire defect lifecycle from discovery through closure, ensuring root cause analysis, appropriate corrective actions, and prevention of recurrence.
+                </div>
+            </div>
+
+            <!-- 2. Scope -->
+            <div class="section" id="scope">
+                <h2>2. Scope</h2>
+                <p>This procedure applies to:</p>
+                <ul>
+                    <li>All product defects identified during manufacturing, packaging, labeling, or distribution</li>
+                    <li>Process defects affecting product quality</li>
+                    <li>System and facility defects with quality impact</li>
+                    <li>Supplier-related quality issues affecting product conformance</li>
+                    <li>All pharmaceutical manufacturing operations and contractors</li>
+                </ul>
+                <p style="margin-top: 12px;"><strong>Excluded:</strong> Routine maintenance issues without quality impact are handled through maintenance procedures.</p>
+            </div>
+
+            <!-- 3. Definitions -->
+            <div class="section" id="definitions">
+                <h2>3. Definitions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Defect</strong></td>
+                            <td>Any product or process condition that fails to meet specified requirements or quality standards</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Critical Defect</strong></td>
+                            <td>Defect that directly affects product safety, efficacy, or regulatory compliance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Root Cause</strong></td>
+                            <td>The underlying reason why a defect occurred; the primary source of the problem</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Corrective Action</strong></td>
+                            <td>Action taken to eliminate the cause of a defect to prevent recurrence</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Preventive Action</strong></td>
+                            <td>Action taken to eliminate the cause of a potential defect to prevent occurrence</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Verification</strong></td>
+                            <td>Confirmation that corrective actions have been effective and the defect does not recur</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Investigation Status</strong></td>
+                            <td>Stage of root cause analysis: Not Started, In Progress, or Completed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4. Responsibilities -->
+            <div class="section" id="responsibilities">
+                <h2>4. Responsibilities</h2>
+
+                <h3>Production/Operations Team</h3>
+                <ul>
+                    <li>Immediately report identified defects to Quality Assurance</li>
+                    <li>Provide detailed information about the defect, location, and time of discovery</li>
+                    <li>Implement containment actions to prevent defect spread</li>
+                    <li>Maintain defect evidence for investigation</li>
+                    <li>Support investigation team with process data and samples</li>
+                </ul>
+
+                <h3>Quality Assurance Department</h3>
+                <ul>
+                    <li>Receive and document all reported defects</li>
+                    <li>Assign severity levels based on quality impact</li>
+                    <li>Initiate investigation process</li>
+                    <li>Monitor investigation progress and timeline</li>
+                    <li>Approve corrective actions and verify effectiveness</li>
+                    <li>Ensure timely closure of defects</li>
+                </ul>
+
+                <h3>Investigation Team</h3>
+                <ul>
+                    <li>Conduct thorough root cause analysis</li>
+                    <li>Document findings and recommendations</li>
+                    <li>Propose corrective actions with implementation timelines</li>
+                    <li>Provide technical expertise for defect resolution</li>
+                </ul>
+
+                <h3>Management</h3>
+                <ul>
+                    <li>Review critical defects and trends</li>
+                    <li>Allocate resources for investigation and correction</li>
+                    <li>Approve significant corrective actions</li>
+                    <li>Ensure compliance with regulatory requirements</li>
+                </ul>
+            </div>
+
+            <!-- 5. Procedure -->
+            <div class="section" id="procedure">
+                <h2>5. Procedure</h2>
+
+                <h3>5.1 Defect Detection and Reporting</h3>
+                <ul>
+                    <li>Defects may be identified during:
+                        <ul>
+                            <li>Manufacturing operations (in-process QC)</li>
+                            <li>Final inspection and release</li>
+                            <li>Stability testing</li>
+                            <li>Customer feedback/complaints</li>
+                            <li>Regulatory inspections</li>
+                            <li>Supplier audits</li>
+                        </ul>
+                    </li>
+                    <li>Any employee discovering a defect must immediately report to supervisor and Quality Assurance</li>
+                    <li>Defect report must include: date found, location, description, affected lot/batch, and finding evidence</li>
+                </ul>
+
+                <h3>5.2 Initial Assessment</h3>
+                <p>Upon receipt, Quality Assurance will:</p>
+                <ul>
+                    <li>Assign unique Defect ID (DEF-XXXX format)</li>
+                    <li>Determine severity level:
+                        <ul>
+                            <li><strong>Critical:</strong> Direct safety/efficacy impact → Immediate action required</li>
+                            <li><strong>High:</strong> Significant quality issue → Expedited investigation (5 days)</li>
+                            <li><strong>Medium:</strong> Moderate issue → Standard investigation (10 days)</li>
+                            <li><strong>Low:</strong> Minor issue → Routine investigation (15 days)</li>
+                        </ul>
+                    </li>
+                    <li>Implement immediate containment if necessary (product hold, line stop)</li>
+                    <li>Document classification in Defect Management System</li>
+                </ul>
+
+                <div class="critical-box">
+                    <strong>⚠️ Critical Defects:</strong> Require immediate notification to Quality Manager and potential regulatory notification within 24 hours if product already distributed.
+                </div>
+
+                <h3>5.3 Investigation Phase</h3>
+                <p>Investigation must address:</p>
+                <ul>
+                    <li><strong>Scope Definition:</strong> Number of affected units, batches, time periods</li>
+                    <li><strong>Product Impact:</strong> Affected products, SKUs, and lot numbers</li>
+                    <li><strong>Root Cause Analysis:</strong> Use methods such as 5-Why, Fishbone Diagram, or FMEA
+                        <ul>
+                            <li>Verify the defect through testing/analysis</li>
+                            <li>Identify contributing factors</li>
+                            <li>Determine root cause(s)</li>
+                            <li>Distinguish between symptoms and root causes</li>
+                        </ul>
+                    </li>
+                    <li><strong>Timeline Documentation:</strong> When defect occurred, when detected, lag time analysis</li>
+                    <li><strong>Data Review:</strong> Manufacturing records, QC results, process parameters</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Investigation Deadline:</strong> Dependent on severity - must be completed within specified timeframe and documented in system.
+                </div>
+
+                <h3>5.4 Corrective Action Planning</h3>
+                <p>After root cause confirmation, develop corrective action plan including:</p>
+                <ul>
+                    <li><strong>Immediate Actions:</strong> Short-term containment or prevention (implemented immediately)</li>
+                    <li><strong>Long-term Corrections:</strong> Address root cause with:
+                        <ul>
+                            <li>Description of corrective action</li>
+                            <li>Responsible person/department</li>
+                            <li>Target implementation date</li>
+                            <li>Expected outcome and success criteria</li>
+                        </ul>
+                    </li>
+                    <li><strong>Preventive Actions:</strong> Measures to prevent similar defects in other areas/products</li>
+                    <li><strong>Risk Assessment:</strong> Evaluate if CAPA system requires notification</li>
+                </ul>
+
+                <h3>5.5 Corrective Action Implementation</h3>
+                <ul>
+                    <li>Track implementation against target dates</li>
+                    <li>Monitor progress through Defect Management System</li>
+                    <li>Adjust timelines if necessary with management approval</li>
+                    <li>Document actual implementation date</li>
+                    <li>Record any issues encountered during implementation</li>
+                </ul>
+
+                <h3>5.6 Verification and Closure</h3>
+                <ul>
+                    <li>Conduct verification testing/analysis to confirm effectiveness</li>
+                    <li>Verify that defect does not recur under normal operating conditions</li>
+                    <li>Verification method depends on defect type:
+                        <ul>
+                            <li>Product defects: Additional QC testing of suspect lots</li>
+                            <li>Process defects: Process capability study or test batches</li>
+                            <li>System defects: System validation or performance verification</li>
+                        </ul>
+                    </li>
+                    <li>Sign-off by Quality Assurance confirming effective closure</li>
+                    <li>Update Defect Management System with closure status and date</li>
+                </ul>
+
+                <!-- Flowchart -->
+                <div style="margin: 20px 0;">
+                    <h4>Defect Lifecycle Flowchart:</h4>
+                    <div class="flowchart">
+                        <div class="flowchart-box">Defect Identified</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">→</div>
+                        <div class="flowchart-box">Initial Assessment</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">→</div>
+                        <div class="flowchart-box">Investigation</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">↓</div>
+                        <div class="flowchart-box highlight">Root Cause Found?</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">→</div>
+                        <div class="flowchart-box">Corrective Action</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">→</div>
+                        <div class="flowchart-box">Implementation</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">→</div>
+                        <div class="flowchart-box">Verification</div>
+                        <div style="text-align: center; display: flex; align-items: center; justify-content: center;">→</div>
+                        <div class="flowchart-box">Closed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Documentation & Records -->
+            <div class="section" id="documentation">
+                <h2>6. Documentation & Records</h2>
+                <p>The following documents are maintained for each defect:</p>
+                <ul>
+                    <li><strong>Defect Report:</strong> Initial report with defect details and discovery information</li>
+                    <li><strong>Investigation Report:</strong> Findings, root cause analysis, and supporting data</li>
+                    <li><strong>Corrective Action Plan:</strong> Detailed actions with responsibilities and timelines</li>
+                    <li><strong>Implementation Documentation:</strong> Evidence of corrective action implementation</li>
+                    <li><strong>Verification Report:</strong> Results confirming effectiveness of correction</li>
+                    <li><strong>Trend Analysis:</strong> Periodic review of defect patterns (monthly minimum)</li>
+                </ul>
+
+                <h3>Defect Record Retention</h3>
+                <ul>
+                    <li>Critical defects: 10 years (pharmaceutical regulation requirement)</li>
+                    <li>High priority: 5 years</li>
+                    <li>Standard: 3 years</li>
+                    <li>Low priority: 1 year minimum</li>
+                </ul>
+            </div>
+
+            <!-- 7. Training -->
+            <div class="section" id="training">
+                <h2>7. Training Requirements</h2>
+                <p>Personnel must be trained based on their role:</p>
+                <ul>
+                    <li><strong>All Production Staff:</strong> Defect identification, reporting procedure, and containment actions</li>
+                    <li><strong>Quality Assurance:</strong> Complete defect lifecycle management, investigation methodology, and system operation</li>
+                    <li><strong>Investigation Team:</strong> Root cause analysis techniques, statistical methods, and regulatory requirements</li>
+                    <li><strong>Management:</strong> Defect review processes, trend analysis, and regulatory implications</li>
+                </ul>
+
+                <p style="margin-top: 12px;"><strong>Initial Training:</strong> Required before performing defect-related duties.</p>
+                <p><strong>Refresher Training:</strong> Annually or when SOP is revised.</p>
+            </div>
+
+            <!-- 8. Records & Archives -->
+            <div class="section" id="records">
+                <h2>8. Records & Archives</h2>
+                <div class="warning-box">
+                    <strong>⚠️ Archive Considerations:</strong> All defect records must be maintained in accordance with record retention policy. Digital records in Defect Management System must be backed up regularly and protected from unauthorized access.
+                </div>
+                <ul>
+                    <li>Quarterly defect trend reports to management</li>
+                    <li>Annual management review of defect statistics</li>
+                    <li>Regulatory inspection readiness - ensure all defects properly documented</li>
+                    <li>Trending analysis for recurring defects or patterns</li>
+                </ul>
+            </div>
+
+            <!-- Approval Section -->
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e5e7eb;">
+                <h3>Document Approval</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Name</th>
+                            <th>Signature</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Quality Assurance Manager</td>
+                            <td>_______________</td>
+                            <td>_______________</td>
+                            <td>_______________</td>
+                        </tr>
+                        <tr>
+                            <td>Operations Manager</td>
+                            <td>_______________</td>
+                            <td>_______________</td>
+                            <td>_______________</td>
+                        </tr>
+                        <tr>
+                            <td>Quality Director</td>
+                            <td>_______________</td>
+                            <td>_______________</td>
+                            <td>_______________</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>This document is controlled and may only be used within the authorized organization. Unauthorized copying or distribution is prohibited.</p>
+                <p style="margin-top: 12px;">For more information, contact Quality Assurance Department</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set effective date to today
+        document.getElementById('effectiveDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+</body>
+</html>

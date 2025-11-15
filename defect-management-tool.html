@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en" data-bg="mint">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defect Management | ValQMS</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" href="valqms-logo.svg" sizes="any">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/theme.css">
+    <script src="assets/access-control.js"></script>
+    
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #d1fae5;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+        }
+
+        /* Header (match CAPA tool) */
+        .header {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: #e2e8f0;
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons (match CAPA tool) */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            padding: 8px 16px;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 24px;
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 400;
+            color: #0f172a;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 400;
+            color: #0f172a;
+        }
+
+        .stat-box.critical {
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(248,113,113,0.05));
+            border-color: rgba(239,68,68,0.3);
+        }
+
+        .stat-box.critical .stat-value {
+            color: #ef4444;
+        }
+
+        .stat-box.warning {
+            background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(251,146,60,0.05));
+            border-color: rgba(245,158,11,0.3);
+        }
+
+        .stat-box.warning .stat-value {
+            color: #f59e0b;
+        }
+
+        .stat-box.success {
+            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(52,211,153,0.05));
+            border-color: rgba(16,185,129,0.3);
+        }
+
+        .stat-box.success .stat-value {
+            color: #10b981;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        input[type="datetime-local"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Inter', Arial, sans-serif;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="datetime-local"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        th {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            text-align: left;
+            font-weight: 400;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        td {
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-open {
+            background: #dbeafe;
+            color: #0c4a6e;
+        }
+
+        .badge-in-progress {
+            background: #fed7aa;
+            color: #7c2d12;
+        }
+
+        .badge-investigation {
+            background: #fce7f3;
+            color: #831843;
+        }
+
+        .badge-resolved {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-closed {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .badge-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Severity */
+        .severity-critical {
+            color: #ef4444;
+            font-weight: 400;
+        }
+
+        .severity-high {
+            color: #f59e0b;
+            font-weight: 400;
+        }
+
+        .severity-medium {
+            color: #f59e0b;
+            font-weight: 400;
+        }
+
+        .severity-low {
+            color: #10b981;
+            font-weight: 400;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: calc(90vw - 50px);
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-size: 16px;
+            font-weight: 400;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-close:hover {
+            color: #0f172a;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 400;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #ef4444;
+            border-bottom-color: #ef4444;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Grid Layout */
+        .tab-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .tab-content.active {
+            display: grid;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        /* Make full-width fields span both columns */
+        .tab-content > .form-group:nth-child(2),
+        .tab-content > .form-group:nth-child(3),
+        .tab-content > .form-group:nth-child(9) {
+            grid-column: 1 / -1;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 3px #e5e7eb;
+        }
+
+        .timeline-date {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .timeline-text {
+            font-size: 15px;
+            color: #0f172a;
+            margin-top: 2px;
+        }
+
+        .timeline-user {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Search/Filter */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            background: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.3s;
+        }
+
+        .chip.active {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .chip:hover {
+            border-color: #ef4444;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+                grid-column: 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .modal-content {
+                margin: 16px;
+                max-width: none;
+            }
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #ef4444;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* Chart */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header (match Non-Conformance Tool) -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-box">NC</div>
+                <div>
+                    <div class="logo-text">Non-Conformance Management</div>
+                    <div class="logo-subtitle" style="font-size:13px;color:#e2e8f0;font-weight:400;">ValQMS Applications</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+                <button class="btn btn-primary" id="newDefectBtn">+ New Defect</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-area">
+                <!-- Statistics -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Dashboard</div>
+                            <div class="card-subtitle">Real-time defect metrics and lifecycle status</div>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-box critical">
+                            <div class="stat-label">Critical</div>
+                            <div class="stat-value" id="criticalCount">0</div>
+                        </div>
+                        <div class="stat-box warning">
+                            <div class="stat-label">High Priority</div>
+                            <div class="stat-value" id="highCount">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">In Progress</div>
+                            <div class="stat-value" id="inProgressCount">0</div>
+                        </div>
+                        <div class="stat-box success">
+                            <div class="stat-label">Resolved</div>
+                            <div class="stat-value" id="resolvedCount">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search defect ID, title, or description...">
+                        <button class="btn btn-secondary" onclick="searchDefects()">🔍 Search</button>
+                    </div>
+                    <div class="filter-chips">
+                        <div class="chip active" data-filter="all" onclick="filterDefects('all')">All</div>
+                        <div class="chip" data-filter="open" onclick="filterDefects('open')">Open</div>
+                        <div class="chip" data-filter="in-progress" onclick="filterDefects('in-progress')">In Progress</div>
+                        <div class="chip" data-filter="investigation" onclick="filterDefects('investigation')">Investigation</div>
+                        <div class="chip" data-filter="resolved" onclick="filterDefects('resolved')">Resolved</div>
+                        <div class="chip" data-filter="closed" onclick="filterDefects('closed')">Closed</div>
+                    </div>
+                </div>
+
+                <!-- Defects List -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Defect Registry</div>
+                            <div class="card-subtitle">All defects tracked throughout their lifecycle</div>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="defectsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Date Found</th>
+                                    <th>Assigned To</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="defectsTableBody">
+                                <tr>
+                                    <td colspan="7" class="empty-state">
+                                        <div class="empty-icon">📋</div>
+                                        <div class="empty-title">No Defects Found</div>
+                                        <div class="empty-text">Create your first defect to get started</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Stats -->
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 16px;">Quick Stats</div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #64748b;">Total Defects</span>
+                            <span style="font-weight: 700; color: #0f172a;" id="totalDefects">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #64748b;">Open</span>
+                            <span style="font-weight: 700; color: #0f172a;" id="openCount">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #64748b;">Closed</span>
+                            <span style="font-weight: 700; color: #10b981;" id="closedCount">0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #64748b;">Resolution Rate</span>
+                            <span style="font-weight: 700; color: #0f172a;" id="resolutionRate">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 16px;">Status Guide</div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+                        <div><span class="badge badge-open">OPEN</span> - Newly created, awaiting action</div>
+                        <div><span class="badge badge-investigation">INVESTIGATION</span> - Root cause analysis in progress</div>
+                        <div><span class="badge badge-in-progress">IN PROGRESS</span> - Corrective action being implemented</div>
+                        <div><span class="badge badge-resolved">RESOLVED</span> - Fixed and verified</div>
+                        <div><span class="badge badge-closed">CLOSED</span> - Complete with documentation</div>
+                    </div>
+                </div>
+
+                <!-- Export -->
+                <button class="btn btn-secondary" style="width: 100%;" onclick="exportDefects()">📥 Export to Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New/Edit Defect Modal -->
+    <div class="modal" id="defectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modalTitle">New Defect</span>
+                <button class="modal-close" onclick="closeDefectModal()">×</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('details')">Details</button>
+                <button class="tab-button" onclick="switchTab('investigation')">Investigation</button>
+                <button class="tab-button" onclick="switchTab('correction')">Correction</button>
+                <button class="tab-button" onclick="switchTab('verification')">Verification</button>
+            </div>
+
+            <!-- Details Tab -->
+            <div class="tab-content active" id="tab-details">
+                <div class="form-group">
+                    <label>Defect ID (Auto-generated)</label>
+                    <input type="text" id="defectId" disabled value="DEF-001">
+                </div>
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="defectTitle" placeholder="Brief description of the defect">
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="defectDescription" placeholder="Detailed description of the defect..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Severity *</label>
+                    <select id="defectSeverity">
+                        <option value="">Select Severity...</option>
+                        <option value="critical">Critical - Production Impact</option>
+                        <option value="high">High - Significant Issue</option>
+                        <option value="medium">Medium - Moderate Issue</option>
+                        <option value="low">Low - Minor Issue</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Found Location *</label>
+                    <input type="text" id="defectLocation" placeholder="Where was the defect found?">
+                </div>
+                <div class="form-group">
+                    <label>Date Found *</label>
+                    <input type="date" id="defectDateFound">
+                </div>
+                <div class="form-group">
+                    <label>Found By *</label>
+                    <input type="text" id="defectFoundBy" placeholder="Name or ID of person who found it">
+                </div>
+                <div class="form-group">
+                    <label>Assigned To</label>
+                    <input type="text" id="defectAssignedTo" placeholder="Assign to team member">
+                </div>
+            </div>
+
+            <!-- Investigation Tab -->
+            <div class="tab-content" id="tab-investigation">
+                <div class="form-group">
+                    <label>Root Cause Analysis</label>
+                    <textarea id="rootCauseAnalysis" placeholder="Document findings from RCA..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Investigation Status</label>
+                    <select id="investigationStatus">
+                        <option value="">Select Status...</option>
+                        <option value="not-started">Not Started</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Investigation Completion Date</label>
+                    <input type="date" id="investigationCompletionDate">
+                </div>
+                <div class="form-group">
+                    <label>Investigating Team</label>
+                    <input type="text" id="investigatingTeam" placeholder="List team members involved">
+                </div>
+            </div>
+
+            <!-- Correction Tab -->
+            <div class="tab-content" id="tab-correction">
+                <div class="form-group">
+                    <label>Proposed Correction</label>
+                    <textarea id="proposedCorrection" placeholder="Describe the corrective action..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Correction Status</label>
+                    <select id="correctionStatus">
+                        <option value="">Select Status...</option>
+                        <option value="not-started">Not Started</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Target Completion Date</label>
+                    <input type="date" id="targetCompletionDate">
+                </div>
+                <div class="form-group">
+                    <label>Actual Completion Date</label>
+                    <input type="date" id="actualCompletionDate">
+                </div>
+                <div class="form-group">
+                    <label>Implementation Notes</label>
+                    <textarea id="implementationNotes" placeholder="Document implementation details..."></textarea>
+                </div>
+            </div>
+
+            <!-- Verification Tab -->
+            <div class="tab-content" id="tab-verification">
+                <div class="form-group">
+                    <label>Verification Method</label>
+                    <textarea id="verificationMethod" placeholder="How will the fix be verified?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Verification Status</label>
+                    <select id="verificationStatus">
+                        <option value="">Select Status...</option>
+                        <option value="not-started">Not Started</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="verified">Verified Successful</option>
+                        <option value="failed">Verification Failed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Verification Date</label>
+                    <input type="date" id="verificationDate">
+                </div>
+                <div class="form-group">
+                    <label>Verified By</label>
+                    <input type="text" id="verifiedBy" placeholder="Name or ID of verifier">
+                </div>
+                <div class="form-group">
+                    <label>Verification Results</label>
+                    <textarea id="verificationResults" placeholder="Document verification findings..."></textarea>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="saveDefect()">Save Defect</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeDefectModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Defect Modal -->
+    <div class="modal" id="viewDefectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="viewDefectTitle">Defect Details</span>
+                <button class="modal-close" onclick="closeViewDefectModal()">×</button>
+            </div>
+
+            <div id="viewDefectContent">
+                <!-- Content will be populated dynamically -->
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="editDefect()">✏️ Edit</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeViewDefectModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize LocalStorage for demo
+        const STORAGE_KEY = 'valqms_defects';
+
+        // Load defects on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDefects();
+            document.getElementById('newDefectBtn').addEventListener('click', openNewDefectModal);
+            document.getElementById('defectDateFound').valueAsDate = new Date();
+        });
+
+        // Generate Defect ID
+        function generateDefectId() {
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const maxId = defects.reduce((max, d) => {
+                const num = parseInt(d.id.replace('DEF-', ''));
+                return num > max ? num : max;
+            }, 0);
+            return `DEF-${String(maxId + 1).padStart(3, '0')}`;
+        }
+
+        // Open New Defect Modal
+        function openNewDefectModal() {
+            document.getElementById('modalTitle').textContent = 'New Defect';
+            document.getElementById('defectId').value = generateDefectId();
+            document.getElementById('defectForm')?.reset?.();
+            clearFormFields();
+            switchTab('details');
+            document.getElementById('defectModal').classList.add('active');
+        }
+
+        // Close Modals
+        function closeDefectModal() {
+            document.getElementById('defectModal').classList.remove('active');
+        }
+
+        function closeViewDefectModal() {
+            document.getElementById('viewDefectModal').classList.remove('active');
+        }
+
+        // Clear Form Fields
+        function clearFormFields() {
+            document.getElementById('defectTitle').value = '';
+            document.getElementById('defectDescription').value = '';
+            document.getElementById('defectSeverity').value = '';
+            document.getElementById('defectLocation').value = '';
+            document.getElementById('defectFoundBy').value = '';
+            document.getElementById('defectAssignedTo').value = '';
+            document.getElementById('rootCauseAnalysis').value = '';
+            document.getElementById('investigationStatus').value = '';
+            document.getElementById('proposedCorrection').value = '';
+            document.getElementById('correctionStatus').value = '';
+            document.getElementById('verificationMethod').value = '';
+            document.getElementById('verificationStatus').value = '';
+        }
+
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Save Defect
+        function saveDefect() {
+            const defect = {
+                id: document.getElementById('defectId').value,
+                title: document.getElementById('defectTitle').value,
+                description: document.getElementById('defectDescription').value,
+                severity: document.getElementById('defectSeverity').value,
+                location: document.getElementById('defectLocation').value,
+                dateFound: document.getElementById('defectDateFound').value,
+                foundBy: document.getElementById('defectFoundBy').value,
+                assignedTo: document.getElementById('defectAssignedTo').value,
+                status: 'open',
+                rootCause: document.getElementById('rootCauseAnalysis').value,
+                investigationStatus: document.getElementById('investigationStatus').value,
+                proposedCorrection: document.getElementById('proposedCorrection').value,
+                correctionStatus: document.getElementById('correctionStatus').value,
+                verificationMethod: document.getElementById('verificationMethod').value,
+                verificationStatus: document.getElementById('verificationStatus').value,
+                createdDate: new Date().toISOString()
+            };
+
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const existingIndex = defects.findIndex(d => d.id === defect.id);
+            
+            if (existingIndex > -1) {
+                defects[existingIndex] = defect;
+            } else {
+                defects.push(defect);
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(defects));
+            loadDefects();
+            closeDefectModal();
+            alert('Defect saved successfully!');
+        }
+
+        // Load Defects
+        function loadDefects() {
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            renderDefectsTable(defects);
+            updateStatistics(defects);
+        }
+
+        // Render Table
+        function renderDefectsTable(defects) {
+            const tbody = document.getElementById('defectsTableBody');
+            
+            if (defects.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <div class="empty-title">No Defects Found</div>
+                    <div class="empty-text">Create your first defect to get started</div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = defects.map(d => `
+                <tr>
+                    <td><strong>${d.id}</strong></td>
+                    <td>${d.title}</td>
+                    <td><span class="severity-${d.severity}">${d.severity.toUpperCase()}</span></td>
+                    <td><span class="badge badge-${d.status.replace(' ', '-')}">${d.status.toUpperCase()}</span></td>
+                    <td>${new Date(d.dateFound).toLocaleDateString()}</td>
+                    <td>${d.assignedTo || '-'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" onclick="viewDefect('${d.id}')">View</button>
+                        <button class="btn btn-sm btn-secondary" onclick="editDefectModal('${d.id}')" style="margin-left: 4px;">Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // View Defect
+        function viewDefect(defectId) {
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const defect = defects.find(d => d.id === defectId);
+
+            if (!defect) return;
+
+            const content = `
+                <div style="display: grid; gap: 16px;">
+                    <div>
+                        <strong>ID:</strong> ${defect.id}
+                    </div>
+                    <div>
+                        <strong>Title:</strong> ${defect.title}
+                    </div>
+                    <div>
+                        <strong>Status:</strong> <span class="badge badge-${defect.status.replace(' ', '-')}">${defect.status.toUpperCase()}</span>
+                    </div>
+                    <div>
+                        <strong>Severity:</strong> <span class="severity-${defect.severity}">${defect.severity.toUpperCase()}</span>
+                    </div>
+                    <div>
+                        <strong>Description:</strong> ${defect.description}
+                    </div>
+                    <div>
+                        <strong>Location:</strong> ${defect.location}
+                    </div>
+                    <div>
+                        <strong>Date Found:</strong> ${new Date(defect.dateFound).toLocaleDateString()}
+                    </div>
+                    <div>
+                        <strong>Found By:</strong> ${defect.foundBy}
+                    </div>
+                    <div>
+                        <strong>Assigned To:</strong> ${defect.assignedTo || '-'}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('viewDefectContent').innerHTML = content;
+            document.getElementById('viewDefectModal').classList.add('active');
+            window.currentViewDefectId = defectId;
+        }
+
+        // Edit Defect Modal
+        function editDefectModal(defectId) {
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const defect = defects.find(d => d.id === defectId);
+
+            if (!defect) return;
+
+            document.getElementById('modalTitle').textContent = `Edit Defect - ${defect.id}`;
+            document.getElementById('defectId').value = defect.id;
+            document.getElementById('defectTitle').value = defect.title;
+            document.getElementById('defectDescription').value = defect.description;
+            document.getElementById('defectSeverity').value = defect.severity;
+            document.getElementById('defectLocation').value = defect.location;
+            document.getElementById('defectDateFound').value = defect.dateFound;
+            document.getElementById('defectFoundBy').value = defect.foundBy;
+            document.getElementById('defectAssignedTo').value = defect.assignedTo;
+
+            closeViewDefectModal();
+            switchTab('details');
+            document.getElementById('defectModal').classList.add('active');
+        }
+
+        // Edit from view
+        function editDefect() {
+            editDefectModal(window.currentViewDefectId);
+        }
+
+        // Filter Defects
+        function filterDefects(status) {
+            document.querySelectorAll('.filter-chips .chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const filtered = status === 'all' ? defects : defects.filter(d => d.status === status);
+            renderDefectsTable(filtered);
+        }
+
+        // Search Defects
+        function searchDefects() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const filtered = defects.filter(d => 
+                d.id.toLowerCase().includes(query) ||
+                d.title.toLowerCase().includes(query) ||
+                d.description.toLowerCase().includes(query)
+            );
+            renderDefectsTable(filtered);
+        }
+
+        // Update Statistics
+        function updateStatistics(defects) {
+            const critical = defects.filter(d => d.severity === 'critical').length;
+            const high = defects.filter(d => d.severity === 'high').length;
+            const inProgress = defects.filter(d => d.status === 'in-progress').length;
+            const resolved = defects.filter(d => d.status === 'resolved').length;
+            const open = defects.filter(d => d.status === 'open').length;
+            const closed = defects.filter(d => d.status === 'closed').length;
+            const resolutionRate = defects.length > 0 ? Math.round((closed / defects.length) * 100) : 0;
+
+            document.getElementById('criticalCount').textContent = critical;
+            document.getElementById('highCount').textContent = high;
+            document.getElementById('inProgressCount').textContent = inProgress;
+            document.getElementById('resolvedCount').textContent = resolved;
+            document.getElementById('totalDefects').textContent = defects.length;
+            document.getElementById('openCount').textContent = open;
+            document.getElementById('closedCount').textContent = closed;
+            document.getElementById('resolutionRate').textContent = resolutionRate + '%';
+        }
+
+        // Export Defects
+        function exportDefects() {
+            const defects = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const headers = ['ID', 'Title', 'Severity', 'Status', 'Date Found', 'Location', 'Assigned To'];
+            const rows = defects.map(d => [
+                d.id,
+                d.title,
+                d.severity,
+                d.status,
+                d.dateFound,
+                d.location,
+                d.assignedTo
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `defects_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Go Back
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

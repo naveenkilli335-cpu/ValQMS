@@ -62,14 +62,14 @@
   
     // Page metadata
     const SOP_SLUG = 'change-control-sop';
-    const IS_FREE_SOP = true; // This SOP is free to access
+    const IS_FREE_SOP = false; // This SOP now requires login
   
   async function checkAccess() {
-    try {
-            // Allow free access without login/purchase
+
+        try {
+            // Require login for all SOPs (no free access)
             if (IS_FREE_SOP) {
-                console.log('Free SOP access granted:', SOP_SLUG);
-                return; // Skip gating entirely
+                // (Optionally: show a message or handle free SOP logic here)
             }
 
       // Check if user is logged in

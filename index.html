@@ -13,6 +13,41 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+    .premium-ribbon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 18px 4px 12px;
+      border-bottom-right-radius: 12px;
+      border-top-left-radius: 8px;
+      box-shadow: 0 2px 8px 0 rgba(245,158,11,0.08);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      min-width: 70px;
+    }
+    .premium-ribbon span {
+      display: block;
+      line-height: 1.2;
+    }
+    .premium-badge {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 4px 14px;
+      font-size: 13px;
+      display: inline-block;
+      margin-bottom: 8px;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px 0 rgba(245,158,11,0.08);
+    }
 
     /* Role-based feature visibility */
 .admin-only,
@@ -374,17 +409,30 @@
     header .bg-btn,
     header .theme-btn,
     header .mobile-menu-btn,
-    header .user-badge,
     header .btn-login {
       background: #ffffff !important;
       border: 1px solid #e5e7eb !important;
       color: #0f172a !important;
       box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 1px 1px rgba(15,23,42,0.03) !important;
     }
+    header .user-badge {
+      background: linear-gradient(135deg, #10b981, #34d399) !important;
+      color: #000 !important;
+      border: none !important;
+      font-weight: 700;
+      box-shadow: 0 2px 8px 0 rgba(16,185,129,0.08);
+      transition: background 0.2s, color 0.2s;
+    }
+    header .user-badge:hover {
+      background: linear-gradient(135deg, #059669, #10b981) !important;
+      color: #fff !important;
+      border: none !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16,185,129,0.15) !important;
+    }
     header .bg-btn:hover,
     header .theme-btn:hover,
     header .mobile-menu-btn:hover,
-    header .user-badge:hover,
     header .btn-login:hover {
       background: #ffffff !important;
       border-color: var(--accent) !important;
@@ -1741,7 +1789,13 @@
           <button class="pill-btn" data-filter="popular">Popular</button>
         </div>
         <div class="tools-scroll-wrapper">
-          <div class="tools-list">
+          <div class="tools-list" id="smartToolsList">
+            <style>
+              #smartToolsList { display: flex; flex-wrap: wrap; gap: 24px; justify-content: flex-start; }
+              #smartToolsList .tool-item { flex: 0 0 340px; max-width: 340px; min-width: 320px; }
+            </style>
+            <a href="project-budget-calculator.html" class="tool-item" data-tags="new"><div class="tool-icon">💸</div><div class="tool-content"><h3>Project Budget Calculator</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Advanced, auditable project cost and effort estimator for pharma validation & qualification projects. Scenario, contingency, and export-ready.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="smart-tools/project-plan-creation-tool.html" class="tool-item" data-tags="new"><div class="tool-icon">🗂️</div><div class="tool-content"><h3>Project Plan Creation Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Auto-generate project phases, tasks, Gantt (Excel), and RACI matrix for SAP, LIMS, UiPath, and more. Exports a ready-to-use Excel workbook.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
             <a href="ComparisionTool.html" class="tool-item" data-tags="popular"><div class="tool-icon">📊</div><div class="tool-content"><h3>Excel Comparison Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
             <a href="MasterDataTool.html" class="tool-item" data-tags="new"><div class="tool-icon">🧬</div><div class="tool-content"><h3>LIMS Master Data Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
             <a href="SOPComparisionTool.html" class="tool-item" data-tags="ai"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
@@ -1750,30 +1804,78 @@
             <a href="AdvancedRiskAssessmentTool.html" class="tool-item" data-tags="popular"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
           </div>
         </div>
+        <div style="text-align:center; margin-top: 1.5rem;">
+          <button id="showAllSmartToolsBtn" class="pill-btn showall-green" style="display:none;">Show All</button>
+        </div>
       </div>
     </section>
 
     <script>
       document.addEventListener('DOMContentLoaded', function(){
-        // Scope Smart Tools filter to the Tools section only to avoid interfering with Resources pills
+        // Smart Tools Show All/Hide logic
         const pills = document.querySelectorAll('#tools .tools-filters .pill-btn');
-        const cards = document.querySelectorAll('#tools .tools-list .tool-item');
+        const list = document.getElementById('smartToolsList');
+        const cards = Array.from(list.querySelectorAll('.tool-item'));
+        const showAllBtn = document.getElementById('showAllSmartToolsBtn');
+        let showAll = false;
+        function getTilesPerRow() {
+          // Estimate how many fit in one row (based on flex or grid)
+          const listStyles = window.getComputedStyle(list);
+          const gap = parseInt(listStyles.columnGap || listStyles.gap || 24);
+          const cardWidth = cards[0]?.offsetWidth || 320;
+          const listWidth = list.offsetWidth;
+          return Math.max(1, Math.floor((listWidth + gap) / (cardWidth + gap)));
+        }
+        function renderSmartTools(filter) {
+          let filtered = filter === 'all' ? cards : cards.filter(card => {
+            const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+            return tags.split(/\s+/).includes(filter);
+          });
+          // Hide all first
+          cards.forEach(card => card.style.display = 'none');
+          let tilesPerRow = getTilesPerRow();
+          // Only show one row in Hide mode, all in Show All
+          let toShow = showAll ? filtered : filtered.slice(0, tilesPerRow);
+          filtered.forEach((card, idx) => {
+            if (showAll || idx < tilesPerRow) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+          // In Hide mode, scroll to start to avoid partial second row
+          if (!showAll) {
+            list.scrollLeft = 0;
+          }
+          // Always show Show All/Hide button if more than one tool exists
+          if (filtered.length > 1) {
+            showAllBtn.style.display = '';
+            showAllBtn.textContent = showAll ? 'Hide' : 'Show All';
+          } else {
+            showAllBtn.style.display = 'none';
+          }
+        }
+        // Initial render
+        renderSmartTools('all');
+        // Filter pills
         pills.forEach(btn => {
           btn.addEventListener('click', () => {
-            // toggle active
             pills.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const filter = btn.getAttribute('data-filter');
-            cards.forEach(card => {
-              card.classList.remove('hidden');
-              if(filter !== 'all'){
-                const tags = (card.getAttribute('data-tags') || '').toLowerCase();
-                if(!tags.split(/\s+/).includes(filter)){
-                  card.classList.add('hidden');
-                }
-              }
-            });
+            showAll = false;
+            renderSmartTools(btn.getAttribute('data-filter'));
           });
+        });
+        // Show All/Hide button
+        showAllBtn.onclick = function() {
+          showAll = !showAll;
+          const active = document.querySelector('#tools .tools-filters .pill-btn.active');
+          renderSmartTools(active ? active.getAttribute('data-filter') : 'all');
+        };
+        // Responsive: re-render on resize
+        window.addEventListener('resize', () => {
+          const active = document.querySelector('#tools .tools-filters .pill-btn.active');
+          renderSmartTools(active ? active.getAttribute('data-filter') : 'all');
         });
       });
     </script>
@@ -1861,6 +1963,19 @@
         <p>Track and manage quality deviations and non-conforming products</p>
         <div class="app-badge">Application</div>
       </a>
+
+      <a href="defect-management-tool.html" class="app-card">
+        <div class="app-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 7v5"/>
+            <circle cx="12" cy="17" r="1"/>
+          </svg>
+        </div>
+        <h4>Defect Management</h4>
+        <p>Track defect lifecycle from discovery through investigation, correction, and verification</p>
+        <div class="app-badge">Application</div>
+      </a>
       
     </div>
   </div>
@@ -1870,13 +1985,33 @@
 <section id="QMS Procedures">
   <div class="container">
     <div class="section-head">
-      <h2>Quality Management Procedures</h2>
+      <h2>Quality Management System Procedures</h2>
       <p>Complete pharmaceutical QMS procedures aligned with FDA 21 CFR Part 820, EU GMP, ICH Q10, and ISO 13485</p>
     </div>
     
     
     <div class="app-grid" id="qmsProceduresGrid">
       <!-- QMS Procedures will be rendered dynamically by JavaScript -->
+    </div>
+    <div style="text-align:center; margin-top: 1.5rem;">
+      <button id="showAllQMSBtn" class="pill-btn showall-green" style="display:none;">Show All</button>
+      <style>
+        .showall-green {
+          background: linear-gradient(135deg, #10b981, #34d399) !important;
+          color: #000 !important;
+          font-weight: 600;
+          border: none;
+          border-radius: 999px;
+          padding: 10px 28px;
+          font-size: 15px;
+          box-shadow: 0 2px 8px 0 rgba(16,185,129,0.08);
+          transition: background 0.2s, color 0.2s;
+        }
+        .showall-green:hover {
+          background: linear-gradient(135deg, #059669, #10b981) !important;
+          color: #fff !important;
+        }
+      </style>
     </div>
   </div>
 </section>
@@ -1889,10 +2024,32 @@
       <h2>ValQMS Academy</h2>
       <p>Purchase individual courses or subscribe for unlimited access to all training content</p>
     </div>
-    
+
+    <!-- Academy Category Filters -->
+    <div class="academy-filters" id="academyFilters" style="margin-bottom: 2rem; display: flex; gap: 10px; flex-wrap: wrap;"></div>
 
     <div class="app-grid" id="coursesGrid">
       <!-- Courses will be rendered dynamically by JavaScript -->
+    </div>
+    <div style="text-align:center; margin-top: 1.5rem;">
+  <button id="showAllCoursesBtn" class="pill-btn showall-green" style="display:none;">Show All</button>
+    <style>
+      .showall-green {
+        background: linear-gradient(135deg, #10b981, #34d399) !important;
+        color: #000 !important;
+        font-weight: 600;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 28px;
+        font-size: 15px;
+        box-shadow: 0 2px 8px 0 rgba(16,185,129,0.08);
+        transition: background 0.2s, color 0.2s;
+      }
+      .showall-green:hover {
+        background: linear-gradient(135deg, #059669, #10b981) !important;
+        color: #fff !important;
+      }
+    </style>
     </div>
 
     <!-- My Purchased Courses -->
@@ -3057,29 +3214,42 @@ const RAZORPAY_KEY_ID = 'rzp_test_RWogQofYpuwRHW'; // TODO: Replace with your Ra
 
 // Course icons (matching your app-card style)
 const courseIcons = {
-  csv: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M3 4h18v14H3z"/><path d="M3 10h18"/>
-  </svg>`,
-  annex: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-  </svg>`,
-  qms: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M9 12l2 2 4-4"/>
-  </svg>`,
-  ai: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-  </svg>`,
-  subscription: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M4 6h16M4 12h16M4 18h16"/>
-  </svg>`
+  'cleaning-validation-fundamentals': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M8 12V8a4 4 0 018 0v4"/><path d="M12 16v-4"/></svg>`, // Cleaning
+  'csv-masterclass': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 14h2v2H8z"/><path d="M14 14h2v2h-2z"/></svg>`, // Spreadsheet
+  'equipment-qualification-essentials': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M4 20l16-16"/></svg>`, // Equipment
+  'process-validation-cpv': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/><path d="M16 16l2 2"/></svg>`, // Process
+  'validation-lifecycle-cloud': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="12" cy="8" r="4"/><path d="M16 4l2-2"/></svg>`, // Cloud
+  'risk-based-validation': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 22 22 22 12 2"/><circle cx="12" cy="17" r="1"/><path d="M12 8l4 8"/></svg>`, // Risk
+  'qms-pharma': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10v10H7z"/><path d="M12 3v18"/></svg>`, // QMS
+  'change-control-deviation': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M5 12h14"/><circle cx="12" cy="12" r="3"/></svg>`, // Change
+  'capa-rca': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/><path d="M9 15l3-3"/></svg>`, // CAPA
+  'data-integrity-alcoa': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/><path d="M4 4l16 16"/></svg>`, // Data
+  'annex-11-21cfr11': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/><path d="M8 12l-4 2"/></svg>`, // Regulatory
+  'audit-inspection-readiness': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/><circle cx="16" cy="8" r="2"/></svg>`, // Audit
+  'electronic-signatures-audit-trails': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8v8M8 8v8"/><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M12 12l4 4"/></svg>`, // eSign
+  'ai-csa': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/><path d="M16 16l2-2"/></svg>`, // AI
+  'automated-test-csv': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10v10H7z"/><path d="M12 12l6 6"/></svg>`, // Automation
+  'digital-transformation-validation': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M5 12h14"/><circle cx="12" cy="12" r="3"/></svg>`, // Digital
+  'valqms-unlimited-subscription': `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/><path d="M8 12l-4 2"/><path d="M12 12l0 6"/></svg>` // Subscription
 };
 
 const courseGradients = {
-  csv: 'linear-gradient(135deg, #3b82f6, #60a5fa)',
-  annex: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
-  qms: 'linear-gradient(135deg, #10b981, #34d399)',
-  ai: 'linear-gradient(135deg, #f59e0b, #f97316)',
-  subscription: 'linear-gradient(135deg, #06b6d4, #22d3ee)'
+  'csv-masterclass': 'linear-gradient(135deg, #3b82f6, #60a5fa)',
+  'equipment-qualification-essentials': 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+  'process-validation-cpv': 'linear-gradient(135deg, #10b981, #34d399)',
+  'validation-lifecycle-cloud': 'linear-gradient(135deg, #06b6d4, #22d3ee)',
+  'risk-based-validation': 'linear-gradient(135deg, #f59e0b, #f97316)',
+  'qms-pharma': 'linear-gradient(135deg, #6366f1, #818cf8)',
+  'change-control-deviation': 'linear-gradient(135deg, #14b8a6, #2dd4bf)',
+  'capa-rca': 'linear-gradient(135deg, #ec4899, #f472b6)',
+  'data-integrity-alcoa': 'linear-gradient(135deg, #eab308, #facc15)',
+  'annex-11-21cfr11': 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+  'audit-inspection-readiness': 'linear-gradient(135deg, #ef4444, #f87171)',
+  'electronic-signatures-audit-trails': 'linear-gradient(135deg, #10b981, #34d399)',
+  'ai-csa': 'linear-gradient(135deg, #f59e0b, #f97316)',
+  'automated-test-csv': 'linear-gradient(135deg, #3b82f6, #60a5fa)',
+  'digital-transformation-validation': 'linear-gradient(135deg, #06b6d4, #22d3ee)',
+  'valqms-unlimited-subscription': 'linear-gradient(135deg, #06b6d4, #22d3ee)'
 };
 
 // QMS Procedure Icons - FIXED TO MATCH YOUR SUPABASE SLUGS
@@ -3095,7 +3265,8 @@ const qmsIcons = {
   'capa-management': `<div style="font-size: 40px; line-height: 1;">🎯</div>`,  // Fixed
   'supplier-management': `<div style="font-size: 40px; line-height: 1;">🏭</div>`,  // Fixed
   'training-management': `<div style="font-size: 40px; line-height: 1;">🎓</div>`,  // Added
-  'validation-management': `<div style="font-size: 40px; line-height: 1;">✅</div>`  // Added
+  'validation-management': `<div style="font-size: 40px; line-height: 1;">✅</div>`,  // Added
+  'defect-management': `<div style="font-size: 40px; line-height: 1;">🐛</div>`  // Added
 };
 
 const qmsGradients = {
@@ -3110,7 +3281,8 @@ const qmsGradients = {
   'capa-management': 'linear-gradient(135deg, #3b82f6, #60a5fa)',
   'supplier-management': 'linear-gradient(135deg, #06b6d4, #22d3ee)',
   'training-management': 'linear-gradient(135deg, #10b981, #34d399)',
-  'validation-management': 'linear-gradient(135deg, #6366f1, #818cf8)'
+  'validation-management': 'linear-gradient(135deg, #6366f1, #818cf8)',
+  'defect-management': 'linear-gradient(135deg, #ef4444, #f87171)'
 };
 
 
@@ -3118,52 +3290,172 @@ const qmsGradients = {
 // Render courses from Supabase
 async function renderCourses() {
   const grid = document.getElementById('coursesGrid');
-  if (!grid) return;
-  
-  try {
-    // Fetch products from Supabase
-const { data: products, error } = await sb
-  .from('products')
-  .select('*')
-  .eq('active', true)
-  .neq('type', 'procedure')  // Exclude procedures
-  .order('type', { ascending: false });
-    
-    if (error) throw error;
-    
-    grid.innerHTML = '';
-    
-  products.forEach(product => {
-      const priceInRupees = product.price_in_paise / 100;
-      const iconKey = product.slug.includes('csv') ? 'csv' :
-                     product.slug.includes('annex') ? 'annex' :
-                     product.slug.includes('qms') ? 'qms' :
-                     product.slug.includes('ai') ? 'ai' : 'subscription';
-      
-      const isSubscription = product.type === 'subscription';
-      const priceDisplay = isSubscription ? `₹${priceInRupees}/month` : `₹${priceInRupees}`;
-      
-grid.innerHTML += `
-  <div class="app-card" data-slug="${product.slug}">
-    <div class="app-icon" style="background: ${courseGradients[iconKey]};">
-      ${courseIcons[iconKey]}
-    </div>
-    <h4>${product.title}</h4>
-    <p>${product.description || ''}</p>
-  <div class="price-tag hidden">${priceDisplay}</div>
-    <div class="app-badge" style="background: ${isSubscription ? courseGradients.subscription : 'linear-gradient(135deg, var(--accent), var(--accent-bright))'}">${isSubscription ? 'Subscription' : 'Course'}</div>
-    <div style="margin-top: 14px; display: flex; gap: 8px;">
-      <button onclick="previewCourse('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-size: 14px; cursor: pointer; transition: all 0.3s;">
-        <span>Preview</span>
-      </button>
-      <button onclick="${isSubscription ? 'subscribe' : 'buyCourse'}('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="${product.slug}" data-intent="purchase">
-        <span>${isSubscription ? 'Subscribe' : 'Buy'}</span>
-      </button>
-    </div>
-  </div>
-`;
+  const filters = document.getElementById('academyFilters');
+  if (!grid || !filters) return;
 
+  try {
+    // Fetch products from Supabase (include category)
+    const { data: products, error } = await sb
+      .from('products')
+      .select('*')
+      .eq('active', true)
+      .neq('type', 'procedure')
+      .order('type', { ascending: false });
+
+    if (error) throw error;
+
+    // Define fixed category mapping and labels
+    const CATEGORY_MAP = {
+      'Validation & Qualification': {
+        slugs: [
+          'csv-masterclass',
+          'equipment-qualification-essentials',
+          'process-validation-cpv',
+          'validation-lifecycle-cloud',
+          'risk-based-validation'
+        ],
+        label: 'Validation & Qualification',
+        desc: 'Master the complete validation lifecycle from URS to PQ.'
+      },
+      'Quality & Compliance Management': {
+        slugs: [
+          'qms-pharma',
+          'change-control-deviation',
+          'capa-rca',
+          'data-integrity-alcoa'
+        ],
+        label: 'Quality & Compliance Management',
+        desc: 'Build a culture of quality, traceability, and regulatory compliance.'
+      },
+      'Regulatory & Inspection Readiness': {
+        slugs: [
+          'annex-11-21cfr11',
+          'audit-inspection-readiness',
+          'electronic-signatures-audit-trails'
+        ],
+        label: 'Regulatory & Inspection Readiness',
+        desc: 'Stay audit-ready with a deep understanding of FDA, EMA, and MHRA expectations.'
+      },
+      'Digital Transformation & Automation': {
+        slugs: [
+          'ai-csa',
+          'automated-test-csv',
+          'digital-transformation-validation'
+        ],
+        label: 'Digital Transformation & Automation',
+        desc: 'Embrace the future of validation with AI, RPA, and digital QMS solutions.'
+      },
+      'Membership & Learning Access': {
+        slugs: [
+          'valqms-unlimited-subscription'
+        ],
+        label: 'Membership & Learning Access',
+        desc: 'Unlock all courses, future updates, and exclusive live sessions.'
+      }
+    };
+
+    // Map product slugs to categories
+    function getCategoryForSlug(slug) {
+      for (const [cat, obj] of Object.entries(CATEGORY_MAP)) {
+        if (obj.slugs.includes(slug)) return cat;
+      }
+      return 'Other';
+    }
+
+    // Render filter buttons (fixed order)
+    const FILTERS = [
+  { key: 'all', label: 'All' },
+  { key: 'Validation & Qualification', label: 'Validation & Qualification' },
+  { key: 'Quality & Compliance Management', label: 'Quality & Compliance' },
+  { key: 'Regulatory & Inspection Readiness', label: 'Regulatory & Inspection' },
+  { key: 'Digital Transformation & Automation', label: 'Digital Transformation' },
+  { key: 'Membership & Learning Access', label: 'Subscription' }
+    ];
+    filters.innerHTML = '';
+    FILTERS.forEach(f => {
+      filters.innerHTML += `<button class="pill-btn${f.key === 'all' ? ' active' : ''}" data-filter="${f.key}">${f.label}</button>`;
     });
+
+    // Filtering logic
+
+    // Show only one row by default, reveal all on button click
+    let showAll = false;
+    let lastFiltered = [];
+    const showAllBtn = document.getElementById('showAllCoursesBtn');
+
+    function getTilesPerRow() {
+      // Try to get the computed number of columns from the grid
+      const gridStyles = window.getComputedStyle(grid);
+      const colCount = gridStyles.gridTemplateColumns.split(' ').length;
+      return colCount;
+    }
+
+    function renderFilteredCourses(selectedCat) {
+      grid.innerHTML = '';
+      let filtered = selectedCat === 'all'
+        ? products
+        : products.filter(p => getCategoryForSlug(p.slug) === selectedCat);
+      lastFiltered = filtered;
+      let tilesPerRow = getTilesPerRow();
+      let toShow = showAll ? filtered : filtered.slice(0, tilesPerRow);
+      toShow.forEach(product => {
+        const priceInRupees = product.price_in_paise / 100;
+        const iconKey = product.slug;
+        const isSubscription = product.type === 'subscription';
+        const priceDisplay = isSubscription ? `₹${priceInRupees}/month` : `₹${priceInRupees}`;
+        const fallbackIcon = `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`;
+        const fallbackGradient = 'linear-gradient(135deg, #8b5cf6, #a78bfa)';
+        grid.innerHTML += `
+          <div class="app-card" data-slug="${product.slug}" style="position: relative;">
+            <div class="premium-ribbon"><span>Premium</span></div>
+            <div class="app-icon" style="background: ${courseGradients[iconKey] || fallbackGradient};">
+              ${courseIcons[iconKey] || fallbackIcon}
+            </div>
+            <h4>${product.title}</h4>
+            <p>${product.description || ''}</p>
+            <div class="price-tag hidden">${priceDisplay}</div>
+            <div class="app-badge">Course</div>
+            <div style="margin-top: 14px; display: flex; gap: 8px;">
+              <button onclick="previewCourse('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                <span>Preview</span>
+              </button>
+              <button onclick="${isSubscription ? 'subscribe' : 'buyCourse'}('${product.slug}');" style="flex: 1; min-width: 85px; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="${product.slug}" data-intent="purchase">
+                <span>${isSubscription ? 'Subscribe' : 'Buy'}</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+      });
+
+      // Show/hide Show All/Hide button
+      if (filtered.length > tilesPerRow) {
+        showAllBtn.style.display = '';
+        showAllBtn.textContent = showAll ? 'Hide' : 'Show All';
+      } else {
+        showAllBtn.style.display = 'none';
+      }
+    }
+
+    // Initial render
+    renderFilteredCourses('all');
+
+    // Add event listeners to filter buttons
+    filters.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filters.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        showAll = false;
+        renderFilteredCourses(btn.dataset.filter);
+      });
+    });
+
+    // Show All/Hide button logic
+    showAllBtn.onclick = function() {
+      showAll = !showAll;
+      renderFilteredCourses(filters.querySelector('button.active').dataset.filter);
+    };
+
   } catch (error) {
     console.error('Error loading courses:', error);
     grid.innerHTML = '<p style="color: var(--text-dim); text-align: center;">Error loading courses. Please refresh.</p>';
@@ -3173,8 +3465,104 @@ grid.innerHTML += `
 // Render QMS Procedures with Purchase Status Check - ENHANCED DEBUG
 async function renderQMSProcedures() {
   const grid = document.getElementById('qmsProceduresGrid');
+  const showAllBtn = document.getElementById('showAllQMSBtn');
   if (!grid) return;
-  
+  let showAll = false;
+  let lastProducts = [];
+  function getTilesPerRow() {
+    const gridStyles = window.getComputedStyle(grid);
+    const colCount = gridStyles.gridTemplateColumns.split(' ').length;
+    return colCount;
+  }
+  function renderProcedures(products, purchasedSlugs) {
+    grid.innerHTML = '';
+    let tilesPerRow = getTilesPerRow();
+    let toShow;
+    if (showAll) {
+      toShow = [...products, {isDefect: true}];
+    } else {
+      // Only one row: fill with products, last tile is always Defect Management
+      toShow = products.slice(0, tilesPerRow - 1);
+      toShow.push({isDefect: true});
+    }
+    toShow.forEach(product => {
+      if (product.isDefect) {
+        grid.innerHTML += `
+          <div class="app-card is-premium" style="position: relative; overflow: hidden;" data-slug="defect-management-sop">
+            <div class="premium-ribbon"><span>Premium</span></div>
+            <div class="app-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
+              <div style="font-size: 40px; line-height: 1;">🐛</div>
+            </div>
+            <h4>Defect Management</h4>
+            <p>Manage the complete defect lifecycle from discovery through investigation, correction, and verification with GMP compliance</p>
+            <div class="price-tag hidden">₹299</div>
+            <div class="app-badge" style="background: linear-gradient(135deg, #ef4444, #f87171)">SOP</div>
+            <div style="margin-top: 14px;">
+              <button onclick="buyProcedureDefect('defect-management-sop', 29900, 'Defect Management SOP');" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="defect-management-sop" data-intent="purchase">
+                <span>Buy Now</span>
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        const priceInRupees = product.price_in_paise / 100;
+        const isFree = product.price_in_paise === 0;
+        const isPurchased = purchasedSlugs.includes(product.slug);
+        const iconKey = product.slug.replace('-sop', '');
+        const fileName = product.slug === 'change-control-sop' ? 'change-control-sop.html' : `${product.slug}.html`;
+        grid.innerHTML += `
+          <div class="app-card ${(!isFree && !isPurchased) ? 'is-premium' : ''}" style="position: relative; overflow: hidden;" data-slug="${product.slug}">
+            ${!isFree && !isPurchased ? `<div class="premium-ribbon"><span>Premium</span></div>` : ''}
+            <div class="app-icon" style="background: ${qmsGradients[iconKey] || 'linear-gradient(135deg, #8b5cf6, #a78bfa)'};">
+              ${qmsIcons[iconKey] || qmsIcons['document-management']}
+            </div>
+            <h4>${product.title}</h4>
+            <p>${product.description || ''}</p>
+            <div class="price-tag ${isFree || isPurchased ? '' : 'hidden'}">${isFree ? 'FREE' : (isPurchased ? 'PURCHASED' : '₹' + priceInRupees)}</div>
+            <div class="app-badge" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa)">SOP</div>
+            <div style="margin-top: 14px;">
+              ${isFree || isPurchased ? 
+                  `<button onclick="accessSOP('${fileName}')" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #10b981, #34d399); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
+                    <span>Access Now</span>
+                  </button>` :
+                  `<button onclick="buyProcedure('${product.slug}');" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="${product.slug}" data-intent="purchase">
+                    <span>Buy Now</span>
+                  </button>`
+                }
+// Access SOP with login check
+async function accessSOP(fileName) {
+  // Use the same Supabase client as the rest of the page
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session && session.user) {
+      window.location.href = fileName;
+    } else {
+      // Show login modal or access modal if not logged in
+      if (typeof openModal === 'function' && typeof loginModal !== 'undefined') {
+        openModal(loginModal);
+      } else if (typeof accessModal !== 'undefined') {
+        accessModal.style.display = 'flex';
+      } else {
+        alert('Please log in to access this SOP.');
+      }
+    }
+  } catch (e) {
+    alert('Please log in to access this SOP.');
+  }
+}
+            </div>
+          </div>
+        `;
+      }
+    });
+    // Show/hide Show All/Hide button (include Defect Management card)
+    if ((products.length + 1) > tilesPerRow) {
+      showAllBtn.style.display = '';
+      showAllBtn.textContent = showAll ? 'Hide' : 'Show All';
+    } else {
+      showAllBtn.style.display = 'none';
+    }
+  }
   try {
     // Get user session
     const { data: { session } } = await sb.auth.getSession();
@@ -3219,44 +3607,13 @@ async function renderQMSProcedures() {
       }
     }
     
-    grid.innerHTML = '';
-    
-    products.forEach(product => {
-      const priceInRupees = product.price_in_paise / 100;
-      const isFree = product.price_in_paise === 0;
-      const isPurchased = purchasedSlugs.includes(product.slug);
-      const iconKey = product.slug.replace('-sop', '');
-      
-      // Determine correct filename
-      const fileName = product.slug === 'change-control-sop' ? 
-        'change-control-sop.html' : 
-        `${product.slug}.html`;
-      
-      console.log(`${product.slug}: isPurchased=${isPurchased}, isFree=${isFree}, in array=${purchasedSlugs.includes(product.slug)}`);
-      
-      grid.innerHTML += `
-        <div class="app-card ${(!isFree && !isPurchased) ? 'is-premium' : ''}" style="position: relative; overflow: hidden;" data-slug="${product.slug}">
-          ${!isFree && !isPurchased ? `<div class="premium-ribbon"><span>Premium</span></div>` : ''}
-          <div class="app-icon" style="background: ${qmsGradients[iconKey] || 'linear-gradient(135deg, #8b5cf6, #a78bfa)'};">
-            ${qmsIcons[iconKey] || qmsIcons['document-management']}
-          </div>
-          <h4>${product.title}</h4>
-          <p>${product.description || ''}</p>
-          <div class="price-tag ${isFree || isPurchased ? '' : 'hidden'}">${isFree ? 'FREE' : (isPurchased ? 'PURCHASED' : '₹' + priceInRupees)}</div>
-          <div class="app-badge" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa)">SOP</div>
-          <div style="margin-top: 14px;">
-            ${isFree || isPurchased ? 
-              `<button onclick="window.location.href='${fileName}'" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, #10b981, #34d399); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;">
-                <span>Access Now</span>
-              </button>` :
-              `<button onclick="buyProcedure('${product.slug}');" style="width: 100%; padding: 10px 14px; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-bright)); color: #000; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" data-slug="${product.slug}" data-intent="purchase">
-                <span>Buy Now</span>
-              </button>`
-            }
-          </div>
-        </div>
-      `;
-  });
+    renderProcedures(products, purchasedSlugs);
+    lastProducts = products;
+    // Show All/Hide button logic
+    showAllBtn.onclick = function() {
+      showAll = !showAll;
+      renderProcedures(lastProducts, purchasedSlugs);
+    };
   } catch (error) {
     console.error('Error loading QMS procedures:', error);
   }
@@ -3686,7 +4043,90 @@ window.buyProcedure = async function(procedureSlug) {
   }
 };
 
+// Buy Defect Management SOP (without Supabase product entry)
+window.buyProcedureDefect = async function(procedureSlug, priceInPaise, productTitle) {
+  // First click reveals price, second proceeds
+  const card = document.querySelector(`.app-card[data-slug="${procedureSlug}"]`);
+  const priceEl = card?.querySelector('.price-tag');
+  const btn = card?.querySelector('button[data-intent="purchase"]');
+  if (priceEl && priceEl.classList.contains('hidden')) {
+    priceEl.classList.remove('hidden');
+    if (btn) btn.querySelector('span').textContent = 'Proceed to Pay';
+    return;
+  }
 
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    alert('Please login to purchase procedures');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  try {
+    console.log('🛒 Starting purchase for:', procedureSlug);
+    
+    // Check if already purchased
+    const alreadyPurchased = await checkPurchase(procedureSlug);
+    if (alreadyPurchased) {
+      alert('You already own this procedure!');
+      window.location.href = `${procedureSlug}.html`;
+      return;
+    }
+    
+    // Create purchase record with hardcoded details
+    const purchase = await createOrderRecord(procedureSlug, priceInPaise);
+    console.log('✅ Purchase record created:', purchase.id);
+    
+    // Open Razorpay checkout
+    console.log('💳 Opening Razorpay...');
+    const payment = await openRazorpayCheckout({
+      amount: priceInPaise,
+      name: productTitle,
+      description: 'QMS Procedure Purchase',
+      productSlug: procedureSlug,
+      purchaseId: purchase.id
+    });
+    
+    console.log('✅ Payment completed:', payment.razorpay_payment_id);
+    
+    // Update purchase status to paid
+    console.log('📝 Updating purchase to paid...');
+    await updatePurchaseRecord(purchase.id, payment);
+    console.log('✅ Purchase status updated to paid');
+    
+    // Verify update worked
+    const { data: verifyPurchase } = await sb
+      .from('purchases')
+      .select('status, payment_id')
+      .eq('id', purchase.id)
+      .single();
+    
+    console.log('🔍 Verification - Status:', verifyPurchase?.status);
+    
+    if (verifyPurchase?.status !== 'paid') {
+      console.error('⚠️ WARNING: Status not updated correctly!');
+      throw new Error('Payment completed but status not updated');
+    }
+    
+    // Show success
+    alert(`✅ Purchase successful! You now have access to ${productTitle}`);
+    
+    // Reload UI
+    await renderQMSProcedures();
+    await loadMyPurchases();
+    
+    // Redirect
+    window.location.href = `${procedureSlug}.html`;
+    
+  } catch (error) {
+    console.error('❌ Purchase error:', error);
+    console.error('Error stack:', error.stack);
+    
+    if (error.message !== 'Payment cancelled') {
+      alert(`❌ Purchase failed: ${error.message}\n\nPlease contact support if payment was deducted.`);
+    }
+  }
+};
 
 // Preview course
 window.previewCourse = function(productSlug) {

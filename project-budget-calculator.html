@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green" data-bg="mint">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project Budget Calculator — ValQMS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* 🌿 Modern ValQMS Project Budget Calculator UI */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --accent: #10b981;
+  --accent-bright: #34d399;
+  --accent-glow: rgba(16,185,129,0.35);
+  --text-dark: #0f172a;
+  --text-dim: #64748b;
+  --surface: rgba(255,255,255,0.92);
+  --surface-hover: rgba(255,255,255,1);
+  --border: rgba(16,185,129,0.15);
+  --gradient-bg: linear-gradient(160deg, #ecfdf5 0%, #f0fdfa 100%);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--gradient-bg);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* HEADER RESTORE */
+header {
+  position: fixed;
+  top: 12px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  pointer-events: none;
+}
+.header-glass {
+  background: #0f172a !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 20px;
+  padding: 16px 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+  color: #fff;
+  pointer-events: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff !important;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.7px;
+  transition: all 0.3s;
+}
+.logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--accent-glow);
+  transition: all 0.3s;
+  position: relative;
+}
+.logo-mark::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  border-radius: 14px;
+  z-index: -1;
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 0.3s;
+}
+.logo-mark:hover::after { opacity: 0.7; }
+.logo-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+}
+.logo-mark .brand-initials {
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.brand-text h1 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1.2;
+  color: #fff !important;
+}
+.brand-text .subtitle {
+  font-size: 13px;
+  color: #fff !important;
+  font-weight: 500;
+  line-height: 1.2;
+  opacity: 0.9;
+}
+.header-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.btn-home {
+  background: linear-gradient(135deg,var(--accent),var(--accent-bright));
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transition: all .2s;
+}
+.btn-home:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); }
+
+/* MAIN CONTAINER */
+.main-bg {
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  display: flex; justify-content: center; align-items: flex-start;
+  padding-top: 120px;
+}
+
+/* FORM CONTAINERS */
+  width: 100vw;
+  max-width: none !important;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+  padding: 40px;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+
+/* STEPS */
+.step-progress {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 22px;
+}
+.progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 0 24px 0;
+}
+.progress-bar-fill {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  transition: width 0.4s ease-in-out;
+}
+.step-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; border: 2px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700; color: var(--accent);
+}
+.step-dot.active { background: var(--accent); color: #fff; }
+
+/* FORMS */
+h1 { font-size: 1.8rem; color: var(--accent); margin-bottom: 12px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 800px){ .form-grid { grid-template-columns: 1fr; } .btn-main { width: 100%; margin-top: 10px; } }
+
+.form-group label { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; display:block; }
+input, select, textarea {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(16,185,129,0.15);
+}
+
+/* TABLES */
+table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+th, td { padding: 10px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+th { background: #ecfdf5; color: var(--accent); font-weight: 700; position: sticky; top: 0; }
+tbody tr:nth-child(even){ background: #f9fafb; }
+tbody tr:hover { background: #f0fdfa; }
+
+/* BUTTONS */
+.btn-main {
+  background: linear-gradient(135deg,var(--accent),var(--accent-bright));
+  color: #fff; border: none;
+  border-radius: 999px; padding: 12px 28px;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+.btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+.btn-ghost {
+  background: transparent; border: 1px solid #cbd5e1;
+  color: var(--text-dark); border-radius: 999px;
+  padding: 10px 22px; cursor: pointer; transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* SUMMARY */
+.summary-row {
+  display: flex; justify-content: space-between;
+  padding: 8px 0; border-bottom: 1px dashed #e6eef0;
+  font-size: 0.95rem;
+}
+.summary-total { font-weight: 800; font-size: 1.1rem; color: var(--text-dark); }
+
+/* FLOATING NEXT BUTTON ANIMATION */
+button.btn-main {
+  position: relative;
+  overflow: hidden;
+}
+button.btn-main::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -50%;
+  width: 50%; height: 100%;
+  background: rgba(255,255,255,0.25);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+button.btn-main:hover::after { left: 150%; }
+
+/* SMALL HELP TEXT */
+.small { color: var(--text-dim); font-size: 0.85rem; margin-top: 4px; }
+
+select option[value="__add_new__"] {
+  color: #10b981;
+  font-weight: bold;
+  background: #e0f7fa;
+}
+
+@media (max-width: 768px) {
+  table, .roles-table, .costs-table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+  }
+  th, td {
+    white-space: nowrap;
+  }
+  .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+    </style>
+</head>
+<body>
+  <header>
+    <div class="header-glass">
+      <div class="header-container">
+        <a class="logo" href="index.html">
+          <div class="logo-mark"><strong style="color:#fff;">VQ</strong></div>
+          <div class="brand-text">
+            <h1>ValQMS Tools</h1>
+            <div class="subtitle">Project Budget Calculator</div>
+          </div>
+        </a>
+        <div class="header-controls"><a class="btn-home" href="index.html">🏠 Home</a></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-bg">
+    <style>
+      .wizard-container {
+        max-width: 1200px !important;
+        min-width: 800px;
+        width: 95vw;
+      }
+
+      /* Animated step transitions */
+      .wizard-container {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.32s ease, transform 0.32s ease;
+      }
+      .wizard-container.fade-out {
+        opacity: 0;
+        transform: translateY(8px) scale(0.995);
+      }
+      .wizard-container.fade-in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      #costsTable th, #costsTable td {
+        min-width: 120px;
+      }
+      #newCostType {
+        min-width: 200px;
+      }
+    </style>
+    <!-- Step wrappers (only one visible at a time) -->
+  <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+    <!-- STEP 1 -->
+    <section id="step1" class="wizard-container" aria-hidden="false">
+      <div class="step-progress">
+        <div class="step-dot active">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div><div class="step-dot">6</div>
+        <div style="margin-left:12px;font-weight:700;color:#10b981">Project Info</div>
+      </div>
+      <div class="small" style="margin-bottom:18px;color:var(--text-dim)">
+        Enter the basic details for your project. This information will be used for tracking, reporting, and budget calculations.<br>
+        <b>Project Name</b>: A clear, descriptive name for your project.<br>
+        <b>Project Code</b>: Unique code for tracking (must be unique).<br>
+        <b>Customer</b>: The client or business unit for whom the project is being executed.<br>
+        <b>Project Type</b>: Select the type of project (e.g., LIMS Implementation, CSV Validation, Equipment Qualification, etc.).<br>
+        <b>Project Manager</b>: The main person responsible for project delivery.<br>
+        <b>Currency</b>: The currency for all cost calculations.<br>
+        <b>Start Date</b> & <b>Go-Live Date</b>: Project planned start and go-live dates. Duration is auto-calculated.<br>
+        <b>Expected Duration</b>: Calculated in weeks based on dates, or enter manually.<br>
+        <b>Complexity</b>: Select the overall complexity (affects cost multipliers).<br>
+        <b>Description</b>: Short summary of the project scope, goals, or context.<br>
+        <b>Tip:</b> Fill all required fields. Use a unique Project Code to avoid errors.
+      </div>
+      <form id="projectInfoForm" autocomplete="off">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="projectName">📁 Project Name *</label>
+            <input id="projectName" required maxlength="100" placeholder="e.g. LIMS Implementation for ABC Pharma">
+          </div>
+          <div class="form-group">
+            <label for="projectCode">#️⃣ Project Code *</label>
+            <input id="projectCode" required maxlength="30" placeholder="e.g. LIMS2025-01">
+            <div class="small">Unique code for tracking this project.</div>
+          </div>
+          <div class="form-group">
+            <label for="customer">🏢 Customer *</label>
+            <input id="customer" required maxlength="60" placeholder="e.g. ABC Pharma Ltd.">
+          </div>
+          <div class="form-group">
+            <label for="projectType">🛠️ Project Type *</label>
+            <select id="projectType" required>
+              <option value="">Select...</option>
+              <option>CSV Validation</option>
+              <option>LIMS Implementation</option>
+              <option>Equipment Qualification</option>
+              <option>Cloud QMS</option>
+              <option>Other</option>
+              <option value="__add_new__">Add new...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="department">🏬 Department/Business Unit *</label>
+            <select id="department" required>
+              <option value="">Select...</option>
+              <option>IT</option>
+              <option>Quality</option>
+              <option>Manufacturing</option>
+              <option>R&D</option>
+              <option>Other</option>
+              <option value="__add_new__">Add new...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="projectManager">👤 Project Manager *</label>
+            <select id="projectManager" required>
+              <option value="">Select...</option>
+              <option>John Doe</option>
+              <option>Jane Smith</option>
+              <option>Other</option>
+              <option value="__add_new__">Add new...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sponsor">🧑‍💼 Project Sponsor/Owner</label>
+            <input id="sponsor" maxlength="60" placeholder="e.g. Dr. Ramesh Kumar">
+          </div>
+          <div class="form-group">
+            <label for="currency">💱 Currency *</label>
+            <select id="currency" required><option value="">Select...</option><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option value="__add_new__">Add new...</option></select>
+          </div>
+          <div class="form-group">
+            <label for="startDate">📅 Start Date *</label>
+            <input id="startDate" type="date" required>
+          </div>
+          <div class="form-group">
+            <label for="goLive">🚀 Estimated Go-Live Date</label>
+            <input id="goLive" type="date">
+          </div>
+          <div class="form-group">
+            <label for="duration">⏳ Expected Duration (weeks) *</label>
+            <input id="duration" type="number" min="1" max="156" required placeholder="e.g. 24">
+            <div class="small">Enter the planned project duration in weeks.</div>
+          </div>
+          <div class="form-group">
+            <label for="complexity">📈 Complexity *</label>
+            <select id="complexity" required><option value="">Select...</option><option>Low</option><option>Medium</option><option>High</option><option>Very High</option><option value="__add_new__">Add new...</option></select>
+          </div>
+          <div class="form-group" style="grid-column:1/3">
+            <label for="description">📝 Project Description</label>
+            <textarea id="description" rows="2" maxlength="300" placeholder="Short summary of the project scope, goals, or context."></textarea>
+          </div>
+        </div>
+        <div style="margin-top:18px;display:flex;justify-content:flex-end;gap:12px">
+          <button type="submit" id="toStep2" class="btn-main" disabled>Next →</button>
+        </div>
+        <div id="formError" style="color:#ef4444;margin-top:8px"></div>
+      </form>
+    </section>
+
+    <!-- STEP 2 -->
+    <section id="step2" class="wizard-container" style="display:none" aria-hidden="true">
+      <div class="step-progress">
+        <div class="step-dot">1</div><div class="step-dot active">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div><div class="step-dot">6</div>
+        <div style="margin-left:12px;font-weight:700;color:#10b981">Scope & Deliverables</div>
+      </div>
+      <h1>Project Scope & Deliverables</h1>
+      <div class="small" style="margin-bottom:18px;color:var(--text-dim)">
+        Define the boundaries, key outcomes, and exclusions for this project.<br>
+        <b>Project Scope</b>: Describe what is included in the project (e.g., modules, business processes, integrations).<br>
+        <b>Key Deliverables</b>: List all major outputs (e.g., URS, FS, Test Scripts, Training, SOPs, Validation Reports).<br>
+        <span style="color:#10b981;font-weight:600">Note:</span> The number and type of deliverables directly impact project effort, resource allocation, and cost. More deliverables usually mean more work for your team.<br>
+        <b>Best Practice:</b> Be as specific as possible. If you add or remove deliverables, review resource and cost estimates in later steps.<br>
+        <b>Out of Scope</b>: Clearly state what is NOT included to avoid scope creep and cost overruns.
+      </div>
+      <form id="scopeForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="scope">📋 Project Scope *</label>
+            <textarea id="scope" rows="4" required placeholder="Describe the overall scope, e.g. system modules, business processes, etc."></textarea>
+            <div class="small">What is included in the project? (e.g. LIMS core, 3 modules, 2 integrations)</div>
+          </div>
+          <div class="form-group">
+            <label for="deliverables">📦 Key Deliverables *</label>
+            <div id="deliverablesChecklist" style="margin-bottom:8px">
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="URS"> URS</label>
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="FS"> FS</label>
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="Test Scripts"> Test Scripts</label>
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="Training"> Training</label>
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="SOPs"> SOPs</label>
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="Validation Report"> Validation Report</label>
+              <label style="display:inline-block;margin-right:12px"><input type="checkbox" value="Other" id="addDeliverableOther"> Other</label>
+              <input id="customDeliverableInput" type="text" placeholder="Add new..." style="display:none;margin-left:8px;width:160px">
+            </div>
+            <textarea id="deliverables" rows="3" required placeholder="List the main deliverables, e.g. URS, FS, Test Scripts, Training, etc."></textarea>
+            <div class="small" style="color:#10b981;font-weight:600">Each deliverable adds to project cost and effort. Review your list carefully.</div>
+            <div class="small">What will be delivered? (e.g. 5 SOPs, 1 validation report, 1 training session)</div>
+          </div>
+          <div class="form-group" style="grid-column:1/3">
+            <label for="out_of_scope">🚫 Out of Scope</label>
+            <textarea id="out_of_scope" rows="2" placeholder="Anything explicitly excluded from the project."></textarea>
+            <div class="small">What is not included? (e.g. legacy system migration, hardware procurement)</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px;gap:12px;flex-wrap:wrap">
+          <button type="button" id="back1" class="btn-ghost">← Back</button>
+          <button type="submit" id="toStep3" class="btn-main" style="min-width:120px">Next →</button>
+        </div>
+        <div id="scopeError" style="color:#ef4444;margin-top:8px"></div>
+      </form>
+    </section>
+
+    <!-- STEP 3: Scope Metrics -->
+    <section id="step3" class="wizard-container" style="display:none" aria-hidden="true">
+      <div class="step-progress">
+        <div class="step-dot">1</div><div class="step-dot">2</div><div class="step-dot active">3</div><div class="step-dot">4</div><div class="step-dot">5</div><div class="step-dot">6</div>
+        <div style="margin-left:12px;font-weight:700;color:#10b981">Scope Metrics</div>
+      </div>
+      <h1>Scope Sizing</h1>
+      <div class="small" style="margin-bottom:18px;color:var(--text-dim)">
+        Estimate the size and complexity of the project deliverables. These metrics help determine resource needs, effort, and cost.<br>
+        <b># of URS</b>: User Requirement Specifications—define what the system must do.<br>
+        <b># of Functional Specs (FS)</b>: Functional/technical specifications for each requirement.<br>
+        <b># of Modules</b>: Major system components or sub-systems.<br>
+        <b># of Test Cases</b>: Individual tests to verify requirements.<br>
+        <b># of Protocols (IQ/OQ/PQ)</b>: Validation protocols (Installation, Operational, Performance Qualification).<br>
+        <b># of APIs / Integrations</b>: Interfaces to other systems.<br>
+        <b>Estimated Data Volume / Notes</b>: Mention if large data migration, special integrations, or other notes.<br>
+        <b>Tip:</b> Enter realistic numbers for accurate effort and cost estimation. If unsure, use best estimates or consult your technical team.
+      </div>
+      <form id="metricsForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="numURS">📝 # of URS</label>
+            <input id="numURS" type="number" min="0" value="0" placeholder="e.g. 10">
+            <div class="small">User Requirement Specifications</div>
+          </div>
+          <div class="form-group">
+            <label for="numFS">📄 # of Functional Specs (FS)</label>
+            <input id="numFS" type="number" min="0" value="0" placeholder="e.g. 5">
+          </div>
+          <div class="form-group">
+            <label for="numModules">📦 # of Modules</label>
+            <input id="numModules" type="number" min="0" value="0" placeholder="e.g. 3">
+          </div>
+          <div class="form-group">
+            <label for="numTestcases">✅ # of Test Cases</label>
+            <input id="numTestcases" type="number" min="0" value="0" placeholder="e.g. 50">
+          </div>
+          <div class="form-group">
+            <label for="numProtocols">🧪 # of Protocols (IQ/OQ/PQ)</label>
+            <input id="numProtocols" type="number" min="0" value="0" placeholder="e.g. 6">
+          </div>
+          <div class="form-group">
+            <label for="numAPIs">🔗 # of APIs / Integrations</label>
+            <input id="numAPIs" type="number" min="0" value="0" placeholder="e.g. 2">
+          </div>
+          <div class="form-group" style="grid-column:1/3">
+            <label for="dataVolume">💾 Estimated Data Volume / Notes</label>
+            <input id="dataVolume" placeholder="e.g., 50k records / heavy data migration">
+            <div class="small">Mention if large data migration or special notes.</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px;gap:12px;flex-wrap:wrap">
+          <button type="button" id="back2" class="btn-ghost">← Back</button>
+          <button type="submit" id="toStep4" class="btn-main">Next →</button>
+        </div>
+        <div id="metricsError" style="color:#ef4444;margin-top:8px"></div>
+      </form>
+    </section>
+
+    <!-- STEP 4: Role Allocation -->
+    <section id="step4" class="wizard-container" style="display:none" aria-hidden="true">
+      <div class="step-progress">
+        <div class="step-dot">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot active">4</div><div class="step-dot">5</div><div class="step-dot">6</div>
+        <div style="margin-left:12px;font-weight:700;color:#10b981">Role Allocation</div>
+      </div>
+      <h1>Role Allocation & Hours</h1>
+      <div class="small" style="margin-bottom:18px;color:var(--text-dim)">
+        Assign project roles, set hourly rates, and estimate hours for each project phase.<br>
+        <b>Role</b>: Select or add each team member's role (e.g., Validation Lead, Developer, Tester, Project Manager).<br>
+        <b>Hourly Rate</b>: Enter the cost per hour for each role (internal or external).<br>
+        <b>Init/Plan/Dev/Test/GoLive/Hypercare hrs</b>: Estimate hours each role will spend in each phase.<br>
+        <b>Tip:</b> Add all key roles for your project. Use realistic rates and hours for accurate budgeting.<br>
+        <b>Best Practice:</b> Include all contributors, even part-time or external consultants, to avoid underestimating resource costs.
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <select id="newRoleName" style="min-width:220px;flex:1;padding:8px;border-radius:6px;border:1px solid #e6eef0">
+            <option value="">👤 Select role</option>
+            <option>Validation Lead</option>
+            <option>CSV Consultant</option>
+            <option>Business Analyst</option>
+            <option>Developer</option>
+            <option>Tester</option>
+            <option>Project Manager</option>
+            <option>Quality Lead</option>
+            <option>IT Support</option>
+            <option>Other</option>
+            <option value="__add_new__">Add new...</option>
+          </select>
+          <input id="newRoleRate" placeholder="💲 Hourly rate" type="number" min="0" style="width:140px;padding:8px;border-radius:6px;border:1px solid #e6eef0">
+          <button id="addRoleBtn" class="btn-main">Add Role</button>
+        </div>
+        <table class="roles-table" id="rolesTable" aria-hidden="false" style="width:100%">
+          <thead><tr>
+            <th style="min-width:200px">Role</th>
+            <th style="min-width:120px">Hourly Rate</th>
+            <th style="min-width:90px">Init hrs</th>
+            <th style="min-width:90px">Plan hrs</th>
+            <th style="min-width:90px">Dev hrs</th>
+            <th style="min-width:90px">Test hrs</th>
+            <th style="min-width:90px">GoLive hrs</th>
+            <th style="min-width:110px">Hypercare hrs</th>
+            <th style="min-width:110px">Actions</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px;gap:12px;flex-wrap:wrap">
+        <button id="back3" class="btn-ghost">← Back</button>
+        <button id="toStep5" class="btn-main">Next →</button>
+      </div>
+      <div id="rolesError" style="color:#ef4444;margin-top:8px"></div>
+    </section>
+
+    <!-- STEP 5: Direct Costs -->
+    <section id="step5" class="wizard-container" style="display:none" aria-hidden="true">
+      <div class="step-progress">
+        <div class="step-dot">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot active">5</div><div class="step-dot">6</div>
+        <div style="margin-left:12px;font-weight:700;color:#10b981">Direct Costs</div>
+      </div>
+      <h1>Direct & Recurring Costs</h1>
+      <div class="small" style="margin-bottom:18px;color:var(--text-dim)">
+        Add all direct and recurring costs associated with the project.<br>
+        <b>Type</b>: Select or add the cost category (e.g., Software License, Hardware, Cloud Hosting, Training, Travel, Consulting, Other).<br>
+        <b>Description</b>: Briefly describe the item or service.<br>
+        <b>Qty</b>: Enter the quantity (e.g., number of licenses, units, or trips).<br>
+        <b>Unit Cost</b>: Cost per item, license, or unit.<br>
+        <b>Recurring</b>: Specify if the cost is one-time, monthly, or yearly.<br>
+        <b>Total</b>: Automatically calculated as Qty × Unit Cost.<br>
+        <b>Tip:</b> Include all expected costs, even small or recurring ones, for a realistic budget.<br>
+        <b>Best Practice:</b> Review vendor quotes, contracts, and past projects to ensure no cost is missed.
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+        <select id="newCostType" style="min-width:200px;padding:8px;border-radius:6px;border:1px solid #e6eef0">
+          <option value="">Select cost type</option>
+          <option>Software License</option>
+          <option>Hardware</option>
+          <option>Cloud Hosting</option>
+          <option>Training</option>
+          <option>Travel</option>
+          <option>Consulting</option>
+          <option>Other</option>
+          <option value="__add_new__">Add new...</option>
+        </select>
+        <input id="newCostDesc" placeholder="📝 Description" style="flex:1;padding:8px;border-radius:6px;border:1px solid #e6eef0">
+        <input id="newCostQty" placeholder="🔢 Qty" type="number" min="1" style="width:80px;padding:8px;border-radius:6px;border:1px solid #e6eef0">
+        <input id="newCostUnit" placeholder="💲 Unit cost" type="number" min="0" style="width:120px;padding:8px;border-radius:6px;border:1px solid #e6eef0">
+        <select id="newCostRecurring" style="padding:8px;border-radius:6px;border:1px solid #e6eef0">
+          <option value="one_time">One-time</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option>
+        </select>
+        <button id="addCostBtn" class="btn-main">Add Cost</button>
+      </div>
+      <table class="costs-table" id="costsTable">
+        <thead><tr><th>Type</th><th>Description</th><th>Qty</th><th>Unit Cost</th><th>Recurring</th><th>Total</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;margin-top:12px;gap:12px;flex-wrap:wrap">
+        <button id="back4" class="btn-ghost">← Back</button>
+        <button id="toStep6" class="btn-main">Calculate & Finish →</button>
+      </div>
+      <div id="costsError" style="color:#ef4444;margin-top:8px"></div>
+    </section>
+
+    <!-- STEP 6: Summary & Calculation -->
+    <section id="step6" class="wizard-container" style="display:none" aria-hidden="true">
+      <div class="step-progress">
+        <div class="step-dot">1</div><div class="step-dot">2</div><div class="step-dot">3</div><div class="step-dot">4</div><div class="step-dot">5</div><div class="step-dot active">6</div>
+        <div style="margin-left:12px;font-weight:700;color:#10b981">Summary</div>
+      </div>
+      <h1>Summary & Financials</h1>
+      <div class="small" style="margin-bottom:18px;color:var(--text-dim)">
+        Review all calculated costs and totals before finalizing your project budget.<br>
+        <b>Resource costs</b> include all project team members (internal and external) based on their hourly rates and estimated hours per phase.<br>
+        <b>Direct costs</b> are one-time or recurring expenses such as software, hardware, travel, and consulting.<br>
+        <b>Contingency</b> and <b>Change Reserve (CR)</b> are calculated as risk buffers for unforeseen events and change requests.<br>
+        <b>PMO Overhead</b> covers project management and administrative support.<br>
+        <b>Tax</b> is applied as per the applicable rate.<br>
+        <b>Total Project Cost</b> is the sum of all above, representing the full budget required for successful delivery.
+      </div>
+      <div id="summaryArea">
+        <div class="summary-row"><div>Base resource cost (all team members)</div><div id="s_baseLabor">—</div></div>
+        <div class="summary-row"><div>Adjusted resource cost (complexity & risk multipliers)</div><div id="s_adjustedLabor">—</div></div>
+        <div class="summary-row"><div>Direct costs (software, hardware, travel, etc.)</div><div id="s_directCosts">—</div></div>
+        <div class="summary-row"><div>Contingency (risk buffer)</div><div id="s_contingency">—</div></div>
+        <div class="summary-row"><div>Change Reserve (CR) for scope changes</div><div id="s_crr">—</div></div>
+        <div class="summary-row"><div>PMO Overhead (project management/admin)</div><div id="s_pmo">—</div></div>
+        <div class="summary-row"><div>Tax (as per applicable rate)</div><div id="s_tax">—</div></div>
+        <div class="summary-row" style="border-bottom:2px solid #e6eef0"><div class="summary-total">Total Project Cost (all-inclusive)</div><div class="summary-total" id="s_total">—</div></div>
+      </div>
+      <div class="small" style="margin-top:18px;color:var(--text-dim)">
+        <b>Tip:</b> Review each component above. If any value seems off, go back and adjust resource allocations, direct costs, or project complexity.<br>
+        <b>Best Practice:</b> Always include a contingency and change reserve to protect your project from unforeseen risks and scope changes.
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px;gap:12px;flex-wrap:wrap">
+        <button id="back5" class="btn-ghost">← Back</button>
+        <div style="display:flex;gap:8px">
+          <button id="saveDraft" class="btn-ghost">Save Draft</button>
+          <button id="finalizeBudget" class="btn-main">Finalize & Save</button>
+        </div>
+      </div>
+      <div id="finalMsg" style="margin-top:12px;color:#0f172a;font-weight:700"></div>
+      <div style="margin-top:30px">
+        <h2 style="color:var(--accent)">Cost Breakdown</h2>
+        <canvas id="costBreakdownChart" width="400" height="200"></canvas>
+      </div>
+      <!-- Contingency, Tax, and PMO Overhead sliders -->
+      <div class="slider-group">
+        <label for="contingencyRange">Contingency: <span id="contingencyVal">10%</span></label>
+        <input type="range" id="contingencyRange" min="0" max="30" value="10" step="1">
+      </div>
+      <div class="slider-group">
+        <label for="taxRange">Tax: <span id="taxVal">18%</span></label>
+        <input type="range" id="taxRange" min="0" max="30" value="18" step="1">
+      </div>
+      <div class="slider-group">
+        <label for="pmoRange">PMO Overhead: <span id="pmoVal">8%</span></label>
+        <input type="range" id="pmoRange" min="0" max="20" value="8" step="1">
+      </div>
+      <style>
+      .slider-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 14px 0;
+        padding: 10px 16px;
+        background: #f8fafc;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      }
+      .slider-group label {
+        flex: 0 0 200px;
+        font-weight: 600;
+        color: #065f46;
+        font-size: 0.95rem;
+      }
+      .slider-group input[type="range"] {
+        flex: 1;
+        accent-color: #9333ea;
+        height: 4px;
+        border-radius: 4px;
+        background: linear-gradient(to right, #a855f7, #6366f1);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .slider-group span {
+        font-weight: 700;
+        color: #0f172a;
+        margin-left: 4px;
+      }
+      </style>
+      <script>
+      // live update of slider values and integration with calculation
+      document.addEventListener('DOMContentLoaded', function() {
+        const sliders = [
+          { id: "contingencyRange", label: "contingencyVal", multiplier: "contingency_pct", max: 30, default: 10 },
+          { id: "taxRange", label: "taxVal", multiplier: "tax_pct", max: 30, default: 18 },
+          { id: "pmoRange", label: "pmoVal", multiplier: "pmo_pct", max: 20, default: 8 }
+        ];
+        // Only run slider logic if all slider elements are present (i.e., on summary step)
+        const allPresent = sliders.every(s => document.getElementById(s.id) && document.getElementById(s.label));
+        if (!allPresent) return;
+        sliders.forEach(s => {
+          const range = document.getElementById(s.id);
+          const val = document.getElementById(s.label);
+          if (!range || !val) return;
+          // Set initial value
+          val.textContent = range.value + '%';
+          range.addEventListener('input', () => {
+            if (!val || !range) return;
+            val.textContent = range.value + '%';
+            // Update multipliers and recalculate
+            if (s.multiplier === 'contingency_pct') {
+              multipliers.contingency_pct = { ...multipliers.contingency_pct, Medium: Number(range.value)/100 };
+            } else if (s.multiplier === 'tax_pct') {
+              multipliers.tax_pct = Number(range.value)/100;
+            } else if (s.multiplier === 'pmo_pct') {
+              multipliers.pmo_pct = Number(range.value)/100;
+            }
+            if (typeof calculateAndRenderSummary === 'function') calculateAndRenderSummary();
+          });
+        });
+      });
+      </script>
+    </section>
+  </main>
+
+  <!-- Supabase client (v2) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+  (async function(){
+    // ---------- CONFIG: replace these with your values if necessary ----------
+    const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
+    // -----------------------------------------------------------------------
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
+    // Utility: HTMLElement shortcuts
+    const $ = id => document.getElementById(id);
+
+    // Wizard step elements
+    const steps = ['step1','step2','step3','step4','step5','step6'];
+    // Animated showStep: fade out current, fade in target
+    function showStep(n){
+      const targetId = steps[n-1];
+      const targetEl = $(targetId);
+      if (!targetEl) return;
+      // find currently visible step
+      const currentEl = steps.map(id=>$(id)).find(el => el && el.style.display === 'block');
+      if (currentEl === targetEl) {
+        // still update UI pieces
+        updateStepDots(n);
+        updateProgressBar();
+        return;
+      }
+      const doShow = () => {
+        targetEl.style.display = 'block';
+        targetEl.setAttribute('aria-hidden','false');
+        targetEl.classList.add('fade-in');
+        currentStep = n;
+        restoreStepData(n);
+        updateStepDots(n);
+        updateProgressBar();
+        setTimeout(()=> targetEl.classList.remove('fade-in'), 400);
+        window.scrollTo({top:0,behavior:'smooth'});
+      };
+      if (currentEl) {
+        currentEl.classList.remove('fade-in');
+        currentEl.classList.add('fade-out');
+        currentEl.setAttribute('aria-hidden','true');
+        setTimeout(()=>{
+          try { currentEl.style.display = 'none'; } catch(e){}
+          currentEl.classList.remove('fade-out');
+          doShow();
+        }, 340);
+      } else {
+        doShow();
+      }
+    }
+
+    // Default multipliers (fallback)
+    let multipliers = {
+      complexity: { Low:0.9, Medium:1.0, High:1.2, "Very High":1.5 },
+      integration: { None:1.0, Low:1.05, Med:1.1, High:1.25 },
+      data_migration: { None:1.0, Low:1.05, Med:1.1, High:1.2 },
+      regulatory: { Minor:1.0, Moderate:1.05, High:1.15 },
+      contingency_pct: { Low:0.05, Medium:0.10, High:0.15, "Very High":0.25 },
+      crr_pct: 0.05,
+      pmo_pct: 0.08,
+      tax_pct: 0.18
+    };
+
+    // Try load multipliers from system_settings
+    try {
+      const { data: sysData, error } = await supabase
+        .from('system_settings')
+        .select('setting_key,setting_value')
+        .eq('setting_key','budget_multipliers')
+        .limit(1);
+      if(!error && sysData && sysData.length){
+        const val = sysData[0].setting_value;
+        multipliers = {...multipliers, ...val};
+        console.log('Loaded multipliers from system_settings', multipliers);
+      }
+    } catch (err) {
+      console.warn('Could not load system_settings, using defaults', err);
+    }
+
+    // ---------- STATE ----------
+    window.currentProjectId = null;
+    let roleRows = [];   // {id, role_name, hourly_rate, initiation_hours, planning_hours, development_hours, testing_hours, go_live_hours, hypercare_hours}
+    let costRows = [];   // {id, cost_type, description, quantity, unit_cost, recurring_period}
+    // ---------- Step1 handlers ----------
+    const projectInfoForm = $('projectInfoForm');
+    const toStep2Btn = $('toStep2');
+    const formError = $('formError');
+
+    // enable Next when form valid
+    projectInfoForm.addEventListener('input', () => {
+      toStep2Btn.disabled = !projectInfoForm.checkValidity();
+      formError.textContent = '';
+    });
+
+    // --- Smart Validation Hints, Live Duplicate Check, and Step Navigation ---
+    $('projectInfoForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let hasError = false;
+      // Inline validation for required fields
+      ['projectName','projectCode','customer','projectType','currency','startDate','duration','complexity'].forEach(id => {
+        const el = $(id);
+        if (el && !el.value.trim()) {
+          el.style.borderColor = 'red';
+          hasError = true;
+        } else if (el) {
+          el.style.borderColor = '';
+        }
+      });
+      if (hasError) {
+        $('formError').textContent = 'Please fill all required fields!';
+        $('formError').style.display = 'block';
+        $('formError').scrollIntoView({behavior:'smooth', block:'center'});
+        return;
+      }
+      // Live duplicate check for project code
+      const { data: dup } = await supabase
+        .from('project_budget')
+        .select('project_code')
+        .eq('project_code', $('projectCode').value)
+        .maybeSingle();
+      if (dup) {
+        $('formError').textContent = 'Project code already exists! Please use a unique code.';
+        $('formError').style.display = 'block';
+        $('projectCode').style.borderColor = 'red';
+        $('formError').scrollIntoView({behavior:'smooth', block:'center'});
+        return;
+      }
+      if (!projectInfoForm.checkValidity()) {
+        formError.textContent = 'Please complete the form';
+        formError.style.display = 'block';
+        formError.scrollIntoView({behavior:'smooth', block:'center'});
+        return;
+      }
+      toStep2Btn.disabled = true;
+
+      const payload = {
+        project_name: $('projectName')?.value.trim() || '',
+        project_code: $('projectCode')?.value.trim() || '',
+        customer: $('customer')?.value.trim() || '',
+        project_type: $('projectType')?.value || '',
+        currency: $('currency')?.value || '',
+        start_date: $('startDate')?.value || null,
+        duration_weeks: parseInt($('duration')?.value||0,10),
+        template_name: $('template')?.value || '',
+        complexity: $('complexity')?.value || '',
+        region: $('region')?.value || '',
+        status: $('status')?.value || '',
+        // Only include fields that exist in project_budget table
+      };
+
+      try {
+        const { data, error } = await supabase.from('project_budget').insert([payload]).select().single();
+        if (error) {
+          if (error.message && error.message.includes('duplicate key value')) {
+            formError.textContent = 'A project with this Project Code already exists. Please use a unique Project Code.';
+          } else {
+            formError.textContent = 'DB error: ' + error.message;
+          }
+          formError.style.display = 'block';
+          formError.scrollIntoView({behavior:'smooth', block:'center'});
+          toStep2Btn.disabled=false;
+          return;
+        }
+        window.currentProjectId = data.id;
+        showStep(2);
+      } catch (err) {
+        formError.textContent = 'Unexpected error: ' + err.message;
+        formError.style.display = 'block';
+        formError.scrollIntoView({behavior:'smooth', block:'center'});
+        toStep2Btn.disabled=false;
+      }
+    });
+
+    // ---------- Step2 ----------
+    const scopeForm = $('scopeForm');
+    const toStep3Btn = $('toStep3');
+    const scopeError = $('scopeError');
+    $('back1').addEventListener('click', ()=> showStep(1));
+
+    scopeForm.addEventListener('input', ()=> {
+      toStep3Btn.disabled = !scopeForm.checkValidity();
+      scopeError.textContent = '';
+    });
+
+    scopeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!scopeForm.checkValidity()) { scopeError.textContent = 'Please fill required fields'; return; }
+      try {
+        const updates = {
+          scope: $('scope').value.trim(),
+          deliverables: $('deliverables').value.trim(),
+          out_of_scope: $('out_of_scope').value.trim(),
+          updated_at: new Date().toISOString()
+        };
+        const { error } = await supabase.from('project_budget').update(updates).eq('id', window.currentProjectId);
+        if (error) { scopeError.textContent = 'DB error: '+error.message; return; }
+        // Insert scope metrics row placeholder will be done in step 3
+        showStep(3);
+      } catch (err) {
+        scopeError.textContent = 'Unexpected error: ' + err.message;
+      }
+    });
+
+    // ---------- Step3 (Scope metrics) ----------
+    const metricsForm = $('metricsForm');
+    $('back2').addEventListener('click', ()=> showStep(2));
+    const metricsError = $('metricsError');
+
+    metricsForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      metricsError.textContent='';
+      try {
+        const payload = {
+          project_id: window.currentProjectId,
+          num_urs: parseInt($('numURS').value||0,10),
+          num_fs: parseInt($('numFS').value||0,10),
+          num_modules: parseInt($('numModules').value||0,10),
+          num_testcases: parseInt($('numTestcases').value||0,10),
+          num_protocols: parseInt($('numProtocols').value||0,10),
+          num_apis: parseInt($('numAPIs').value||0,10),
+          data_volume: $('dataVolume').value || null
+        };
+        // Upsert style: delete existing metrics for this project if any, then insert new
+        await supabase.from('project_scope_metrics').delete().eq('project_id', window.currentProjectId);
+        const { error } = await supabase.from('project_scope_metrics').insert([payload]);
+        if (error) { metricsError.textContent = 'DB error: '+error.message; return; }
+        showStep(4);
+      } catch (err) {
+        metricsError.textContent = 'Unexpected error: ' + err.message;
+      }
+    });
+
+    // ---------- Step4 (Role allocation) ----------
+    const rolesTableTbody = document.querySelector('#rolesTable tbody');
+    $('back3').addEventListener('click', ()=> showStep(3));
+    $('addRoleBtn').addEventListener('click', addRoleFromInputs);
+    $('toStep5').addEventListener('click', saveRolesAndContinue);
+
+    function addRoleFromInputs(){
+      const name = $('newRoleName').value.trim();
+      const rate = parseFloat($('newRoleRate').value || 0);
+      if(!name){ alert('Enter role name'); return; }
+      const row = {
+        id: 'r_' + Math.random().toString(36).slice(2,9),
+        role_name: name,
+        hourly_rate: rate,
+        initiation_hours:0, planning_hours:0, development_hours:0, testing_hours:0, go_live_hours:0, hypercare_hours:0
+      };
+      roleRows.push(row);
+      $('newRoleName').value=''; $('newRoleRate').value='';
+      renderRoleRows();
+    }
+
+    function renderRoleRows(){
+      rolesTableTbody.innerHTML = '';
+      roleRows.forEach(r=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="min-width:200px"><input class="roleName" value="${escapeHtml(r.role_name)}" style="width:100%"></td>
+          <td style="min-width:120px"><input class="roleRate" type="number" value="${r.hourly_rate}" style="width:100%"></td>
+          <td style="min-width:90px"><input class="initHours" type="number" value="${r.initiation_hours}" style="width:100%"></td>
+          <td style="min-width:90px"><input class="planHours" type="number" value="${r.planning_hours}" style="width:100%"></td>
+          <td style="min-width:90px"><input class="devHours" type="number" value="${r.development_hours}" style="width:100%"></td>
+          <td style="min-width:90px"><input class="testHours" type="number" value="${r.testing_hours}" style="width:100%"></td>
+          <td style="min-width:90px"><input class="goLiveHours" type="number" value="${r.go_live_hours}" style="width:100%"></td>
+          <td style="min-width:110px"><input class="hypercareHours" type="number" value="${r.hypercare_hours}" style="width:100%"></td>
+          <td><button class="btn-ghost removeRole">Remove</button></td>
+        `;
+        // attach events
+        tr.querySelectorAll('input').forEach(inp=>{
+          inp.addEventListener('input', () => {
+            r.role_name = tr.querySelector('.roleName').value.trim();
+            r.hourly_rate = parseFloat(tr.querySelector('.roleRate').value || 0);
+            r.initiation_hours = parseFloat(tr.querySelector('.initHours').value||0);
+            r.planning_hours = parseFloat(tr.querySelector('.planHours').value||0);
+            r.development_hours = parseFloat(tr.querySelector('.devHours').value||0);
+            r.testing_hours = parseFloat(tr.querySelector('.testHours').value||0);
+            r.go_live_hours = parseFloat(tr.querySelector('.goLiveHours').value||0);
+            r.hypercare_hours = parseFloat(tr.querySelector('.hypercareHours').value||0);
+          });
+        });
+        tr.querySelector('.removeRole').addEventListener('click', ()=>{
+          roleRows = roleRows.filter(x=>x.id !== r.id);
+          renderRoleRows();
+        });
+        rolesTableTbody.appendChild(tr);
+      });
+    }
+
+    async function saveRolesAndContinue(){
+      $('rolesError').textContent='';
+      if(roleRows.length === 0){ if(!confirm('No roles added. Continue?')) return; }
+      try {
+        // delete existing allocations for project (simple approach)
+        await supabase.from('project_role_allocations').delete().eq('project_id', window.currentProjectId);
+        // Prepare insert payload (map hours)
+        const payload = roleRows.map(r=>({
+          project_id: window.currentProjectId,
+          role_name: r.role_name,
+          billable: true,
+          hourly_rate: r.hourly_rate || 0,
+          initiation_hours: r.initiation_hours || 0,
+          planning_hours: r.planning_hours || 0,
+          development_hours: r.development_hours || 0,
+          testing_hours: r.testing_hours || 0,
+          go_live_hours: r.go_live_hours || 0,
+          hypercare_hours: r.hypercare_hours || 0,
+          other_hours: 0
+        }));
+        if (payload.length) {
+          const { error } = await supabase.from('project_role_allocations').insert(payload);
+          if (error) { $('rolesError').textContent = 'DB error: ' + error.message; return; }
+        }
+        showStep(5);
+      } catch (err) {
+        $('rolesError').textContent = 'Unexpected: '+err.message;
+      }
+    }
+
+    // ---------- Step5: direct costs ----------
+    const costsTbody = document.querySelector('#costsTable tbody');
+    $('addCostBtn').addEventListener('click', addCostFromInputs);
+    $('back4').addEventListener('click', ()=> showStep(4));
+    $('toStep6').addEventListener('click', saveCostsAndContinue);
+
+    function addCostFromInputs(){
+      const type = $('newCostType').value || 'Other';
+      const desc = $('newCostDesc').value.trim() || '';
+      const qty = parseFloat($('newCostQty').value||1);
+      const unit = parseFloat($('newCostUnit').value||0);
+      const rec = $('newCostRecurring').value || 'one_time';
+      const row = { id: 'c_' + Math.random().toString(36).slice(2,9), cost_type:type, description:desc, quantity:qty, unit_cost:unit, recurring_period: rec };
+      costRows.push(row);
+      $('newCostType').value=''; $('newCostDesc').value=''; $('newCostQty').value=''; $('newCostUnit').value=''; $('newCostRecurring').value='one_time';
+      renderCostRows();
+    }
+
+    function renderCostRows(){
+      if (!costsTbody) return;
+      costsTbody.innerHTML = '';
+      costRows.forEach(c=>{
+        const tr = document.createElement('tr');
+        const total = (Number(c.quantity)||0) * (Number(c.unit_cost)||0);
+        tr.innerHTML = `<td><input class="costType" value="${escapeHtml(c.cost_type)}"></td>
+                        <td><input class="costDesc" value="${escapeHtml(c.description)}"></td>
+                        <td><input class="costQty" type="number" min="0" value="${c.quantity}"></td>
+                        <td><input class="costUnit" type="number" min="0" value="${c.unit_cost}"></td>
+                        <td>
+                          <select class="costRec">
+                            <option value="one_time"${c.recurring_period==='one_time'?' selected':''}>One-time</option>
+                            <option value="monthly"${c.recurring_period==='monthly'?' selected':''}>Monthly</option>
+                            <option value="yearly"${c.recurring_period==='yearly'?' selected':''}>Yearly</option>
+                          </select>
+                        </td>
+                        <td class="costTotal">${formatCurrency(total)}</td>
+                        <td><button class="btn-ghost removeCost">Remove</button></td>`;
+        tr.querySelectorAll('input, select').forEach(inp=>{
+          inp.addEventListener('input', ()=> {
+            c.cost_type = tr.querySelector('.costType').value;
+            c.description = tr.querySelector('.costDesc').value;
+            c.quantity = parseFloat(tr.querySelector('.costQty').value||0);
+            c.unit_cost = parseFloat(tr.querySelector('.costUnit').value||0);
+            c.recurring_period = tr.querySelector('.costRec').value;
+            const totalCell = tr.querySelector('.costTotal');
+            if (totalCell) totalCell.textContent = formatCurrency((c.quantity||0)*(c.unit_cost||0));
+          });
+        });
+        tr.querySelector('.removeCost').addEventListener('click', ()=> {
+          costRows = costRows.filter(x=>x.id !== c.id);
+          renderCostRows();
+        });
+        costsTbody.appendChild(tr);
+      });
+    }
+
+    async function saveCostsAndContinue(){
+      $('costsError').textContent='';
+      try {
+        await supabase.from('project_direct_costs').delete().eq('project_id', window.currentProjectId);
+        const payload = costRows.map(c=>({
+          project_id: window.currentProjectId,
+          cost_type: c.cost_type,
+          description: c.description,
+          quantity: c.quantity || 1,
+          unit_cost: c.unit_cost || 0,
+          one_time: (c.recurring_period === 'one_time'),
+          recurring_period: c.recurring_period,
+          recurring_cost: ((c.recurring_period==='monthly' || c.recurring_period==='yearly') ? c.quantity * c.unit_cost : 0)
+        }));
+        if (payload.length) {
+          const { error } = await supabase.from('project_direct_costs').insert(payload);
+          if (error) { $('costsError').textContent = 'DB error: '+error.message; return; }
+        }
+        // Ready to calculate
+        await calculateAndRenderSummary();
+        showStep(6);
+      } catch (err) {
+        $('costsError').textContent = 'Unexpected: '+err.message;
+      }
+    }
+
+    // ---------- Step6: calculation ----------
+    $('back5').addEventListener('click', ()=> showStep(5));
+    $('saveDraft').addEventListener('click', async ()=> {
+      await saveFinancials(false);
+      $('finalMsg').textContent = 'Saved draft successfully.';
+    });
+    $('finalizeBudget').addEventListener('click', async ()=> {
+      await saveFinancials(true);
+      $('finalMsg').textContent = 'Budget finalized and saved.';
+    });
+
+    // Calculation logic: fetch role allocations & direct costs from DB and compute
+    async function calculateAndRenderSummary(){
+      // Fetch roles and costs for this project
+      const [{ data: rolesData }, { data: costsData }] = await Promise.all([
+        supabase.from('project_role_allocations').select('*').eq('project_id', window.currentProjectId),
+        supabase.from('project_direct_costs').select('*').eq('project_id', window.currentProjectId)
+      ]);
+      const roles = rolesData || [];
+      const costs = costsData || [];
+
+      // Base labor calculation
+      let baseLabor = 0;
+      roles.forEach(r=>{
+        const total_hours = Number(r.initiation_hours||0) + Number(r.planning_hours||0) + Number(r.development_hours||0) + Number(r.testing_hours||0) + Number(r.go_live_hours||0) + Number(r.hypercare_hours||0) + Number(r.other_hours||0);
+        baseLabor += total_hours * Number(r.hourly_rate||0);
+      });
+
+      // Direct costs (one-time totals)
+      let directCosts = 0;
+      let recurringFirstYear = 0;
+      costs.forEach(c=>{
+        const qty = Number(c.quantity||0);
+        const unit = Number(c.unit_cost||0);
+        const total = qty * unit;
+        directCosts += total;
+        if (c.recurring_period === 'monthly') recurringFirstYear += (qty * unit) * 12;
+        else if (c.recurring_period === 'yearly') recurringFirstYear += (qty * unit);
+      });
+
+      // Multipliers
+      const complexityKey = $('complexity').value || 'Medium';
+      const CM = (multipliers.complexity && multipliers.complexity[complexityKey]) ? Number(multipliers.complexity[complexityKey]) : 1.0;
+      // For now assume Integration/Data migration/Regulatory defaults = 1.0 (you can expand UI to capture them)
+      const IM = 1.0, DM = 1.0, RM = 1.0;
+      const adjustedLabor = preciseMultiply(baseLabor, CM * IM * DM * RM);
+
+      // Contingency & CRR
+      const contingencyPct = (multipliers.contingency_pct && multipliers.contingency_pct[complexityKey]) ? Number(multipliers.contingency_pct[complexityKey]) : 0.10;
+      const crrPct = Number(multipliers.crr_pct || 0.05);
+      const pmoPct = Number(multipliers.pmo_pct || 0.08);
+      const taxPct = Number(multipliers.tax_pct || 0.18);
+
+      const contingencyAmount = preciseMultiply(adjustedLabor + directCosts, contingencyPct);
+      const crReserve = preciseMultiply(adjustedLabor + directCosts, crrPct);
+      const pmoOverhead = preciseMultiply(adjustedLabor, pmoPct);
+      const subtotal = preciseAddArray([adjustedLabor, directCosts, contingencyAmount, crReserve, pmoOverhead, recurringFirstYear]);
+      const taxAmount = preciseMultiply(subtotal, taxPct);
+      const totalProjectCost = preciseAdd(subtotal, taxAmount);
+
+  // Render (with null checks and only if summary area is visible)
+  const summaryArea = document.getElementById('summaryArea');
+  if (summaryArea && summaryArea.offsetParent !== null) {
+    const setText = (id, val) => { const el = $(id); if (el) el.textContent = val; };
+    setText('s_baseLabor', formatCurrency(baseLabor));
+    setText('s_adjustedLabor', formatCurrency(adjustedLabor));
+    setText('s_directCosts', formatCurrency(directCosts + recurringFirstYear));
+    setText('s_contingency', formatCurrency(contingencyAmount));
+    setText('s_crr', formatCurrency(crReserve));
+    setText('s_pmo', formatCurrency(pmoOverhead));
+    setText('s_tax', formatCurrency(taxAmount));
+    setText('s_total', formatCurrency(totalProjectCost));
+  }
+
+      // Save summary in memory to write to DB on finalize
+      window._calcResult = {
+        baseLabor, adjustedLabor, directCosts: (directCosts + recurringFirstYear),
+        contingencyAmount, crReserve, pmoOverhead, taxAmount, totalProjectCost, tco_3yr: totalProjectCost * 3
+      };
+    }
+
+    // Save to project_financials
+    async function saveFinancials(finalize=true){
+      if(!window._calcResult){ await calculateAndRenderSummary(); }
+      const fin = window._calcResult;
+      const payload = {
+        project_id: window.currentProjectId,
+        base_labor_cost: fin.baseLabor,
+        adjusted_labor_cost: fin.adjustedLabor,
+        direct_costs: fin.directCosts,
+        contingency_amount: fin.contingencyAmount,
+        cr_reserve: fin.crReserve,
+        pmo_overhead: fin.pmoOverhead,
+        tax_amount: fin.taxAmount,
+        total_project_cost: fin.totalProjectCost,
+        tco_3yr: fin.tco_3yr,
+        created_at: new Date().toISOString()
+      };
+      // delete previous financials and insert new (simple)
+      await supabase.from('project_financials').delete().eq('project_id', window.currentProjectId);
+      const { error } = await supabase.from('project_financials').insert([payload]);
+      if(error) { alert('DB error: ' + error.message); return; }
+      // update project_budget status if finalized
+      if(finalize){
+        await supabase.from('project_budget').update({ status: 'Submitted', updated_at: new Date().toISOString() }).eq('id', window.currentProjectId);
+      }
+    }
+
+    // ---------- small helpers ----------
+    function formatCurrency(n){
+      if (isNaN(n)) return '—';
+      const v = Number(n.toFixed(2));
+      return v.toLocaleString(undefined, { minimumFractionDigits:2, maximumFractionDigits:2 });
+    }
+    function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]); }
+    // precise add/multiply helpers to avoid floating point drift
+    function preciseAdd(a,b){ return Number((Number(a) + Number(b)).toFixed(2)); }
+    function preciseMultiply(a,b){ return Number((Number(a) * Number(b)).toFixed(2)); }
+    function preciseAddArray(arr){ return arr.reduce((acc,x)=>preciseAdd(acc,x||0),0); }
+
+    // --- Step navigation logic with clickable step dots and state retention ---
+const stepDots = document.querySelectorAll('.step-progress .step-dot');
+let currentStep = 1;
+const stepData = [{}, {}, {}, {}, {}, {}]; // For 6 steps
+
+function updateStepDots(n) {
+  document.querySelectorAll('.step-progress').forEach((progress, idx) => {
+    const dots = progress.querySelectorAll('.step-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === n - 1);
+      dot.style.cursor = 'pointer';
+      dot.onclick = () => {
+        showStep(i + 1); // Allow navigation to any step, even if empty
+      };
+    });
+  });
+}
+function maxStepReached() {
+  // Find the highest step with any data entered
+  for (let i = stepData.length - 1; i >= 0; i--) {
+    if (Object.keys(stepData[i]).length > 0) return i;
+  }
+  return 0;
+}
+function showStep(n) {
+  steps.forEach((id, idx) => {
+    const el = $(id);
+    if (!el) return;
+    el.style.display = (idx === n - 1) ? 'block' : 'none';
+    el.setAttribute('aria-hidden', (idx === n - 1) ? 'false' : 'true');
+  });
+  updateStepDots(n);
+  currentStep = n;
+  restoreStepData(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function saveStepData(n) {
+  // Save form data for step n (1-based)
+  if (n === 1) {
+    stepData[0] = {
+      projectName: $('projectName') ? $('projectName').value : '',
+      projectCode: $('projectCode') ? $('projectCode').value : '',
+      customer: $('customer') ? $('customer').value : '',
+      projectType: $('projectType') ? $('projectType').value : '',
+      currency: $('currency') ? $('currency').value : '',
+      startDate: $('startDate') ? $('startDate').value : '',
+      duration: $('duration') ? $('duration').value : '',
+      template: $('template') ? $('template').value : '',
+      complexity: $('complexity') ? $('complexity').value : '',
+      region: $('region') ? $('region').value : '',
+      status: $('status') ? $('status').value : ''
+    };
+  } else if (n === 2) {
+    stepData[1] = {
+      scope: $('scope') ? $('scope').value : '',
+      deliverables: $('deliverables') ? $('deliverables').value : '',
+      out_of_scope: $('out_of_scope') ? $('out_of_scope').value : ''
+    };
+  } else if (n === 3) {
+    stepData[2] = {
+      numURS: $('numURS') ? $('numURS').value : 0,
+      numFS: $('numFS') ? $('numFS').value : 0,
+      numModules: $('numModules') ? $('numModules').value : 0,
+      numTestcases: $('numTestcases') ? $('numTestcases').value : 0,
+      numProtocols: $('numProtocols') ? $('numProtocols').value : 0,
+      numAPIs: $('numAPIs') ? $('numAPIs').value : 0,
+      dataVolume: $('dataVolume') ? $('dataVolume').value : ''
+    };
+  }
+  // ...extend for other steps as needed
+}
+function restoreStepData(n) {
+  // Restore form data for step n (1-based)
+  if (n === 1 && stepData[0]) {
+    $('projectName').value = stepData[0].projectName || '';
+    $('projectCode').value = stepData[0].projectCode || '';
+    $('customer').value = stepData[0].customer || '';
+    $('projectType').value = stepData[0].projectType || '';
+    $('currency').value = stepData[0].currency || '';
+    $('startDate').value = stepData[0].startDate || '';
+    $('duration').value = stepData[0].duration || '';
+    $('template').value = stepData[0].template || '';
+    $('complexity').value = stepData[0].complexity || '';
+    $('region').value = stepData[0].region || '';
+    $('status').value = stepData[0].status || '';
+  } else if (n === 2 && stepData[1]) {
+    $('scope').value = stepData[1].scope || '';
+    $('deliverables').value = stepData[1].deliverables || '';
+    $('out_of_scope').value = stepData[1].out_of_scope || '';
+  } else if (n === 3 && stepData[2]) {
+    $('numURS').value = stepData[2].numURS || 0;
+    $('numFS').value = stepData[2].numFS || 0;
+    $('numModules').value = stepData[2].numModules || 0;
+    $('numTestcases').value = stepData[2].numTestcases || 0;
+    $('numProtocols').value = stepData[2].numProtocols || 0;
+    $('numAPIs').value = stepData[2].numAPIs || 0;
+    $('dataVolume').value = stepData[2].dataVolume || '';
+  }
+  // ...extend for other steps as needed
+}
+// Save data on navigation
+$('toStep2').addEventListener('click', ()=>{ saveStepData(1); });
+$('toStep3').addEventListener('click', ()=>{ saveStepData(2); });
+$('toStep4').addEventListener('click', ()=>{ saveStepData(3); });
+$('back1').addEventListener('click', ()=>{ saveStepData(2); });
+$('back2').addEventListener('click', ()=>{ saveStepData(3); });
+// On page load, initialize clickable dots
+updateStepDots(1);
+
+// --- Add new option logic for all dropdowns ---
+function handleAddNew(selectId, label) {
+  const select = document.getElementById(selectId);
+  select.addEventListener('change', function() {
+    if (this.value === '__add_new__') {
+      const newValue = prompt(`Add new ${label}:`);
+      if (newValue && newValue.trim()) {
+        // Insert before the 'Add new...' option
+        const option = document.createElement('option');
+        option.value = newValue.trim();
+        option.textContent = newValue.trim();
+        this.insertBefore(option, this.querySelector('option[value="__add_new__"]'));
+        this.value = newValue.trim();
+      } else {
+        this.value = '';
+      }
+    }
+  });
+}
+['projectType','department','projectManager','currency','complexity'].forEach(id => handleAddNew(id, id.replace(/([A-Z])/g, ' $1')));
+
+// --- Add new option logic for cost type dropdown ---
+(function handleAddNewCostType() {
+  const select = document.getElementById('newCostType');
+  select.addEventListener('change', function() {
+    if (this.value === '__add_new__') {
+      const newValue = prompt('Add new cost type:');
+      if (newValue && newValue.trim()) {
+        const option = document.createElement('option');
+        option.value = newValue.trim();
+        option.textContent = newValue.trim();
+        this.insertBefore(option, this.querySelector('option[value=\"__add_new__\"]'));
+        this.value = newValue.trim();
+      } else {
+        this.value = '';
+      }
+    }
+  });
+})();
+
+    // --- Auto-calculate duration from start and go-live dates ---
+const startDateInput = document.getElementById('startDate');
+const goLiveInput = document.getElementById('goLive');
+const durationInput = document.getElementById('duration');
+function calcDurationWeeks() {
+  const start = startDateInput.value;
+  const end = goLiveInput.value;
+  if (start && end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    if (!isNaN(startDate) && !isNaN(endDate) && endDate > startDate) {
+      const diffMs = endDate - startDate;
+      const diffWeeks = Math.ceil(diffMs / (1000 * 60 * 60 * 24 * 7));
+      durationInput.value = diffWeeks;
+    }
+  }
+}
+startDateInput.addEventListener('change', calcDurationWeeks);
+goLiveInput.addEventListener('change', calcDurationWeeks);
+
+// --- Auto-capitalize and format project code ---
+$('projectCode').addEventListener('input', e => {
+  const val = e.target.value.toUpperCase().replace(/\s+/g,'-');
+  if (e.target.value !== val) e.target.value = val;
+});
+
+function renderCostBreakdownChart(baseLabor, directCosts, pmoOverhead, taxAmount) {
+  const ctx = document.getElementById('costBreakdownChart');
+  if (!ctx) return;
+  if (window._costChart) { window._costChart.destroy(); }
+  window._costChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Resource', 'Direct', 'Overhead', 'Tax'],
+      datasets: [{
+        data: [baseLabor, directCosts, pmoOverhead, taxAmount],
+        backgroundColor: ['#10b981','#34d399','#6ee7b7','#d1fae5']
+      }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+// Call this after summary calculation
+const origCalculateAndRenderSummary = calculateAndRenderSummary;
+calculateAndRenderSummary = async function() {
+  await origCalculateAndRenderSummary();
+  if (window._calcResult) {
+    renderCostBreakdownChart(
+      window._calcResult.baseLabor,
+      window._calcResult.directCosts,
+      window._calcResult.pmoOverhead,
+      window._calcResult.taxAmount
+    );
+  }
+};
+
+function renderCostBreakdownDetails() {
+  if (!window._calcResult) return;
+  const duration = Number($('duration').value) || 1;
+  const numDeliverables = ($('deliverables').value.split(',').filter(x=>x.trim()).length) || 1;
+  const perWeek = window._calcResult.baseLabor / duration;
+  const perDeliverable = window._calcResult.totalProjectCost / numDeliverables;
+  document.getElementById('perWeekCost').textContent = `Resource cost per week: ${formatCurrency(perWeek)}`;
+  document.getElementById('perDeliverableCost').textContent = `Cost per deliverable: ${formatCurrency(perDeliverable)}`;
+  // Per role cost
+  let perRoleHtml = '<b>Resource cost by role:</b><ul style="margin:4px 0 0 16px">';
+  if (window._rolesForSummary && window._rolesForSummary.length) {
+    window._rolesForSummary.forEach(r => {
+      const total_hours = Number(r.initiation_hours||0) + Number(r.planning_hours||0) + Number(r.development_hours||0) + Number(r.testing_hours||0) + Number(r.go_live_hours||0) + Number(r.hypercare_hours||0) + Number(r.other_hours||0);
+      const cost = total_hours * Number(r.hourly_rate||0);
+      perRoleHtml += `<li>${escapeHtml(r.role_name)}: ${formatCurrency(cost)}</li>`;
+    });
+  }
+  perRoleHtml += '</ul>';
+  document.getElementById('perRoleCost').innerHTML = perRoleHtml;
+}
+// Patch calculateAndRenderSummary to call this
+const origCalcAndRenderSummary2 = calculateAndRenderSummary;
+calculateAndRenderSummary = async function() {
+  await origCalcAndRenderSummary2();
+  renderCostBreakdownDetails();
+};
+  })();
+  </script>
+
+<!-- --- Progress Save & Resume (localStorage) --- -->
+<script>
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('projectDraft', JSON.stringify(stepData));
+});
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('projectDraft');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length === stepData.length) {
+        for (let i = 0; i < stepData.length; i++) stepData[i] = parsed[i];
+        restoreStepData(currentStep);
+      }
+    } catch {}
+  }
+});
+</script>
+
+  <script>
+(function deliverablesChecklistLogic() {
+  const checklist = document.getElementById('deliverablesChecklist');
+  const textarea = document.getElementById('deliverables');
+  const customInput = document.getElementById('customDeliverableInput');
+  const otherBox = document.getElementById('addDeliverableOther');
+  checklist.addEventListener('change', function(e) {
+    if (e.target.type === 'checkbox') {
+      if (e.target.value === 'Other') {
+        customInput.style.display = e.target.checked ? 'inline-block' : 'none';
+        if (!e.target.checked) customInput.value = '';
+      }
+      updateDeliverablesTextarea();
+    }
+  });
+  customInput.addEventListener('input', updateDeliverablesTextarea);
+  function updateDeliverablesTextarea() {
+    const checked = Array.from(checklist.querySelectorAll('input[type=checkbox]:checked'))
+      .map(cb => cb.value === 'Other' && customInput.value.trim() ? customInput.value.trim() : cb.value)
+      .filter(Boolean);
+    textarea.value = checked.join(', ');
+  }
+})();
+</script>
+<button id="saveProgressBtn" class="btn-main" style="position:fixed;bottom:20px;right:20px;z-index:2000;box-shadow:0 4px 16px #10b98144">💾 Save Progress</button>
+<script>
+document.getElementById('saveProgressBtn').addEventListener('click', async () => {
+  localStorage.setItem('projectDraft', JSON.stringify(stepData));
+  if (window.currentProjectId) {
+    await supabase.from('project_budget').update({
+      status: 'Draft',
+      updated_at: new Date().toISOString()
+    }).eq('id', window.currentProjectId);
+  }
+  alert('Progress saved!');
+});
+</script>
+</body>
+</html>

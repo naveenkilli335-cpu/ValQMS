@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en" data-theme="green" data-bg="mint">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Professional Project Plan Creator — ValQMS</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="icon" href="../valqms-logo.svg" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background 0.5s ease;min-height:100vh;overflow-x:hidden;background:#d1fae5;}
+    .container{width:100%;max-width:none;margin:140px 0 0 0;padding:0 24px}
+    .tool-card{background:#fff;border-radius:16px;box-shadow:0 6px 30px rgba(16,185,129,0.08);padding:32px 32px 24px 32px;margin:32px auto 0 auto;max-width:1400px;}
+    .tabs{display:flex;gap:12px;margin-bottom:24px;border-bottom:2px solid #e6f0ec;flex-wrap:wrap;}
+    .tab{padding:12px 18px;cursor:pointer;border:none;background:none;font-weight:600;font-size:14px;color:#64748b;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.3s;}
+    .tab.active{color:#10b981;border-bottom-color:#10b981;}
+    .tab-content{display:none;}
+    .tab-content.active{display:block;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid-3{grid-template-columns:1fr 1fr 1fr;}
+    label{display:block;font-weight:600;margin-bottom:6px;color:#0f172a}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6f0ec;font-size:14px;font-family:'Inter',sans-serif}
+    textarea{min-height:100px;font-family:'Courier New',monospace;font-size:12px}
+    .controls{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap;border-top:2px solid #e6f0ec;padding-top:18px}
+    button{background:linear-gradient(135deg,#10b981,#34d399);color:#fff;padding:12px 24px;border-radius:8px;border:none;cursor:pointer;font-weight:700;transition:all 0.3s;font-size:14px}
+    button:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(16,185,129,0.4);}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .muted{color:#64748b;font-size:13px}
+    .small{font-size:13px;color:#64748b}
+    .section-title{font-size:16px;font-weight:700;color:#0f172a;margin:20px 0 12px 0;border-top:2px solid #e6f0ec;padding-top:16px}
+    .info-box{background:#f0fdf4;border-left:4px solid #10b981;padding:12px;border-radius:8px;margin:12px 0;font-size:13px}
+    .warning-box{background:#fef3c7;border-left:4px solid #f59e0b;padding:12px;border-radius:8px;margin:12px 0;font-size:13px}
+    
+    /* Header styles */
+    header{position:fixed;top:12px;left:0;right:0;z-index:1000;padding:0 24px;pointer-events:none;}
+    .header-glass{background:#0f172a !important;backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,0.08) !important;border-radius:20px;padding:16px 32px;box-shadow:0 8px 32px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.06);color:#fff;pointer-events:auto;}
+    .header-container{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:none;margin:0;}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-weight:800;font-size:22px;letter-spacing:-0.7px;transition:all 0.3s;}
+    .logo-mark{display:flex;align-items:center;justify-content:center;width:48px;height:48px;background:linear-gradient(135deg,#10b981,#34d399);border-radius:12px;box-shadow:0 4px 20px rgba(16,185,129,0.4);transition:all 0.3s;position:relative;}
+    .logo-mark .brand-initials{font-weight:900;font-size:18px;letter-spacing:-0.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.25);}
+    .brand-text{display:flex;flex-direction:column;gap:2px;}
+    .brand-text h1{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin:0;line-height:1.2;color:#fff !important;-webkit-text-fill-color:#fff !important;}
+    .brand-text .subtitle{font-size:13px;color:#fff !important;-webkit-text-fill-color:#fff !important;font-weight:500;line-height:1.2;}
+    .header-controls{display:flex;gap:12px;align-items:center;}
+    .btn-home{padding:10px 20px;background:linear-gradient(135deg,#10b981,#34d399);border:none;border-radius:12px;color:#000;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(16,185,129,0.4);}
+    .btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,185,129,0.6);}
+
+    @media (max-width:1100px){.tool-card{max-width:98vw;padding:18px 4vw 18px 4vw;}}
+    @media (max-width:820px){ 
+      .grid{grid-template-columns:1fr} 
+      .grid-3{grid-template-columns:1fr 1fr}
+      .controls{flex-direction:column-reverse} 
+      .tool-card{padding:12px 2vw;} 
+      .header-glass{padding:12px 20px;border-radius:16px} 
+      .container{margin-top:120px;} 
+      .tabs{gap:8px;overflow-x:auto}
+      .tab{padding:8px 12px;font-size:12px;white-space:nowrap}
+    }
+    @media (max-width:600px){
+      .tool-card{margin:12px auto 0 auto;} 
+      .container{margin-top:80px;} 
+      .grid-3{grid-template-columns:1fr}
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+  <!-- GLASSMORPHISM HEADER -->
+  <header>
+    <div class="header-glass">
+      <div class="header-container">
+        <a href="../index.html" class="logo">
+          <div class="logo-mark"><span class="brand-initials">VQ</span></div>
+          <div class="brand-text">
+            <h1>ValQMS Tools</h1>
+            <div class="subtitle">Professional Project Planner</div>
+          </div>
+        </a>
+        <div class="header-controls">
+          <a href="../index.html" class="btn-home"><span>←</span><span>Home</span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="tool-card" role="main" style="margin-top:48px;">
+      
+      <!-- TAB NAVIGATION -->
+      <div class="tabs">
+        <button class="tab active" data-tab="basic">Project Details</button>
+        <button class="tab" data-tab="phases">WBS & Phases</button>
+        <button class="tab" data-tab="roles">Roles & RACI</button>
+        <button class="tab" data-tab="calendar">Calendar & Holidays</button>
+        <button class="tab" data-tab="preview">Preview</button>
+      </div>
+
+      <!-- TAB 1: PROJECT DETAILS -->
+      <div id="basic" class="tab-content active">
+        <div class="small" style="margin-bottom:18px;">📋 Configure your project. Output will include hierarchical WBS, professional Gantt chart, and comprehensive RACI matrix.</div>
+        <form onsubmit="return false;" style="margin-top:14px">
+          <div class="grid">
+            <div>
+              <label>Project Name</label>
+              <input id="projectName" value="LIMS Implementation - RD Pharma" />
+            </div>
+            <div>
+              <label>Project Type</label>
+              <select id="projectType" onchange="updateTemplatePreview()">
+                <option>LIMS</option>
+                <option>SAP</option>
+                <option>UiPath</option>
+                <option>Default</option>
+              </select>
+            </div>
+            <div>
+              <label>Project Manager</label>
+              <input id="projectManager" value="IT PM" />
+            </div>
+            <div>
+              <label>Department / Organization</label>
+              <input id="department" value="Quality & Regulatory" />
+            </div>
+            <div>
+              <label>Project Start Date</label>
+              <input id="startDate" type="date" />
+            </div>
+            <div>
+              <label>Project Size</label>
+              <select id="projectSize">
+                <option value="short">Short (4-6 weeks)</option>
+                <option value="medium" selected>Medium (8-12 weeks)</option>
+                <option value="long">Long (16-20 weeks)</option>
+              </select>
+            </div>
+            <div>
+              <label>GAMP Level</label>
+              <select id="gampLevel">
+                <option>3</option>
+                <option selected>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div>
+              <label>Business Days Per Week</label>
+              <input id="businessDaysPerWeek" type="number" value="5" min="1" max="7" />
+            </div>
+          </div>
+          <div class="info-box">
+            💡 Project plan will automatically calculate dates excluding weekends and holidays, with WBS hierarchy (1.1, 1.2, 2.1, etc.)
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 2: WBS & PHASES -->
+      <div id="phases" class="tab-content">
+        <div class="small" style="margin-bottom:18px;">📊 Customize phases and tasks. Each gets hierarchical WBS ID and duration in business days.</div>
+        <form style="margin-top:14px">
+          <div class="section-title">Phase & Task Template</div>
+          <div>
+            <label>Phase Configuration (JSON Format)</label>
+            <textarea id="templateOverride" placeholder="Leave blank to use built-in template" spellcheck="false"></textarea>
+            <div class="muted" style="margin-top:8px">
+              Format: <code style="background:#f0f0f0;padding:2px 6px;border-radius:3px">[["Phase Name",["Task1","Task2"]],[...]]</code><br>
+              Example:
+              <pre style="font-size:11px;background:#f5f5f5;padding:8px;border-radius:4px;margin-top:4px;overflow-x:auto">[["Initiation",["Kickoff","Requirements"]],["Design",["Spec","Architecture"]]]</pre>
+            </div>
+          </div>
+          <div id="wbsPreview" style="margin:18px 0 0 0;"></div>
+          <div class="grid" style="margin-top:18px">
+            <div>
+              <label>Task Multiplier</label>
+              <input id="tasksPerPhaseMultiplier" type="number" value="1" min="0.5" max="3" step="0.1" />
+              <div class="small">Adjust task duration proportionally (0.5x to 3x)</div>
+            </div>
+            <div>
+              <label>Base Phase Duration (days)</label>
+              <input id="basePhaseDuration" type="number" value="20" min="5" max="100" />
+              <div class="small">Base business days per phase</div>
+            </div>
+          </div>
+          <div class="info-box">
+            ✓ Validation/Test phases get extra time based on GAMP level. Leave template blank to auto-load selected project type.
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 3: ROLES & RACI -->
+      <div id="roles" class="tab-content">
+        <div class="small" style="margin-bottom:18px;">👥 Define roles and RACI responsibilities. These will populate the RACI matrix in your project plan.</div>
+        <form style="margin-top:14px">
+          <div>
+            <label>Roles (comma-separated)</label>
+            <input id="rolesInput" value="Project Manager,Validation Lead,Developer,QA,BA,Infra Engineer,Sponsor" />
+            <div class="small" style="margin-top:6px">These roles will be columns in the RACI sheet</div>
+          </div>
+          <div class="grid" style="margin-top:18px">
+            <div>
+              <label>Custom RACI Mappings (Optional JSON)</label>
+              <textarea id="raciHints" style="min-height:100px;" placeholder='{"Kickoff":["Project Manager","Sponsor"],"Development":["Developer"]}' spellcheck="false"></textarea>
+              <div class="small" style="margin-top:6px">Override auto-mapping for specific tasks. Format: <code>{"Task":["Role1","Role2"]}</code></div>
+            </div>
+          </div>
+          <div class="info-box">
+            ✓ RACI auto-maps: R=Responsible, A=Accountable, C=Consulted, I=Informed based on role keywords and task names.
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 4: CALENDAR & HOLIDAYS -->
+      <div id="calendar" class="tab-content">
+        <div class="small" style="margin-bottom:18px;">📅 Configure working calendar. Dates automatically skip weekends and holidays.</div>
+        <form style="margin-top:14px">
+          <div class="grid">
+            <div>
+              <label>Working Days (0=Sun, 1=Mon... 6=Sat)</label>
+              <input id="workingDays" value="1,2,3,4,5" placeholder="1,2,3,4,5" />
+              <div class="small">Default: Mon-Fri (1,2,3,4,5)</div>
+            </div>
+            <div>
+              <label>Holidays Count</label>
+              <input id="holidayCount" type="number" value="10" min="0" max="50" />
+              <div class="small">Approximate holidays to skip</div>
+            </div>
+          </div>
+          <div>
+            <label>Exclude Dates (YYYY-MM-DD, comma-separated)</label>
+            <input id="holidayDates" placeholder="2025-01-26,2025-03-08,2025-04-11,2025-08-15,2025-10-02" />
+            <div class="small" style="margin-top:6px">Specific dates to exclude from schedule</div>
+          </div>
+          <div>
+            <label>Holiday Names (for reference)</label>
+            <input id="holidayNames" placeholder="Republic Day,Holi,Eid,Independence Day,Gandhi Jayanti" />
+            <div class="small" style="margin-top:6px">Label for your holidays (optional)</div>
+          </div>
+          <div class="warning-box" style="margin-top:12px">
+            ⚠️ All dates in the project plan will automatically skip the defined non-working days and holidays.
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 5: PREVIEW -->
+      <div id="preview" class="tab-content">
+        <div class="small" style="margin-bottom:18px;">👀 Preview project structure before generating Excel.</div>
+        <div id="previewArea" style="margin-top:18px;padding:16px;background:#f9fafb;border-radius:8px;border:1px solid #e6f0ec;max-height:400px;overflow-y:auto;">
+          <p style="color:#64748b;text-align:center;padding:20px;">Click "Generate Excel" to generate and preview will be updated</p>
+        </div>
+        <div class="info-box" style="margin-top:12px;">
+          📊 The Excel workbook will include:
+          <ul style="margin-left:20px;margin-top:8px;">
+            <li><strong>Cover Sheet</strong> - Project title, dates, PM, team</li>
+            <li><strong>Project Plan</strong> - Hierarchical WBS with phases, tasks, dates, duration, status, comments</li>
+            <li><strong>RACI Matrix</strong> - All roles and responsibilities</li>
+            <li><strong>Gantt Chart</strong> - Week-based visual timeline</li>
+            <li><strong>Settings</strong> - Config reference for edits</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- GENERATE BUTTON -->
+      <div id="progressBarContainer" style="display:none;margin-bottom:10px;text-align:center;">
+        <progress id="excelProgress" value="0" max="100" style="width:300px;height:18px;"></progress>
+        <span id="progressLabel" class="small" style="margin-left:10px;"></span>
+      </div>
+      <div class="controls">
+        <button id="generateBtn">📊 Generate Professional Project Plan Excel</button>
+      </div>
+      <div style="margin-top:10px" id="status" class="muted"></div>
+
+    </div>
+  </div>
+
+  <!-- ExcelJS + FileSaver -->
+  <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+  <script>
+    (function(){
+      // ========== TEMPLATES ==========
+      const TEMPLATES = {
+        "SAP": [
+          ["Initiation", ["Project kickoff","Stakeholder alignment","High-level scoping"]],
+          ["Blueprint", ["Fit-gap analysis","Process design","Solution blueprint"]],
+          ["Build", ["Custom development","Configuration","Unit testing"]],
+          ["Test", ["Integration testing","User acceptance testing","Issue fixes"]],
+          ["Deploy", ["Cutover planning","Go-live","Hypercare"]],
+          ["Closeout", ["Knowledge transfer","Project closure"]]
+        ],
+        "LIMS":[
+          ["Initiation", ["Kickoff","Requirements & URS","Stakeholder alignment"]],
+          ["Design", ["Functional spec","Integration design","Validation plan"]],
+          ["Build & Configure", ["System configuration","Data migration mapping","Custom code"]],
+          ["Validation & Test", ["IQ/OQ/PQ execution","Test case execution","Issue remediation"]],
+          ["Training & Deploy", ["Training","Go-live","Hypercare"]],
+          ["Closeout", ["SOPs","Handover"]]
+        ],
+        "UiPath":[
+          ["Initiation", ["Use-case selection","Feasibility & RACI","Stakeholder signoff"]],
+          ["Analysis & Design", ["Process definition","Solution architecture"]],
+          ["Development", ["Robot development","Unit tests","Orchestrator setup"]],
+          ["Testing", ["Integration tests","UAT","Fixes"]],
+          ["Deployment", ["Go-live","Monitoring","Hypercare"]],
+          ["Benefits", ["Measure & optimize"]]
+        ],
+        "Default":[
+          ["Initiation", ["Kickoff","Scope","Stakeholders"]],
+          ["Planning", ["Detailed plan","Resourcing","Risk register"]],
+          ["Implementation", ["Workstream execution","Integrations","Development"]],
+          ["Testing", ["Testing","Fixes"]],
+          ["Go-live", ["Cutover","Go-live","Hypercare"]],
+          ["Closure", ["Closeout","Lessons learned"]]
+        ]
+      };
+
+      const SIZE_MULT = { short:0.6, medium:1.0, long:1.6 };
+      const GAMP_MULT = { 3:0.9, 4:1.0, 5:1.25 };
+
+      const DEFAULT_ROLE_MAP = {
+        "Project kickoff":["Project Manager","Sponsor"],
+        "Stakeholder alignment":["Project Manager","Sponsor"],
+        "Kickoff":["Project Manager","Sponsor"],
+        "Requirements & URS":["BA","Validation Lead"],
+        "Functional spec":["BA","Validation Lead"],
+        "Validation plan":["Validation Lead","QA"],
+        "IQ/OQ/PQ execution":["Validation Lead","QA"],
+        "Test case execution":["QA","Validation Lead"],
+        "System configuration":["Developer","Infra Engineer"],
+        "Custom development":["Developer"],
+        "Robot development":["Developer"],
+        "User acceptance testing":["QA","BA"],
+        "Training":["Project Manager","BA"],
+        "Go-live":["Project Manager","Infra Engineer"],
+        "Hypercare":["Support","Developer"],
+        "Unit testing":["Developer","QA"],
+        "Integration testing":["QA","Developer"]
+      };
+
+      // ========== HELPERS ==========
+      const $ = id => document.getElementById(id);
+
+      function parseRoles(text){
+        return text.split(',').map(s=>s.trim()).filter(Boolean);
+      }
+
+
+      // Utility: Convert column number to Excel letter (1=A, 27=AA, etc.)
+      function colNumToLetter(n) {
+        let s = '';
+        while (n > 0) {
+          let m = (n - 1) % 26;
+          s = String.fromCharCode(65 + m) + s;
+          n = Math.floor((n - 1) / 26);
+        }
+        return s;
+      }
+
+      function parseHolidays(text){
+        return text.split(',')
+          .map(s=>s.trim())
+          .filter(Boolean)
+          .map(d=>{
+            const dt = new Date(d);
+            return isNaN(dt.getTime()) ? null : dt;
+          })
+          .filter(Boolean);
+      }
+
+      function parseWorkingDays(text){
+        return text.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
+      }
+
+      function isWorkingDay(date, workingDays, holidays){
+        const day = date.getDay();
+        const isHoliday = holidays.some(h => h.toDateString() === date.toDateString());
+        return workingDays.includes(day) && !isHoliday;
+      }
+
+      function addWorkingDays(startDate, numDays, workingDays, holidays){
+        let current = new Date(startDate);
+        let daysAdded = 0;
+        current.setHours(0,0,0,0);
+        if (numDays <= 0) return current;
+        while(daysAdded < numDays){
+          current.setDate(current.getDate() + 1);
+          if(isWorkingDay(current, workingDays, holidays)) daysAdded++;
+        }
+        return current;
+      }
+
+      function businessDaysBetween(start, end, workingDays, holidays){
+        let count = 0;
+        let current = new Date(start);
+        current.setHours(0,0,0,0);
+        const endCopy = new Date(end);
+        endCopy.setHours(0,0,0,0);
+        while(current <= endCopy){
+          if(isWorkingDay(current, workingDays, holidays)) count++;
+          current.setDate(current.getDate() + 1);
+        }
+        return Math.max(1, count);
+      }
+
+      function getTemplate(type, overrideJson){
+        if(overrideJson){
+          try {
+            const parsed = JSON.parse(overrideJson);
+            if(Array.isArray(parsed)) return parsed;
+          } catch(e){ console.warn('Invalid JSON override'); }
+        }
+        return TEMPLATES[type] || TEMPLATES.Default;
+      }
+
+      // ========== WBS & TASK EXPANSION ==========
+      function expandTemplateWithWBS(template, sizeKey, gampLevel, startDate, workingDays, holidays, tasksMultiplier, basePhaseDuration){
+        const sizeMult = SIZE_MULT[sizeKey] || 1.0;
+        const gampMult = GAMP_MULT[gampLevel] || 1.0;
+        const phaseWeeks = Math.max(1, basePhaseDuration / 5);
+        const basePhaseWeeks = phaseWeeks * sizeMult;
+
+        let cursor = new Date(startDate);
+        cursor.setHours(0,0,0,0);
+
+        const tasks = [];
+        let phaseIdx = 1;
+
+        for(const [phaseName, phaseTasks] of template){
+          const phaseValidationFactor = /validation|test|iq|oq|pq/i.test(phaseName) ? gampMult : 1.0;
+          const phaseWeeks = Math.max(1, Math.round(basePhaseWeeks * phaseValidationFactor * (tasksMultiplier || 1)));
+          const phaseDays = phaseWeeks * 5;
+          const perTaskDays = Math.max(2, Math.floor(phaseDays / Math.max(1, phaseTasks.length)));
+
+          // Add phase row (WBS X.0)
+          const phaseWbsId = `${phaseIdx}.0`;
+          const phaseStart = new Date(cursor);
+          let phaseEnd = phaseStart;
+          if (phaseTasks.length > 0) {
+            // phaseEnd will be updated after all tasks
+            phaseEnd = null;
+          }
+          tasks.push({
+            wbsId: phaseWbsId,
+            phase: phaseName,
+            task: '',
+            start: new Date(phaseStart),
+            end: null, // will update after tasks
+            duration: null,
+            phaseIndex: phaseIdx,
+            status: 'To be started',
+            responsible: '',
+            comments: '',
+            isPhase: true,
+            subTaskIndexes: []
+          });
+
+          let firstTaskStart = null;
+          let lastTaskEnd = null;
+          for(let taskIdx = 0; taskIdx < phaseTasks.length; taskIdx++){
+            const taskName = phaseTasks[taskIdx];
+            const start = new Date(cursor);
+            const end = addWorkingDays(start, perTaskDays - 1, workingDays, holidays);
+
+            const wbsId = `${phaseIdx}.${taskIdx + 1}`;
+            const taskDays = businessDaysBetween(start, end, workingDays, holidays);
+
+            tasks.push({
+              wbsId,
+              phase: phaseName,
+              task: taskName,
+              start,
+              end,
+              duration: taskDays,
+              phaseIndex: phaseIdx,
+              status: 'To be started',
+              responsible: '',
+              comments: '',
+              isPhase: false
+            });
+
+            if (!firstTaskStart) firstTaskStart = start;
+            lastTaskEnd = end;
+            cursor = addWorkingDays(end, 1, workingDays, holidays);
+          }
+
+          // Update phase row's end and duration
+          if (phaseTasks.length > 0) {
+            tasks[tasks.length - phaseTasks.length - 1].end = new Date(lastTaskEnd);
+            tasks[tasks.length - phaseTasks.length - 1].duration = businessDaysBetween(firstTaskStart, lastTaskEnd, workingDays, holidays);
+          } else {
+            // If no tasks, phase is 1 day
+            tasks[tasks.length - 1].end = new Date(phaseStart);
+            tasks[tasks.length - 1].duration = 1;
+          }
+
+          cursor = addWorkingDays(cursor, 1, workingDays, holidays);
+          phaseIdx++;
+        }
+
+        return tasks;
+      }
+
+      // ========== RACI BUILDER ==========
+      function buildRaciForTask(taskName, roles, customHints){
+        const raci = {};
+        roles.forEach(r => raci[r] = "");
+        
+        const pm = roles.find(r => /project manager|pm/i.test(r)) || roles[0];
+        const ba = roles.find(r => /ba|business/i.test(r));
+        const qa = roles.find(r => /validation|qa|quality/i.test(r));
+        const dev = roles.find(r => /dev|developer|engineer/i.test(r));
+
+        let responsible;
+        
+        if(customHints && customHints[taskName]){
+          responsible = roles.find(r => customHints[taskName].some(s => r.toLowerCase().includes(s.toLowerCase())));
+          if(responsible) {
+            raci[responsible] = "R";
+            raci[pm] = (raci[pm] === "R") ? "RA" : "A";
+            if(ba && !raci[ba]) raci[ba] = "C";
+            if(qa && !raci[qa]) raci[qa] = "C";
+            roles.forEach(r => { if(!raci[r]) raci[r] = "I"; });
+            return raci;
+          }
+        }
+
+        for(const k of Object.keys(DEFAULT_ROLE_MAP)){
+          if(taskName.toLowerCase().includes(k.toLowerCase())){
+            responsible = roles.find(r => DEFAULT_ROLE_MAP[k].some(s => r.toLowerCase().includes(s.toLowerCase())));
+            if(responsible) break;
+          }
+        }
+        
+        responsible = responsible || dev || ba || roles.find(r=>r !== pm) || pm;
+
+        raci[responsible] = "R";
+        raci[pm] = (raci[pm] === "R") ? "RA" : "A";
+        if(ba && !raci[ba]) raci[ba] = "C";
+        if(qa && !raci[qa]) raci[qa] = "C";
+        roles.forEach(r => { if(!raci[r]) raci[r] = "I"; });
+        
+        return raci;
+      }
+
+      // ========== EXCEL GENERATION ==========
+  async function generateExcel(project, templateOverride, holidays, workingDays, raciHints, tasksMultiplier, basePhaseDuration, setProgress){
+  if (setProgress) setProgress(55, 'Building tasks...');
+  const template = getTemplate(project.type, templateOverride);
+  const tasks = expandTemplateWithWBS(template, project.size, Number(project.gamp), project.startDate, workingDays, holidays, tasksMultiplier, basePhaseDuration);
+
+  if (setProgress) setProgress(60, 'Creating workbook...');
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'ValQMS Professional Project Planner';
+  wb.created = new Date();
+
+        // Calculate weeks and days for Gantt columns
+        const firstDate = tasks[0].start;
+        const lastDate = tasks[tasks.length-1].end;
+        const weeks = [];
+        let weekStart = new Date(firstDate);
+        while(weekStart <= lastDate){
+          weeks.push(new Date(weekStart));
+          weekStart.setDate(weekStart.getDate() + 7);
+        }
+
+        // Prepare RACI columns
+        const raciRoles = project.roles;
+        // Prepare header
+        // Two-row header: first row with merged 'Responsible Matrix', second row with R, A, C, I
+        const staticHeaders = ['WBS ID', 'Phase', 'Task'];
+        const matrixHeaders = ['Responsible Matrix', '', '', ''];
+        const matrixSubHeaders = ['Responsible (R)', 'Accountable (A)', 'Consulted (C)', 'Informed (I)'];
+        const restHeaders = ['Duration (days)', 'Start Date', 'End Date', 'Status', 'Comments', 'Progress %', 'Week', 'Day'];
+        const weekHeaders = weeks.map((w,i) => `Week ${i+1} (${w.toISOString().substring(0,10)})`);
+
+  if (setProgress) setProgress(70, 'Building worksheet...');
+  const sPlan = wb.addWorksheet('Project Plan');
+        sPlan.pageSetup = {paperSize: 1, orientation: 'landscape', margins: {left: 0.5, right: 0.5, top: 0.75, bottom: 0.75}};
+
+        // First header row
+        const headerRow1 = sPlan.addRow(staticHeaders.concat(matrixHeaders, restHeaders, weekHeaders));
+        // Second header row
+        const headerRow2 = sPlan.addRow(staticHeaders.concat(matrixSubHeaders, restHeaders, weekHeaders));
+
+        // Merge static header cells vertically
+        sPlan.mergeCells('A1:A2');
+        sPlan.mergeCells('B1:B2');
+        sPlan.mergeCells('C1:C2');
+        // Merge Responsible Matrix horizontally
+        sPlan.mergeCells('D1:G1');
+        // Merge rest of headers vertically
+        let col = 8;
+        for(let i=0; i<restHeaders.length; i++, col++){
+          const colLetter = String.fromCharCode(64+col);
+          sPlan.mergeCells(`${colLetter}1:${colLetter}2`);
+        }
+        // Merge week headers vertically
+        for(let i=0; i<weekHeaders.length; i++, col++){
+          // Excel columns after Z: AA, AB, etc.
+          let colLetter = '';
+          let n = col;
+          while(n > 0){
+            let rem = (n-1)%26;
+            colLetter = String.fromCharCode(65+rem) + colLetter;
+            n = Math.floor((n-1)/26);
+          }
+          sPlan.mergeCells(`${colLetter}1:${colLetter}2`);
+        }
+
+        // Style header rows
+        [headerRow1, headerRow2].forEach(row => {
+          row.font = {bold:true, color:{argb:'FFFFFFFF'}, size:11};
+          row.fill = {type:'pattern', pattern:'solid', fgColor:{argb:'FF0f172a'}};
+          row.alignment = {horizontal:'center', vertical:'middle', wrapText:true};
+        });
+        sPlan.getRow(1).height = 25;
+        sPlan.getRow(2).height = 25;
+
+        // Set columns width
+        sPlan.columns = [
+          {width:10}, // WBS ID
+          {width:18}, // Phase
+          {width:32}, // Task
+          {width:18}, // R
+          {width:18}, // A
+          {width:18}, // C
+          {width:18}, // I
+          {width:14}, // Duration
+          {width:14}, // Start Date
+          {width:14}, // End Date
+          {width:16}, // Status
+          {width:28}, // Comments
+          {width:12}, // Progress
+          {width:8},  // Week
+          {width:8},  // Day
+          ...weeks.map(()=>({width:3.5}))
+        ];
+
+        // RACI color map
+        const raci_colors = {'R': 'FFBDE5BD', 'A': 'FFF4C7C3', 'C': 'FFD7EEFF', 'I': 'FFFFFFD8'};
+        const gantt_colors = ['FFDBF5E6','FFD6FCE3','FFCFF7E6','FFD6F9FF','FFE6F7FF','FFE9F6DC','FFF6EAF6'];
+
+        // For day/week calculation
+        function getWeekNumber(date) {
+          const diff = Math.floor((date - firstDate) / (1000*60*60*24));
+          return Math.floor(diff/7) + 1;
+        }
+        function getDayNumber(date) {
+          return Math.floor((date - firstDate) / (1000*60*60*24)) + 1;
+        }
+
+        // Data rows
+        let currentPhase = '';
+        tasks.forEach((t, idx) => {
+          let raci = {};
+          let weekNum = '';
+          let dayNum = '';
+          let rowArr;
+          if (t.isPhase) {
+            // Phase row: leave Task, Responsible Matrix, Duration, Start, End, Week, Day, Progress empty
+            rowArr = [
+              t.wbsId,
+              t.phase,
+              '', // Task
+              '', // R
+              '', // A
+              '', // C
+              '', // I
+              '', // Duration
+              '', // Start
+              '', // End
+              '', // Status
+              '', // Comments
+              '', // Progress
+              '', // Week
+              ''  // Day
+            ];
+            // Add empty Gantt columns
+            weeks.forEach(() => rowArr.push(''));
+          } else {
+            raci = buildRaciForTask(t.task, raciRoles, raciHints);
+            weekNum = getWeekNumber(t.start);
+            dayNum = getDayNumber(t.start);
+            // Collect roles for each RACI type, each on a new line
+            const rRoles = raciRoles.filter(r => raci[r] === 'R').join('\n');
+            const aRoles = raciRoles.filter(r => raci[r] === 'A').join('\n');
+            const cRoles = raciRoles.filter(r => raci[r] === 'C').join('\n');
+            const iRoles = raciRoles.filter(r => raci[r] === 'I').join('\n');
+            rowArr = [
+              t.wbsId,
+              t.phase,
+              t.task,
+              rRoles,
+              aRoles,
+              cRoles,
+              iRoles,
+              t.duration,
+              t.start.toISOString().substring(0,10),
+              t.end.toISOString().substring(0,10),
+              'To be started',
+              '',
+              '0%',
+              weekNum,
+              dayNum
+            ];
+            // Add Gantt columns (highlight if overlaps with week)
+            weeks.forEach((w, wi) => {
+              const wStart = w;
+              const wEnd = new Date(wStart);
+              wEnd.setDate(wEnd.getDate() + 6);
+              const overlaps = (t.start <= wEnd) && (t.end >= wStart);
+              rowArr.push(overlaps ? '■' : '');
+            });
+          }
+          // Add data row at row 3 onwards
+          const row = sPlan.addRow(rowArr);
+          // Mark row with a custom property for dropdown logic
+          row.isPhase = !!t.isPhase;
+
+          // Phase row: gray out, empty task/date columns
+          if (t.isPhase) {
+            row.fill = {type:'pattern', pattern:'solid', fgColor:{argb:'FFe6e6e6'}};
+            row.font = {bold:true, color:{argb:'FF888888'}, size:11};
+            // Ensure task, duration, start, end, status, comments, progress, week, day columns are empty
+            for(let c=3; c<=15; c++) row.getCell(c).value = '';
+          } else {
+            // No color for tasks, just default white
+            row.fill = undefined;
+            row.font = {size:11};
+          }
+          // Borders for all columns
+          for(let c=1; c<=sPlan.columnCount; c++){
+            row.getCell(c).border = {
+              top:{style:'thin', color:{argb:'FFe6f0ec'}},
+              bottom:{style:'thin', color:{argb:'FFe6f0ec'}},
+              left:{style:'thin', color:{argb:'FFe6f0ec'}},
+              right:{style:'thin', color:{argb:'FFe6f0ec'}}
+            };
+          }
+          // RACI cell coloring (only for tasks)
+          // Gantt cell coloring (only for tasks)
+          if (!t.isPhase) {
+            // Responsible Matrix columns: wrap text, center, bold
+            for(let c=4; c<=7; c++){
+              const cell = row.getCell(c);
+              cell.alignment = {horizontal:'center', vertical:'middle', wrapText:true};
+              cell.font = {bold:true, size:11};
+            }
+            // Gantt columns start at col 16
+            for(let c=16; c<rowArr.length+1; c++){
+              const cell = row.getCell(c);
+              if(cell.value === '■'){
+                cell.fill = {type:'pattern', pattern:'solid', fgColor:{argb:gantt_colors[idx % gantt_colors.length]}};
+              }
+              cell.alignment = {horizontal:'center', vertical:'middle'};
+              cell.font = {size:10};
+            }
+          }
+          row.alignment = {horizontal:'left', vertical:'top', wrapText:true};
+          row.height = 20;
+        });
+
+        // Add dropdown for Status column (K) for all data rows BEFORE freeze panes
+        let statusCol = 11; // K
+        let firstDataRow = 3;
+        let lastDataRow = sPlan.rowCount;
+        for(let i=firstDataRow; i<=lastDataRow; i++){
+          const row = sPlan.getRow(i);
+          // Only apply dropdown to task rows (not phase rows)
+          if (!row.isPhase) {
+            row.getCell(statusCol).dataValidation = {
+              type: 'list',
+              allowBlank: true,
+              formulae: ['"To be started,In progress,Completed,NA"']
+            };
+          }
+        }
+
+  // Freeze panes (after all merges and data validation)
+  sPlan.views = [{state:'frozen', ySplit:2}];
+
+        // Export
+        // (moved above, before freeze panes)
+
+  if (setProgress) setProgress(90, 'Finalizing...');
+  const buf = await wb.xlsx.writeBuffer();
+  const blob = new Blob([buf], {type:'application/octet-stream'});
+  saveAs(blob, `${project.name.replace(/\s+/g,'_')}_ProjectPlan_${new Date().toISOString().substring(0,10)}.xlsx`);
+      }
+
+      // ========== TAB SWITCHING ==========
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+          e.target.classList.add('active');
+          $(e.target.dataset.tab).classList.add('active');
+        });
+      });
+
+      function updateTemplatePreview(){
+        const type = $('projectType').value;
+        const template = TEMPLATES[type] || TEMPLATES.Default;
+        let preview = `<strong>${type} Template:</strong><br>`;
+        template.forEach(([phase, tasks]) => {
+          preview += `<div style=\"margin:8px 0;\"><strong style=\"color:#10b981\">${phase}</strong><br>`;
+          tasks.forEach(t => preview += `&nbsp;&nbsp;• ${t}<br>`);
+          preview += `</div>`;
+        });
+        $('previewArea').innerHTML = preview;
+      }
+
+      // Add manual preview refresh button if not present
+      if (!document.getElementById('refreshPreviewBtn')) {
+        const btn = document.createElement('button');
+        btn.id = 'refreshPreviewBtn';
+        btn.textContent = '🔄 Refresh Preview';
+        btn.style.margin = '12px 0 0 0';
+        btn.onclick = updateTemplatePreview;
+        const previewTab = document.getElementById('preview');
+        previewTab.insertBefore(btn, previewTab.firstChild);
+      }
+
+      // ========== MAIN LOGIC ==========
+      const generateBtn = $('generateBtn');
+      const status = $('status');
+
+      const sd = new Date();
+      sd.setHours(0,0,0,0);
+      $('startDate').value = sd.toISOString().substring(0,10);
+
+      // Initial preview
+      updateTemplatePreview();
+      $('projectType').addEventListener('change', updateTemplatePreview);
+
+      generateBtn.addEventListener('click', async () => {
+        status.textContent = '⏳ Generating professional project plan...';
+        generateBtn.disabled = true;
+        let errorBox = document.getElementById('errorBox');
+        if (!errorBox) {
+          errorBox = document.createElement('div');
+          errorBox.id = 'errorBox';
+          errorBox.className = 'warning-box';
+          errorBox.style.display = 'none';
+          status.parentNode.insertBefore(errorBox, status.nextSibling);
+        }
+        errorBox.style.display = 'none';
+
+        // Progress bar setup
+        const progressBarContainer = document.getElementById('progressBarContainer');
+        const excelProgress = document.getElementById('excelProgress');
+        const progressLabel = document.getElementById('progressLabel');
+        progressBarContainer.style.display = 'block';
+        excelProgress.value = 0;
+        progressLabel.textContent = 'Starting...';
+
+        function setProgress(val, label) {
+          excelProgress.value = val;
+          if (label) progressLabel.textContent = label;
+        }
+
+        try {
+          setProgress(5, 'Reading form...');
+          const project = {
+            name: $('projectName').value.trim() || 'Project',
+            type: $('projectType').value || 'Default',
+            size: $('projectSize').value || 'medium',
+            gamp: $('gampLevel').value || 4,
+            startDate: new Date($('startDate').value),
+            projectManager: $('projectManager').value.trim() || 'Project Manager',
+            department: $('department').value.trim() || 'IT',
+            roles: parseRoles($('rolesInput').value),
+            businessDaysPerWeek: parseInt($('businessDaysPerWeek').value) || 5
+          };
+
+          if(isNaN(project.startDate.getTime())) { 
+            errorBox.textContent = '❌ Invalid start date';
+            errorBox.style.display = 'block';
+            generateBtn.disabled = false; 
+            status.textContent = ''; 
+            progressBarContainer.style.display = 'none';
+            return; 
+          }
+
+          setProgress(15, 'Parsing holidays...');
+          const holidays = parseHolidays($('holidayDates').value);
+          setProgress(20, 'Parsing working days...');
+          const workingDays = parseWorkingDays($('workingDays').value);
+          setProgress(25, 'Parsing template...');
+          const templateOverride = $('templateOverride').value.trim();
+          let raciHints = null;
+          
+          try {
+            const raciJson = $('raciHints').value.trim();
+            if(raciJson) raciHints = JSON.parse(raciJson);
+          } catch(e) {
+            errorBox.textContent = '❌ Invalid RACI hints JSON';
+            errorBox.style.display = 'block';
+          }
+
+          setProgress(35, 'Reading multipliers...');
+          const tasksMultiplier = parseFloat($('tasksPerPhaseMultiplier').value) || 1.0;
+          const basePhaseDuration = parseInt($('basePhaseDuration').value) || 20;
+
+          setProgress(50, 'Generating Excel...');
+          await generateExcel(project, templateOverride, holidays, workingDays, raciHints, tasksMultiplier, basePhaseDuration, setProgress);
+          setProgress(100, 'Done!');
+          status.textContent = '✅ Professional project plan generated successfully!';
+          // Refresh preview after Excel generation
+          updateTemplatePreview();
+        } catch(err){
+          console.error(err);
+          errorBox.textContent = '❌ Error: ' + (err.message || err);
+          errorBox.style.display = 'block';
+          status.textContent = '';
+        } finally { 
+          generateBtn.disabled = false; 
+          setTimeout(()=> { 
+            status.textContent = ''; 
+            progressBarContainer.style.display = 'none';
+            let errorBoxFinal = document.getElementById('errorBox');
+            if(errorBoxFinal) errorBoxFinal.style.display = 'none'; 
+          }, 5000); 
+        }
+      });
+
+    })();
+  </script>
+</body>
+</html>
