@@ -301,7 +301,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
 <header>
   <div class="header-glass">
     <div class="header-container">
-      <a href="index.html" class="logo">
+  <a href="/index" class="logo">
         <div class="logo-mark"><span class="brand-initials">VQ</span></div>
         <div class="brand-text">
           <h1>ValQMS Applications</h1>
@@ -309,9 +309,9 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);
         </div>
       </a>
       <div class="header-controls">
-        <a href="change-management.html" class="btn-head" aria-label="Back to Change Management">← Back</a>
+  <a href="/change-management" class="btn-head" aria-label="Back to Change Management">← Back</a>
         <button class="btn-head" onclick="exportToPDF()">📄 PDF</button>
-        <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
+  <a href="/index" class="btn-home"><span>←</span><span>Home</span></a>
       </div>
     </div>
   </div>
@@ -500,7 +500,7 @@ const urlParams=new URLSearchParams(window.location.search);
 const changeId=urlParams.get('id');
 
 if(!changeId){
-window.location.href='change-management.html';
+window.location.href='/change-management';
 }
 
 
@@ -1773,7 +1773,7 @@ function viewStageInfo(stage){
     
     if (!session) {
       console.log('No session found - redirecting to login');
-      window.location.href = 'login.html';
+  window.location.href = '/login';
       return;
     }
     
@@ -1783,7 +1783,7 @@ function viewStageInfo(stage){
   } catch (error) {
     console.error('Error initializing user:', error);
     alert('Authentication error. Please log in again.');
-    window.location.href = 'login.html';
+  window.location.href = '/login';
   }
 })();
 

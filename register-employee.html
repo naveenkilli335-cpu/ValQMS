@@ -278,7 +278,7 @@
 </head>
 <body>
     <div class="form-container">
-        <a href="index.html" class="home-btn" aria-label="Home">← Home</a>
+    <a href="/index" class="home-btn" aria-label="Home">← Home</a>
         <div class="logo">
             <h1>ValQMS</h1>
             <p>Quality Management System</p>
@@ -343,7 +343,7 @@
         <div id="message"></div>
         
         <div class="login-link">
-            Already have an account? <a href="login.html">Login here</a>
+            Already have an account? <a href="/login">Login here</a>
         </div>
     </div>
 
@@ -399,7 +399,7 @@ const { data: authData, error: authError } = await supabase.auth.signUp({
             role: role,
             hire_date: hireDate
         },
-        emailRedirectTo: window.location.origin + '/login.html'
+    emailRedirectTo: window.location.origin + '/login'
     }
 })
 
@@ -424,7 +424,7 @@ const { data: authData, error: authError } = await supabase.auth.signUp({
                 
                 // Redirect to login after 5 seconds
                 setTimeout(() => {
-                    window.location.href = 'login.html'
+                    window.location.href = '/login'
                 }, 5000)
                 
             } catch (error) {

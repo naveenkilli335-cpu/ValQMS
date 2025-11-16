@@ -76,8 +76,8 @@
       const { data: { session } } = await sb.auth.getSession();
       
       if (!session) {
-        alert('⚠️ Please login to access this SOP');
-        window.location.href = 'index.html';
+    alert('⚠️ Please login to access this SOP');
+    window.location.href = '/';
         return;
       }
       
@@ -91,12 +91,12 @@
         .single();
       
       if (error || !data) {
-        alert('⚠️ Please purchase this SOP to access it.');
-        window.location.href = 'index.html';
+    alert('⚠️ Please purchase this SOP to access it.');
+    window.location.href = '/';
       }
     } catch (err) {
-      console.error('Access check error:', err);
-      window.location.href = 'index.html';
+    console.error('Access check error:', err);
+    window.location.href = '/';
     }
   }
   
@@ -106,7 +106,7 @@
 
 <body>
     <div class="nav-buttons no-print">
-        <a href="index.html" class="btn btn-secondary">← Back to Home</a>
+    <a href="/" class="btn btn-secondary">← Back to Home</a>
         <!-- Print option removed per request -->
     </div>
 

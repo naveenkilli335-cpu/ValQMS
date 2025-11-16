@@ -1,0 +1,58 @@
+	/* Responsive modal and form styles */
+	@media (max-width: 600px) {
+		.__modal_card {
+			max-width: 98vw;
+			padding: 18vw 4vw 8vw 4vw;
+			border-radius: 12px;
+			font-size: 1rem;
+		}
+		.modal-close-x {
+			top: 8px;
+			right: 8px;
+			font-size: 1.6rem;
+			width: 32px;
+			height: 32px;
+		}
+		input, button {
+			font-size: 1rem;
+			padding: 10px 10px;
+		}
+		.__modal_card h3 {
+			font-size: 1.15rem;
+		}
+		.__modal_card p {
+			font-size: 0.98rem;
+		}
+		.toast-message {
+			font-size: 0.95rem;
+			padding: 10px 12px;
+		}
+	}
+	@media (max-width: 400px) {
+		.__modal_card {
+			padding: 8vw 2vw 4vw 2vw;
+			font-size: 0.95rem;
+		}
+		.__modal_card h3 {
+			font-size: 1rem;
+		}
+		.__modal_card p {
+			font-size: 0.9rem;
+		}
+	}
+<script>
+// Global helper to convert .html links and redirects to pretty URLs
+function toPrettyUrl(url) {
+	return url.replace(/([\w-]+)\.html([?#]?)/g, '$1$2');
+}
+window.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('a[href$=".html"]').forEach(a => {
+		a.href = toPrettyUrl(a.href);
+	});
+});
+const origAssign = Object.getOwnPropertyDescriptor(window.location.__proto__, 'href').set;
+Object.defineProperty(window.location, 'href', {
+	set: function(url) { origAssign.call(window.location, toPrettyUrl(url)); },
+	get: function() { return origAssign.call(window.location); }
+});
+</script>

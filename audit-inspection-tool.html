@@ -2813,7 +2813,7 @@ function closeViewCapaModal() {
         async function logout() {
             try {
                 await supabase.auth.signOut();
-                window.location.href = '/login.html'; // Redirect to login page
+                window.location.href = '/login'; // Redirect to login page
             } catch (error) {
                 console.error('Error logging out:', error);
                 showAlert('Error logging out', 'error');

@@ -424,16 +424,16 @@
                 User Management
             </h1>
             <div class="header-actions">
-<button class="btn btn-primary" onclick="window.location.href='register-employee.html'">
+<button class="btn btn-primary" onclick="window.location.href='/register-employee'">
     + Add New User
 </button>
 
-<button class="btn btn-primary" onclick="window.location.href='manage-permissions.html'">
+<button class="btn btn-primary" onclick="window.location.href='/manage-permissions'">
     🔐 Manage Permissions
 </button>
 
 
-                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                <button class="btn btn-secondary" onclick="window.location.href='/'">
                     ← Back to Dashboard
                 </button>
             </div>
@@ -515,7 +515,7 @@
             </p>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="window.location.href='register-employee.html'">
+                <button class="btn btn-primary" onclick="window.location.href='/register-employee'">
                     Go to Registration
                 </button>
             </div>
@@ -557,7 +557,7 @@
                 if (sessionError || !session) {
                     console.error('No session found')
                     alert('⚠️ Please login first')
-                    window.location.href = 'login.html'
+                    window.location.href = '/login'
                     return false
                 }
 
@@ -570,7 +570,7 @@
                 if (!jwt.permissions || jwt.permissions.all !== true) {
                     console.error('Access Denied: Not an admin')
                     alert('⚠️ Access Denied\n\nThis page is only accessible to System Admins.')
-                    window.location.href = 'index.html'
+                    window.location.href = '/'
                     return false
                 }
 
@@ -580,7 +580,7 @@
             } catch (error) {
                 console.error('Error checking admin access:', error)
                 alert('Error verifying admin access. Please login again.')
-                window.location.href = 'login.html'
+                window.location.href = '/login'
                 return false
             }
         }

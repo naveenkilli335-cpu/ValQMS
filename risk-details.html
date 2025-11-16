@@ -76,7 +76,7 @@
   <header>
     <div class="header-glass">
       <div class="header-container">
-        <a href="index.html" class="logo">
+  <a href="/index" class="logo">
           <div class="logo-mark"><span class="brand-initials">VQ</span></div>
           <div class="brand-text">
             <h1>ValQMS Applications</h1>
@@ -84,9 +84,9 @@
           </div>
         </a>
         <div class="header-controls">
-          <a href="riskassessment-tool.html#assessments" class="btn-head">← Back to List</a>
+          <a href="/riskassessment-tool#assessments" class="btn-head">← Back to List</a>
           <button class="btn-head" onclick="exportToPDF()">⬇ PDF</button>
-          <a href="index.html" class="btn-home">Home</a>
+          <a href="/index" class="btn-home">Home</a>
         </div>
       </div>
     </div>
@@ -362,7 +362,7 @@
   function cacheInvalidateEntity(table, id){ const idxKey=`${table}:${id}`; const set=CACHE_IDX.get(idxKey); if(set){ for(const k of set){ CACHE.delete(k); } CACHE_IDX.delete(idxKey); } CACHE.delete(cacheKey(table, `id=${id}`, '*')); }
 
     document.addEventListener('DOMContentLoaded', async ()=>{
-      if(!raId){ alert('Missing risk assessment id'); window.location.href='riskassessment-tool.html'; return; }
+  if(!raId){ alert('Missing risk assessment id'); window.location.href='/riskassessment-tool'; return; }
       await initRBAC();
       await initAuth();
       await detectRiskItemResidualColumns();

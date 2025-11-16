@@ -2,6 +2,80 @@
 <html lang="en" data-theme="cyan" data-bg="mint">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login — ValQMS</title>
+  <style>
+    /* Responsive modal and form styles */
+    @media (max-width: 600px) {
+      #forgotPasswordModal .__modal_card, #loginModal .__modal_card, #registerModal .__modal_card {
+        max-width: 98vw;
+        padding: 18vw 4vw 8vw 4vw;
+        border-radius: 12px;
+        font-size: 1rem;
+      }
+      .modal-close-x {
+        top: 8px;
+        right: 8px;
+        font-size: 1.6rem;
+        width: 32px;
+        height: 32px;
+      }
+      #forgotForm input, #registerForm input, #loginForm input {
+        font-size: 1rem;
+        padding: 10px 10px;
+      }
+      #forgotForm .btn-forgot, #registerForm .btn-login, #loginForm .btn-login {
+        font-size: 1rem;
+        padding: 12px 0;
+      }
+      .__modal_card h3 {
+        font-size: 1.15rem;
+      }
+      .__modal_card p {
+        font-size: 0.98rem;
+      }
+      .toast-message {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+    }
+    @media (max-width: 400px) {
+      #forgotPasswordModal .__modal_card, #loginModal .__modal_card, #registerModal .__modal_card {
+        padding: 8vw 2vw 4vw 2vw;
+        font-size: 0.95rem;
+      }
+      .__modal_card h3 {
+        font-size: 1rem;
+      }
+      .__modal_card p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+  <script>
+    // Global helper to convert .html links and redirects to pretty URLs
+    function toPrettyUrl(url) {
+      // Only remove .html if it's at the end or before ? or #
+      return url.replace(/([\w-]+)\.html([?#]?)/g, '$1$2');
+    }
+    // Patch all anchor tags on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href$=".html"]').forEach(a => {
+        a.href = toPrettyUrl(a.href);
+      });
+    });
+    // Patch window.location.href assignments (override globally)
+    const origAssign = Object.getOwnPropertyDescriptor(window.location.__proto__, 'href').set;
+    Object.defineProperty(window.location, 'href', {
+      set: function(url) { origAssign.call(window.location, toPrettyUrl(url)); },
+      get: function() { return origAssign.call(window.location); }
+    });
+  </script>
+  <!-- ...existing code... -->
+<!DOCTYPE html>
+<html lang="en" data-theme="cyan" data-bg="mint">
+<head>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ValQMS</title>
   <meta name="description" content="Validation tools and QMS Procedures/Applications.">
@@ -2646,6 +2720,9 @@ window.showToast = function(message, type = 'info') {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
+  // Set this variable at the top to control the redirect URL for password reset:
+  //window.RESET_REDIRECT_URL = 'http://localhost:8888/index.html'; // for local testing
+  window.RESET_REDIRECT_URL = 'https://valqms.com/index.html'; // for production
   const SUPABASE_URL = 'https://nufpaayytxtjihqrvtfi.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51ZnBhYXl5dHh0amlocXJ2dGZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzA5NjIsImV4cCI6MjA3NTkwNjk2Mn0.766ENc3lMQSVJIsyxK6xlPE5DNlB3Np3eeXxvcoRGGY';
 
@@ -4781,12 +4858,13 @@ window.submitDemoRequest = async function(event) {
         return;
       }
       try {
-  // Configurable redirect URL for password reset
-  const RESET_REDIRECT_URL = window.RESET_REDIRECT_URL || (window.location.origin + '/reset-password.html');
-  const { error } = await window.sb.auth.resetPasswordForEmail(email, { redirectTo: RESET_REDIRECT_URL });
-// Set this variable at the top of your script or in a <script> tag to control the redirect URL:
-//window.RESET_REDIRECT_URL = 'http://127.0.0.1:5500/login.html'; // for local testing
-        window.RESET_REDIRECT_URL = 'https://valqms.com/index.html'; // for production
+        // Configurable redirect URL for password reset
+        let RESET_REDIRECT_URL = window.RESET_REDIRECT_URL || (window.location.origin + '/reset-password.html');
+        // Remove .html extension for Netlify pretty URLs
+        if (RESET_REDIRECT_URL.endsWith('.html')) {
+          RESET_REDIRECT_URL = RESET_REDIRECT_URL.replace(/\.html$/, '');
+        }
+        const { error } = await window.sb.auth.resetPasswordForEmail(email, { redirectTo: RESET_REDIRECT_URL });
         if (error) {
           showToast(error.message || 'Failed to send reset link.');
         } else {

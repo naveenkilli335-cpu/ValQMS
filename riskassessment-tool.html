@@ -557,7 +557,7 @@
     <header>
         <div class="header-glass">
             <div class="header-container">
-                <a href="index.html" class="logo">
+                <a href="/index" class="logo">
                     <div class="logo-mark"><span class="brand-initials">VQ</span></div>
                     <div class="brand-text">
                         <h1>ValQMS Applications</h1>
@@ -570,7 +570,7 @@
                         <a href="#" data-section="assessments" onclick="goToAssessments(event)">Risk Assessments</a>
                         <a href="#" data-section="new" onclick="goToNew(event)" data-action="new-ra">Initiate New</a>
                     </nav>
-                    <a href="index.html" class="btn-home"><span>←</span><span>Home</span></a>
+                    <a href="/index" class="btn-home"><span>←</span><span>Home</span></a>
                 </div>
             </div>
         </div>
@@ -1377,7 +1377,7 @@
         }
 
     // Placeholder functions
-    function viewRA(id) { window.location.href = `risk-details.html?id=${id}`; }
+    function viewRA(id) { window.location.href = `/risk-details?id=${id}`; }
 
         function rpnToLevel(rpn){ if(rpn>=200) return 'Critical'; if(rpn>=100) return 'High'; if(rpn>=40) return 'Medium'; return 'Low'; }
 

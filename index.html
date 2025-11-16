@@ -1,3 +1,19 @@
+<script>
+// Global helper to convert .html links and redirects to pretty URLs
+function toPrettyUrl(url) {
+  return url.replace(/([\w-]+)\.html([?#]?)/g, '$1$2');
+}
+window.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('a[href$=".html"]').forEach(a => {
+    a.href = toPrettyUrl(a.href);
+  });
+});
+const origAssign = Object.getOwnPropertyDescriptor(window.location.__proto__, 'href').set;
+Object.defineProperty(window.location, 'href', {
+  set: function(url) { origAssign.call(window.location, toPrettyUrl(url)); },
+  get: function() { return origAssign.call(window.location); }
+});
+</script>
 <!DOCTYPE html>
 <html lang="en" data-theme="cyan" data-bg="mint">
 <head>
@@ -1616,7 +1632,7 @@
   <header>
     <div class="header-glass">
       <div class="container">
-        <a href="index.html" class="logo">
+  <a href="/" class="logo">
           <div class="logo-mark"><span class="brand-initials">VQ</span></div>
           <span>ValQMS</span>
         </a>
@@ -1628,10 +1644,10 @@
       <a href="#QMS Procedures">QMS Procedures</a>
       <a href="#ValQMS Academy">ValQMS Academy</a>
       <a href="#resources">Resources</a>
-      <a href="admin-users.html" class="admin-only" style="display: none;">
+  <a href="/admin-users" class="admin-only" style="display: none;">
         Manage Users
       </a>
-      <a href="demo-requests.html" id="demoRequestsNav" class="admin-only" style="display:none;">
+  <a href="/demo-requests" id="demoRequestsNav" class="admin-only" style="display:none;">
         Demo Requests
       </a>
       <a href="#about">About</a>
@@ -1705,7 +1721,7 @@
             </div>
           </div>
 
-          <a class="btn-login" href="login.html" id="loginLink">Login</a>
+          <a class="btn-login" href="/login" id="loginLink">Login</a>
 
     <!-- User Menu -->
     <div id="userMenu" class="user-menu">
@@ -1750,7 +1766,7 @@
         <div class="qms-grid" style="gap: 24px; margin-top: 0;">
 
    
-<a href="GxP Validation & Project Management Tool.html" class="app-card">
+<a href="/GxP Validation & Project Management Tool" class="app-card">
   <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M9 12l2 2 4-4"/>
@@ -1794,14 +1810,14 @@
               #smartToolsList { display: flex; flex-wrap: wrap; gap: 24px; justify-content: flex-start; }
               #smartToolsList .tool-item { flex: 0 0 340px; max-width: 340px; min-width: 320px; }
             </style>
-            <a href="project-budget-calculator.html" class="tool-item" data-tags="new"><div class="tool-icon">💸</div><div class="tool-content"><h3>Project Budget Calculator</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Advanced, auditable project cost and effort estimator for pharma validation & qualification projects. Scenario, contingency, and export-ready.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="smart-tools/project-plan-creation-tool.html" class="tool-item" data-tags="new"><div class="tool-icon">🗂️</div><div class="tool-content"><h3>Project Plan Creation Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Auto-generate project phases, tasks, Gantt (Excel), and RACI matrix for SAP, LIMS, UiPath, and more. Exports a ready-to-use Excel workbook.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="ComparisionTool.html" class="tool-item" data-tags="popular"><div class="tool-icon">📊</div><div class="tool-content"><h3>Excel Comparison Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="MasterDataTool.html" class="tool-item" data-tags="new"><div class="tool-icon">🧬</div><div class="tool-content"><h3>LIMS Master Data Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="SOPComparisionTool.html" class="tool-item" data-tags="ai"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="AdvancedUserAcessMatrixTool.html" class="tool-item" data-tags="ai"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="ScreenshotToTestEvidenceConverterTool.html" class="tool-item" data-tags="new"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
-            <a href="AdvancedRiskAssessmentTool.html" class="tool-item" data-tags="popular"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/project-budget-calculator" class="tool-item" data-tags="new"><div class="tool-icon">💸</div><div class="tool-content"><h3>Project Budget Calculator</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Advanced, auditable project cost and effort estimator for pharma validation & qualification projects. Scenario, contingency, and export-ready.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/smart-tools/project-plan-creation-tool" class="tool-item" data-tags="new"><div class="tool-icon">🗂️</div><div class="tool-content"><h3>Project Plan Creation Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Auto-generate project phases, tasks, Gantt (Excel), and RACI matrix for SAP, LIMS, UiPath, and more. Exports a ready-to-use Excel workbook.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/ComparisionTool" class="tool-item" data-tags="popular"><div class="tool-icon">📊</div><div class="tool-content"><h3>Excel Comparison Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>Advanced fuzzy matching with composite keys and colorized Excel exports. Perfect for validation evidence generation.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/MasterDataTool" class="tool-item" data-tags="new"><div class="tool-icon">🧬</div><div class="tool-content"><h3>LIMS Master Data Tool</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Automatic master data structuring with smart multi-line detection and intelligent field mapping for LIMS templates.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/SOPComparisionTool" class="tool-item" data-tags="ai"><div class="tool-icon">📝</div><div class="tool-content"><h3>SOP Version Comparator</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>AI-powered side-by-side comparison with change detection, training impact analysis, and compliance reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/AdvancedUserAcessMatrixTool" class="tool-item" data-tags="ai"><div class="tool-icon">🔐</div><div class="tool-content"><h3>User Access Matrix Builder</h3><div class="tool-badges"><span class="tool-badge ai">AI</span></div><p>Visual RBAC matrix with AI-powered segregation of duties conflict detection and GxP audit reports.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/ScreenshotToTestEvidenceConverterTool" class="tool-item" data-tags="new"><div class="tool-icon">📸</div><div class="tool-content"><h3>Screenshot Evidence Converter</h3><div class="tool-badges"><span class="tool-badge new">New</span></div><p>Batch annotate test screenshots with metadata, timestamps, and auto-generate PDF evidence appendices.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
+            <a href="/AdvancedRiskAssessmentTool" class="tool-item" data-tags="popular"><div class="tool-icon">🎯</div><div class="tool-content"><h3>Advanced Risk Assessment Tool</h3><div class="tool-badges"><span class="tool-badge popular">Popular</span></div><p>GAMP 5 and ICH Q9 compliant risk scoring with automated validation strategy recommendations.</p><div class="app-badge">Tool</div></div><div class="tool-arrow">→</div></a>
           </div>
         </div>
         <div style="text-align:center; margin-top: 1.5rem;">
@@ -1890,7 +1906,7 @@
     
 
     <div class="app-grid">
-      <a href="change-management.html" class="app-card">
+  <a href="/change-management" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -1902,7 +1918,7 @@
         <div class="app-badge">Application</div>
       </a>
 
-      <a href="capa-tool.html" class="app-card">
+  <a href="/capa-tool" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"/>
@@ -1915,7 +1931,7 @@
         <div class="app-badge">Application</div>
       </a>
 
-      <a href="riskassessment-tool.html" class="app-card">
+  <a href="/riskassessment-tool" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 3v18h18"/>
@@ -1927,7 +1943,7 @@
         <div class="app-badge">Application</div>
       </a>
 
-      <a href="audit-inspection-tool.html" class="app-card">
+  <a href="/audit-inspection-tool" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #14b8a6, #2dd4bf);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/>
@@ -1939,7 +1955,7 @@
         <div class="app-badge">Application</div>
       </a>
 
-      <a href="training-tool.html" class="app-card">
+  <a href="/training-tool" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 14l9-5-9-5-9 5 9 5z"/>
@@ -1951,7 +1967,7 @@
         <div class="app-badge">Application</div>
       </a>
 
-      <a href="non-conformance-tool.html" class="app-card">
+  <a href="/non-conformance-tool" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
@@ -1964,7 +1980,7 @@
         <div class="app-badge">Application</div>
       </a>
 
-      <a href="defect-management-tool.html" class="app-card">
+  <a href="/defect-management-tool" class="app-card">
         <div class="app-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"/>
@@ -3529,29 +3545,13 @@ async function renderQMSProcedures() {
                     <span>Buy Now</span>
                   </button>`
                 }
-// Access SOP with login check
-async function accessSOP(fileName) {
-  // Use the same Supabase client as the rest of the page
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    if (session && session.user) {
-      window.location.href = fileName;
-    } else {
-      // Show login modal or access modal if not logged in
-      if (typeof openModal === 'function' && typeof loginModal !== 'undefined') {
-        openModal(loginModal);
-      } else if (typeof accessModal !== 'undefined') {
-        accessModal.style.display = 'flex';
-      } else {
-        alert('Please log in to access this SOP.');
-      }
-    }
-  } catch (e) {
-    alert('Please log in to access this SOP.');
-  }
-}
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  <!-- End of QMS Procedures grid -->
+  <!-- (Fixed: removed stray script tag here) -->
         `;
       }
     });
@@ -4269,13 +4269,10 @@ window.submitDemoRequest = async function(event) {
     if (error.message.includes('relation') || error.message.includes('does not exist')) {
       errorMsg += 'Database table not found. Please contact the administrator.\n\n';
     }
-    errorMsg += `Error: ${error.message}\n\nPlease email us directly at support@valqms.com`;
-    
+  // Removed support email line as requested
     alert(errorMsg);
   }
-};
+}
 </script>
-
-
 </body>
 </html>

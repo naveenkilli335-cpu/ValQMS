@@ -81,7 +81,7 @@
 		hdr.innerHTML = `
 			<div class="header-glass">
 				<div class="container">
-					<a href="index.html" class="logo" aria-label="ValQMS Home">
+					<a href="/" class="logo" aria-label="ValQMS Home">
 						<div class="logo-mark"><span class="brand-initials">VQ</span></div>
 						<div class="brand-title">
 							<span class="main">ValQMS Applications</span>
@@ -91,7 +91,7 @@
 					<div class="controls">
 						<button type="button" class="btn btn-white" id="vqBackBtn" title="Go Back">← Back</button>
 						<button type="button" class="btn btn-white" id="vqPdfBtn" title="Download PDF">⬇ PDF</button>
-						<a href="index.html" class="btn btn-green" id="vqHomeBtn" title="Home">Home</a>
+						<a href="/" class="btn btn-green" id="vqHomeBtn" title="Home">Home</a>
 					</div>
 				</div>
 			</div>
@@ -108,9 +108,9 @@
 					const ref = document.referrer || '';
 					const sameOrigin = ref && ref.startsWith(location.origin);
 					if (sameOrigin && history.length > 1) history.back();
-					else window.location.href = 'index.html';
+					else window.location.href = '/';
 				} catch (e) {
-					window.location.href = 'index.html';
+					window.location.href = '/';
 				}
 			});
 		}
